@@ -20,36 +20,100 @@
             "group": "Getting started",
             "pages": [
               "index",
-              "quickstart",
-              "development"
+              "getting-started/quickstart",
+              "getting-started/create-your-workspace",
+              "getting-started/navigate-the-app"
             ]
           },
           {
-            "group": "Customization",
+            "group": "Platform fundamentals",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
+              "platform/core-concepts",
+              "platform/programs-and-pages",
+              "platform/block-editor",
+              "platform/calendar-and-tasks",
+              "platform/sharing-and-publishing"
             ]
           },
           {
-            "group": "Writing content",
+            "group": "Build and manage data",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/components",
-              "essentials/reusable-snippets"
+              "data/tables",
+              "data/views",
+              "data/fields",
+              "data/forms",
+              "data/page-designer",
+              "data/field-rules",
+              "data/import-export",
+              "data/data-homologation"
             ]
           },
           {
-            "group": "Agent ready",
+            "group": "Automate work",
             "pages": [
-              "agent-ready/prompt",
-              "agent-ready/visibility",
-              "agent-ready/contextual",
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "automation/workflows",
+              "automation/triggers",
+              "automation/nodes",
+              "automation/credentials",
+              "automation/executions"
+            ]
+          },
+          {
+            "group": "AI and communication",
+            "pages": [
+              "ai/ai-assistant",
+              "ai/whatsapp-chats",
+              "ai/email-tools"
+            ]
+          },
+          {
+            "group": "Business operations",
+            "pages": [
+              "operations/overview",
+              "operations/crm",
+              "operations/sales",
+              "operations/purchasing",
+              "operations/inventory",
+              "operations/pos",
+              "operations/marketplace",
+              "operations/insurance-and-legal"
+            ]
+          },
+          {
+            "group": "Finance",
+            "pages": [
+              "finance/treasury",
+              "finance/bank-reconciliation",
+              "finance/accounting",
+              "finance/fixed-assets",
+              "finance/electronic-invoicing"
+            ]
+          },
+          {
+            "group": "Transport",
+            "pages": [
+              "transport/overview",
+              "transport/operations",
+              "transport/billing-and-settlement",
+              "transport/fleet-monitoring"
+            ]
+          },
+          {
+            "group": "Documents and reporting",
+            "pages": [
+              "documents/document-management",
+              "reporting/dashboards-and-reports"
+            ]
+          },
+          {
+            "group": "Workspace administration",
+            "pages": [
+              "admin/account-settings",
+              "admin/team-and-invitations",
+              "admin/roles-and-permissions",
+              "admin/api-keys",
+              "admin/integrations",
+              "admin/workspace-settings"
             ]
           }
         ]
@@ -74,21 +138,7 @@
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
     "light": "/images/logo-black.png",
@@ -103,8 +153,8 @@
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "label": "Open Fail Fast",
+      "href": "https://app.failfast.ai"
     }
   },
   "contextual": {

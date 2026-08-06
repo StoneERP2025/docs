@@ -1,0 +1,69 @@
+---
+title: Node reference
+description: Every execution node you can add to a workflow, grouped by what it does.
+icon: circle-nodes
+---
+
+Execution nodes are the building blocks that come after a workflow's [trigger](/automation/triggers): they perform actions, transform data, or control the workflow. This page lists all fifteen, grouped by purpose.
+
+<Note>
+Nodes that call protected services — external APIs, messaging platforms, tracking providers, or Fail Fast itself — authenticate with [credentials](/automation/credentials). You choose or create the credential inside the node's configuration.
+</Note>
+
+<Tabs>
+  <Tab title="Logic and code">
+    | Node | What it does | When to use it |
+    |---|---|---|
+    | **Switch** | Branches the workflow between paths based on conditions. | When different situations need different handling — route each run down the path whose condition matches. |
+    | **Code** | Runs JavaScript to transform the previous node's output. | When you need custom reshaping, calculations, or formatting that no other node covers. |
+    | **Call Another Workflow** | Invokes another workflow as a step. | When you have reusable logic built as a sub-workflow — the other workflow must start with the **When Executed By Another Workflow** trigger. |
+  </Tab>
+  <Tab title="Integrations and messaging">
+    | Node | What it does | When to use it |
+    |---|---|---|
+    | **HTTP Request** | Calls external APIs or services. | When you need to reach a system that has no dedicated node. |
+    | **OpenAI** | Generates text with language models. | When a step needs generated or interpreted text — summaries, drafts, classifications. |
+    | **WhatsApp** | Sends WhatsApp template messages or replies to conversations. | When an automation should message people on WhatsApp — see [WhatsApp chats](/ai/whatsapp-chats) for the inbox side. |
+    | **Notification** | Sends in-app notifications to users or roles. | When teammates should be alerted inside Fail Fast about something the workflow detected or did. |
+    | **Truora** | Makes requests to Truora, a background-check and identity-validation service. | When a flow needs to verify a person's identity or run a background check. |
+  </Tab>
+  <Tab title="Documents">
+    | Node | What it does | When to use it |
+    |---|---|---|
+    | **Validate Document** | Validates documents against predefined rules. | When uploaded documents must meet requirements before a process continues. |
+    | **When Document Near Expiry** | Runs when a document approaches its expiration date. | When you want to act ahead of expirations — renewals, reminders, compliance checks. |
+  </Tab>
+  <Tab title="Platform">
+    | Node | What it does | When to use it |
+    |---|---|---|
+    | **Fail Fast** | Makes requests to Fail Fast itself. | When the workflow should act on your own workspace's data as part of the automation. |
+  </Tab>
+  <Tab title="Transport (Colombia)">
+    | Node | What it does | When to use it |
+    |---|---|---|
+    | **RNDC** | Connects to the Registro Nacional de Despachos de Carga — the Ministry of Transport's freight registry — via its web service. | When freight dispatch operations must be registered or consulted with RNDC. |
+    | **Satrack** | Retrieves vehicle tracking data — last known location, or events within a date range. | When a flow needs to know where a vehicle is or what happened during a period. |
+    | **Monitor** | Handles tracking and dispatch through the Monitor platform. | When your operation runs tracking or dispatch on Monitor. |
+    | **Integrador Transporte** | A generic node for transport tracking providers. | When your tracking provider isn't covered by a dedicated node. |
+
+    See [Fleet monitoring](/transport/fleet-monitoring) for how tracking fits into the transport module.
+  </Tab>
+</Tabs>
+
+## Picking the right node
+
+- Start with the most specific node available: **WhatsApp** over **HTTP Request** for WhatsApp messages, **Satrack** over a generic call for Satrack data.
+- Reach for **HTTP Request** or **Integrador Transporte** when no dedicated node exists for your service.
+- Use **Code** sparingly — only when the data shape between two nodes genuinely needs custom transformation.
+- Use **Switch** whenever one workflow must handle several cases; it keeps the logic on the canvas where anyone can read it.
+
+## Related pages
+
+<CardGroup cols={2}>
+  <Card title="Credentials" icon="key" href="/automation/credentials">
+    Set up authentication for nodes that call protected services.
+  </Card>
+  <Card title="Triggers" icon="bolt-lightning" href="/automation/triggers">
+    The events that start a workflow in the first place.
+  </Card>
+</CardGroup>

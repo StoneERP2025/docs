@@ -1,0 +1,92 @@
+---
+title: Work with tables
+description: Search, filter, sort, and group records, control which fields you see, and create new records — with settings saved per view.
+icon: table
+---
+
+Tables are where your records live. A table appears inside a page as a Table block, and the business modules in your workspace — customers, orders, products, and more — are built on top of tables. This page covers the tools you use every day to find, organize, and create records.
+
+## The table toolbar
+
+The toolbar sits above the table. From left to right:
+
+| Control | What it does |
+| --- | --- |
+| **Search** | Search records in the table |
+| **Filter** | Apply quick filters or build an advanced filter |
+| **Sort** | Order records by one or more fields |
+| **Group by** | Group rows by a field (table view only) |
+| **Visibility** | Show or hide fields |
+| **Export** | Download the current data as an Excel file |
+| **Import** | Open the Data Migration wizard |
+| Action buttons | Appear when actions are configured for the table |
+| **New** | Create a record |
+
+Some controls only appear when you have the matching permission — see [Permissions](#permissions) below.
+
+## Filter records
+
+**Filter** offers two levels:
+
+- **Quick filters** adapt to each field's type. A text field gets a text filter, a number field gets numeric comparisons, a date field gets date ranges, and select, person, and relation fields let you pick from their values.
+- The **advanced filter builder** composes nested conditions. Start with **Where**, then combine conditions with **AND** and **OR**. Use **Add condition** for another rule at the same level, **Add group** to nest a sub-group with its own AND/OR logic, and **Delete filter** to remove a rule you no longer need.
+
+Nested groups let you express logic like "status is open AND (owner is me OR priority is high)".
+
+## Sort records
+
+**Sort** orders the table by one or more fields. Add several sort rules to break ties — for example, sort by city first, then by name within each city.
+
+## Group records
+
+In a table view, **Group by** collapses rows into groups based on a field's values, so you can scan a long table by category, status, or owner. Grouping is available in the table view only; for a column-per-value layout, use a board view instead — see [Views](/data/views).
+
+## Show, hide, and reorder fields
+
+**Visibility** controls which fields appear as columns and in what order. Hide fields you don't need right now and reorder the rest to put the important ones first. The visible fields and their order also drive what [Export](/data/import-export) includes.
+
+## Create records
+
+Select **New** to create a record. The form that opens comes from the table's form templates:
+
+- If the table has several form templates, a dropdown next to **New** lets you pick which one to use — for example, a short intake form versus a complete record form. See [Forms and form templates](/data/forms).
+- Press Ctrl+Enter to save the record without reaching for the mouse.
+
+## Settings are saved per view
+
+Everything you configure in the toolbar — filters, sorting, grouping, and field visibility and order — is saved on the view you're using, not globally. Each view keeps its own setup, so a "My open items" view and a "Full list" view can coexist on the same table. See [Views](/data/views) for how to create and manage them.
+
+## Permissions
+
+Access to a table is controlled record-level, per table, with six permissions: create, read, update, delete, export, and import. The toolbar only shows controls you're allowed to use — if you can't export, the **Export** button doesn't appear. If a control you expect is missing, ask a workspace administrator to review your role. See [Roles and permissions](/admin/roles-and-permissions).
+
+## Common tasks
+
+<Steps>
+  <Step title="Build an advanced filter">
+    Open **Filter** and switch to the advanced builder. Add your first condition after **Where**, then use **Add condition** for more rules and **AND**/**OR** to combine them. Use **Add group** when part of the logic needs its own AND/OR combination, and **Delete filter** to remove rules you no longer need.
+  </Step>
+  <Step title="Group and sort a table">
+    In a table view, open **Group by** and choose the field to group on — status or category work well. Then open **Sort** and add one or more sort rules to order the records inside each group.
+  </Step>
+  <Step title="Hide and reorder fields">
+    Open **Visibility** and turn off the fields you don't need. Reorder the remaining fields so the most important ones come first. The change is saved on the current view only, so other views keep their own layout.
+  </Step>
+</Steps>
+
+## Related pages
+
+<CardGroup cols={2}>
+  <Card title="Views" icon="table-columns" href="/data/views">
+    Create table, board, calendar, gallery, and dashboard views over the same data.
+  </Card>
+  <Card title="Forms and form templates" icon="clipboard-list" href="/data/forms">
+    Control how records are created and edited.
+  </Card>
+  <Card title="Import and export data" icon="file-import" href="/data/import-export">
+    Bring data in with the Data Migration wizard or download it as Excel.
+  </Card>
+  <Card title="Roles and permissions" icon="user-lock" href="/admin/roles-and-permissions">
+    Manage who can create, read, update, delete, export, and import records.
+  </Card>
+</CardGroup>

@@ -1,0 +1,92 @@
+---
+title: Fields and field types
+description: The field types available for your tables, what each one stores, and how to add and configure fields.
+icon: rectangle-list
+---
+
+Fields define what each record in a table stores. Choosing the right type matters: the type determines how a value is entered on forms, how it's displayed in tables, and which quick filter it gets. This page lists the available types and how to configure them.
+
+## Field types
+
+### Text and contact
+
+| Type | Stores |
+| --- | --- |
+| Text | Free text |
+| Email | An email address |
+| Phone | A phone number |
+| Person | A member of your workspace |
+
+### Numbers
+
+| Type | Stores |
+| --- | --- |
+| Number | A whole number |
+| Decimal | A number with decimal places |
+| Checkbox | A yes/no value |
+
+### Choices
+
+| Type | Stores |
+| --- | --- |
+| Select | One option from a defined list |
+| Multi-select | Several options from a defined list |
+| Tree | An option from a hierarchical list — categories with subcategories |
+
+### Dates and time
+
+| Type | Stores |
+| --- | --- |
+| Date | A calendar date |
+| Date-time | A date with a time of day |
+| Period | A time period |
+| Year | A year |
+| Month | A month |
+| Hour | A time of day |
+
+### Relationships
+
+| Type | Stores |
+| --- | --- |
+| Relation | A link to a record in another table |
+| Rollup | A summary of values from related records |
+| Detail | An embedded child table of line items — order lines on an order, for example |
+
+### Files and rich data
+
+| Type | Stores |
+| --- | --- |
+| Document | An attached file — see [Document management](/documents/document-management) |
+| Gallery | A set of images |
+| Location | A geographic location |
+| JSON | Structured data |
+
+## Add a field
+
+You add fields from the table or form configuration using the **New field** controls: pick a name and a type, then complete any extra configuration the type needs. Custom fields can be added to any table if you have the permission to do so.
+
+Some types require extra setup before they can be used:
+
+- **Relation** — choose the related table the field links to.
+- **Rollup** — choose the source of the values and how to aggregate them.
+- **Detail** — choose the child table that holds the line items.
+- **Select** and **Tree** — define the option list; for tree fields, arrange the options into their hierarchy.
+
+## Configure a field
+
+Each field has a configuration panel, and its contents vary by type — number fields expose formatting, choice fields manage their option lists, relation fields point at their related table, and document fields define what's required of the attached file. Open the panel from the same table or form configuration where the field was created.
+
+## How types shape the interface
+
+The field type follows the field everywhere it appears:
+
+- **Quick filters** adapt to the type — date fields filter by ranges, select fields filter by their options, relation fields filter by linked records. See [Work with tables](/data/tables).
+- **Form widgets** match the type — a date field opens a date picker, a select field shows its options, a detail field renders an editable line-item table. See [Forms and form templates](/data/forms).
+
+<Tip>
+Prefer a select or tree field over free text whenever the values come from a known list. Consistent values make filtering, grouping, and reporting far more useful than a text field ever will.
+</Tip>
+
+<Note>
+Fields define what a form *can* show; [field rules](/data/field-rules) define how the form *behaves* — hiding sections, requiring fields conditionally, or validating input before save.
+</Note>

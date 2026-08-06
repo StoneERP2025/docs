@@ -1,0 +1,61 @@
+---
+title: Triggers
+description: The events that start a workflow, from manual runs to schedules, webhooks, forms, and documents.
+icon: bolt-lightning
+---
+
+Every workflow starts from a trigger. The trigger is the first node on the canvas: it defines the event that sets the workflow in motion, and everything connected after it runs in response. When you build a new workflow, the editor asks you to **Add a trigger** before anything else.
+
+There are six trigger nodes. Pick the one that matches how your automation should start.
+
+<AccordionGroup>
+  <Accordion title="When clicking 'Execute Workflow'">
+    Runs the workflow when you click the trigger button in the editor.
+
+    Use this for manual, on-demand runs — and while building, since it lets you test the workflow whenever you want without waiting for a real event. A workflow can have only one of these triggers.
+  </Accordion>
+  <Accordion title="Webhook">
+    Runs the workflow when a webhook is received.
+
+    Use this to connect external systems that can call a URL: when the outside system sends its request, your workflow starts and can act on what it received.
+  </Accordion>
+  <Accordion title="Schedule">
+    Runs the workflow at a specific time.
+
+    Use this for recurring jobs — anything that should happen on a regular rhythm rather than in response to a user action, such as periodic checks or routine notifications.
+  </Accordion>
+  <Accordion title="When Executed By Another Workflow">
+    Runs the workflow when another workflow calls this one.
+
+    Use this to compose reusable sub-workflows: build a piece of logic once, then invoke it from other workflows with the **Call Another Workflow** execution node. A workflow can have only one of these triggers.
+  </Accordion>
+  <Accordion title="When Document Is Uploaded">
+    Runs the workflow when a document is uploaded.
+
+    Use this for document intake and validation flows — for example, checking a newly uploaded document as soon as it arrives. See [Document management](/documents/document-management) for how documents work in your workspace.
+  </Accordion>
+  <Accordion title="When Form Is Submitted">
+    Runs the workflow when a form is submitted.
+
+    Use this to react to new or updated records: whenever someone submits the form, the workflow starts with that submission's data. See [Forms](/data/forms) for how forms capture data.
+  </Accordion>
+</AccordionGroup>
+
+## Choosing a trigger
+
+| You want the workflow to start... | Trigger |
+|---|---|
+| When you click a button | **When clicking 'Execute Workflow'** |
+| When an external system calls a URL | **Webhook** |
+| At a specific time, on a recurring basis | **Schedule** |
+| When another workflow invokes it | **When Executed By Another Workflow** |
+| When a document is uploaded | **When Document Is Uploaded** |
+| When a form is submitted | **When Form Is Submitted** |
+
+<Tip>
+While building any workflow, it helps to test with **When clicking 'Execute Workflow'** first, because you control exactly when it runs. Once the chain of actions works, you can rebuild it around the event trigger you actually need.
+</Tip>
+
+## Next steps
+
+After the trigger, the rest of the workflow is made of execution nodes — the actions, transformations, and control steps that do the work. See the [Node reference](/automation/nodes) for all of them.

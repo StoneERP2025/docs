@@ -1,0 +1,58 @@
+---
+title: Page Designer
+description: The visual editor for form templates and operation pages — arrange blocks, attach rules, preview, and save.
+icon: pen-ruler
+---
+
+The Page Designer is the visual editor for form templates and operation pages. It's where you decide how a form is structured — which fields appear, in what order, and inside which columns, fieldsets, and tabs.
+
+## Open the Page Designer
+
+Open a form template's menu and choose **Edit**. The template opens in the Page Designer.
+
+<Note>
+While you're designing, the app navigation is hidden so you can focus on the layout. Use **Save** and go back when you're done.
+</Note>
+
+## What you can do
+
+- **Drag and drop the block tree** — a form is a tree of blocks: columns, fieldsets, tabs, and the fields inside them. Drag blocks to restructure the layout, move fields between sections, and nest blocks to build the arrangement you want. See [Forms and form templates](/data/forms) for what each block type is for.
+- **Undo and redo** — step backward and forward through your layout changes while you work.
+- **Attach rules from the Code menu** — the **Code** menu is where the form's behavior lives: OnSubmit, OnLoad, and OnDelete rules, plus the full rules view for everything attached to the template. See [Field rules](/data/field-rules).
+- **Import and export the design** — save the form design to a file for backup, or bring a design file in to reuse a layout.
+- **Preview** — test the form as users will see it before committing to the change.
+- **Save** — apply your changes to the template.
+
+## Restructure a long form
+
+A single tall column of fields is hard to scan. Here's how to turn one into a layout with columns, a collapsible section, and tabs.
+
+<Steps>
+  <Step title="Split the essentials into two columns">
+    Add a columns block and drag the most-used fields into it, side by side. Two columns cut the vertical scroll in half and keep related fields — like a name next to its identifier — visually paired.
+  </Step>
+  <Step title="Group secondary fields into a fieldset">
+    Add a fieldset and drag the less-frequently-used fields into it. A collapsible fieldset keeps those fields available without letting them crowd the essentials.
+  </Step>
+  <Step title="Move distinct areas into tabs">
+    If the form still covers several distinct topics — general data, commercial terms, logistics — add tabs and drag each topic's blocks into its own tab. Users see one area at a time instead of one endless page.
+  </Step>
+  <Step title="Preview, then save">
+    Use **Preview** to walk through the form as a user would. When the flow feels right, select **Save**.
+  </Step>
+</Steps>
+
+<Tip>
+Export the form design to a file before making big structural changes. If the new layout doesn't work out, you can import the file and restore the previous design.
+</Tip>
+
+## Related pages
+
+<CardGroup cols={2}>
+  <Card title="Forms and form templates" icon="clipboard-list" href="/data/forms">
+    How templates are created, defaulted, and managed.
+  </Card>
+  <Card title="Field rules" icon="wand-magic-sparkles" href="/data/field-rules">
+    The behavior you attach from the Code menu — validation, visibility, computed values.
+  </Card>
+</CardGroup>

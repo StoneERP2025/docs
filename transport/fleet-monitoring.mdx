@@ -1,0 +1,59 @@
+---
+title: "RNDC and fleet monitoring"
+description: "Report dispatches to the Ministry of Transport's RNDC registry and track trips with events from your GPS providers."
+icon: "satellite-dish"
+---
+
+Two things happen while your trucks are on the road: the dispatch must be reported to the national registry, and you want to know where the trip actually is. Fail Fast handles both through workflows — the RNDC report and the GPS providers are workflow nodes you assemble to fit your operation.
+
+## RNDC reporting
+
+Dispatches — your remittances (remesas) and manifests (manifiestos) — are reported to **RNDC** (Registro Nacional de Despachos de Carga), the Ministry of Transport's registry, using the **RNDC** workflow node. The registry's responses are recorded on your records, so you can verify each dispatch's registration status and act on rejections.
+
+## Fleet monitoring
+
+Trip information flows in from connected GPS and tracking providers through workflow nodes:
+
+- **Monitor** — tracking and dispatch integration.
+- **Satrack** — retrieve a vehicle's last location, or its events for a date range.
+- **Integrador Transporte** — a generic node for other transport tracking providers.
+
+Trip manifests and trip events — locations and milestones — arrive through these nodes, and realtime alerts surface new trip events on the relevant tables, so operators see movement as it happens without refreshing.
+
+Trip events can also carry settlement concepts. When they do, the amounts they represent feed the carrier settlement — see [Transport billing and settlement](/transport/billing-and-settlement).
+
+## Setting it up
+
+Setup happens in Workflows: you build workflows that use the RNDC and provider nodes, with credentials for your provider accounts. See [Nodes](/automation/nodes) for how workflow nodes are configured and [Credentials](/automation/credentials) for storing your provider access securely.
+
+<Steps>
+  <Step title="Set up a tracking workflow">
+    In Workflows, create a workflow using the node for your provider — **Monitor**, **Satrack**, or **Integrador Transporte** — and connect it with the credentials for your provider account. The workflow brings trip manifests and trip events into your transport tables.
+  </Step>
+  <Step title="Check a trip's events">
+    Open the trip's records in your Programs menu and review its events — locations and milestones reported by the provider. Realtime alerts highlight new events as they arrive, and RNDC responses on the dispatch documents confirm registration status.
+  </Step>
+</Steps>
+
+<Note>
+The tracking providers available to you depend on your workspace's integrations. If a provider node is missing, check with your workspace administrator.
+</Note>
+
+## Limitations
+
+- Trip events arrive only from providers you have connected through workflows with valid credentials.
+- RNDC registration status reflects the registry's recorded responses — verify status on the dispatch documents rather than assuming a report succeeded.
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Nodes" icon="circle-nodes" href="/automation/nodes">
+    The workflow nodes behind RNDC reporting and GPS tracking.
+  </Card>
+  <Card title="Credentials" icon="key" href="/automation/credentials">
+    Store your provider account credentials securely.
+  </Card>
+  <Card title="Billing and settlement" icon="file-invoice-dollar" href="/transport/billing-and-settlement">
+    How trip-event settlement concepts feed the carrier settlement.
+  </Card>
+</CardGroup>

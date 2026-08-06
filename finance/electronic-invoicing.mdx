@@ -1,0 +1,65 @@
+---
+title: "Electronic documents (DIAN)"
+description: "Set up Colombian electronic invoicing: issue electronic documents under your DIAN resolutions and process the ones you receive from suppliers."
+icon: "file-invoice"
+---
+
+Fail Fast handles Colombian electronic invoicing in both directions. On the issuing side, the invoices you generate become electronic documents registered with DIAN under your numbering resolutions. On the receiving side, electronic documents your suppliers issue to you can be processed automatically into supplier invoices for review.
+
+## Where to set it up
+
+Electronic documents are configured from **Settings → Integrations → Electronic Documents** — "Connect your DIAN credentials to issue electronic invoices and documents." The setup wizard walks you through everything needed before you can issue.
+
+<Steps>
+  <Step title="Set up your certificate">
+    Upload your electronic signing certificate, or authorize the managed provider to sign on your behalf.
+  </Step>
+  <Step title="Synchronize your DIAN resolutions">
+    Sync your DIAN numbering resolutions and ranges into the workspace. Documents are issued under these resolutions, so this step must be complete before you issue anything.
+  </Step>
+  <Step title="Enable automatic accrual of received documents">
+    Turn on automatic accrual (causación) so electronic documents received from suppliers are processed into staged supplier invoices for your review.
+  </Step>
+  <Step title="Synchronize master data with Factura Web">
+    Enable Factura Web synchronization for your master data — products, customers, suppliers, and branch offices — so both systems stay aligned.
+  </Step>
+</Steps>
+
+<Note>
+Issuing requires an active DIAN setup: your resolutions must be synchronized before any electronic document can be issued.
+</Note>
+
+## Issuing electronic documents
+
+Once setup is complete, the invoices you generate — for example from [Sales](/operations/sales) — are issued as electronic documents under your synced resolutions. The electronic representation of each document, including its PDF, is retrievable from the document's record whenever you need to send or archive it.
+
+## Receiving electronic documents
+
+Electronic documents issued to you by suppliers can be processed automatically into staged supplier invoices. Your team then reviews and completes each staged invoice — the accrual step (causación) — before it becomes part of your payables. See [Purchasing](/operations/purchasing) for how staged supplier invoices fit into the purchasing flow.
+
+## Homologation matters
+
+Both directions depend on correct homologation mappings: external codes on incoming and outgoing documents must map to your own products, third parties, and other master data. If documents arrive with codes you have not mapped, resolve the mappings in [Data homologation](/data/data-homologation).
+
+## Limitations
+
+- No electronic document can be issued until the DIAN setup is active and resolutions are synchronized.
+- Automatic processing of received documents produces staged invoices for review — a person still confirms each one during causación.
+- Incorrect or missing homologation mappings prevent documents from being matched to your master data.
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Sales" icon="cart-shopping" href="/operations/sales">
+    The customer invoices that are issued as electronic documents.
+  </Card>
+  <Card title="Purchasing" icon="basket-shopping" href="/operations/purchasing">
+    Review staged supplier invoices created from received electronic documents.
+  </Card>
+  <Card title="Data homologation" icon="arrows-left-right" href="/data/data-homologation">
+    Map external codes to your own master data.
+  </Card>
+  <Card title="Integrations" icon="plug" href="/admin/integrations">
+    Where the Electronic Documents integration lives among your workspace integrations.
+  </Card>
+</CardGroup>

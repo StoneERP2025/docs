@@ -1,0 +1,58 @@
+---
+title: "Transport management"
+description: "National road-freight management for Colombia: from the customer's service order to the manifest, billing, carrier settlement, and RNDC reporting."
+icon: "truck"
+---
+
+The transport module manages national road freight in Colombia (gestión nacional de transporte): the full chain from a customer's transport request to the trip on the road, the invoice to the customer, the settlement with the carrier, and the regulatory report to the Ministry of Transport.
+
+## Where to find it
+
+Transport is delivered as pages in the **Programs** section of the sidebar. If the transport module is enabled for your workspace, its tables appear in your Programs menu; what you can do on each depends on your role and permissions.
+
+## The document chain
+
+Every trip moves through the same sequence of documents:
+
+1. **Service order** — the customer's transport request, with its details, vehicles, costs, and policies.
+2. **Load order** — the assignment of cargo or containers to the service order.
+3. **Remittance** (remesa) — the shipment document, one per trip or cargo.
+4. **Manifest** (manifiesto) — the trip document that binds the vehicle, the driver, and the remittances travelling together.
+
+After the trip is executed, the chain splits into two settlement branches:
+
+- **Bill the customer** — billing groups the remittances and produces the customer invoice.
+- **Settle the carrier** — the compliment (cumplido) proves the trip completed, legalization consolidates it, and a supplier invoice pays the carrier or vehicle owner.
+
+## Regulatory reporting
+
+Dispatches are reported to **RNDC** (Registro Nacional de Despachos de Carga), the Ministry of Transport's national cargo dispatch registry. See [RNDC and fleet monitoring](/transport/fleet-monitoring) for how reporting and trip tracking work.
+
+## Before you start
+
+The chain relies on master data that must exist first:
+
+- **Stakeholders** — customers, drivers, and vehicle owners.
+- **Vehicles** — with their documents and insurance policies up to date.
+- **Routes and tolls** — the geography your trips run on.
+- **Freight pricing** — the price tables that resolve what a trip costs.
+- **Settlement concepts** — the concepts that compute freight and deductions on both settlement branches.
+
+Vehicle documents and insurance policies are managed with [Insurance and legal](/operations/insurance-and-legal); expired policies block operations from progressing.
+
+## Explore the transport guides
+
+<CardGroup cols={2}>
+  <Card title="Transport operations" icon="route" href="/transport/operations">
+    Work the chain day to day: service orders, load orders, remittances, and manifests.
+  </Card>
+  <Card title="Billing and settlement" icon="file-invoice-dollar" href="/transport/billing-and-settlement">
+    Bill the customer and settle the carrier after the trip.
+  </Card>
+  <Card title="RNDC and fleet monitoring" icon="satellite-dish" href="/transport/fleet-monitoring">
+    Report dispatches to RNDC and track trips with GPS providers.
+  </Card>
+  <Card title="Insurance and legal" icon="shield-halved" href="/operations/insurance-and-legal">
+    Keep vehicle policies valid so operations are never blocked.
+  </Card>
+</CardGroup>

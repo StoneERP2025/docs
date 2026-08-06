@@ -1,0 +1,87 @@
+---
+title: "Treasury"
+description: "Manage bank accounts and cash registers, record money in and money out, generate bank payment files, and close the treasury month."
+icon: "building-columns"
+---
+
+Treasury is where you manage your company's money in and money out. It keeps the balances of your bank accounts and cash registers up to date, records every payment you make to suppliers and every payment you receive from customers, and gives you a controlled monthly close for each account.
+
+## Where to find it
+
+Treasury is delivered as a set of pages in the **Programs** section of the sidebar. If the finance module is enabled for your workspace, its tables — bank accounts, cash registers, payments, income, and the rest — appear in your Programs menu. What you can see and do depends on your role and permissions.
+
+## Key records
+
+- **Bank accounts** — each account you operate, with its current balance. Month close and reconciliation run per account.
+- **Cash registers** — cash points with their balances and the users assigned to operate them.
+- **Cards and checks** — card and check instruments used to pay or collect.
+- **Digital payments** — records of digital payment transactions.
+- **Payment methods** — the catalog of methods used across income and payments.
+
+## Money out
+
+Outgoing money moves through three record types:
+
+- **Payments** — a payment with detail lines that apply the amount to supplier invoices or open supplier balances, settling what you owe.
+- **Payment schedules** — recurring or scheduled payments, so predictable obligations are prepared ahead of time.
+- **Payment dispersion** — group approved payments together and generate the payment file for your bank, ready to upload to the bank's portal.
+
+<Info>
+Payment dispersion supports these Colombian bank formats: Bancolombia, Banco de Bogotá, Davivienda, and Banco Popular.
+</Info>
+
+## Money in
+
+- **Income** — record money received and apply it to customer invoices, advances, or other concepts. Each income record carries details showing exactly what it settles.
+- **Income balances** — open incoming balances, tracked with their taxes.
+
+## Transfers and adjustments
+
+- **Transfers** — move money between cash registers and bank accounts, keeping both balances consistent.
+- **Bank notes and cash notes** — adjustment entries for a bank account or cash register, used for corrections and items that are not payments or income.
+- **Credit card batch settlement** — settle a batch of card transactions against the corresponding bank account.
+
+## Closing the treasury month
+
+You close the treasury month per bank account and per cash register. The close is an orchestrated process that locks the period for that account once complete. If you later need to record a correction in a closed month, a close can be reversed, corrected, and closed again.
+
+## Common tasks
+
+<Steps>
+  <Step title="Register an income against a customer invoice">
+    Open the income page in your Programs menu and create a new income record through its form. Select the customer, the account or cash register that received the money, and the payment method. In the details, apply the amount to the customer invoice (or invoices) being paid, then save. The customer's receivable balance is settled by the applied amount.
+  </Step>
+  <Step title="Run a payment dispersion and download the bank file">
+    Once the payments you intend to send are approved, open the payment dispersion page and create a dispersion grouping them. Generate the payment file for your bank — Bancolombia, Banco de Bogotá, Davivienda, or Banco Popular — download it, and upload it in your bank's portal to execute the payments.
+  </Step>
+</Steps>
+
+## How treasury connects to other modules
+
+- **Sales and receivables** — income records settle the customer invoice balances created in [Sales](/operations/sales).
+- **Purchasing and payables** — payments settle the supplier invoice balances created in [Purchasing](/operations/purchasing).
+- **Point of sale** — cash collected in POS sessions flows into treasury cash registers.
+- **Accounting** — treasury movements post entries to [Accounting](/finance/accounting).
+- **Bank reconciliation** — recorded bank movements are matched against your bank statement in [Bank reconciliation](/finance/bank-reconciliation).
+
+## Limitations
+
+- Bank payment files are generated only for the four supported bank formats listed above.
+- Which treasury pages you see depends on the applications enabled for your workspace and your permissions.
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Bank reconciliation" icon="list-check" href="/finance/bank-reconciliation">
+    Match your bank statement against the movements recorded in treasury.
+  </Card>
+  <Card title="Accounting" icon="calculator" href="/finance/accounting">
+    See how treasury movements post to the general ledger.
+  </Card>
+  <Card title="Sales" icon="cart-shopping" href="/operations/sales">
+    The customer invoices and receivables that income records settle.
+  </Card>
+  <Card title="Purchasing" icon="basket-shopping" href="/operations/purchasing">
+    The supplier invoices and payables that payments settle.
+  </Card>
+</CardGroup>

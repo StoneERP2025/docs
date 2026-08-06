@@ -1,0 +1,79 @@
+---
+title: Document management
+description: Attach files to your business records with document types, validation, expiration tracking, and automated intake flows.
+icon: folder-open
+---
+
+Document management keeps the files your business runs on — contracts, certificates, invoices, supporting paperwork — attached to the records they belong to, with structure and control. Instead of a loose folder of files, every document has a type, optional metadata, and a clear owner record.
+
+## How documents are organized
+
+### Document types
+
+Document types define what kinds of documents your workspace handles. Each type can require metadata fields, so a document isn't just a file — it carries the structured information your team needs alongside it. Administrators create and manage document types for the workspace.
+
+### Storage configuration
+
+A storage manager screen maps document types to storage buckets. This is how administrators control where each kind of document is kept.
+
+### Documents live on records
+
+Documents attach to records. Open any record and use the **Documents** toggle to view the files attached to it and upload new ones. Tables can also declare required documents for their records, so your team knows exactly which paperwork each record needs.
+
+Documents complement the structured data your records capture through [forms](/data/forms) — the form collects the fields, and document management collects the files.
+
+## What you can do with documents
+
+- **Upload** files to any record you have access to.
+- **Capture metadata** defined by the document's type.
+- **Validate** uploaded documents with approve and reject flows.
+- **Track expiration** by setting expiration dates on documents.
+- **View documents** directly in the app with built-in document viewers.
+- **Run bulk operations** as an administrator when you need to act on many documents at once.
+- **Browse the documents registry** to see what exists across the workspace.
+
+## Automate document handling
+
+<Note>
+Document management connects directly to [workflows](/automation/workflows):
+
+- The **When Document Is Uploaded** trigger starts a workflow the moment a document arrives.
+- The **When Document Near Expiry** trigger fires ahead of a document's expiration date, so you can renew or replace it in time.
+- The **Validate Document** node checks documents against predefined rules inside a workflow.
+
+Combine them to build intake → validation → notification flows: a document is uploaded, a workflow validates it, and the right people are notified of the result. See [triggers](/automation/triggers) and [nodes](/automation/nodes) for details.
+</Note>
+
+## Common tasks
+
+### Upload a document to a record
+
+<Steps>
+  <Step title="Open the record">
+    Navigate to the table and open the record the document belongs to.
+  </Step>
+  <Step title="Switch to documents">
+    Use the **Documents** toggle to see the record's files.
+  </Step>
+  <Step title="Upload the file">
+    Upload your file and complete any metadata fields the document type requires.
+  </Step>
+</Steps>
+
+### Create a document type (administrators)
+
+<Steps>
+  <Step title="Define the type">
+    Create a new document type describing the kind of document your workspace handles.
+  </Step>
+  <Step title="Add metadata fields">
+    Add any metadata fields the type should require, so every document of this type carries consistent information.
+  </Step>
+  <Step title="Map it to storage">
+    In the storage configuration screen, map the document type to the storage bucket where its files should be kept.
+  </Step>
+</Steps>
+
+<Tip>
+If a document has a renewal cycle — insurance policies, licenses, certificates — set its expiration date and pair it with the **When Document Near Expiry** trigger so nobody has to remember the deadline.
+</Tip>

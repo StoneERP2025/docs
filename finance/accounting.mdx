@@ -1,0 +1,79 @@
+---
+title: "Accounting"
+description: "The general ledger of your company: chart of accounts, accounting books, journal entries, period control, and financial reports."
+icon: "calculator"
+---
+
+Accounting is the general ledger everything in Fail Fast posts to. Sales, purchases, treasury, inventory, and the rest of the operational modules generate their accounting entries here, and you complete the picture with manual entries, period closes, and reports.
+
+## Where to find it
+
+Accounting pages appear in the **Programs** section of the sidebar when the finance module is enabled for your workspace. Access to entries, closes, and reports depends on your role and permissions.
+
+## Key concepts
+
+- **Chart of accounts** — a hierarchical account tree organized by account classes, based on the Colombian PUC structure. Every entry line points to an account in this chart.
+- **Accounting books** — you can keep multiple books, with account mapping (homologation) between them, so a single transaction can be represented in each book under its own account structure.
+- **Journal entries** — the movements themselves: each entry carries detail lines and their tax details.
+- **Balances** — account balances built from posted entries, per period.
+- **Deferrals and amortizations** — spread a value across periods instead of recognizing it all at once.
+
+## Period control
+
+- **Blocked periods** — a blocked period rejects any new posting into that month, protecting figures you have already reported.
+- **Month close** — you close accounting per year and month. Closing is the formal end of the period.
+
+<Warning>
+Closing the accounting month blocks further postings in that period. Make sure all operational modules have finished recording the month — invoices, payments, depreciation, inventory costing — before you close.
+</Warning>
+
+## Reports
+
+- **Ledger** — balances by account for a period.
+- **Auxiliary** — the detailed movement of a specific account (account detail).
+- **Movement detail** — entry-level detail across accounts.
+- **Withholding certificates** (certificados de retención) — the certificates your company issues to third parties for taxes withheld.
+
+## What posts here
+
+Operational modules generate their accounting automatically: sales, purchases, point of sale, treasury, inventory costing, fixed assets, and transport all post entries to the ledger. Manual journal entries cover everything that does not originate in an operational module.
+
+## Common tasks
+
+<Steps>
+  <Step title="Record a manual journal entry">
+    Open the journal entries page in your Programs menu and create a new entry through its form. Add the detail lines — account, amounts, and tax details where they apply — and save. The entry posts to the selected book and period.
+  </Step>
+  <Step title="Close the accounting month">
+    Confirm that every operational module has finished posting for the month, then run the month close for the year and month. Once closed, the period no longer accepts postings.
+  </Step>
+  <Step title="Generate a withholding certificate">
+    Open the withholding certificates report, select the third party and the period, and generate the certificate (certificado de retención) to deliver to them.
+  </Step>
+</Steps>
+
+## How accounting connects to other modules
+
+- **Treasury** — payments, income, transfers, and notes post their entries here; see [Treasury](/finance/treasury).
+- **Fixed assets** — every depreciation run posts its entries; see [Fixed assets](/finance/fixed-assets).
+- **Operations** — sales, purchasing, POS, and inventory costing feed the ledger continuously.
+- **Reporting** — ledger figures feed the dashboards and reports you build in [Dashboards and reports](/reporting/dashboards-and-reports).
+
+## Limitations
+
+- Postings into blocked or closed periods are rejected; reopen or unblock the period before correcting.
+- Representing a transaction across multiple books requires the account homologation between those books to be configured.
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Fixed assets" icon="industry" href="/finance/fixed-assets">
+    Depreciation runs and the entries they post to the ledger.
+  </Card>
+  <Card title="Treasury" icon="building-columns" href="/finance/treasury">
+    The money movements behind many of your journal entries.
+  </Card>
+  <Card title="Dashboards and reports" icon="chart-line" href="/reporting/dashboards-and-reports">
+    Build reporting on top of your accounting figures.
+  </Card>
+</CardGroup>

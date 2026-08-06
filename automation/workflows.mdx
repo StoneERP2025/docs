@@ -1,0 +1,93 @@
+---
+title: Workflows
+description: Build visual automations that react to events in your workspace and run a chain of actions.
+icon: diagram-project
+---
+
+Workflows are visual automations. Each workflow starts from a trigger — an event such as a form submission, a schedule, or a manual click — and then runs a chain of connected actions: sending notifications, calling external services, transforming data, and more. You build all of this on a canvas, without writing code.
+
+<Note>
+Workflows appear in the sidebar for members of your workspace, but the item is hidden for guests. What you can automate also depends on the applications enabled for your workspace.
+</Note>
+
+## Where to find workflows
+
+- Select **Workflows** in the sidebar to open the workflow list.
+- You can also create one from the Programs section: open the **+** menu and choose **Create workflow**.
+
+## The workflow list
+
+The list shows every workflow in your workspace along with when it was last updated. From here you can:
+
+| Action | How |
+|---|---|
+| Create a workflow | Select **New Workflow** |
+| Find a workflow | Use the search box (**Search workflows**) |
+| Rename a workflow | Open the workflow's menu and choose **Rename** |
+| Delete a workflow | Open the workflow's menu and choose **Delete** |
+
+If your workspace has no workflows yet, the list shows an empty state: "No workflows yet".
+
+## The editor
+
+Opening a workflow takes you to the editor — a canvas where you add nodes and connect them to define the order of execution. The header shows back navigation, the workflow name, the last-saved time, and a **Save** button. A tab switch lets you move between **Editor** (where you build) and **Executions** (where you review past runs).
+
+### Adding nodes
+
+Add nodes from the node panel — labeled **Add a trigger** when the workflow needs its starting point, and **Add a node** afterwards. The panel has two sections:
+
+- **Trigger nodes** — "Triggers start the workflow when an event occurs." See [Triggers](/automation/triggers) for the full list.
+- **Execution nodes** — "Nodes perform actions, transform data, or control the workflow." See the [Node reference](/automation/nodes).
+
+Connect nodes on the canvas to define the path the workflow follows from the trigger through each action.
+
+## Running a workflow manually
+
+Select **Execute Workflow** to run the workflow on demand.
+
+<Warning>
+**Execute Workflow** runs the last saved version of the workflow — not your unsaved changes on the canvas. Always select **Save** before running, or you may be testing an older version.
+</Warning>
+
+## Build your first workflow
+
+<Steps>
+  <Step title="Create the workflow">
+    In **Workflows**, select **New Workflow**. The editor opens with an empty canvas.
+  </Step>
+  <Step title="Add a manual trigger">
+    Select **Add a trigger** and choose **When clicking 'Execute Workflow'**. This lets you run the workflow on demand while you build it.
+  </Step>
+  <Step title="Add a Notification node">
+    Select **Add a node** and choose **Notification** from the execution nodes. Configure who should receive the in-app notification.
+  </Step>
+  <Step title="Connect the nodes">
+    Connect the trigger to the Notification node on the canvas so the workflow flows from one to the other.
+  </Step>
+  <Step title="Save">
+    Select **Save** in the header. Remember: only saved changes run.
+  </Step>
+  <Step title="Execute">
+    Select **Execute Workflow** to run it.
+  </Step>
+  <Step title="Check the run">
+    Switch to the **Executions** tab to confirm the run succeeded and inspect what each node produced.
+  </Step>
+</Steps>
+
+## Learn more
+
+<CardGroup cols={2}>
+  <Card title="Triggers" icon="bolt-lightning" href="/automation/triggers">
+    The six events that can start a workflow.
+  </Card>
+  <Card title="Node reference" icon="circle-nodes" href="/automation/nodes">
+    Every execution node and when to use it.
+  </Card>
+  <Card title="Credentials" icon="key" href="/automation/credentials">
+    Store authentication for nodes that call protected services.
+  </Card>
+  <Card title="Executions and run history" icon="clock-rotate-left" href="/automation/executions">
+    Review runs, inspect node output, and debug failures.
+  </Card>
+</CardGroup>

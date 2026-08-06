@@ -1,0 +1,54 @@
+---
+title: "Core concepts"
+description: "The mental model behind Fail Fast — from your workspace down to tables, forms, and the rules that connect them."
+icon: "cubes"
+---
+
+Fail Fast is built from a small set of primitives that stack top-down. Once you know them, every screen in the product becomes easy to read.
+
+## The building blocks
+
+<AccordionGroup>
+  <Accordion title="Workspace">
+    A workspace represents one company. Everything else — people, pages, data, automations — lives inside it. One account can belong to several workspaces, with a different role in each.
+  </Accordion>
+  <Accordion title="Members, guests, roles, and teams">
+    People join a workspace as members or as guests. Guests get read-only access to what is shared with them and see a reduced interface. Roles and teams determine what each person can see and do — see [Roles and permissions](/admin/roles-and-permissions).
+  </Accordion>
+  <Accordion title="Programs">
+    The navigation tree in the sidebar. Each workspace has its own tree of pages, organized and permissioned per item — see [Programs and pages](/platform/programs-and-pages).
+  </Accordion>
+  <Accordion title="Pages">
+    Block-based screens. A page can hold text, embedded tables, forms, reports, and dashboards, composed with a block editor — see [Build pages with blocks](/platform/block-editor).
+  </Accordion>
+  <Accordion title="Tables">
+    Where your records live. Every table has fields that define its structure, and the toolbar lets you search, filter, and sort — see [Tables](/data/tables).
+  </Accordion>
+  <Accordion title="Views">
+    Different lenses on the same table: Table, Board, Calendar, Gallery, and Dashboard. Each view can carry its own filters and layout.
+  </Accordion>
+  <Accordion title="Forms and form templates">
+    Forms are how records get created and edited. A table can have several form templates, so different processes can capture different fields on the same data.
+  </Accordion>
+  <Accordion title="Workflows and field rules">
+    Automation lives at two levels: [workflows](/automation/workflows) react to events across your workspace, while field rules make individual forms dynamic — showing, hiding, validating, or computing fields as people type.
+  </Accordion>
+</AccordionGroup>
+
+## Modules are configurations, not apps
+
+CRM, sales, inventory, finance, transport — these business modules are not separate applications. They are configurations of the primitives above: pages in Programs, built over tables, forms, views, and dashboards. That is why two workspaces can look completely different while running on the same platform.
+
+A few features do have dedicated screens outside Programs: POS, Marketplace, Calendar, Chats, and the email tools.
+
+## Permission layers
+
+Three layers decide what each person experiences:
+
+1. **Menu permissions** — which items you see in the Programs tree. An item hidden from your role simply does not appear.
+2. **Record permissions** — what you can do with data: create, read, update, delete, export, and import, controlled per table.
+3. **Workspace capabilities** — administrator-level abilities managed through roles, such as inviting teammates or changing settings.
+
+## Availability varies
+
+What any member sees depends on the applications enabled for the workspace, the company's template, and their role and permissions. When these docs say a module exists "if enabled for your workspace", that is this mechanism at work.

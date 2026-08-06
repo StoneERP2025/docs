@@ -1,0 +1,53 @@
+---
+title: Field rules
+description: Add behavior to forms — validate input, show or hide sections, set values, and react to what users do.
+icon: wand-magic-sparkles
+---
+
+Field rules add behavior to forms. A plain form shows fields and saves values; rules make it react — validating input, showing or hiding parts of the form, setting values, requiring or disabling fields, or calling services. Rules are what turn a static layout into a form that guides people toward correct data.
+
+## When rules run
+
+Every rule is tied to an event. When the event happens, the rule runs.
+
+| Event | When it fires |
+| --- | --- |
+| **OnLoad** | The form opens |
+| **OnSubmit** | Before the record is saved — the rule can validate and stop the save |
+| **OnDelete** | Before the record is deleted |
+| On change | A specific field's value changes |
+| On blur | The user leaves a specific field |
+| On focus | The user enters a specific field |
+| On click | The user clicks a specific element |
+
+Form-level events (OnLoad, OnSubmit, OnDelete) govern the whole form's lifecycle; field-level events react to what the user does in a particular field.
+
+## What rules can do
+
+- **Conditional visibility** — show or hide fields, sections, or tabs depending on other values. A "shipping address" section can appear only when delivery is required.
+- **Required-when logic** — make a field required, or disable it, based on conditions instead of always.
+- **Computed and prefilled values** — set a field's value from other fields, or prefill sensible defaults when the form opens.
+- **Submit-time validation** — check the record as a whole before saving, and stop the save with a message when something's wrong.
+- **Calling services** — reach out to a service as part of the form's behavior, for example to look up or verify data.
+
+## Where rules live
+
+Rules are written and managed in the [Page Designer](/data/page-designer), under the **Code** menu. From there you reach the OnSubmit, OnLoad, and OnDelete rules and the full rules view covering everything attached to the template.
+
+<Note>
+Rules belong to a form template, not to the table. If a table has several templates, each template carries its own rules — see [Forms and form templates](/data/forms). Keep that in mind when a behavior seems to "disappear": you may be looking at a different template.
+</Note>
+
+## The AI rule assistant
+
+You don't have to build rules by hand. The AI rule assistant generates a rule from a plain-language description of the behavior you want — describe it the way you'd explain it to a colleague, such as "when X changes, hide section Y", and the assistant produces the rule for you to review and attach.
+
+<Tip>
+Describe the trigger and the effect explicitly — *when* something happens, *what* should change. The clearer the description, the closer the generated rule is to what you meant.
+</Tip>
+
+## Good practices
+
+- Start with visibility and required-when rules — they deliver the most day-to-day value and are the easiest to reason about.
+- Use **OnSubmit** validation for anything that must never be saved wrong; field-level checks help users early, but submit-time validation is the final gate.
+- Test rules with **Preview** in the Page Designer before saving, walking through the scenarios the rule is supposed to handle.

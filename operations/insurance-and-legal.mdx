@@ -1,0 +1,97 @@
+---
+title: "Insurance and legal registries"
+description: "Register insurance policies and legal processes with their supporting catalogs"
+icon: "scale-balanced"
+---
+
+Insurance and legal are two registry modules: structured places to record insurance policies and legal processes, with the catalogs that classify them. They keep this critical information organized and available to the rest of the platform — for example, transport operations validate vehicle and cargo policies registered here before dispatch.
+
+## Where to find them
+
+Both modules appear as pages in your **Programs** menu when they are enabled for your workspace. What you see depends on your role and permissions.
+
+<Tabs>
+  <Tab title="Insurance">
+    ## What you register
+
+    A policy record captures the coverage relationship end to end:
+
+    - **Coverages** — what the policy protects against.
+    - **Insured parties and beneficiaries** — who is covered and who receives compensation.
+    - **Products and locations** — what and where the policy applies.
+    - **Classifications** — how the policy is categorized for reporting and lookup.
+
+    Supporting catalogs keep the registry consistent: coverage types, insurance branches, claim types and severities, and validity types.
+
+    ## Register a policy
+
+    <Steps>
+      <Step title="Create the policy record">
+        Enter the policy's identification and classification, and pick the insurance branch and validity type.
+      </Step>
+      <Step title="Add coverages and parties">
+        Record the coverages, the insured parties, and the beneficiaries.
+      </Step>
+      <Step title="Link products and locations">
+        Attach the products and locations the policy applies to, then save.
+      </Step>
+    </Steps>
+
+    Policies registered here are used by transport operations, which validate vehicle and cargo policies before dispatch — see [Transport operations](/transport/operations).
+
+    <Warning>
+    Claim catalogs (claim types and severities) exist for classification, but claims themselves cannot be recorded. The module manages policies, not claim files.
+    </Warning>
+  </Tab>
+  <Tab title="Legal">
+    ## What you register
+
+    A legal process record captures a case and everyone around it:
+
+    - **Type and stage** — what kind of process it is and where it stands.
+    - **Involved stakeholders and their roles** — the parties to the case, drawn from your shared stakeholder records.
+    - **Requirements** — what the case demands.
+    - **Assigned lawyers** — with their specializations.
+    - **Hearings** — the scheduled proceedings.
+    - **Court or authority** — with its jurisdiction and speciality.
+
+    ## Register a legal process
+
+    <Steps>
+      <Step title="Create the process record">
+        Enter the process type and current stage, and the court or authority with its jurisdiction and speciality.
+      </Step>
+      <Step title="Add the parties and lawyers">
+        Record the involved stakeholders with their roles, and assign the lawyers with their specializations.
+      </Step>
+      <Step title="Record requirements and hearings">
+        Capture the case's requirements and register its hearings, then save.
+      </Step>
+    </Steps>
+
+    <Note>
+    The legal module is a registry only. Track deadlines and follow-ups with the [calendar](/platform/calendar-and-tasks), and automate reminders with [Workflows](/automation/workflows).
+    </Note>
+  </Tab>
+</Tabs>
+
+## How these registries connect to other modules
+
+Insurers, insured parties, lawyers, and legal counterparts are all stakeholder records shared with the rest of the platform. Transport reads insurance policies to validate dispatches, and the calendar and workflow tools give both registries their follow-up discipline.
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Transport operations" icon="truck" href="/transport/operations">
+    Where vehicle and cargo policies are validated before dispatch.
+  </Card>
+  <Card title="CRM and stakeholders" icon="address-book" href="/operations/crm">
+    The shared records behind insurers, parties, and lawyers.
+  </Card>
+  <Card title="Calendar and tasks" icon="calendar" href="/platform/calendar-and-tasks">
+    Track hearings, deadlines, and follow-ups.
+  </Card>
+  <Card title="Workflows" icon="diagram-project" href="/automation/workflows">
+    Automate reminders around policies and cases.
+  </Card>
+</CardGroup>

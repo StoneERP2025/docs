@@ -1,0 +1,63 @@
+---
+title: Data homologation
+description: Map external data structures and codes to your workspace's fields and values, so data from outside systems lands in the right place.
+icon: shuffle
+---
+
+When your workspace exchanges data with external systems — providers, electronic documents, transport platforms — the outside world rarely speaks your workspace's language. Field names differ, and so do the codes inside them: what a provider calls one thing, your tables call another. Data homologation is how Fail Fast translates between the two, in two layers.
+
+<Info>
+The homologation screens are reached from entries in the **Programs** menu, if enabled for your workspace. If you don't see them, they may not be part of your workspace's setup.
+</Info>
+
+## The two layers
+
+| Screen | What it maps | Example |
+| --- | --- | --- |
+| **Data Homologation** | An external data structure's fields to internal Fail Fast fields | The provider file's "customer code" column feeds your customer field |
+| **Homologation Configuration** | External values (codes) to internal values, per provider and data structure | The provider's product code corresponds to your internal product code |
+
+Think of it as structure first, values second: Data Homologation decides *where* each piece of external data goes, and Homologation Configuration decides *what each code means* once it gets there.
+
+### Data Homologation
+
+On the **Data Homologation** screen you map an external data structure's fields to internal Fail Fast fields, so imported data lands in the right place. Once the structure is mapped, incoming data from that source flows into your tables without manual rearranging.
+
+### Homologation Configuration
+
+On the **Homologation Configuration** screen you pick a **Provider** and a **Data Structure**, then maintain the value-level mappings — external codes matched to your internal codes. This is living configuration: as providers add codes or your catalogs grow, you return here to keep the mappings current.
+
+## When you need homologation
+
+- **Electronic document processing** — documents exchanged through DIAN carry standardized codes that must resolve to your internal records. See [Electronic invoicing](/finance/electronic-invoicing).
+- **Provider file imports** — recurring files from providers whose column layouts and codes don't match your tables.
+- **Transport integrations** — external transport platforms exchanging data with your operation.
+
+## Set up a mapping
+
+<Steps>
+  <Step title="Map the data structure">
+    Open **Data Homologation** from the Programs menu. Work through the external structure's fields and map each one to the internal Fail Fast field where its data should land.
+  </Step>
+  <Step title="Add value homologations">
+    Open **Homologation Configuration**, pick the **Provider** and the **Data Structure**, then add mappings pairing each external code with its internal counterpart.
+  </Step>
+</Steps>
+
+<Tip>
+When incoming data lands somewhere unexpected, check the layers in order: first the field mapping in Data Homologation, then the value mappings in Homologation Configuration. A missing value mapping is the most common culprit for individual records that don't resolve.
+</Tip>
+
+## Related pages
+
+<CardGroup cols={2}>
+  <Card title="Electronic invoicing" icon="file-invoice" href="/finance/electronic-invoicing">
+    Electronic documents (DIAN) are a primary consumer of homologation mappings.
+  </Card>
+  <Card title="Integrations" icon="plug" href="/admin/integrations">
+    Connecting your workspace to external systems.
+  </Card>
+  <Card title="Import and export data" icon="file-import" href="/data/import-export">
+    One-off and recurring Excel imports through the Data Migration wizard.
+  </Card>
+</CardGroup>

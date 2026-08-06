@@ -1,0 +1,50 @@
+---
+title: API keys
+description: Create and revoke API keys so external tools like n8n and Zapier can connect to your workspace.
+icon: code
+---
+
+Open **Settings → Workspace → API Keys** to manage API keys for external service integrations like n8n and Zapier. An API key lets a tool outside Fail Fast connect to your workspace and act on its data.
+
+## How API keys work
+
+- Create a key with **New API key**.
+- The key value is shown once, right after creation, for you to copy — store it safely, because you won't be able to see it again.
+- Revoke a key you no longer use by deleting it. Revocation is immediate: the external tool loses access as soon as the key is deleted.
+
+<Warning>
+Treat API keys like passwords. Anyone who has the key can act on your workspace. Never share keys in chat messages, documents, or anywhere they could be seen by people who shouldn't have workspace access, and revoke any key you suspect has leaked.
+</Warning>
+
+## Common tasks
+
+### Create and copy a key
+
+<Steps>
+  <Step title="Open API Keys">
+    Go to **Settings → Workspace → API Keys**.
+  </Step>
+  <Step title="Create the key">
+    Click **New API key**.
+  </Step>
+  <Step title="Copy it now">
+    Copy the key value while it's displayed — this is the only time it's shown. Store it in a safe place, then paste it into the external tool that needs to connect.
+  </Step>
+</Steps>
+
+### Revoke a key
+
+<Steps>
+  <Step title="Open API Keys">
+    Go to **Settings → Workspace → API Keys**.
+  </Step>
+  <Step title="Delete the key">
+    Delete the key you want to revoke. Access is cut off immediately, so any tool still using it will stop working.
+  </Step>
+</Steps>
+
+<Note>
+API keys and workflow credentials solve different problems. API keys let external tools reach into your workspace. [Credentials](/automation/credentials) let your workflows reach out to external services from inside a workflow node.
+</Note>
+
+To learn what you can build against the API, see the [API reference](/api-reference/introduction).

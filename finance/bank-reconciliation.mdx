@@ -1,0 +1,68 @@
+---
+title: "Bank reconciliation"
+description: "Upload your bank statement, let automatic matching pair it with recorded movements, review suggestions, and finish the reconciliation."
+icon: "list-check"
+---
+
+Bank reconciliation confirms that what your bank says happened matches what you recorded in Fail Fast. You upload the bank statement for an account and period, the system matches statement lines against your recorded money movements, and you resolve whatever it could not decide on its own.
+
+## Where to find it
+
+Bank reconciliation lives in the **Programs** section of the sidebar, alongside the other finance pages, if the finance module is enabled for your workspace. Reconciliations are created per bank account and period.
+
+## How matching works
+
+After you upload a statement, automatic matching compares each statement line with the movements recorded in Fail Fast using amount, date, and references. It classifies the results:
+
+- **Reconciled automatically** — confident matches are paired without your intervention.
+- **Suggestions** — likely matches are presented for you to confirm or reject.
+- **Unmatched** — ambiguous cases are left for you to decide manually.
+
+Matching is not limited to one-to-one pairs: it also finds grouped combinations, where one bank line corresponds to several recorded movements, or several bank lines correspond to a single record.
+
+## Reconciling an account
+
+<Steps>
+  <Step title="Upload the bank statement">
+    Open the reconciliation page for the bank account and upload the statement file for the period. Duplicate statements are detected, so re-uploading the same file will not create duplicate lines.
+  </Step>
+  <Step title="Let automatic matching run">
+    Matching compares statement lines with recorded movements by amount, date, and references. Confident matches are reconciled automatically; likely matches become suggestions; the rest wait for you.
+  </Step>
+  <Step title="Review the suggestions">
+    Go through each suggestion and confirm or reject it. For movements you can pair yourself, create manual entries matching the bank line to the recorded movement by hand.
+  </Step>
+  <Step title="Handle what remains unmatched">
+    For statement lines with no counterpart in Fail Fast, you can optionally auto-create adjustment notes or income records, according to the settings configured for the account.
+  </Step>
+  <Step title="Finish the reconciliation">
+    When everything is resolved, finish the reconciliation for the period. If something turns up later, you can reopen it, make the correction, and finish again.
+  </Step>
+</Steps>
+
+## Tracking what is pending
+
+Two views help you keep an eye on outstanding items between reconciliations:
+
+- **Unreconciled bank movements** — statement lines that have not been matched yet.
+- **Unreconciled internal movements** — movements recorded in Fail Fast that no statement line has confirmed.
+
+<Tip>
+Reconcile monthly, right after the bank statement arrives. Small monthly reconciliations are far faster to resolve than a quarter's worth of accumulated differences.
+</Tip>
+
+## Limitations
+
+- Automatic matching classifies by amount, date, and references; lines it cannot classify confidently always require your review — it never guesses on ambiguous cases.
+- Auto-creation of notes or income for unmatched lines only happens when configured in the account's settings.
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Treasury" icon="building-columns" href="/finance/treasury">
+    The bank accounts and money movements that reconciliation checks.
+  </Card>
+  <Card title="Accounting" icon="calculator" href="/finance/accounting">
+    Where the underlying movements are posted as journal entries.
+  </Card>
+</CardGroup>

@@ -1,0 +1,85 @@
+---
+title: "Purchasing"
+description: "Run procure-to-pay from the purchase order to the supplier payment"
+icon: "basket-shopping"
+---
+
+The purchasing module covers procure-to-pay: you order from a supplier, receive the goods, register the invoice, and pay. Each document connects to the next, so you always know what has been ordered, what has arrived, and what is still owed.
+
+## Where to find it
+
+Purchasing pages appear in your **Programs** menu when the module is enabled for your workspace. You will typically find pages for purchase orders, supplier invoices, supplier advances, and accounts payable, with goods receipts handled through the inventory pages.
+
+## Key records
+
+- **Purchase orders** — the document that captures the supplier, the purchase manager, the commercial conditions, the line items, and the totals.
+- **Goods receipts** — the inventory entries that record what actually arrived.
+- **Supplier invoices** — the supplier's bill, registered against the order.
+- **Supplier advances** — payments made before invoicing, later crossed against invoices.
+- **Accounts payable balances** — what you owe each supplier, tracked until paid.
+
+## The end-to-end flow
+
+<Steps>
+  <Step title="Create and confirm the purchase order">
+    Enter the supplier and line items, review the commercial conditions and totals, then confirm the order.
+  </Step>
+  <Step title="Receive the goods">
+    Create the inventory entry from the purchase order's pending lines. The order tracks what remains to receive, so partial deliveries stay under control.
+  </Step>
+  <Step title="Register the supplier invoice">
+    Record the supplier's bill against the order. For electronic invoices, see the automated processing below.
+  </Step>
+  <Step title="Track the payable">
+    The invoice creates an accounts payable balance that stays open until it is settled.
+  </Step>
+  <Step title="Pay through Treasury">
+    Record the payment in Treasury to settle the supplier's balance.
+  </Step>
+</Steps>
+
+## Processing electronic supplier invoices
+
+When your suppliers bill you through DIAN electronic invoicing, received documents can be processed automatically (causación):
+
+- The document's header, lines, and taxes are staged for your review.
+- The staged lines are matched and distributed against the purchase order.
+- On confirmation, the document becomes a supplier invoice.
+- The receipt of goods can also be generated from the electronic invoice.
+
+This turns supplier billing from manual data entry into a review-and-confirm task. If your suppliers' product codes differ from yours, map them with [data homologation](/data/data-homologation) so matching works cleanly.
+
+## Advances, netting, and aging
+
+- **Supplier advances** record money paid before the invoice arrives; cross them against invoices to settle the balance.
+- **Netting** offsets balances — for example, when a stakeholder is both your supplier and your customer.
+- **Supplier aging reports** show payables grouped by how long they have been outstanding, so you can plan payments.
+
+## How purchasing connects to other modules
+
+- **Inventory** — goods receipts are inventory entries created from the order's pending lines.
+- **Treasury** — supplier payments settle accounts payable balances.
+- **Accounting** — purchasing documents post their accounting entries.
+- **Electronic invoicing** — received DIAN documents feed the causación process.
+- **Homologation** — supplier code mappings keep electronic documents matching your catalog.
+
+<Note>
+Purchasing centers on the order document. Receiving happens in the inventory pages, and invoice matching and balances live in the payables pages — the purchase order is the thread that ties them together.
+</Note>
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Inventory" icon="boxes-stacked" href="/operations/inventory">
+    Record goods receipts as inventory entries from purchase orders.
+  </Card>
+  <Card title="Electronic invoicing" icon="file-invoice" href="/finance/electronic-invoicing">
+    Receive and process DIAN electronic documents.
+  </Card>
+  <Card title="Treasury" icon="building-columns" href="/finance/treasury">
+    Pay suppliers and manage payable balances.
+  </Card>
+  <Card title="Data homologation" icon="arrows-left-right" href="/data/data-homologation">
+    Map supplier codes to your own catalog.
+  </Card>
+</CardGroup>

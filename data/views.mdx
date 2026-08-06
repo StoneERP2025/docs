@@ -1,0 +1,67 @@
+---
+title: Views
+description: Look at the same table as a grid, a kanban board, a calendar, a gallery, or a dashboard — each view with its own saved configuration.
+icon: table-columns
+---
+
+A table can have several views. Each view is a different way of looking at the same records, and each one keeps its own layout and saved configuration — filters, sorting, and visible fields included. Build one view for triage, another for planning, another for reporting, all over the same data.
+
+## View types
+
+<AccordionGroup>
+  <Accordion title="Table">
+    A spreadsheet-like grid of rows and columns. This is the workhorse view for browsing and editing records, and the only view type that supports **Group by** to collapse rows into groups. See [Work with tables](/data/tables) for the full toolbar.
+  </Accordion>
+  <Accordion title="Board">
+    A kanban board with one column per value of a field you choose — status, stage, or owner, for example. Records appear as cards, and you drag cards between columns to change that field's value. Ideal for pipelines and processes that move through stages.
+  </Accordion>
+  <Accordion title="Calendar">
+    Records with dates plotted on a calendar. Use it for anything scheduled — appointments, deliveries, deadlines — so you can see the week or month at a glance.
+  </Accordion>
+  <Accordion title="Gallery">
+    Visual cards laid out in a grid. Gallery views shine when records have images or when visual recognition matters — product catalogs are the classic case.
+  </Accordion>
+  <Accordion title="Dashboard">
+    Charts and indicators calculated over the table's data. A dashboard view keeps analysis next to the records it describes. For reporting across your workspace, see [Dashboards and reports](/reporting/dashboards-and-reports).
+  </Accordion>
+</AccordionGroup>
+
+## Manage views
+
+Views appear as tabs above the table.
+
+- **Add a view** — select **Add view** and choose the view type. Board, calendar, gallery, and dashboard views ask for configuration when created, such as which field drives the columns or which field holds the dates.
+- **Rename** — rename a view inline from its tab.
+- **Reorder** — drag view tabs to rearrange them.
+- **Pick an icon** — give each view an icon so tabs are easy to tell apart.
+
+Each view's tab also has a menu with:
+
+| Action | What it does |
+| --- | --- |
+| **Duplicate** | Copies the view with all of its configuration |
+| **Configuration** | Reopens the setup options — available for board, calendar, gallery, and dashboard views |
+| **Delete** | Removes the view |
+
+<Tip>
+Duplicate an existing view before experimenting with new filters or a different layout. You keep the original intact and can delete the copy if the experiment doesn't work out.
+</Tip>
+
+## Each view remembers its own setup
+
+A view saves its own filters, sorting, and visible fields. Changing the filter on one view doesn't touch any other view of the same table, so a shared table can serve several teams at once — each working from the view that fits their job.
+
+<Note>
+Views live on the table inside a page. How tables are placed on pages in the first place is covered in [Block editor](/platform/block-editor).
+</Note>
+
+## Related pages
+
+<CardGroup cols={2}>
+  <Card title="Work with tables" icon="table" href="/data/tables">
+    Filtering, sorting, grouping, and the rest of the table toolbar.
+  </Card>
+  <Card title="Dashboards and reports" icon="chart-line" href="/reporting/dashboards-and-reports">
+    Workspace-level reporting beyond a single table.
+  </Card>
+</CardGroup>

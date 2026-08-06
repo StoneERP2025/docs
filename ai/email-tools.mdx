@@ -1,0 +1,48 @@
+---
+title: Email tools
+description: Connect sending accounts, design HTML templates with record data, and send email from your workspace.
+icon: envelope
+---
+
+Fail Fast includes three email tools that together cover sending email from your workspace: one to connect the accounts you send from, one to design templates, and one to compose and send. When enabled for your workspace, each is reached from its own entry in the Programs menu — see [Programs and pages](/platform/programs-and-pages) for how those entries are organized.
+
+<Tabs>
+  <Tab title="Email Config">
+    **Email Config** is where you connect the email accounts your workspace sends from. You can connect an account in two ways:
+
+    - **SMTP** — enter the account's outgoing mail settings directly.
+    - **OAuth sign-in** — connect by signing in to the email provider and authorizing Fail Fast.
+
+    Once an account is configured, the other email tools can send through it.
+  </Tab>
+  <Tab title="Email Editor">
+    **Email Editor** is where you design HTML email templates. Build the layout and content of the message once, then reuse it every time that kind of email goes out.
+
+    Templates support **wildcards**: placeholders you insert into the template that are replaced with record data when the email is sent. That's how one template produces personalized emails — each recipient's message is filled in with the values from the relevant record.
+  </Tab>
+  <Tab title="Email Sender">
+    **Email Sender** is where you compose and send emails. Pick the configured account to send from, choose one of your templates (or write the message), address it, and send.
+  </Tab>
+</Tabs>
+
+## From zero to sent
+
+<Steps>
+  <Step title="Configure a sending account">
+    In **Email Config**, connect the account your workspace should send from — either with SMTP settings or by OAuth sign-in with the provider.
+  </Step>
+  <Step title="Design a template">
+    In **Email Editor**, build the HTML template for the message. Insert wildcards wherever the email should show record data, such as a recipient's name or the details of the record the email is about.
+  </Step>
+  <Step title="Compose and send">
+    In **Email Sender**, choose the configured account and the template, address the email, and send it. Wildcards are filled in with the record's data on the way out.
+  </Step>
+</Steps>
+
+<Note>
+These tools aren't the only source of email in Fail Fast. Workflows and notifications can also produce emails, depending on how your workspace is configured — see the [Node reference](/automation/nodes) for what workflows can do.
+</Note>
+
+<Tip>
+Keep templates general and let wildcards do the personalizing. One well-built template with wildcards beats maintaining near-duplicate templates for every small variation.
+</Tip>

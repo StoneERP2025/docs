@@ -1,0 +1,103 @@
+---
+title: "Inventory"
+description: "Control products, warehouses, stock movements, lots, serials, and costing"
+icon: "boxes-stacked"
+---
+
+The inventory module keeps track of what you have, where it is, and what it cost. Every entry, exit, and transfer is a recorded movement, so balances per warehouse always reflect what actually happened — and sales, purchasing, and accounting all read from the same stock truth.
+
+## Where to find it
+
+Inventory pages appear in your **Programs** menu when the module is enabled for your workspace. You will typically find pages for products, warehouses, movements, balances, and the stock reports described below.
+
+## Key concepts
+
+- **Products and variants** — variants are option-based (for example size or color), so one product can cover its whole range.
+- **Product types** — drive the tax and accounting behavior of the products that use them.
+- **Brands and groups** — classify the catalog for filtering and reporting.
+- **Warehouses** — the physical or logical locations where stock is held.
+- **Movements** — entries, exits, and transfers between warehouses; every stock change is one.
+- **Balances** — the resulting quantity per product per warehouse.
+- **Lots** — batches with dates, for products managed by batch.
+- **Serials** — unit-level traceability for products tracked one by one.
+- **Average cost** — the costing method applied to stock as it moves.
+
+## The typical workflow
+
+Register your products and variants first. Receive stock with an entry movement — created from a purchase order's pending lines or recorded directly. Move stock between warehouses with transfers. Exits are recorded when a sales invoice or a POS sale happens, so selling and stock control stay in step. Review balances as you go, and close the month when the period is done — a closed period can be reopened if you need to correct it.
+
+## Lots and serials
+
+For products managed by lot or serial, you capture the lot or serial at movement time — on the entry, exit, or transfer that moves the unit. Serial traceability reports then show a unit's full history: where it entered, where it moved, and where it left.
+
+## Reports
+
+- **Stock** — current balances with filters, so you can slice by warehouse, product, brand, or group.
+- **Movement detail** — the full record of entries, exits, and transfers.
+- **Serial traceability** — the unit-level history of serialized products.
+
+## Common tasks
+
+### Create a product with variants
+
+<Steps>
+  <Step title="Register the product">
+    Create the product with its type, brand, and group — the product type drives its tax and accounting behavior.
+  </Step>
+  <Step title="Define the options">
+    Set the options that generate variants, such as size and color.
+  </Step>
+  <Step title="Review the variants">
+    Check the resulting variants so each sellable combination exists.
+  </Step>
+</Steps>
+
+### Record an entry from a purchase order
+
+<Steps>
+  <Step title="Start from the purchase order">
+    Create the entry from the order's pending lines, so what remains to receive is tracked.
+  </Step>
+  <Step title="Confirm quantities and warehouse">
+    Verify what actually arrived and where it goes; capture lots or serials if the products require them.
+  </Step>
+  <Step title="Save the movement">
+    The entry updates balances in the receiving warehouse.
+  </Step>
+</Steps>
+
+### Transfer between warehouses
+
+<Steps>
+  <Step title="Create the transfer">
+    Choose the origin and destination warehouses and the products to move.
+  </Step>
+  <Step title="Confirm the movement">
+    The transfer decreases the origin balance and increases the destination balance.
+  </Step>
+</Steps>
+
+## How inventory connects to other modules
+
+Purchasing feeds entries through goods receipts, sales and POS record exits when they invoice or sell, payables can drive receipts from electronic supplier invoices, and accounting reads costing from the movements.
+
+<Note>
+The month close blocks further movements in the closed period. If you need to post into a closed month, reopen the period first, make the correction, and close it again.
+</Note>
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Purchasing" icon="basket-shopping" href="/operations/purchasing">
+    Create entries from purchase orders' pending lines.
+  </Card>
+  <Card title="Sales quotes and orders" icon="handshake" href="/operations/sales">
+    See how invoicing records the stock exit.
+  </Card>
+  <Card title="Point of sale" icon="cash-register" href="/operations/pos">
+    Every POS sale moves stock from the branch warehouse.
+  </Card>
+  <Card title="Accounting" icon="calculator" href="/finance/accounting">
+    Where inventory costing posts its entries.
+  </Card>
+</CardGroup>

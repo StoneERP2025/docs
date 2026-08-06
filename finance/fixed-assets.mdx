@@ -1,0 +1,58 @@
+---
+title: "Fixed assets"
+description: "Register your company's assets, capitalize improvements, and run monthly depreciation that posts straight to accounting."
+icon: "industry"
+---
+
+Fixed assets tracks the property your company owns — machinery, vehicles, equipment, buildings — and depreciates it period by period. Each asset lives in a registry with its values and classification, and depreciation runs generate both the movements and their accounting entries.
+
+## Where to find it
+
+Fixed asset pages appear in the **Programs** section of the sidebar when the finance module is enabled for your workspace. Access depends on your role and permissions.
+
+## Key records
+
+- **Asset plates** — the registry entry for each asset, with its class, group, and values. The plate is the asset's identity in the system.
+- **Asset additions** — capitalized improvements that increase an asset's value after its initial registration.
+- **Asset books** — the same asset can depreciate differently in each accounting book, so it carries one asset-book record per book it depreciates in.
+- **Depreciation methods and units** — how the asset loses value: the method and the units it is measured in.
+- **Asset groups** — groupings that carry the book and financial-class mappings used when assets in the group depreciate and post.
+- **Residual values** — the value an asset retains at the end of its depreciation.
+
+## Depreciation runs
+
+Depreciation is executed as a run for a period. The run calculates depreciation for the assets in scope, generates the depreciation movements, and posts the corresponding accounting entries.
+
+The run is also the unit of reversal: if a period was depreciated incorrectly, you annul the run and the whole period's movements and entries are undone together. Each asset keeps period balances so you can see its accumulated depreciation and remaining value over time.
+
+## Reports
+
+- **Depreciation by period** — what was depreciated, per asset and period.
+
+## Common tasks
+
+<Steps>
+  <Step title="Register an asset with its initial detail">
+    Open the asset plates page in your Programs menu and create the asset through its form: class, group, values, and residual value. Set up its asset books so it depreciates with the right method in each accounting book.
+  </Step>
+  <Step title="Run monthly depreciation">
+    Execute the depreciation run for the period. The run generates the depreciation movements and posts their accounting entries. Review the depreciation-by-period report to confirm the results; if something is wrong, annul the run, fix the asset data, and run again.
+  </Step>
+</Steps>
+
+## How fixed assets connect to other modules
+
+Every depreciation run posts entries to [Accounting](/finance/accounting), using the account mappings configured on the asset groups. Because assets can carry a separate asset-book record per accounting book, the same period can be represented differently across your books.
+
+## Limitations
+
+- Depreciation is reversed at the run level — you annul a whole run for a period, not individual asset movements inside it.
+- Posting depends on the asset groups' book and financial-class mappings being configured; incomplete mappings prevent correct entries.
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Accounting" icon="calculator" href="/finance/accounting">
+    The ledger every depreciation run posts to, and the books your assets depreciate in.
+  </Card>
+</CardGroup>

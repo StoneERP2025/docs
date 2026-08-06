@@ -1,0 +1,64 @@
+---
+title: Executions and run history
+description: Review every workflow run, inspect what each node produced, and debug failures.
+icon: clock-rotate-left
+---
+
+Every time a workflow runs — from a manual click, a schedule, a webhook, or any other [trigger](/automation/triggers) — an execution is recorded. The **Executions** tab of the workflow editor shows this history, so you always know what ran, when, and how it went.
+
+## The Executions tab
+
+Open a workflow and switch from **Editor** to **Executions**. Each run appears with its status, duration, and timing.
+
+| Status | Meaning |
+|---|---|
+| Succeeded | The run completed and every node finished without errors. |
+| Waiting | The run is paused, waiting for something before it can continue. |
+| Running | The run is in progress right now. |
+| Error | The run failed — at least one node hit an error. |
+
+If the workflow has never run, the tab shows an empty state: "No executions yet — Run this workflow to see executions here."
+
+## Inspecting a run
+
+Select a run to open it. You can walk through the workflow node by node and see the output each node produced — the data it received, what it did with it, and what it passed along. On failed runs, the node that errored shows the error itself, so you can see exactly where and why the run stopped.
+
+This makes executions the main debugging surface for workflows: instead of guessing, you look at real data from a real run.
+
+## Debug a failing workflow
+
+<Steps>
+  <Step title="Run the workflow">
+    Select **Execute Workflow** in the editor to produce a fresh run.
+  </Step>
+  <Step title="Open the failed run">
+    Switch to the **Executions** tab and select the run marked Error.
+  </Step>
+  <Step title="Inspect node outputs top-down">
+    Follow the run from the trigger downward. Check each node's output until you reach the node that failed, and read its error. Often the real problem is one node earlier — a previous node handing over data in a shape the failing node didn't expect.
+  </Step>
+  <Step title="Fix the node configuration">
+    Go back to the **Editor** tab and adjust the configuration of the node at fault.
+  </Step>
+  <Step title="Save">
+    Select **Save**. This step matters — see the tip below.
+  </Step>
+  <Step title="Run again">
+    Select **Execute Workflow** once more and confirm the new run succeeds.
+  </Step>
+</Steps>
+
+<Tip>
+Runs always use the last saved version of the workflow. If you fix a node but forget to **Save**, the next run repeats the old failure — and it's easy to mistake that for the fix not working. When a run doesn't reflect your change, check the last-saved time in the header first.
+</Tip>
+
+## Related pages
+
+<CardGroup cols={2}>
+  <Card title="Workflows" icon="diagram-project" href="/automation/workflows">
+    The editor, the workflow list, and building your first automation.
+  </Card>
+  <Card title="Node reference" icon="circle-nodes" href="/automation/nodes">
+    What every execution node does — useful when reading a run's outputs.
+  </Card>
+</CardGroup>

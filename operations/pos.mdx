@@ -1,0 +1,73 @@
+---
+title: "Point of sale"
+description: "Sell fast at the counter and keep full control of cash sessions and branch closures"
+icon: "cash-register"
+---
+
+**POS** is a dedicated fast-sale screen for stores and counters — one of the two modules with its own screen rather than only **Programs** pages. It is built for speed at the register, and it pairs the selling flow with full cash-session control: opening balances, cash movements during the day, and a counted close that surfaces any discrepancy.
+
+## Where to find it
+
+The **POS** screen is available when the module is enabled for your workspace. Access depends on your role and permissions, so cashiers typically see the selling screen while supervisors also manage sessions and closures.
+
+## Selling at the counter
+
+The POS screen shows a product catalog and a cart. To sell:
+
+- Add products to the cart — variants are supported, and a weight dialog captures the quantity for weighed products.
+- Take the payment.
+- Complete the sale — the documents (invoice or remisión) are generated from the sale.
+- Add supporting documents when the sale needs them.
+
+An **open ticket** is a temporary order: you can hold it while the customer keeps shopping or steps away, and it becomes a sale when you complete it.
+
+**Returns** are supported against previous sales, so goods coming back are recorded against the original transaction.
+
+## Cash sessions
+
+Every selling day runs inside a cash session:
+
+<Steps>
+  <Step title="Open the cash register">
+    Start the session by recording the opening balance in the drawer.
+  </Step>
+  <Step title="Sell and record cash movements">
+    Sell throughout the day. Record cash in and cash out movements as they happen, and register safe drops when cash is moved out of the drawer for safekeeping.
+  </Step>
+  <Step title="Close the session counting by denomination">
+    Count the drawer by denomination. The system computes the expected total from the session's activity, compares it against your count, and records any discrepancy.
+  </Step>
+</Steps>
+
+<Warning>
+Closing a session with a mismatch records a discrepancy against the session. Count carefully by denomination before confirming the close.
+</Warning>
+
+## Branch closure
+
+The branch closure is a daily closure that aggregates all the branch's cash sessions for the day, with related income and inventory checks. Use it as the end-of-day control that confirms the branch's money and stock line up with what was sold.
+
+## How POS connects to other modules
+
+- **Inventory** — each sale moves stock, so balances stay current without extra steps.
+- **Treasury** — session money flows into treasury when sessions are closed and controlled.
+- **Accounting** — POS activity posts its accounting entries.
+- **Receivables** — sales that create customer balances are tracked like any other receivable.
+
+<Note>
+POS is for fast counter sales. For quotes and larger commercial documents built visually from a catalog, use [Marketplace](/operations/marketplace) instead.
+</Note>
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Inventory" icon="boxes-stacked" href="/operations/inventory">
+    See how each sale records a stock exit.
+  </Card>
+  <Card title="Treasury" icon="building-columns" href="/finance/treasury">
+    Where session money is controlled and recorded.
+  </Card>
+  <Card title="Marketplace" icon="store" href="/operations/marketplace">
+    The catalog-and-cart screen for quotes, orders, and invoices.
+  </Card>
+</CardGroup>

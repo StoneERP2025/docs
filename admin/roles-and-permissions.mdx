@@ -1,0 +1,91 @@
+---
+title: Roles and permissions
+description: Control what each person can see and do with roles, table permissions, record-level access, and menu visibility.
+icon: user-shield
+---
+
+Roles are how you decide what each person in the workspace can see and do. You define roles once, assign them to members, and the app enforces the rules everywhere — tables, records, features, and the **Programs** menu.
+
+## Managing roles
+
+Open **Settings → Role** to see the **Current Roles** list. From here you can:
+
+- Click **New** and then **Create role** to add a role.
+- Use **Permissions** on a role to configure what it allows.
+- Use **Duplicate** to start a new role from an existing one.
+- Use **Delete** to remove a role you no longer need.
+
+Assign roles to people from the team list — see [team and invitations](/admin/team-and-invitations).
+
+## The permission layers
+
+Permissions work in layers, from broad table access down to individual menu items.
+
+| Layer | What it controls | What users see |
+| --- | --- | --- |
+| Table permissions | Per table, a role gets create, read, update, delete, export, and import | Controls like **New**, **Export**, and **Import** only appear when the role has the matching permission |
+| Record-level permissions | Access granted or restricted for specific records | Users only reach the records they're allowed to |
+| Workspace capabilities | Role-level actions that enable features | Features appear or work only for roles that have them |
+| Menu visibility | Which roles see each **Programs** item | Items are hidden from roles without access |
+
+### Table permissions
+
+For each [table](/data/tables), a role can be granted create, read, update, delete, export, and import. The interface follows the permission: someone without create won't see the **New** button on that table, and **Export** and **Import** only appear for roles that hold those permissions.
+
+### Record-level permissions
+
+Beyond whole tables, access can be granted or restricted for specific records — useful when a team should work with a table but only see its own records.
+
+### Workspace capabilities
+
+Roles can also carry workspace-level capabilities that switch on features and administrative actions. Verified examples include:
+
+- Access to WhatsApp chats
+- Managing permissions
+- Managing roles
+- Removing users
+- Editing the **Programs** menu
+
+### Menu visibility
+
+Each item in the [Programs menu](/platform/programs-and-pages) can be limited to chosen roles from the item's **Permissions** option. Items can also be set to edit or view-only, so a role can read a page without changing it.
+
+<Note>
+Only permission names verified in the product are listed here — your workspace may define more, depending on its enabled applications and template.
+</Note>
+
+Admins additionally manage invitations and workspace settings, which are not available to other roles.
+
+## Common tasks
+
+### Create a role and assign permissions
+
+<Steps>
+  <Step title="Create the role">
+    Open **Settings → Role**, click **New**, then **Create role**.
+  </Step>
+  <Step title="Configure permissions">
+    Use **Permissions** on the new role to set its table permissions, workspace capabilities, and any record-level restrictions.
+  </Step>
+  <Step title="Assign it">
+    Assign the role to members from the team list. See [team and invitations](/admin/team-and-invitations).
+  </Step>
+</Steps>
+
+### Restrict a Programs item to a role
+
+<Steps>
+  <Step title="Open the item's permissions">
+    On the **Programs** item you want to restrict, open its **Permissions** option.
+  </Step>
+  <Step title="Choose who sees it">
+    Select the roles that should see the item. Everyone else won't find it in their menu.
+  </Step>
+  <Step title="Set the access level">
+    Decide whether those roles can edit the item or use it view-only.
+  </Step>
+</Steps>
+
+<Tip>
+Start from **Duplicate** when a new role is a close variant of an existing one — adjust the differences instead of rebuilding every permission.
+</Tip>

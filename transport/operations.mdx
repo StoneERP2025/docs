@@ -1,0 +1,64 @@
+---
+title: "Transport operations"
+description: "Run the daily transport chain: create service orders, assign load orders, generate remittances, and build manifests."
+icon: "route"
+---
+
+Transport operations is the day-to-day work of moving cargo: taking the customer's request, assigning vehicles, generating the shipment documents, and dispatching the trip. Each step in the chain builds on the previous one, and validations keep incomplete or non-compliant trips from moving forward.
+
+## Where to find it
+
+The operational pages — service orders, load orders, remittances, and manifests — appear in the **Programs** section of the sidebar when the transport module is enabled for your workspace.
+
+## The daily flow
+
+<Steps>
+  <Step title="Create the service order">
+    Register the customer's request with its details: products and cargo, origin and destination, and the agreed prices. Validations check the customer, the vehicles, and the required policies before the order can proceed. Track the order's progress and status as the chain advances.
+  </Step>
+  <Step title="Create load orders">
+    Assign vehicles or containers to the service order through load orders, deciding how the cargo is distributed.
+  </Step>
+  <Step title="Generate remittances">
+    Generate the remittances (remesas) for the cargo — one shipment document per trip or cargo. Corrections and additional charges are supported when reality differs from the plan, and you can register seals on the shipment.
+  </Step>
+  <Step title="Build the manifest">
+    Create the manifest (manifiesto) binding the remittances to the vehicle and driver making the trip. Manifest totals are computed from the settlement concepts. From the manifest, you can create advances to the carrier — these become supplier advances in payables, crossed later against the carrier's settlement.
+  </Step>
+</Steps>
+
+## Pricing
+
+Freight pricing resolves automatically from your configured route and price tables: given the route and the cargo, the system determines the agreed freight, so operators do not price each trip by hand.
+
+## Validations that block progression
+
+<Warning>
+Policy, vehicle, and driver validations block a document from progressing until they are resolved. An expired insurance policy, for example, stops the chain at that point. Keep vehicle documents and policies current in [Insurance and legal](/operations/insurance-and-legal) to avoid dispatch delays.
+</Warning>
+
+## How operations connect onward
+
+- **Policies** — service orders verify the required insurance policies; see [Insurance and legal](/operations/insurance-and-legal).
+- **Payables** — advances created from the manifest become supplier advances, settled against the carrier's legalization.
+- **RNDC** — remittances and manifests are reported to the Ministry of Transport's registry; see [RNDC and fleet monitoring](/transport/fleet-monitoring).
+- **Billing and settlement** — once the trip runs, the documents feed both settlement branches; see [Transport billing and settlement](/transport/billing-and-settlement).
+
+## Limitations
+
+- A document cannot advance while its validations fail — resolve the flagged customer, vehicle, driver, or policy issue first.
+- Freight amounts come from the configured route and price tables; routes without pricing must be configured before orders on them can resolve prices.
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Billing and settlement" icon="file-invoice-dollar" href="/transport/billing-and-settlement">
+    What happens after the trip: invoice the customer and settle the carrier.
+  </Card>
+  <Card title="RNDC and fleet monitoring" icon="satellite-dish" href="/transport/fleet-monitoring">
+    Report dispatches and follow the trip on the road.
+  </Card>
+  <Card title="Insurance and legal" icon="shield-halved" href="/operations/insurance-and-legal">
+    The policies your validations check before a trip can proceed.
+  </Card>
+</CardGroup>

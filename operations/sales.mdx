@@ -1,0 +1,77 @@
+---
+title: "Sales quotes and orders"
+description: "Run order-to-cash from the first quote to the collected payment"
+icon: "handshake"
+---
+
+The sales module covers order-to-cash: you quote, the customer accepts, you invoice, and you collect. Every step produces a document that connects to the next one, so pricing, stock, and balances stay consistent from the first offer to the final payment.
+
+## Where to find it
+
+Sales pages appear in your **Programs** menu when the module is enabled for your workspace. You will typically find pages for quotes, orders, customer invoices, and the pricing configuration described below. Quotes, orders, and invoices can also be built through the **Marketplace** catalog-and-cart screen if it is enabled — see [Marketplace](/operations/marketplace).
+
+## Key records
+
+- **Sales quotes** — the offer you send a customer, with line details for products, quantities, and prices.
+- **Orders** — the confirmed commitment created from an accepted quote.
+- **Customer invoices** — the billing document that also records the inventory exit for the sold products.
+- **Price lists and product prices** — where selling prices are defined and resolved from.
+- **Conditional discounts and commercial conditions** — the rules that adjust prices and terms per customer or situation.
+- **Salesmen** — the sellers assigned to documents, useful for tracking and commissions reporting.
+- **Customer credit limits** — the maximum outstanding balance allowed per customer, enforced from configuration.
+
+## The end-to-end flow
+
+<Steps>
+  <Step title="Create a sales quote">
+    Add products, quantities, and prices. Prices and discounts resolve from your price lists and commercial conditions, so sellers do not have to look them up.
+  </Step>
+  <Step title="Convert the accepted quote into an order">
+    Conversion validates the quote and applies the configured defaults, turning the offer into a firm commitment.
+  </Step>
+  <Step title="Generate the customer invoice from the order">
+    Invoicing bills the customer and records the inventory exit for the sold products in the same operation.
+  </Step>
+  <Step title="Track the receivable">
+    The invoice creates an accounts receivable balance that stays open until it is paid.
+  </Step>
+  <Step title="Collect the payment">
+    Payments are applied as income in Treasury, settling the receivable.
+  </Step>
+</Steps>
+
+## Beyond the happy path
+
+- **Returns and credit/debit notes** reverse or adjust invoiced amounts when goods come back or the billed value needs correcting.
+- **Netting** crosses balances — for example, offsetting what a stakeholder owes you against what you owe them.
+- **Credit limits** are enforced from configuration, so a customer over their limit is stopped before the debt grows.
+- **Aging reports** show your receivables grouped by how long they have been outstanding, so collections can prioritize.
+
+## How sales connects to other modules
+
+- **Inventory** — the customer invoice records the stock exit for sold products.
+- **Treasury** — customer payments enter as income and settle receivables.
+- **Accounting** — sales documents post their accounting entries.
+- **CRM** — the customer on every document is a stakeholder record; see [CRM and stakeholders](/operations/crm).
+- **Electronic invoicing** — customer invoices flow through the DIAN electronic invoicing process when enabled.
+
+<Note>
+Selling prices come from your price lists and commercial conditions. If a price looks wrong on a quote, review that configuration rather than editing each line by hand.
+</Note>
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Marketplace" icon="store" href="/operations/marketplace">
+    Build quotes, orders, and invoices from a visual catalog and cart.
+  </Card>
+  <Card title="Inventory" icon="boxes-stacked" href="/operations/inventory">
+    See how invoicing records stock exits and how balances are tracked.
+  </Card>
+  <Card title="Treasury" icon="building-columns" href="/finance/treasury">
+    Apply customer payments and manage receivable balances.
+  </Card>
+  <Card title="Electronic invoicing" icon="file-invoice" href="/finance/electronic-invoicing">
+    Issue invoices through the DIAN electronic invoicing process.
+  </Card>
+</CardGroup>

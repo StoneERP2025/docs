@@ -1,0 +1,78 @@
+---
+title: Forms and form templates
+description: How records are created and edited, and how to give one table several form templates for different situations.
+icon: clipboard-list
+---
+
+Forms are how records are created and edited. When you select **New** on a table or open an existing record, a form presents the record's fields in an organized layout. Every table has at least one form, and tables can have several — each one a template tuned for a different situation.
+
+## How a form is laid out
+
+A form lays out fields in blocks:
+
+- **Columns** place fields side by side instead of one long stack.
+- **Fieldsets** group related fields into a labeled section.
+- **Tabs** split a large form into pages, so users see one area at a time.
+
+The layout is edited visually in the [Page Designer](/data/page-designer), and each field renders with the widget that matches its type — see [Fields and field types](/data/fields).
+
+## Form templates
+
+A table can have several form templates for different situations. A short intake form might capture just the essentials when a record is first created, while a complete record form exposes everything for later editing.
+
+When a table has more than one template, the dropdown next to **New** lets users pick which one to use when creating a record.
+
+### Manage templates
+
+Each template has a menu with these actions:
+
+| Action | What it does |
+| --- | --- |
+| **Set as default** | Makes this template the one used unless another is chosen |
+| **Rename** | Changes the template's name |
+| **Edit** | Opens the template in the [Page Designer](/data/page-designer) |
+| **Duplicate** | Copies the template as a starting point for a new one |
+| **Delete** | Removes the template |
+
+The default template carries a **Default** badge so it's easy to spot.
+
+<Note>
+Every table keeps at least one default template. You can reorganize and delete templates freely, but a table is never left without a default form.
+</Note>
+
+## The record view
+
+When you open a record, toggles at the top switch between three panels:
+
+- **Form** — the record's fields, laid out by the form template.
+- **Documents** — files attached to the record. See [Document management](/documents/document-management).
+- **Tasks** — tasks linked to the record. See [Calendar and tasks](/platform/calendar-and-tasks).
+
+## Common tasks
+
+<Steps>
+  <Step title="Create a new template">
+    From the template menu, use **Duplicate** on an existing template to start from a working layout, then **Rename** the copy. Duplicating is usually faster than building a layout from scratch.
+  </Step>
+  <Step title="Set a default">
+    Open the menu on the template you want and choose **Set as default**. It picks up the **Default** badge and becomes the form used unless a user picks another from the dropdown next to **New**.
+  </Step>
+  <Step title="Edit a template's layout">
+    Choose **Edit** on the template to open the [Page Designer](/data/page-designer). Rearrange columns, fieldsets, tabs, and fields, preview the result, and save.
+  </Step>
+</Steps>
+
+<Tip>
+Keep the default template lean. Most records are created in a hurry — a short default form with the essentials, plus a complete template for detailed editing, serves both moments well.
+</Tip>
+
+## Related pages
+
+<CardGroup cols={2}>
+  <Card title="Page Designer" icon="pen-ruler" href="/data/page-designer">
+    The visual editor where form template layouts are built.
+  </Card>
+  <Card title="Field rules" icon="wand-magic-sparkles" href="/data/field-rules">
+    Add behavior to forms — conditional visibility, validation, computed values.
+  </Card>
+</CardGroup>

@@ -1,0 +1,75 @@
+---
+title: "Transport billing and settlement"
+description: "After the trip: group remittances to invoice the customer, and legalize compliments to settle the carrier."
+icon: "file-invoice-dollar"
+---
+
+Once a trip has run, two settlements remain: charging your customer for the service and paying the carrier or vehicle owner who performed it. Both sides start from the trip's documents and end in an invoice — a customer invoice in receivables, a supplier invoice in payables.
+
+## Where to find it
+
+Billing, compliments, and legalization pages appear in the **Programs** section of the sidebar when the transport module is enabled for your workspace.
+
+## The two sides
+
+<Tabs>
+  <Tab title="Bill the customer">
+    <Steps>
+      <Step title="Review remittances pending billing">
+        Check the remittances (remesas) that have been executed but not yet billed to the customer.
+      </Step>
+      <Step title="Create the billing document">
+        Group the pending remittances into a billing document — typically all the trips for a customer in the period.
+      </Step>
+      <Step title="Generate the customer invoice">
+        Generate the customer invoice from the billing document. The invoice becomes a receivable balance to collect. If a correction is needed after invoicing, billing returns are supported.
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="Settle the carrier">
+    <Steps>
+      <Step title="Register the compliment">
+        Register the compliment (cumplido) — the proof that the trip completed — with its settlement concepts.
+      </Step>
+      <Step title="Review compliments pending legalization">
+        Check the compliments that have been registered but not yet legalized.
+      </Step>
+      <Step title="Create the legalization">
+        Create the legalization consolidating the compliments to settle with the carrier or vehicle owner.
+      </Step>
+      <Step title="Generate the supplier invoice">
+        Generate the supplier invoice from the legalization. It becomes a payable balance, and any advances created from the manifest are crossed against the settlement, so the carrier is paid the net amount.
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
+
+## Settlement concepts
+
+Settlement concepts determine the freight and deduction amounts on both sides. Each concept can carry configurable ranges and exceptions, so amounts adapt to the trip's conditions without manual calculation. The same concepts that build manifest totals during operations feed the compliment and legalization on the carrier side.
+
+## Where the money goes next
+
+The invoices generated here become open balances: the customer invoice joins your receivables and the supplier invoice joins your payables. Both are then collected or paid through [Treasury](/finance/treasury) — income records settle the customer's balance, payments settle the carrier's.
+
+## Limitations
+
+- Each side follows its sequence: remittances must exist before billing, and compliments must be registered and legalized before the supplier invoice.
+- Manifest advances are crossed during settlement — the carrier's supplier invoice reflects the net after advances.
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Treasury" icon="building-columns" href="/finance/treasury">
+    Collect customer invoices and pay carrier settlements.
+  </Card>
+  <Card title="Transport operations" icon="route" href="/transport/operations">
+    The remittances, manifests, and advances these settlements start from.
+  </Card>
+  <Card title="Sales" icon="cart-shopping" href="/operations/sales">
+    How customer invoices and receivables work across the platform.
+  </Card>
+  <Card title="Purchasing" icon="basket-shopping" href="/operations/purchasing">
+    How supplier invoices and payables work across the platform.
+  </Card>
+</CardGroup>

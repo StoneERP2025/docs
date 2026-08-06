@@ -1,0 +1,73 @@
+---
+title: Import and export data
+description: Download table data as Excel, and bring data in through the Data Migration wizard with progress tracked in Agent Tasks.
+icon: file-import
+---
+
+Fail Fast moves data in and out of tables through two toolbar controls: **Export** downloads what you see as an Excel file, and **Import** walks you through uploading a file with the Data Migration wizard.
+
+<Warning>
+Export and import are permissions, granted per table. If the **Export** or **Import** button doesn't appear in the toolbar, you don't have that permission on this table — ask a workspace administrator. Importing also works when a migration has been configured for the table. See [Roles and permissions](/admin/roles-and-permissions).
+</Warning>
+
+## Export data
+
+Select **Export** in the table toolbar to download an Excel (.xlsx) file. The export respects your current setup:
+
+- **Visible fields** — hidden fields are left out.
+- **Field order** — columns come out in the order you arranged them.
+- **Active filters** — only the records matching your filters are exported.
+
+That makes export a two-step recipe: shape the table first, then export. Filter down to the records you need, use **Visibility** to show exactly the fields you want, and the file will match. See [Work with tables](/data/tables).
+
+## Import data
+
+Select **Import** in the table toolbar to open the **Data Migration** wizard — "Upload and migrate your data".
+
+<Steps>
+  <Step title="Upload your Excel file">
+    Upload the file with your data. Only Excel files are accepted — .xlsx or .xls.
+  </Step>
+  <Step title="Let the file validate">
+    The wizard validates the uploaded file before anything is written to the table.
+  </Step>
+  <Step title="Map and complete required fields">
+    Match your file's columns to the table's fields and complete any required fields the file doesn't cover, so every record lands in the right place.
+  </Step>
+  <Step title="Start the migration">
+    Select **Start Migration**. A toast confirms "Migration started" and the import runs in the background.
+  </Step>
+</Steps>
+
+### Track progress in Agent Tasks
+
+<Note>
+Migrations run in the background and are tracked in **Agent Tasks**, in the sidebar. Agent Tasks is described in [AI assistant](/ai/ai-assistant).
+</Note>
+
+In **Agent Tasks** you can see, for each migration:
+
+- The processing status while it runs.
+- How many rows completed and how many failed.
+- An export of the error rows — download them, fix the issues in the file, and re-import just those rows.
+
+That failed-rows loop is the fastest way to land a large, messy file: import everything, export the failures, fix, re-import.
+
+### Importing tree structures
+
+Where a table uses hierarchical (tree) data — categories with subcategories, for example — the tree structure can also be uploaded, so you don't have to rebuild hierarchies by hand.
+
+<Tip>
+Not sure what the file should look like? Export the table first. The exported Excel shows you the fields and layout, and makes a solid starting template for your import file.
+</Tip>
+
+## Related pages
+
+<CardGroup cols={2}>
+  <Card title="Work with tables" icon="table" href="/data/tables">
+    Visibility and filters — the settings that shape every export.
+  </Card>
+  <Card title="Roles and permissions" icon="user-lock" href="/admin/roles-and-permissions">
+    Export and import are per-table permissions.
+  </Card>
+</CardGroup>
