@@ -1,0 +1,85 @@
+---
+title: "Compras"
+description: "Opera el ciclo de la compra al pago, desde la orden de compra hasta el pago al proveedor"
+icon: "basket-shopping"
+---
+
+El módulo de compras cubre el ciclo de la compra al pago: ordenas a un proveedor, recibes la mercancía, registras la factura y pagas. Cada documento se conecta con el siguiente, así siempre sabes qué se ordenó, qué llegó y qué sigue pendiente por pagar.
+
+## Dónde encontrarlo
+
+Las páginas de compras aparecen en tu menú de **Programas** cuando el módulo está habilitado en tu espacio de trabajo. Normalmente encontrarás páginas de órdenes de compra, facturas de proveedor, anticipos a proveedores y cuentas por pagar, mientras que las entradas de mercancía se manejan desde las páginas de inventarios.
+
+## Registros clave
+
+- **Órdenes de compra** — el documento que captura el proveedor, el responsable de compra, las condiciones comerciales, las líneas de detalle y los totales.
+- **Entradas de mercancía** — los movimientos de inventario que registran lo que realmente llegó.
+- **Facturas de proveedor** — la cuenta de cobro del proveedor, registrada contra la orden.
+- **Anticipos a proveedores** — pagos realizados antes de la facturación, cruzados después contra las facturas.
+- **Saldos de cuentas por pagar** — lo que le debes a cada proveedor, controlado hasta su pago.
+
+## El flujo de punta a punta
+
+<Steps>
+  <Step title="Crea y confirma la orden de compra">
+    Ingresa el proveedor y las líneas de detalle, revisa las condiciones comerciales y los totales, y confirma la orden.
+  </Step>
+  <Step title="Recibe la mercancía">
+    Crea la entrada de inventario desde las líneas pendientes de la orden de compra. La orden lleva el control de lo que falta por recibir, así las entregas parciales se mantienen bajo control.
+  </Step>
+  <Step title="Registra la factura del proveedor">
+    Registra la cuenta de cobro del proveedor contra la orden. Para facturas electrónicas, revisa el procesamiento automatizado más abajo.
+  </Step>
+  <Step title="Haz seguimiento a la cuenta por pagar">
+    La factura crea un saldo de cuentas por pagar que permanece abierto hasta que se salda.
+  </Step>
+  <Step title="Paga desde Tesorería">
+    Registra el pago en Tesorería para saldar el saldo del proveedor.
+  </Step>
+</Steps>
+
+## Procesar facturas electrónicas de proveedores
+
+Cuando tus proveedores te facturan por la facturación electrónica de la DIAN, los documentos recibidos pueden procesarse automáticamente (causación):
+
+- El encabezado, las líneas y los impuestos del documento quedan preparados para tu revisión.
+- Las líneas preparadas se emparejan y se distribuyen contra la orden de compra.
+- Al confirmar, el documento se convierte en una factura de proveedor.
+- La entrada de mercancía también se puede generar desde la factura electrónica.
+
+Esto convierte la facturación de proveedores de una digitación manual en una tarea de revisar y confirmar. Si los códigos de producto de tus proveedores difieren de los tuyos, mapéalos con la [homologación de datos](/es/data/data-homologation) para que el emparejamiento funcione sin problemas.
+
+## Anticipos, neteos y cartera por edades
+
+- Los **anticipos a proveedores** registran dinero pagado antes de que llegue la factura; crúzalos contra las facturas para saldar el balance.
+- Los **neteos** compensan saldos; por ejemplo, cuando un interesado es a la vez tu proveedor y tu cliente.
+- Los **reportes de cartera de proveedores por edades** muestran las cuentas por pagar agrupadas según su antigüedad, para que puedas planear los pagos.
+
+## Cómo se conectan las compras con otros módulos
+
+- **Inventarios** — las entradas de mercancía son movimientos de inventario creados desde las líneas pendientes de la orden.
+- **Tesorería** — los pagos a proveedores saldan los saldos de cuentas por pagar.
+- **Contabilidad** — los documentos de compra registran sus asientos contables.
+- **Facturación electrónica** — los documentos DIAN recibidos alimentan el proceso de causación.
+- **Homologación** — los mapeos de códigos de proveedor mantienen los documentos electrónicos emparejados con tu catálogo.
+
+<Note>
+Las compras giran en torno al documento de la orden. La recepción ocurre en las páginas de inventarios, y el emparejamiento de facturas y los saldos viven en las páginas de cuentas por pagar: la orden de compra es el hilo que los une.
+</Note>
+
+## Guías relacionadas
+
+<CardGroup cols={2}>
+  <Card title="Inventarios" icon="boxes-stacked" href="/es/operations/inventory">
+    Registra entradas de mercancía como movimientos de inventario desde las órdenes de compra.
+  </Card>
+  <Card title="Facturación electrónica" icon="file-invoice" href="/es/finance/electronic-invoicing">
+    Recibe y procesa documentos electrónicos de la DIAN.
+  </Card>
+  <Card title="Tesorería" icon="building-columns" href="/es/finance/treasury">
+    Paga a proveedores y gestiona los saldos por pagar.
+  </Card>
+  <Card title="Homologación de datos" icon="arrows-left-right" href="/es/data/data-homologation">
+    Mapea los códigos de tus proveedores con tu propio catálogo.
+  </Card>
+</CardGroup>

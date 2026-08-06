@@ -1,0 +1,97 @@
+---
+title: "Registros de seguros y jurídicos"
+description: "Registra pólizas de seguros y procesos jurídicos con sus catálogos de apoyo"
+icon: "scale-balanced"
+---
+
+Seguros y jurídico son dos módulos de registro: lugares estructurados para consignar pólizas de seguros y procesos jurídicos, con los catálogos que los clasifican. Mantienen organizada y disponible esta información crítica para el resto de la plataforma; por ejemplo, las operaciones de transporte validan las pólizas de vehículo y de carga registradas aquí antes de despachar.
+
+## Dónde encontrarlos
+
+Ambos módulos aparecen como páginas en tu menú de **Programas** cuando están habilitados en tu espacio de trabajo. Lo que ves depende de tu rol y tus permisos.
+
+<Tabs>
+  <Tab title="Seguros">
+    ## Qué registras
+
+    Un registro de póliza captura la relación de cobertura de punta a punta:
+
+    - **Coberturas** — contra qué protege la póliza.
+    - **Asegurados y beneficiarios** — quién está cubierto y quién recibe la indemnización.
+    - **Productos y ubicaciones** — sobre qué y dónde aplica la póliza.
+    - **Clasificaciones** — cómo se categoriza la póliza para reportes y consultas.
+
+    Los catálogos de apoyo mantienen consistente el registro: tipos de cobertura, ramos de seguro, tipos y severidades de siniestro, y tipos de vigencia.
+
+    ## Registrar una póliza
+
+    <Steps>
+      <Step title="Crea el registro de la póliza">
+        Ingresa la identificación y la clasificación de la póliza, y elige el ramo de seguro y el tipo de vigencia.
+      </Step>
+      <Step title="Agrega coberturas y partes">
+        Registra las coberturas, los asegurados y los beneficiarios.
+      </Step>
+      <Step title="Vincula productos y ubicaciones">
+        Asocia los productos y las ubicaciones sobre los que aplica la póliza y guarda.
+      </Step>
+    </Steps>
+
+    Las pólizas registradas aquí las usan las operaciones de transporte, que validan las pólizas de vehículo y de carga antes de despachar — consulta [Operaciones de transporte](/es/transport/operations).
+
+    <Warning>
+    Los catálogos de siniestros (tipos y severidades) existen para clasificación, pero los siniestros en sí no se pueden registrar. El módulo gestiona pólizas, no expedientes de siniestro.
+    </Warning>
+  </Tab>
+  <Tab title="Jurídico">
+    ## Qué registras
+
+    Un registro de proceso jurídico captura un caso y a todos los que lo rodean:
+
+    - **Tipo y etapa** — qué clase de proceso es y en qué punto está.
+    - **Interesados involucrados y sus roles** — las partes del caso, tomadas de tus registros compartidos de interesados.
+    - **Requisitos** — lo que exige el caso.
+    - **Abogados asignados** — con sus especializaciones.
+    - **Audiencias** — las diligencias programadas.
+    - **Juzgado o autoridad** — con su jurisdicción y especialidad.
+
+    ## Registrar un proceso jurídico
+
+    <Steps>
+      <Step title="Crea el registro del proceso">
+        Ingresa el tipo de proceso y su etapa actual, y el juzgado o autoridad con su jurisdicción y especialidad.
+      </Step>
+      <Step title="Agrega las partes y los abogados">
+        Registra los interesados involucrados con sus roles y asigna los abogados con sus especializaciones.
+      </Step>
+      <Step title="Registra requisitos y audiencias">
+        Captura los requisitos del caso y registra sus audiencias, y guarda.
+      </Step>
+    </Steps>
+
+    <Note>
+    El módulo jurídico es solo un registro. Haz seguimiento a plazos y compromisos con el [calendario](/es/platform/calendar-and-tasks), y automatiza los recordatorios con [Workflows](/es/automation/workflows).
+    </Note>
+  </Tab>
+</Tabs>
+
+## Cómo se conectan estos registros con otros módulos
+
+Aseguradoras, asegurados, abogados y contrapartes jurídicas son todos registros de interesados compartidos con el resto de la plataforma. Transporte consulta las pólizas de seguros para validar los despachos, y el calendario y los workflows le dan a ambos registros su disciplina de seguimiento.
+
+## Guías relacionadas
+
+<CardGroup cols={2}>
+  <Card title="Operaciones de transporte" icon="truck" href="/es/transport/operations">
+    Donde se validan las pólizas de vehículo y de carga antes de despachar.
+  </Card>
+  <Card title="CRM e interesados" icon="address-book" href="/es/operations/crm">
+    Los registros compartidos detrás de aseguradoras, partes y abogados.
+  </Card>
+  <Card title="Calendario y tareas" icon="calendar" href="/es/platform/calendar-and-tasks">
+    Haz seguimiento a audiencias, plazos y compromisos.
+  </Card>
+  <Card title="Workflows" icon="diagram-project" href="/es/automation/workflows">
+    Automatiza recordatorios sobre pólizas y casos.
+  </Card>
+</CardGroup>

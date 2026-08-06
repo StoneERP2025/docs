@@ -1,0 +1,58 @@
+---
+title: Diseñador de páginas
+description: El editor visual de plantillas de formulario y páginas de operación — organiza bloques, adjunta reglas, previsualiza y guarda.
+icon: pen-ruler
+---
+
+El Diseñador de páginas es el editor visual de las plantillas de formulario y las páginas de operación. Ahí decides cómo se estructura un formulario: qué campos aparecen, en qué orden y dentro de qué columnas, fieldsets y pestañas.
+
+## Abrir el Diseñador de páginas
+
+Abre el menú de una plantilla de formulario y elige **Editar**. La plantilla se abre en el Diseñador de páginas.
+
+<Note>
+Mientras diseñas, la navegación de la aplicación se oculta para que puedas concentrarte en la disposición. Usa **Guardar** y regresa cuando termines.
+</Note>
+
+## Qué puedes hacer
+
+- **Arrastrar y soltar el árbol de bloques** — un formulario es un árbol de bloques: columnas, fieldsets, pestañas y los campos que contienen. Arrastra bloques para reestructurar la disposición, mueve campos entre secciones y anida bloques para construir el arreglo que quieres. Consulta [Formularios y plantillas de formulario](/es/data/forms) para saber para qué sirve cada tipo de bloque.
+- **Deshacer y rehacer** — avanza y retrocede entre tus cambios de disposición mientras trabajas.
+- **Adjuntar reglas desde el menú Código** — el menú **Código** es donde vive el comportamiento del formulario: las reglas OnSubmit, OnLoad y OnDelete, además de la vista completa de todo lo que está adjunto a la plantilla. Consulta [Reglas de campo](/es/data/field-rules).
+- **Importar y exportar el diseño** — guarda el diseño del formulario en un archivo como respaldo, o trae un archivo de diseño para reutilizar una disposición.
+- **Vista previa** — prueba el formulario tal como lo verán los usuarios antes de aplicar el cambio.
+- **Guardar** — aplica tus cambios a la plantilla.
+
+## Reestructurar un formulario largo
+
+Una sola columna alta de campos es difícil de recorrer. Así se convierte en una disposición con columnas, una sección plegable y pestañas.
+
+<Steps>
+  <Step title="Divide lo esencial en dos columnas">
+    Agrega un bloque de columnas y arrastra ahí los campos más usados, uno al lado del otro. Dos columnas reducen a la mitad el desplazamiento vertical y mantienen visualmente juntos los campos relacionados, como un nombre junto a su identificador.
+  </Step>
+  <Step title="Agrupa los campos secundarios en un fieldset">
+    Agrega un fieldset y arrastra ahí los campos de uso menos frecuente. Un fieldset plegable mantiene esos campos disponibles sin dejar que le quiten espacio a lo esencial.
+  </Step>
+  <Step title="Lleva las áreas distintas a pestañas">
+    Si el formulario todavía cubre varios temas distintos — datos generales, condiciones comerciales, logística — agrega pestañas y arrastra los bloques de cada tema a su propia pestaña. Los usuarios ven un área a la vez en lugar de una página interminable.
+  </Step>
+  <Step title="Previsualiza y luego guarda">
+    Usa **Vista previa** para recorrer el formulario como lo haría un usuario. Cuando el flujo se sienta bien, selecciona **Guardar**.
+  </Step>
+</Steps>
+
+<Tip>
+Exporta el diseño del formulario a un archivo antes de hacer cambios estructurales grandes. Si la nueva disposición no funciona, puedes importar el archivo y restaurar el diseño anterior.
+</Tip>
+
+## Páginas relacionadas
+
+<CardGroup cols={2}>
+  <Card title="Formularios y plantillas de formulario" icon="clipboard-list" href="/es/data/forms">
+    Cómo se crean, se definen por defecto y se gestionan las plantillas.
+  </Card>
+  <Card title="Reglas de campo" icon="wand-magic-sparkles" href="/es/data/field-rules">
+    El comportamiento que adjuntas desde el menú Código: validación, visibilidad y valores calculados.
+  </Card>
+</CardGroup>

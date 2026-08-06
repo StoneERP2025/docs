@@ -1,0 +1,73 @@
+---
+title: Importar y exportar datos
+description: Descarga los datos de una tabla como Excel y trae datos con el asistente de Migración de Datos, con el avance visible en Tareas del agente.
+icon: file-import
+---
+
+Fail Fast mueve datos hacia dentro y hacia fuera de las tablas con dos controles de la barra de herramientas: **Exportar** descarga lo que ves como archivo de Excel, e **Importar** te guía al subir un archivo con el asistente de Migración de Datos.
+
+<Warning>
+Exportar e importar son permisos que se otorgan por tabla. Si el botón **Exportar** o **Importar** no aparece en la barra de herramientas, no tienes ese permiso en esta tabla; consulta con un administrador del espacio de trabajo. La importación también funciona cuando se ha configurado una migración para la tabla. Consulta [Roles y permisos](/es/admin/roles-and-permissions).
+</Warning>
+
+## Exportar datos
+
+Selecciona **Exportar** en la barra de herramientas de la tabla para descargar un archivo de Excel (.xlsx). La exportación respeta tu configuración actual:
+
+- **Campos visibles** — los campos ocultos quedan fuera.
+- **Orden de los campos** — las columnas salen en el orden en que las organizaste.
+- **Filtros activos** — solo se exportan los registros que cumplen tus filtros.
+
+Eso convierte la exportación en una receta de dos pasos: primero da forma a la tabla, luego exporta. Filtra hasta los registros que necesitas, usa **Visibilidad** para mostrar exactamente los campos que quieres y el archivo coincidirá. Consulta [Trabaja con tablas](/es/data/tables).
+
+## Importar datos
+
+Selecciona **Importar** en la barra de herramientas de la tabla para abrir el asistente de **Migración de Datos** — "Sube y migra tus datos usando plantillas predefinidas".
+
+<Steps>
+  <Step title="Sube tu archivo de Excel">
+    Sube el archivo con tus datos. Solo se aceptan archivos de Excel: .xlsx o .xls.
+  </Step>
+  <Step title="Deja que el archivo se valide">
+    El asistente valida el archivo cargado antes de escribir nada en la tabla.
+  </Step>
+  <Step title="Mapea y completa los campos obligatorios">
+    Haz corresponder las columnas de tu archivo con los campos de la tabla y completa los campos obligatorios que el archivo no cubra, para que cada registro llegue al lugar correcto.
+  </Step>
+  <Step title="Inicia la migración">
+    Selecciona **Iniciar migración**. Un aviso confirma que la migración comenzó y la importación corre en segundo plano.
+  </Step>
+</Steps>
+
+### Sigue el avance en Tareas del agente
+
+<Note>
+Las migraciones corren en segundo plano y se registran en **Tareas del agente**, en la barra lateral. Las Tareas del agente se describen en [Asistente de IA](/es/ai/ai-assistant).
+</Note>
+
+En **Tareas del agente** puedes ver, para cada migración:
+
+- El estado de procesamiento mientras se ejecuta.
+- Cuántas filas se completaron y cuántas fallaron.
+- Una exportación de las filas con error: descárgalas, corrige los problemas en el archivo y vuelve a importar solo esas filas.
+
+Ese ciclo de filas fallidas es la forma más rápida de cargar un archivo grande y desordenado: importa todo, exporta las fallas, corrige y vuelve a importar.
+
+### Importar estructuras de árbol
+
+Cuando una tabla usa datos jerárquicos (de árbol) — categorías con subcategorías, por ejemplo — también se puede subir la estructura del árbol, así no tienes que reconstruir las jerarquías a mano.
+
+<Tip>
+¿No sabes cómo debe verse el archivo? Exporta la tabla primero. El Excel exportado te muestra los campos y la disposición, y sirve como plantilla sólida para tu archivo de importación.
+</Tip>
+
+## Páginas relacionadas
+
+<CardGroup cols={2}>
+  <Card title="Trabaja con tablas" icon="table" href="/es/data/tables">
+    Visibilidad y filtros: la configuración que da forma a cada exportación.
+  </Card>
+  <Card title="Roles y permisos" icon="user-lock" href="/es/admin/roles-and-permissions">
+    Exportar e importar son permisos por tabla.
+  </Card>
+</CardGroup>

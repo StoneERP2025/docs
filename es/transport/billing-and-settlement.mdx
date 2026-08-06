@@ -1,0 +1,75 @@
+---
+title: "Facturación y liquidación de transporte"
+description: "Después del viaje: agrupa remesas para facturar al cliente y legaliza cumplidos para liquidar al transportador."
+icon: "file-invoice-dollar"
+---
+
+Una vez ejecutado un viaje quedan dos liquidaciones: cobrarle a tu cliente por el servicio y pagarle al transportador o al propietario del vehículo que lo realizó. Ambos lados parten de los documentos del viaje y terminan en una factura: una factura de cliente en cuentas por cobrar y una factura de proveedor en cuentas por pagar.
+
+## Dónde encontrarlo
+
+Las páginas de facturación, cumplidos y legalización aparecen en la sección **Programas** de la barra lateral cuando el módulo de transporte está habilitado en tu espacio de trabajo.
+
+## Los dos lados
+
+<Tabs>
+  <Tab title="Facturar al cliente">
+    <Steps>
+      <Step title="Revisa las remesas pendientes por facturar">
+        Verifica las remesas que ya se ejecutaron pero aún no se le han facturado al cliente.
+      </Step>
+      <Step title="Crea el documento de facturación">
+        Agrupa las remesas pendientes en un documento de facturación, normalmente todos los viajes de un cliente en el periodo.
+      </Step>
+      <Step title="Genera la factura de cliente">
+        Genera la factura de cliente a partir del documento de facturación. La factura se convierte en un saldo por cobrar. Si se necesita una corrección después de facturar, se admiten devoluciones de facturación.
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="Liquidar al transportador">
+    <Steps>
+      <Step title="Registra el cumplido">
+        Registra el cumplido — la prueba de que el viaje se completó — con sus conceptos de liquidación.
+      </Step>
+      <Step title="Revisa los cumplidos pendientes por legalizar">
+        Verifica los cumplidos que ya se registraron pero aún no se han legalizado.
+      </Step>
+      <Step title="Crea la legalización">
+        Crea la legalización que consolida los cumplidos para liquidar con el transportador o el propietario del vehículo.
+      </Step>
+      <Step title="Genera la factura de proveedor">
+        Genera la factura de proveedor a partir de la legalización. Se convierte en un saldo por pagar, y los anticipos creados desde el manifiesto se cruzan contra la liquidación, de modo que al transportador se le paga el valor neto.
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
+
+## Conceptos de liquidación
+
+Los conceptos de liquidación determinan los valores de flete y de deducción en ambos lados. Cada concepto puede llevar rangos y excepciones configurables, así los valores se adaptan a las condiciones del viaje sin cálculo manual. Los mismos conceptos que arman los totales del manifiesto durante la operación alimentan el cumplido y la legalización del lado del transportador.
+
+## A dónde va el dinero después
+
+Las facturas que se generan aquí se convierten en saldos abiertos: la factura de cliente se suma a tus cuentas por cobrar y la factura de proveedor a tus cuentas por pagar. Ambas se recaudan o se pagan luego desde [Tesorería](/es/finance/treasury): los registros de ingreso saldan el balance del cliente y los pagos saldan el del transportador.
+
+## Limitaciones
+
+- Cada lado sigue su secuencia: las remesas deben existir antes de facturar, y los cumplidos deben registrarse y legalizarse antes de la factura de proveedor.
+- Los anticipos del manifiesto se cruzan durante la liquidación: la factura de proveedor del transportador refleja el neto después de anticipos.
+
+## Guías relacionadas
+
+<CardGroup cols={2}>
+  <Card title="Tesorería" icon="building-columns" href="/es/finance/treasury">
+    Recauda las facturas de cliente y paga las liquidaciones de transportadores.
+  </Card>
+  <Card title="Operaciones de transporte" icon="route" href="/es/transport/operations">
+    Las remesas, los manifiestos y los anticipos de los que parten estas liquidaciones.
+  </Card>
+  <Card title="Ventas" icon="cart-shopping" href="/es/operations/sales">
+    Cómo funcionan las facturas de cliente y las cuentas por cobrar en toda la plataforma.
+  </Card>
+  <Card title="Compras" icon="basket-shopping" href="/es/operations/purchasing">
+    Cómo funcionan las facturas de proveedor y las cuentas por pagar en toda la plataforma.
+  </Card>
+</CardGroup>

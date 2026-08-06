@@ -1,0 +1,65 @@
+---
+title: "Documentos electrónicos (DIAN)"
+description: "Configura la facturación electrónica colombiana: emite documentos electrónicos bajo tus resoluciones DIAN y procesa los que recibes de tus proveedores."
+icon: "file-invoice"
+---
+
+Fail Fast maneja la facturación electrónica colombiana en ambos sentidos. Del lado de la emisión, las facturas que generas se convierten en documentos electrónicos registrados ante la DIAN bajo tus resoluciones de numeración. Del lado de la recepción, los documentos electrónicos que te emiten tus proveedores se pueden procesar automáticamente como facturas de proveedor para su revisión.
+
+## Dónde configurarlo
+
+Los documentos electrónicos se configuran desde **Configuración → Integraciones → Documentos Electrónicos** — "Conecta tus credenciales DIAN para emitir facturas y documentos electrónicos". El asistente de configuración te guía por todo lo necesario antes de poder emitir.
+
+<Steps>
+  <Step title="Configura tu certificado">
+    Sube tu certificado de firma electrónica, o autoriza al proveedor gestionado para que firme en tu nombre.
+  </Step>
+  <Step title="Sincroniza tus resoluciones DIAN">
+    Sincroniza tus resoluciones y rangos de numeración DIAN con el espacio de trabajo. Los documentos se emiten bajo estas resoluciones, así que este paso debe estar completo antes de emitir cualquier cosa.
+  </Step>
+  <Step title="Habilita la causación automática de los documentos recibidos">
+    Activa la causación automática para que los documentos electrónicos recibidos de proveedores se procesen como facturas de proveedor preparadas para tu revisión.
+  </Step>
+  <Step title="Sincroniza los datos maestros con Factura Web">
+    Habilita la sincronización con Factura Web para tus datos maestros — productos, clientes, proveedores y sucursales — para que ambos sistemas se mantengan alineados.
+  </Step>
+</Steps>
+
+<Note>
+Emitir requiere una configuración DIAN activa: tus resoluciones deben estar sincronizadas antes de poder emitir cualquier documento electrónico.
+</Note>
+
+## Emitir documentos electrónicos
+
+Una vez completada la configuración, las facturas que generas — por ejemplo desde [Ventas](/es/operations/sales) — se emiten como documentos electrónicos bajo tus resoluciones sincronizadas. La representación electrónica de cada documento, incluido su PDF, se puede recuperar desde el registro del documento cuando necesites enviarlo o archivarlo.
+
+## Recibir documentos electrónicos
+
+Los documentos electrónicos que te emiten tus proveedores se pueden procesar automáticamente como facturas de proveedor preparadas. Tu equipo revisa y completa cada factura preparada — el paso de causación — antes de que pase a formar parte de tus cuentas por pagar. Consulta [Compras](/es/operations/purchasing) para ver cómo encajan las facturas de proveedor preparadas en el flujo de compras.
+
+## La homologación importa
+
+Ambos sentidos dependen de mapeos de homologación correctos: los códigos externos de los documentos que entran y salen deben corresponder a tus propios productos, terceros y demás datos maestros. Si llegan documentos con códigos que no has mapeado, resuelve los mapeos en [Homologación de datos](/es/data/data-homologation).
+
+## Limitaciones
+
+- No se puede emitir ningún documento electrónico hasta que la configuración DIAN esté activa y las resoluciones sincronizadas.
+- El procesamiento automático de los documentos recibidos produce facturas preparadas para revisión: una persona sigue confirmando cada una durante la causación.
+- Los mapeos de homologación incorrectos o faltantes impiden que los documentos se emparejen con tus datos maestros.
+
+## Guías relacionadas
+
+<CardGroup cols={2}>
+  <Card title="Ventas" icon="cart-shopping" href="/es/operations/sales">
+    Las facturas de cliente que se emiten como documentos electrónicos.
+  </Card>
+  <Card title="Compras" icon="basket-shopping" href="/es/operations/purchasing">
+    Revisa las facturas de proveedor preparadas a partir de los documentos electrónicos recibidos.
+  </Card>
+  <Card title="Homologación de datos" icon="arrows-left-right" href="/es/data/data-homologation">
+    Mapea los códigos externos con tus propios datos maestros.
+  </Card>
+  <Card title="Integraciones" icon="plug" href="/es/admin/integrations">
+    Dónde vive la integración de Documentos Electrónicos entre las integraciones de tu espacio de trabajo.
+  </Card>
+</CardGroup>

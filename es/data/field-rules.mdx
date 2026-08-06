@@ -1,0 +1,53 @@
+---
+title: Reglas de campo
+description: Agrega comportamiento a los formularios — valida la información, muestra u oculta secciones, asigna valores y reacciona a lo que hacen los usuarios.
+icon: wand-magic-sparkles
+---
+
+Las reglas de campo agregan comportamiento a los formularios. Un formulario simple muestra campos y guarda valores; las reglas lo hacen reaccionar: validan la información, muestran u ocultan partes del formulario, asignan valores, hacen campos obligatorios o los deshabilitan, o invocan servicios. Las reglas son lo que convierte una disposición estática en un formulario que guía a las personas hacia datos correctos.
+
+## Cuándo se ejecutan las reglas
+
+Cada regla está ligada a un evento. Cuando ocurre el evento, la regla se ejecuta.
+
+| Evento | Cuándo se dispara |
+| --- | --- |
+| **OnLoad** | Se abre el formulario |
+| **OnSubmit** | Antes de guardar el registro — la regla puede validar y detener el guardado |
+| **OnDelete** | Antes de eliminar el registro |
+| Al cambiar | Cambia el valor de un campo específico |
+| Al salir del campo | El usuario abandona un campo específico |
+| Al entrar al campo | El usuario entra a un campo específico |
+| Al hacer clic | El usuario hace clic en un elemento específico |
+
+Los eventos a nivel de formulario (OnLoad, OnSubmit, OnDelete) gobiernan todo el ciclo de vida del formulario; los eventos a nivel de campo reaccionan a lo que el usuario hace en un campo puntual.
+
+## Qué pueden hacer las reglas
+
+- **Visibilidad condicional** — muestra u oculta campos, secciones o pestañas según otros valores. Una sección de "dirección de entrega" puede aparecer solo cuando se requiere despacho.
+- **Lógica de obligatoriedad condicional** — haz que un campo sea obligatorio, o deshabilítalo, según condiciones en lugar de siempre.
+- **Valores calculados y prediligenciados** — asigna el valor de un campo a partir de otros campos, o prediligencia valores por defecto razonables al abrir el formulario.
+- **Validación al guardar** — revisa el registro como un todo antes de guardar, y detén el guardado con un mensaje cuando algo esté mal.
+- **Invocación de servicios** — consulta un servicio como parte del comportamiento del formulario, por ejemplo para buscar o verificar datos.
+
+## Dónde viven las reglas
+
+Las reglas se escriben y se gestionan en el [Diseñador de páginas](/es/data/page-designer), bajo el menú **Código**. Desde ahí llegas a las reglas OnSubmit, OnLoad y OnDelete, y a la vista completa de todo lo que está adjunto a la plantilla.
+
+<Note>
+Las reglas pertenecen a una plantilla de formulario, no a la tabla. Si una tabla tiene varias plantillas, cada plantilla lleva sus propias reglas — consulta [Formularios y plantillas de formulario](/es/data/forms). Tenlo presente cuando un comportamiento parezca "desaparecer": puede que estés viendo otra plantilla.
+</Note>
+
+## El asistente de IA para reglas
+
+No tienes que construir las reglas a mano. El asistente de IA genera una regla a partir de una descripción en lenguaje natural del comportamiento que quieres: descríbelo como se lo explicarías a un colega, por ejemplo "cuando cambie X, oculta la sección Y", y el asistente produce la regla para que la revises y la adjuntes.
+
+<Tip>
+Describe el disparador y el efecto de forma explícita: *cuándo* ocurre algo y *qué* debe cambiar. Entre más clara sea la descripción, más cerca estará la regla generada de lo que querías.
+</Tip>
+
+## Buenas prácticas
+
+- Empieza por las reglas de visibilidad y de obligatoriedad condicional: son las que más valor aportan en el día a día y las más fáciles de razonar.
+- Usa la validación **OnSubmit** para todo lo que nunca deba guardarse mal; las verificaciones a nivel de campo ayudan al usuario temprano, pero la validación al guardar es la última barrera.
+- Prueba las reglas con **Vista previa** en el Diseñador de páginas antes de guardar, recorriendo los escenarios que la regla debe cubrir.

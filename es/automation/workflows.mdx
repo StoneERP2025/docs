@@ -1,0 +1,97 @@
+---
+title: Workflows
+description: Construye automatizaciones visuales que reaccionan a los eventos de tu espacio de trabajo y ejecutan una cadena de acciones.
+icon: diagram-project
+---
+
+Los workflows son automatizaciones visuales. Cada workflow parte de un disparador — un evento como el envío de un formulario, una programación o un clic manual — y luego ejecuta una cadena de acciones conectadas: enviar notificaciones, invocar servicios externos, transformar datos y más. Todo esto lo construyes en un lienzo, sin escribir código.
+
+<Note>
+Los workflows aparecen en la barra lateral para los miembros de tu espacio de trabajo, pero el elemento está oculto para los invitados. Lo que puedes automatizar también depende de las aplicaciones habilitadas en tu espacio de trabajo.
+</Note>
+
+## Dónde encontrar los workflows
+
+- Selecciona **Workflows** en la barra lateral para abrir la lista de workflows.
+- También puedes crear uno desde la sección de Programas: abre el menú **+** y elige **Crear workflow**.
+
+## La lista de workflows
+
+La lista muestra todos los workflows de tu espacio de trabajo junto con la fecha de su última actualización. Desde ahí puedes:
+
+| Acción | Cómo |
+|---|---|
+| Crear un workflow | Selecciona **Nuevo workflow** |
+| Encontrar un workflow | Usa el cuadro de búsqueda (**Buscar workflows**) |
+| Renombrar un workflow | Abre el menú del workflow y elige **Renombrar** |
+| Eliminar un workflow | Abre el menú del workflow y elige **Eliminar** |
+
+Si tu espacio de trabajo aún no tiene workflows, la lista muestra un estado vacío.
+
+## El editor
+
+Al abrir un workflow llegas al editor: un lienzo donde agregas nodos y los conectas para definir el orden de ejecución. El encabezado muestra la navegación hacia atrás, el nombre del workflow, la hora del último guardado y un botón **Guardar**. Un selector de pestañas te permite moverte entre **Editor** (donde construyes) y **Ejecuciones** (donde revisas las corridas anteriores).
+
+### Agregar nodos
+
+Agrega nodos desde el panel de nodos, que se llama **Agregar un disparador** cuando el workflow todavía necesita su punto de partida y **Agregar un nodo** de ahí en adelante. El panel tiene dos secciones:
+
+- **Nodos de ejecución** — "Los disparadores inician el workflow cuando ocurre un evento." Consulta [Disparadores](/es/automation/triggers) para ver la lista completa.
+- **Nodos de acción** — "Los nodos realizan acciones, transforman datos o controlan el flujo de trabajo." Consulta la [Referencia de nodos](/es/automation/nodes).
+
+<Note>
+En la interfaz actual, la sección que contiene los disparadores se llama **Nodos de ejecución** y la que contiene las acciones se llama **Nodos de acción**. Guíate por el texto descriptivo de cada sección, que sí distingue disparadores de acciones.
+</Note>
+
+Conecta los nodos en el lienzo para definir el camino que sigue el workflow desde el disparador y a través de cada acción.
+
+## Ejecutar un workflow manualmente
+
+Selecciona **Ejecutar workflow** para correrlo bajo demanda.
+
+<Warning>
+**Ejecutar workflow** corre la última versión guardada del workflow, no tus cambios sin guardar en el lienzo. Selecciona siempre **Guardar** antes de ejecutar, o podrías estar probando una versión anterior.
+</Warning>
+
+## Construye tu primer workflow
+
+<Steps>
+  <Step title="Crea el workflow">
+    En **Workflows**, selecciona **Nuevo workflow**. El editor se abre con un lienzo vacío.
+  </Step>
+  <Step title="Agrega un disparador manual">
+    Selecciona **Agregar un disparador** y elige **Al hacer clic en 'Ejecutar workflow'**. Así puedes correr el workflow bajo demanda mientras lo construyes.
+  </Step>
+  <Step title="Agrega un nodo de Notificación">
+    Selecciona **Agregar un nodo** y elige **Notificación** entre los nodos de ejecución. Configura quién debe recibir la notificación dentro de la aplicación.
+  </Step>
+  <Step title="Conecta los nodos">
+    Conecta el disparador con el nodo de Notificación en el lienzo para que el workflow fluya de uno al otro.
+  </Step>
+  <Step title="Guarda">
+    Selecciona **Guardar** en el encabezado. Recuerda: solo se ejecutan los cambios guardados.
+  </Step>
+  <Step title="Ejecuta">
+    Selecciona **Ejecutar workflow** para correrlo.
+  </Step>
+  <Step title="Revisa la ejecución">
+    Cambia a la pestaña **Ejecuciones** para confirmar que la corrida fue exitosa e inspeccionar lo que produjo cada nodo.
+  </Step>
+</Steps>
+
+## Aprende más
+
+<CardGroup cols={2}>
+  <Card title="Disparadores" icon="bolt-lightning" href="/es/automation/triggers">
+    Los seis eventos que pueden iniciar un workflow.
+  </Card>
+  <Card title="Referencia de nodos" icon="circle-nodes" href="/es/automation/nodes">
+    Cada nodo de ejecución y cuándo usarlo.
+  </Card>
+  <Card title="Credenciales" icon="key" href="/es/automation/credentials">
+    Guarda la autenticación para los nodos que invocan servicios protegidos.
+  </Card>
+  <Card title="Ejecuciones e historial" icon="clock-rotate-left" href="/es/automation/executions">
+    Revisa las corridas, inspecciona la salida de cada nodo y depura fallas.
+  </Card>
+</CardGroup>

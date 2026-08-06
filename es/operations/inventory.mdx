@@ -1,0 +1,103 @@
+---
+title: "Inventarios"
+description: "Controla productos, bodegas, movimientos de existencias, lotes, seriales y costeo"
+icon: "boxes-stacked"
+---
+
+El módulo de inventarios lleva el control de qué tienes, dónde está y cuánto costó. Cada entrada, salida y traslado es un movimiento registrado, así los saldos por bodega siempre reflejan lo que realmente pasó, y ventas, compras y contabilidad leen la misma verdad de existencias.
+
+## Dónde encontrarlo
+
+Las páginas de inventarios aparecen en tu menú de **Programas** cuando el módulo está habilitado en tu espacio de trabajo. Normalmente encontrarás páginas de productos, bodegas, movimientos, saldos y los reportes de existencias que se describen abajo.
+
+## Conceptos clave
+
+- **Productos y variantes** — las variantes se basan en opciones (por ejemplo talla o color), de modo que un producto puede cubrir todo su rango.
+- **Tipos de producto** — determinan el comportamiento tributario y contable de los productos que los usan.
+- **Marcas y grupos** — clasifican el catálogo para filtrar y reportar.
+- **Bodegas** — las ubicaciones físicas o lógicas donde se guardan las existencias.
+- **Movimientos** — entradas, salidas y traslados entre bodegas; todo cambio de existencias es uno.
+- **Saldos** — la cantidad resultante por producto y por bodega.
+- **Lotes** — lotes con fechas, para productos manejados por lote.
+- **Seriales** — trazabilidad a nivel de unidad para productos que se controlan uno a uno.
+- **Costo promedio** — el método de costeo aplicado a las existencias a medida que se mueven.
+
+## El flujo típico
+
+Registra primero tus productos y variantes. Recibe existencias con un movimiento de entrada, creado desde las líneas pendientes de una orden de compra o registrado directamente. Mueve existencias entre bodegas con traslados. Las salidas se registran cuando ocurre una factura de venta o una venta de POS, para que la venta y el control de existencias vayan al mismo ritmo. Revisa los saldos sobre la marcha y cierra el mes cuando el periodo termine: un periodo cerrado se puede reabrir si necesitas corregirlo.
+
+## Lotes y seriales
+
+Para los productos manejados por lote o serial, capturas el lote o el serial al momento del movimiento: en la entrada, la salida o el traslado que mueve la unidad. Los reportes de trazabilidad de seriales muestran luego el historial completo de una unidad: dónde entró, por dónde se movió y por dónde salió.
+
+## Reportes
+
+- **Existencias** — saldos actuales con filtros, para segmentar por bodega, producto, marca o grupo.
+- **Detalle de movimientos** — el registro completo de entradas, salidas y traslados.
+- **Trazabilidad de seriales** — el historial a nivel de unidad de los productos serializados.
+
+## Tareas frecuentes
+
+### Crear un producto con variantes
+
+<Steps>
+  <Step title="Registra el producto">
+    Crea el producto con su tipo, marca y grupo — el tipo de producto determina su comportamiento tributario y contable.
+  </Step>
+  <Step title="Define las opciones">
+    Configura las opciones que generan las variantes, como talla y color.
+  </Step>
+  <Step title="Revisa las variantes">
+    Verifica las variantes resultantes para que exista cada combinación vendible.
+  </Step>
+</Steps>
+
+### Registrar una entrada desde una orden de compra
+
+<Steps>
+  <Step title="Parte de la orden de compra">
+    Crea la entrada desde las líneas pendientes de la orden, para que quede registrado lo que falta por recibir.
+  </Step>
+  <Step title="Confirma cantidades y bodega">
+    Verifica lo que realmente llegó y a dónde va; captura lotes o seriales si los productos lo requieren.
+  </Step>
+  <Step title="Guarda el movimiento">
+    La entrada actualiza los saldos en la bodega que recibe.
+  </Step>
+</Steps>
+
+### Trasladar entre bodegas
+
+<Steps>
+  <Step title="Crea el traslado">
+    Elige las bodegas de origen y destino y los productos que vas a mover.
+  </Step>
+  <Step title="Confirma el movimiento">
+    El traslado disminuye el saldo de origen y aumenta el de destino.
+  </Step>
+</Steps>
+
+## Cómo se conectan los inventarios con otros módulos
+
+Compras alimenta las entradas mediante las entradas de mercancía, ventas y POS registran salidas al facturar o vender, las cuentas por pagar pueden generar entradas desde las facturas electrónicas de proveedores, y la contabilidad lee el costeo desde los movimientos.
+
+<Note>
+El cierre de mes bloquea nuevos movimientos en el periodo cerrado. Si necesitas registrar algo en un mes cerrado, reabre el periodo, haz la corrección y ciérralo de nuevo.
+</Note>
+
+## Guías relacionadas
+
+<CardGroup cols={2}>
+  <Card title="Compras" icon="basket-shopping" href="/es/operations/purchasing">
+    Crea entradas desde las líneas pendientes de las órdenes de compra.
+  </Card>
+  <Card title="Cotizaciones y órdenes de venta" icon="handshake" href="/es/operations/sales">
+    Mira cómo la facturación registra la salida de existencias.
+  </Card>
+  <Card title="Punto de venta" icon="cash-register" href="/es/operations/pos">
+    Cada venta de POS mueve existencias desde la bodega de la sucursal.
+  </Card>
+  <Card title="Contabilidad" icon="calculator" href="/es/finance/accounting">
+    Dónde registra sus asientos el costeo de inventario.
+  </Card>
+</CardGroup>

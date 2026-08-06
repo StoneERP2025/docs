@@ -1,0 +1,70 @@
+---
+title: "Paginación y filtros"
+description: "Recorre listas por páginas, elige campos, ordena y filtra resultados"
+icon: "filter"
+---
+
+Todos los endpoints de listado comparten las mismas convenciones de paginación, ordenamiento, selección de campos y filtrado.
+
+## Paginación
+
+Las listas se paginan con dos parámetros de consulta:
+
+| Parámetro | Significado | Valor por defecto |
+| --- | --- | --- |
+| `page` | Número de página | `1` |
+| `take` | Resultados por página (máximo 200) | `20` |
+
+`take=all` devuelve el tamaño máximo de página en una sola página.
+
+El campo `data` de una respuesta paginada contiene:
+
+```json
+{
+  "count": 137,
+  "next": "https://api.failfast.ai/order/sales_quote/?page=3",
+  "previous": "https://api.failfast.ai/order/sales_quote/?page=1",
+  "results": []
+}
+```
+
+## Selección de campos
+
+Envía `fields` con una lista separada por comas para devolver únicamente los campos que necesitas:
+
+```
+GET /inventory/product/?fields=id,name,brand
+```
+
+## Ordenamiento
+
+Envía `sort` con nombres de campo separados por comas. Antepón `-` a un campo para orden descendente:
+
+```
+GET /order/sales_quote/?sort=-created_at,customer
+```
+
+## Filtros
+
+Filtra las listas con parámetros de consulta con la forma `campo__operador=valor`. Varios filtros se combinan con AND por defecto.
+
+| Operador | Significado | Ejemplo |
+| --- | --- | --- |
+| `__exact` | Igual a | `status__exact=active` |
+| `__iexact` | Igual a, sin distinguir mayúsculas | `name__iexact=acme` |
+| `__icontains` | Contiene, sin distinguir mayúsculas | `name__icontains=cement` |
+| `__in` | Dentro de un conjunto separado por comas | `status__in=draft,sent` |
+| `__gt` / `__gte` | Mayor que / mayor o igual que | `total__gte=1000` |
+| `__lt` / `__lte` | Menor que / menor o igual que | `total__lt=5000` |
+| `__startswith` | Empieza por | `code__startswith=INV` |
+| `__range` | Entre dos valores | `created_at__range=2026-01-01,2026-01-31` |
+| `__isnull` | Es nulo / no es nulo | `approved_at__isnull=true` |
+
+Dos prefijos modifican cómo se combina una condición:
+
+- `or__` — combina la condición con OR en lugar de AND: `or__status__exact=draft`
+- `not__` — niega la condición: `not__status__exact=cancelled`
+
+<Note>
+Los filtros apuntan a los campos de la entidad que estás consultando, incluidos los campos relacionados con la forma `related__field` cuando la entidad los expone. Filtrar por un campo que la entidad no tiene devuelve un error de validación.
+</Note>

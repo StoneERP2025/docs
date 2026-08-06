@@ -1,0 +1,68 @@
+---
+title: "Conciliación bancaria"
+description: "Sube tu extracto bancario, deja que el cruce automático lo empareje con los movimientos registrados, revisa las sugerencias y finaliza la conciliación."
+icon: "list-check"
+---
+
+La conciliación bancaria confirma que lo que dice tu banco coincide con lo que registraste en Fail Fast. Subes el extracto bancario de una cuenta y un periodo, el sistema cruza las líneas del extracto contra tus movimientos de dinero registrados, y tú resuelves lo que no pudo decidir por su cuenta.
+
+## Dónde encontrarlo
+
+La conciliación bancaria vive en la sección **Programas** de la barra lateral, junto a las demás páginas de finanzas, si el módulo de finanzas está habilitado en tu espacio de trabajo. Las conciliaciones se crean por cuenta bancaria y periodo.
+
+## Cómo funciona el cruce
+
+Después de subir un extracto, el cruce automático compara cada línea del extracto con los movimientos registrados en Fail Fast usando valor, fecha y referencias. Los resultados se clasifican así:
+
+- **Conciliado automáticamente** — las coincidencias seguras se emparejan sin tu intervención.
+- **Sugerencias** — las coincidencias probables se presentan para que las confirmes o las rechaces.
+- **Sin cruzar** — los casos ambiguos quedan para que decidas manualmente.
+
+El cruce no se limita a parejas uno a uno: también encuentra combinaciones agrupadas, donde una línea bancaria corresponde a varios movimientos registrados, o varias líneas bancarias corresponden a un solo registro.
+
+## Conciliar una cuenta
+
+<Steps>
+  <Step title="Sube el extracto bancario">
+    Abre la página de conciliación de la cuenta bancaria y sube el archivo del extracto del periodo. Los extractos duplicados se detectan, así que volver a subir el mismo archivo no crea líneas duplicadas.
+  </Step>
+  <Step title="Deja correr el cruce automático">
+    El cruce compara las líneas del extracto con los movimientos registrados por valor, fecha y referencias. Las coincidencias seguras se concilian automáticamente; las probables se convierten en sugerencias; el resto queda a tu criterio.
+  </Step>
+  <Step title="Revisa las sugerencias">
+    Recorre cada sugerencia y confírmala o recházala. Para los movimientos que puedas emparejar tú mismo, crea cruces manuales relacionando a mano la línea bancaria con el movimiento registrado.
+  </Step>
+  <Step title="Resuelve lo que quede sin cruzar">
+    Para las líneas del extracto sin contraparte en Fail Fast, puedes crear automáticamente notas de ajuste o registros de ingreso, según la configuración definida para la cuenta.
+  </Step>
+  <Step title="Finaliza la conciliación">
+    Cuando todo esté resuelto, finaliza la conciliación del periodo. Si algo aparece después, puedes reabrirla, hacer la corrección y finalizarla de nuevo.
+  </Step>
+</Steps>
+
+## Hacerle seguimiento a lo pendiente
+
+Dos vistas te ayudan a vigilar las partidas pendientes entre conciliaciones:
+
+- **Movimientos bancarios sin conciliar** — líneas del extracto que aún no se han cruzado.
+- **Movimientos internos sin conciliar** — movimientos registrados en Fail Fast que ninguna línea del extracto ha confirmado.
+
+<Tip>
+Concilia todos los meses, apenas llegue el extracto bancario. Las conciliaciones mensuales pequeñas se resuelven mucho más rápido que un trimestre de diferencias acumuladas.
+</Tip>
+
+## Limitaciones
+
+- El cruce automático clasifica por valor, fecha y referencias; las líneas que no puede clasificar con confianza siempre requieren tu revisión — nunca adivina en los casos ambiguos.
+- La creación automática de notas o ingresos para las líneas sin cruzar solo ocurre cuando está configurada en los ajustes de la cuenta.
+
+## Guías relacionadas
+
+<CardGroup cols={2}>
+  <Card title="Tesorería" icon="building-columns" href="/es/finance/treasury">
+    Las cuentas bancarias y los movimientos de dinero que la conciliación verifica.
+  </Card>
+  <Card title="Contabilidad" icon="calculator" href="/es/finance/accounting">
+    Donde los movimientos subyacentes se registran como asientos contables.
+  </Card>
+</CardGroup>

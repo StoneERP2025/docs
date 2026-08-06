@@ -1,0 +1,78 @@
+---
+title: Formularios y plantillas de formulario
+description: Cómo se crean y se editan los registros, y cómo darle a una tabla varias plantillas de formulario para distintas situaciones.
+icon: clipboard-list
+---
+
+Los formularios son la forma en que se crean y se editan los registros. Cuando seleccionas **Nuevo** en una tabla o abres un registro existente, un formulario presenta los campos del registro en una disposición organizada. Toda tabla tiene al menos un formulario, y las tablas pueden tener varios, cada uno ajustado a una situación distinta.
+
+## Cómo se organiza un formulario
+
+Un formulario dispone los campos en bloques:
+
+- Las **columnas** ubican campos lado a lado en lugar de una sola pila larga.
+- Los **fieldsets** agrupan campos relacionados en una sección con etiqueta.
+- Las **pestañas** dividen un formulario grande en páginas, para que los usuarios vean un área a la vez.
+
+La disposición se edita visualmente en el [Diseñador de páginas](/es/data/page-designer), y cada campo se renderiza con el widget que corresponde a su tipo — consulta [Campos y tipos de campo](/es/data/fields).
+
+## Plantillas de formulario
+
+Una tabla puede tener varias plantillas de formulario para distintas situaciones. Un formulario corto de captura puede recoger solo lo esencial cuando se crea el registro, mientras que un formulario de registro completo expone todo para editarlo después.
+
+Cuando una tabla tiene más de una plantilla, la lista desplegable junto a **Nuevo** permite a los usuarios elegir cuál usar al crear un registro.
+
+### Gestionar plantillas
+
+Cada plantilla tiene un menú con estas acciones:
+
+| Acción | Qué hace |
+| --- | --- |
+| **Fijar como predeterminado** | Convierte esta plantilla en la que se usa a menos que se elija otra |
+| **Renombrar** | Cambia el nombre de la plantilla |
+| **Editar** | Abre la plantilla en el [Diseñador de páginas](/es/data/page-designer) |
+| **Duplicar** | Copia la plantilla como punto de partida para una nueva |
+| **Eliminar** | Quita la plantilla |
+
+La plantilla predeterminada lleva una insignia **Por defecto** para identificarla fácilmente.
+
+<Note>
+Toda tabla conserva al menos una plantilla predeterminada. Puedes reorganizar y eliminar plantillas con libertad, pero una tabla nunca se queda sin un formulario por defecto.
+</Note>
+
+## La vista del registro
+
+Cuando abres un registro, unos selectores en la parte superior alternan entre tres paneles:
+
+- **Formulario** — los campos del registro, dispuestos según la plantilla de formulario.
+- **Documentos** — archivos adjuntos al registro. Consulta [Gestión de documentos](/es/documents/document-management).
+- **Tareas** — tareas vinculadas al registro. Consulta [Calendario y tareas](/es/platform/calendar-and-tasks).
+
+## Tareas frecuentes
+
+<Steps>
+  <Step title="Crear una plantilla nueva">
+    Desde el menú de la plantilla, usa **Duplicar** sobre una plantilla existente para partir de una disposición que ya funciona, y luego usa **Renombrar** en la copia. Duplicar suele ser más rápido que construir una disposición desde cero.
+  </Step>
+  <Step title="Definir una predeterminada">
+    Abre el menú de la plantilla que quieras y elige **Fijar como predeterminado**. Recibe la insignia **Por defecto** y pasa a ser el formulario que se usa, a menos que el usuario elija otro en la lista desplegable junto a **Nuevo**.
+  </Step>
+  <Step title="Editar la disposición de una plantilla">
+    Elige **Editar** en la plantilla para abrir el [Diseñador de páginas](/es/data/page-designer). Reorganiza columnas, fieldsets, pestañas y campos, revisa el resultado en la vista previa y guarda.
+  </Step>
+</Steps>
+
+<Tip>
+Mantén liviana la plantilla predeterminada. La mayoría de los registros se crean con prisa: un formulario por defecto corto con lo esencial, más una plantilla completa para la edición detallada, atiende bien ambos momentos.
+</Tip>
+
+## Páginas relacionadas
+
+<CardGroup cols={2}>
+  <Card title="Diseñador de páginas" icon="pen-ruler" href="/es/data/page-designer">
+    El editor visual donde se construyen las disposiciones de las plantillas de formulario.
+  </Card>
+  <Card title="Reglas de campo" icon="wand-magic-sparkles" href="/es/data/field-rules">
+    Agrega comportamiento a los formularios: visibilidad condicional, validación y valores calculados.
+  </Card>
+</CardGroup>

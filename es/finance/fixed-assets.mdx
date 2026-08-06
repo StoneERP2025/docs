@@ -1,0 +1,58 @@
+---
+title: "Activos fijos"
+description: "Registra los activos de tu empresa, capitaliza mejoras y ejecuta la depreciación mensual que se registra directo en contabilidad."
+icon: "industry"
+---
+
+Activos fijos lleva el control de los bienes que posee tu empresa — maquinaria, vehículos, equipos, edificios — y los deprecia periodo a periodo. Cada activo vive en un registro con sus valores y su clasificación, y las corridas de depreciación generan tanto los movimientos como sus asientos contables.
+
+## Dónde encontrarlo
+
+Las páginas de activos fijos aparecen en la sección **Programas** de la barra lateral cuando el módulo de finanzas está habilitado en tu espacio de trabajo. El acceso depende de tu rol y tus permisos.
+
+## Registros clave
+
+- **Placas de activo** — el registro de cada activo, con su clase, grupo y valores. La placa es la identidad del activo en el sistema.
+- **Adiciones de activo** — mejoras capitalizadas que aumentan el valor de un activo después de su registro inicial.
+- **Libros del activo** — un mismo activo puede depreciarse de forma distinta en cada libro contable, así que lleva un registro de activo-libro por cada libro en el que se deprecia.
+- **Métodos y unidades de depreciación** — cómo pierde valor el activo: el método y las unidades en las que se mide.
+- **Grupos de activos** — agrupaciones que llevan los mapeos de libro y de clase financiera usados cuando los activos del grupo se deprecian y se registran.
+- **Valores residuales** — el valor que conserva un activo al final de su depreciación.
+
+## Corridas de depreciación
+
+La depreciación se ejecuta como una corrida para un periodo. La corrida calcula la depreciación de los activos en alcance, genera los movimientos de depreciación y registra los asientos contables correspondientes.
+
+La corrida también es la unidad de reversión: si un periodo se deprecia mal, anulas la corrida y los movimientos y asientos de todo el periodo se deshacen juntos. Cada activo conserva saldos por periodo, así puedes ver su depreciación acumulada y su valor restante a lo largo del tiempo.
+
+## Reportes
+
+- **Depreciación por periodo** — qué se depreció, por activo y por periodo.
+
+## Tareas frecuentes
+
+<Steps>
+  <Step title="Registrar un activo con su detalle inicial">
+    Abre la página de placas de activo en tu menú de Programas y crea el activo desde su formulario: clase, grupo, valores y valor residual. Configura sus libros del activo para que se deprecie con el método correcto en cada libro contable.
+  </Step>
+  <Step title="Ejecutar la depreciación mensual">
+    Ejecuta la corrida de depreciación del periodo. La corrida genera los movimientos de depreciación y registra sus asientos contables. Revisa el reporte de depreciación por periodo para confirmar los resultados; si algo está mal, anula la corrida, corrige los datos del activo y vuelve a ejecutarla.
+  </Step>
+</Steps>
+
+## Cómo se conectan los activos fijos con otros módulos
+
+Cada corrida de depreciación registra asientos en [Contabilidad](/es/finance/accounting), usando los mapeos de cuenta configurados en los grupos de activos. Como los activos pueden llevar un registro de activo-libro por cada libro contable, un mismo periodo se puede representar de forma distinta en tus libros.
+
+## Limitaciones
+
+- La depreciación se reversa a nivel de corrida: anulas una corrida completa de un periodo, no movimientos individuales de activos dentro de ella.
+- El registro contable depende de que los mapeos de libro y clase financiera de los grupos de activos estén configurados; los mapeos incompletos impiden generar asientos correctos.
+
+## Guías relacionadas
+
+<CardGroup cols={2}>
+  <Card title="Contabilidad" icon="calculator" href="/es/finance/accounting">
+    El libro mayor al que registra cada corrida de depreciación, y los libros en los que se deprecian tus activos.
+  </Card>
+</CardGroup>

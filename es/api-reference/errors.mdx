@@ -1,0 +1,46 @@
+---
+title: "Errores"
+description: "Cómo reporta las fallas la API"
+icon: "triangle-exclamation"
+---
+
+Las fallas devuelven la misma envoltura `{message, error, data}` que los casos exitosos, con `error: true` y un código de estado HTTP que señala el tipo de falla.
+
+```json
+{
+  "message": "Validation failed",
+  "error": true,
+  "data": {
+    "detail": "..."
+  }
+}
+```
+
+## Códigos de estado
+
+| Estado | Significado |
+| --- | --- |
+| `400` | Falló la validación — `data` describe los campos inválidos |
+| `401` | Clave API ausente, inválida, expirada o deshabilitada |
+| `403` | El miembro dueño de la clave no tiene permiso sobre esta entidad o registro |
+| `404` | Registro no encontrado en el espacio de trabajo de la clave |
+| `409` | Conflicto — por ejemplo, eliminar un registro que aún tiene registros relacionados activos; `data.blocking` los lista |
+| `429` | Límite de tasa superado — reintenta cuando se reinicie la ventana |
+
+## Conflictos al eliminar
+
+`DELETE` realiza una eliminación lógica. Si hay registros relacionados activos que dependen del registro, la API se niega con `409` y lista los registros que bloquean la operación para que los resuelvas primero:
+
+```json
+{
+  "message": "Cannot delete: active related records exist.",
+  "error": true,
+  "data": {
+    "blocking": []
+  }
+}
+```
+
+## Límite de tasa
+
+Las respuestas `429` indican que la clave agotó su ventana horaria. Revisa los encabezados `X-RateLimit-Remaining` y `X-RateLimit-Reset` de las respuestas anteriores para dosificar tus solicitudes — consulta [Autenticación](/es/api-reference/authentication).

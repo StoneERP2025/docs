@@ -1,0 +1,77 @@
+---
+title: "Cotizaciones y órdenes de venta"
+description: "Opera el ciclo de la orden al cobro, desde la primera cotización hasta el pago recaudado"
+icon: "handshake"
+---
+
+El módulo de ventas cubre el ciclo de la orden al cobro: cotizas, el cliente acepta, facturas y recaudas. Cada paso produce un documento que se conecta con el siguiente, así los precios, las existencias y los saldos se mantienen consistentes desde la primera oferta hasta el pago final.
+
+## Dónde encontrarlo
+
+Las páginas de ventas aparecen en tu menú de **Programas** cuando el módulo está habilitado en tu espacio de trabajo. Normalmente encontrarás páginas de cotizaciones, órdenes, facturas de cliente y la configuración de precios que se describe abajo. Las cotizaciones, órdenes y facturas también se pueden construir desde la pantalla de catálogo y carrito de **Marketplace**, si está habilitada — consulta [Marketplace](/es/operations/marketplace).
+
+## Registros clave
+
+- **Cotizaciones de venta** — la oferta que envías a un cliente, con líneas de detalle de productos, cantidades y precios.
+- **Órdenes** — el compromiso confirmado que se crea a partir de una cotización aceptada.
+- **Facturas de cliente** — el documento de cobro que además registra la salida de inventario de los productos vendidos.
+- **Listas de precios y precios de producto** — donde se definen y se resuelven los precios de venta.
+- **Descuentos condicionales y condiciones comerciales** — las reglas que ajustan precios y condiciones por cliente o por situación.
+- **Vendedores** — los vendedores asignados a los documentos, útiles para seguimiento y reportes de comisiones.
+- **Cupos de crédito de clientes** — el saldo máximo pendiente permitido por cliente, aplicado desde la configuración.
+
+## El flujo de punta a punta
+
+<Steps>
+  <Step title="Crea una cotización de venta">
+    Agrega productos, cantidades y precios. Los precios y los descuentos se resuelven desde tus listas de precios y tus condiciones comerciales, así los vendedores no tienen que consultarlos.
+  </Step>
+  <Step title="Convierte la cotización aceptada en una orden">
+    La conversión valida la cotización y aplica los valores por defecto configurados, convirtiendo la oferta en un compromiso en firme.
+  </Step>
+  <Step title="Genera la factura de cliente desde la orden">
+    La facturación cobra al cliente y registra la salida de inventario de los productos vendidos en la misma operación.
+  </Step>
+  <Step title="Haz seguimiento a la cuenta por cobrar">
+    La factura crea un saldo de cuentas por cobrar que permanece abierto hasta que se pague.
+  </Step>
+  <Step title="Recauda el pago">
+    Los pagos se aplican como ingresos en Tesorería, saldando la cuenta por cobrar.
+  </Step>
+</Steps>
+
+## Más allá del camino feliz
+
+- Las **devoluciones y notas crédito/débito** reversan o ajustan valores facturados cuando la mercancía regresa o el valor cobrado necesita corregirse.
+- Los **neteos** cruzan saldos: por ejemplo, compensan lo que un interesado te debe contra lo que tú le debes.
+- Los **cupos de crédito** se aplican desde la configuración, así un cliente que excede su cupo se detiene antes de que la deuda crezca.
+- Los **reportes de cartera por edades** muestran tus cuentas por cobrar agrupadas según su antigüedad, para que la cobranza pueda priorizar.
+
+## Cómo se conectan las ventas con otros módulos
+
+- **Inventarios** — la factura de cliente registra la salida de existencias de los productos vendidos.
+- **Tesorería** — los pagos de clientes entran como ingresos y saldan las cuentas por cobrar.
+- **Contabilidad** — los documentos de venta registran sus asientos contables.
+- **CRM** — el cliente de cada documento es un registro de interesado; consulta [CRM e interesados](/es/operations/crm).
+- **Facturación electrónica** — las facturas de cliente fluyen por el proceso de facturación electrónica de la DIAN cuando está habilitado.
+
+<Note>
+Los precios de venta vienen de tus listas de precios y de tus condiciones comerciales. Si un precio se ve mal en una cotización, revisa esa configuración en lugar de editar cada línea a mano.
+</Note>
+
+## Guías relacionadas
+
+<CardGroup cols={2}>
+  <Card title="Marketplace" icon="store" href="/es/operations/marketplace">
+    Construye cotizaciones, órdenes y facturas desde un catálogo visual y un carrito.
+  </Card>
+  <Card title="Inventarios" icon="boxes-stacked" href="/es/operations/inventory">
+    Mira cómo la facturación registra las salidas de existencias y cómo se controlan los saldos.
+  </Card>
+  <Card title="Tesorería" icon="building-columns" href="/es/finance/treasury">
+    Aplica los pagos de clientes y gestiona los saldos por cobrar.
+  </Card>
+  <Card title="Facturación electrónica" icon="file-invoice" href="/es/finance/electronic-invoicing">
+    Emite facturas mediante el proceso de facturación electrónica de la DIAN.
+  </Card>
+</CardGroup>

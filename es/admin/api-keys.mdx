@@ -1,0 +1,50 @@
+---
+title: Claves API
+description: Crea y revoca claves API para que herramientas externas como n8n y Zapier se conecten a tu espacio de trabajo.
+icon: code
+---
+
+Abre **Configuración → Espacio de Trabajo → Claves API** para gestionar las claves API de integraciones con servicios externos como n8n y Zapier. Una clave API le permite a una herramienta ajena a Fail Fast conectarse a tu espacio de trabajo y actuar sobre sus datos.
+
+## Cómo funcionan las claves API
+
+- Crea una clave con **Nueva clave API**.
+- El valor de la clave se muestra una sola vez, justo después de crearla, para que lo copies: guárdalo en un lugar seguro, porque no podrás verlo de nuevo.
+- Revoca una clave que ya no uses eliminándola. La revocación es inmediata: la herramienta externa pierde el acceso apenas se elimina la clave.
+
+<Warning>
+Trata las claves API como contraseñas. Cualquiera que tenga la clave puede actuar sobre tu espacio de trabajo. Nunca compartas claves en mensajes de chat, documentos ni en ningún lugar donde puedan verlas personas que no deban tener acceso al espacio de trabajo, y revoca cualquier clave que sospeches que se filtró.
+</Warning>
+
+## Tareas frecuentes
+
+### Crear y copiar una clave
+
+<Steps>
+  <Step title="Abre Claves API">
+    Ve a **Configuración → Espacio de Trabajo → Claves API**.
+  </Step>
+  <Step title="Crea la clave">
+    Haz clic en **Nueva clave API**.
+  </Step>
+  <Step title="Cópiala en ese momento">
+    Copia el valor de la clave mientras se muestra: es la única vez que aparece. Guárdalo en un lugar seguro y luego pégalo en la herramienta externa que necesita conectarse.
+  </Step>
+</Steps>
+
+### Revocar una clave
+
+<Steps>
+  <Step title="Abre Claves API">
+    Ve a **Configuración → Espacio de Trabajo → Claves API**.
+  </Step>
+  <Step title="Elimina la clave">
+    Elimina la clave que quieres revocar. El acceso se corta de inmediato, así que cualquier herramienta que aún la use dejará de funcionar.
+  </Step>
+</Steps>
+
+<Note>
+Las claves API y las credenciales de workflow resuelven problemas distintos. Las claves API permiten que herramientas externas alcancen tu espacio de trabajo. Las [credenciales](/es/automation/credentials) permiten que tus workflows alcancen servicios externos desde un nodo.
+</Note>
+
+Para conocer lo que puedes construir sobre la API, consulta la [Referencia de API](/es/api-reference/introduction).

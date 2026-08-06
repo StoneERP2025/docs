@@ -1,0 +1,87 @@
+---
+title: "Tesorería"
+description: "Gestiona cuentas bancarias y cajas, registra el dinero que entra y sale, genera archivos de pago para el banco y cierra el mes de tesorería."
+icon: "building-columns"
+---
+
+Tesorería es donde gestionas el dinero que entra y sale de tu empresa. Mantiene al día los saldos de tus cuentas bancarias y tus cajas, registra cada pago que haces a proveedores y cada pago que recibes de clientes, y te da un cierre mensual controlado por cada cuenta.
+
+## Dónde encontrarlo
+
+Tesorería se entrega como un conjunto de páginas en la sección **Programas** de la barra lateral. Si el módulo de finanzas está habilitado en tu espacio de trabajo, sus tablas — cuentas bancarias, cajas, pagos, ingresos y las demás — aparecen en tu menú de Programas. Lo que puedes ver y hacer depende de tu rol y tus permisos.
+
+## Registros clave
+
+- **Cuentas bancarias** — cada cuenta que operas, con su saldo actual. El cierre de mes y la conciliación se ejecutan por cuenta.
+- **Cajas** — puntos de efectivo con sus saldos y los usuarios asignados para operarlos.
+- **Tarjetas y cheques** — instrumentos de tarjeta y cheque usados para pagar o recaudar.
+- **Pagos digitales** — registros de transacciones de pago digital.
+- **Métodos de pago** — el catálogo de métodos usado en ingresos y pagos.
+
+## Dinero que sale
+
+El dinero que sale se mueve a través de tres tipos de registro:
+
+- **Pagos** — un pago con líneas de detalle que aplican el valor a facturas de proveedor o a saldos abiertos de proveedores, saldando lo que debes.
+- **Programaciones de pago** — pagos recurrentes o programados, para preparar con anticipación las obligaciones predecibles.
+- **Dispersión de pagos** — agrupa los pagos aprobados y genera el archivo de pago para tu banco, listo para cargarlo en el portal bancario.
+
+<Info>
+La dispersión de pagos admite estos formatos de bancos colombianos: Bancolombia, Banco de Bogotá, Davivienda y Banco Popular.
+</Info>
+
+## Dinero que entra
+
+- **Ingresos** — registra el dinero recibido y aplícalo a facturas de cliente, anticipos u otros conceptos. Cada registro de ingreso lleva detalles que muestran exactamente qué salda.
+- **Saldos de ingresos** — saldos por cobrar abiertos, controlados junto con sus impuestos.
+
+## Traslados y ajustes
+
+- **Traslados** — mueve dinero entre cajas y cuentas bancarias, manteniendo consistentes ambos saldos.
+- **Notas bancarias y notas de caja** — asientos de ajuste para una cuenta bancaria o una caja, usados para correcciones y para partidas que no son pagos ni ingresos.
+- **Liquidación de lotes de tarjeta de crédito** — liquida un lote de transacciones de tarjeta contra la cuenta bancaria correspondiente.
+
+## Cerrar el mes de tesorería
+
+El mes de tesorería se cierra por cuenta bancaria y por caja. El cierre es un proceso orquestado que bloquea el periodo de esa cuenta una vez completado. Si más adelante necesitas registrar una corrección en un mes cerrado, el cierre se puede reversar, corregir y volver a cerrar.
+
+## Tareas frecuentes
+
+<Steps>
+  <Step title="Registrar un ingreso contra una factura de cliente">
+    Abre la página de ingresos en tu menú de Programas y crea un registro nuevo desde su formulario. Selecciona el cliente, la cuenta o la caja que recibió el dinero, y el método de pago. En el detalle, aplica el valor a la factura (o las facturas) de cliente que se están pagando, y guarda. El saldo por cobrar del cliente queda saldado por el valor aplicado.
+  </Step>
+  <Step title="Ejecutar una dispersión de pagos y descargar el archivo bancario">
+    Una vez aprobados los pagos que piensas enviar, abre la página de dispersión de pagos y crea una dispersión que los agrupe. Genera el archivo de pago para tu banco — Bancolombia, Banco de Bogotá, Davivienda o Banco Popular — descárgalo y cárgalo en el portal de tu banco para ejecutar los pagos.
+  </Step>
+</Steps>
+
+## Cómo se conecta tesorería con otros módulos
+
+- **Ventas y cuentas por cobrar** — los registros de ingreso saldan los saldos de facturas de cliente creados en [Ventas](/es/operations/sales).
+- **Compras y cuentas por pagar** — los pagos saldan los saldos de facturas de proveedor creados en [Compras](/es/operations/purchasing).
+- **Punto de venta** — el efectivo recaudado en las sesiones de POS fluye hacia las cajas de tesorería.
+- **Contabilidad** — los movimientos de tesorería registran asientos en [Contabilidad](/es/finance/accounting).
+- **Conciliación bancaria** — los movimientos bancarios registrados se cruzan contra tu extracto en [Conciliación bancaria](/es/finance/bank-reconciliation).
+
+## Limitaciones
+
+- Los archivos de pago bancarios se generan únicamente para los cuatro formatos de banco admitidos que se listan arriba.
+- Qué páginas de tesorería ves depende de las aplicaciones habilitadas en tu espacio de trabajo y de tus permisos.
+
+## Guías relacionadas
+
+<CardGroup cols={2}>
+  <Card title="Conciliación bancaria" icon="list-check" href="/es/finance/bank-reconciliation">
+    Cruza tu extracto bancario contra los movimientos registrados en tesorería.
+  </Card>
+  <Card title="Contabilidad" icon="calculator" href="/es/finance/accounting">
+    Mira cómo los movimientos de tesorería se registran en el libro mayor.
+  </Card>
+  <Card title="Ventas" icon="cart-shopping" href="/es/operations/sales">
+    Las facturas de cliente y las cuentas por cobrar que saldan los ingresos.
+  </Card>
+  <Card title="Compras" icon="basket-shopping" href="/es/operations/purchasing">
+    Las facturas de proveedor y las cuentas por pagar que saldan los pagos.
+  </Card>
+</CardGroup>

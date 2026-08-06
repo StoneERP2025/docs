@@ -1,0 +1,92 @@
+---
+title: Trabaja con tablas
+description: Busca, filtra, ordena y agrupa registros, controla qué campos ves y crea registros nuevos — con la configuración guardada por vista.
+icon: table
+---
+
+Las tablas son donde viven tus registros. Una tabla aparece dentro de una página como un bloque de tabla, y los módulos de negocio de tu espacio de trabajo — clientes, órdenes, productos y más — se construyen sobre tablas. Esta página cubre las herramientas que usas todos los días para encontrar, organizar y crear registros.
+
+## La barra de herramientas de la tabla
+
+La barra de herramientas está sobre la tabla. De izquierda a derecha:
+
+| Control | Qué hace |
+| --- | --- |
+| **Buscar** | Busca registros en la tabla |
+| **Filtro** | Aplica filtros rápidos o construye un filtro avanzado |
+| **Ordenar** | Ordena los registros por uno o más campos |
+| **Agrupar por** | Agrupa las filas por un campo (solo en la vista de tabla) |
+| **Visibilidad** | Muestra u oculta campos |
+| **Exportar** | Descarga los datos actuales como archivo de Excel |
+| **Importar** | Abre el asistente de Migración de Datos |
+| Botones de acción | Aparecen cuando hay acciones configuradas para la tabla |
+| **Nuevo** | Crea un registro |
+
+Algunos controles solo aparecen cuando tienes el permiso correspondiente — consulta [Permisos](#permisos) más abajo.
+
+## Filtrar registros
+
+**Filtro** ofrece dos niveles:
+
+- Los **filtros rápidos** se adaptan al tipo de cada campo. Un campo de texto recibe un filtro de texto, un campo numérico recibe comparaciones numéricas, un campo de fecha recibe rangos de fechas, y los campos de selección, persona y relación te permiten elegir entre sus valores.
+- El **constructor de filtros avanzados** compone condiciones anidadas. Empieza con **Donde** y luego combina condiciones con **Y** y **O**. Usa **Agregar condición** para otra regla en el mismo nivel, **Agregar grupo** para anidar un subgrupo con su propia lógica Y/O, y **Borrar filtro** para quitar una regla que ya no necesites.
+
+Los grupos anidados te permiten expresar lógica como "estado es abierto Y (responsable soy yo O prioridad es alta)".
+
+## Ordenar registros
+
+**Ordenar** organiza la tabla por uno o más campos. Agrega varias reglas de ordenamiento para desempatar — por ejemplo, ordena primero por ciudad y luego por nombre dentro de cada ciudad.
+
+## Agrupar registros
+
+En una vista de tabla, **Agrupar por** pliega las filas en grupos según los valores de un campo, para que puedas recorrer una tabla larga por categoría, estado o responsable. La agrupación solo está disponible en la vista de tabla; si necesitas una columna por valor, usa una vista de tablero — consulta [Vistas](/es/data/views).
+
+## Mostrar, ocultar y reordenar campos
+
+**Visibilidad** controla qué campos aparecen como columnas y en qué orden. Oculta los campos que no necesitas por ahora y reordena el resto para poner los importantes primero. Los campos visibles y su orden también determinan lo que incluye la [exportación](/es/data/import-export).
+
+## Crear registros
+
+Selecciona **Nuevo** para crear un registro. El formulario que se abre proviene de las plantillas de formulario de la tabla:
+
+- Si la tabla tiene varias plantillas de formulario, una lista desplegable junto a **Nuevo** te permite elegir cuál usar — por ejemplo, un formulario corto de captura frente a un formulario de registro completo. Consulta [Formularios y plantillas de formulario](/es/data/forms).
+- Presiona Ctrl+Enter para guardar el registro sin usar el mouse.
+
+## La configuración se guarda por vista
+
+Todo lo que configuras en la barra de herramientas — filtros, ordenamiento, agrupación, y la visibilidad y el orden de los campos — se guarda en la vista que estás usando, no de forma global. Cada vista conserva su propia configuración, así que una vista "Mis pendientes" y una vista "Lista completa" pueden convivir en la misma tabla. Consulta [Vistas](/es/data/views) para saber cómo crearlas y gestionarlas.
+
+## Permisos
+
+El acceso a una tabla se controla a nivel de registro, por tabla, con seis permisos: crear, leer, actualizar, eliminar, exportar e importar. La barra de herramientas solo muestra los controles que tienes permitido usar: si no puedes exportar, el botón **Exportar** no aparece. Si falta un control que esperabas, pídele a un administrador del espacio de trabajo que revise tu rol. Consulta [Roles y permisos](/es/admin/roles-and-permissions).
+
+## Tareas frecuentes
+
+<Steps>
+  <Step title="Construir un filtro avanzado">
+    Abre **Filtro** y cambia al constructor avanzado. Agrega tu primera condición después de **Donde**, luego usa **Agregar condición** para más reglas y **Y**/**O** para combinarlas. Usa **Agregar grupo** cuando una parte de la lógica necesite su propia combinación Y/O, y **Borrar filtro** para quitar reglas que ya no necesites.
+  </Step>
+  <Step title="Agrupar y ordenar una tabla">
+    En una vista de tabla, abre **Agrupar por** y elige el campo por el que quieres agrupar — estado o categoría funcionan bien. Luego abre **Ordenar** y agrega una o más reglas para ordenar los registros dentro de cada grupo.
+  </Step>
+  <Step title="Ocultar y reordenar campos">
+    Abre **Visibilidad** y desactiva los campos que no necesitas. Reordena los campos restantes para que los más importantes queden primero. El cambio se guarda solo en la vista actual, así que las demás vistas conservan su propia disposición.
+  </Step>
+</Steps>
+
+## Páginas relacionadas
+
+<CardGroup cols={2}>
+  <Card title="Vistas" icon="table-columns" href="/es/data/views">
+    Crea vistas de tabla, tablero, calendario, galería y dashboard sobre los mismos datos.
+  </Card>
+  <Card title="Formularios y plantillas de formulario" icon="clipboard-list" href="/es/data/forms">
+    Controla cómo se crean y se editan los registros.
+  </Card>
+  <Card title="Importar y exportar datos" icon="file-import" href="/es/data/import-export">
+    Trae datos con el asistente de Migración de Datos o descárgalos como Excel.
+  </Card>
+  <Card title="Roles y permisos" icon="user-lock" href="/es/admin/roles-and-permissions">
+    Gestiona quién puede crear, leer, actualizar, eliminar, exportar e importar registros.
+  </Card>
+</CardGroup>

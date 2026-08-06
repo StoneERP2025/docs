@@ -1,0 +1,69 @@
+---
+title: Referencia de nodos
+description: Todos los nodos de acción que puedes agregar a un workflow, agrupados por lo que hacen.
+icon: circle-nodes
+---
+
+Los nodos de acción son los bloques de construcción que van después del [disparador](/es/automation/triggers) de un workflow: realizan acciones, transforman datos o controlan el workflow. Esta página lista los quince, agrupados por propósito.
+
+<Note>
+Los nodos que invocan servicios protegidos — APIs externas, plataformas de mensajería, proveedores de rastreo o el propio Fail Fast — se autentican con [credenciales](/es/automation/credentials). Eliges o creas la credencial dentro de la configuración del nodo.
+</Note>
+
+<Tabs>
+  <Tab title="Lógica y código">
+    | Nodo | Qué hace | Cuándo usarlo |
+    |---|---|---|
+    | **Switch** | Bifurca el workflow entre caminos según condiciones. | Cuando situaciones distintas requieren manejos distintos: envía cada ejecución por el camino cuya condición coincide. |
+    | **Código** | Ejecuta JavaScript para transformar la salida del nodo anterior. | Cuando necesitas reestructurar, calcular o formatear datos de una forma que ningún otro nodo cubre. |
+    | **Llamar otro Workflow** | Invoca otro workflow como un paso más. | Cuando tienes lógica reutilizable construida como subworkflow — el otro workflow debe iniciar con el disparador **Cuando se ejecuta por otro workflow**. |
+  </Tab>
+  <Tab title="Integraciones y mensajería">
+    | Nodo | Qué hace | Cuándo usarlo |
+    |---|---|---|
+    | **Solicitud HTTP** | Invoca APIs o servicios externos. | Cuando necesitas alcanzar un sistema que no tiene un nodo dedicado. |
+    | **OpenAI** | Genera texto con modelos de lenguaje. | Cuando un paso necesita texto generado o interpretado: resúmenes, borradores, clasificaciones. |
+    | **WhatsApp** | Envía mensajes de plantilla de WhatsApp o responde conversaciones. | Cuando una automatización debe escribirle a alguien por WhatsApp — consulta [Chats de WhatsApp](/es/ai/whatsapp-chats) para el lado de la bandeja de entrada. |
+    | **Notificación** | Envía notificaciones dentro de la aplicación a usuarios o roles. | Cuando el equipo debe enterarse dentro de Fail Fast de algo que el workflow detectó o hizo. |
+    | **Truora** | Hace solicitudes a Truora, un servicio de verificación de antecedentes y validación de identidad. | Cuando un flujo necesita verificar la identidad de una persona o consultar sus antecedentes. |
+  </Tab>
+  <Tab title="Documentos">
+    | Nodo | Qué hace | Cuándo usarlo |
+    |---|---|---|
+    | **Validar Documento** | Valida documentos contra reglas predefinidas. | Cuando los documentos cargados deben cumplir requisitos antes de que un proceso continúe. |
+    | **Cuando el documento está próximo a vencer** | Se ejecuta cuando un documento se acerca a su fecha de vencimiento. | Cuando quieres actuar antes de los vencimientos: renovaciones, recordatorios, verificaciones de cumplimiento. |
+  </Tab>
+  <Tab title="Plataforma">
+    | Nodo | Qué hace | Cuándo usarlo |
+    |---|---|---|
+    | **Fail Fast** | Hace solicitudes al propio Fail Fast. | Cuando el workflow debe actuar sobre los datos de tu propio espacio de trabajo como parte de la automatización. |
+  </Tab>
+  <Tab title="Transporte (Colombia)">
+    | Nodo | Qué hace | Cuándo usarlo |
+    |---|---|---|
+    | **RNDC** | Se conecta al Registro Nacional de Despachos de Carga — el registro de carga del Ministerio de Transporte — a través de su servicio web. | Cuando las operaciones de despacho de carga deben registrarse o consultarse en el RNDC. |
+    | **Satrack** | Obtiene datos de rastreo de vehículos: última ubicación conocida o eventos dentro de un rango de fechas. | Cuando un flujo necesita saber dónde está un vehículo o qué ocurrió durante un periodo. |
+    | **Monitor** | Gestiona rastreo y despacho a través de la plataforma Monitor. | Cuando tu operación maneja el rastreo o el despacho en Monitor. |
+    | **Integrador Transporte** | Un nodo genérico para proveedores de rastreo de transporte. | Cuando tu proveedor de rastreo no tiene un nodo dedicado. |
+
+    Consulta [Monitoreo de flota](/es/transport/fleet-monitoring) para ver cómo encaja el rastreo dentro del módulo de transporte.
+  </Tab>
+</Tabs>
+
+## Elegir el nodo correcto
+
+- Empieza por el nodo más específico disponible: **WhatsApp** antes que **Solicitud HTTP** para mensajes de WhatsApp, **Satrack** antes que una llamada genérica para datos de Satrack.
+- Recurre a **Solicitud HTTP** o a **Integrador Transporte** cuando no exista un nodo dedicado para tu servicio.
+- Usa **Código** con moderación, solo cuando la forma de los datos entre dos nodos realmente necesite una transformación a medida.
+- Usa **Switch** siempre que un workflow deba manejar varios casos; mantiene la lógica visible en el lienzo, donde cualquiera puede leerla.
+
+## Páginas relacionadas
+
+<CardGroup cols={2}>
+  <Card title="Credenciales" icon="key" href="/es/automation/credentials">
+    Configura la autenticación de los nodos que invocan servicios protegidos.
+  </Card>
+  <Card title="Disparadores" icon="bolt-lightning" href="/es/automation/triggers">
+    Los eventos que inician un workflow en primer lugar.
+  </Card>
+</CardGroup>

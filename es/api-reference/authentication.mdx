@@ -1,0 +1,47 @@
+---
+title: "Autenticación"
+description: "Autentica las solicitudes con una clave API del espacio de trabajo"
+icon: "key"
+---
+
+La API se autentica con claves API del espacio de trabajo enviadas como bearer tokens.
+
+## Envía tu clave
+
+Incluye la clave en el encabezado `Authorization` de cada solicitud:
+
+```bash
+curl https://api.failfast.ai/order/sales_quote/ \
+  --header "Authorization: Bearer failfast_your_api_key"
+```
+
+Las claves empiezan con el prefijo `failfast_`. Una clave ausente, inválida, expirada o deshabilitada devuelve `401` con la [envoltura de error](/es/api-reference/errors) estándar.
+
+## Obtén una clave
+
+Las claves API se crean en la aplicación: abre **Configuración → Espacio de Trabajo → Claves API** y elige **Nueva clave API**. El valor de la clave se muestra una sola vez al crearla: cópialo de inmediato y guárdalo de forma segura. Consulta [Claves API](/es/admin/api-keys) para ver el flujo completo.
+
+A las claves se les puede asignar una fecha de expiración, deshabilitarlas y eliminarlas. Eliminar una clave la revoca de inmediato.
+
+<Warning>
+Trata las claves API como contraseñas. Cualquiera que tenga la clave puede leer y modificar los datos del espacio de trabajo con los permisos del miembro al que pertenece. Nunca subas claves a repositorios de código ni las compartas en texto plano.
+</Warning>
+
+## Alcance de espacio de trabajo y permisos
+
+Cada clave está ligada a un espacio de trabajo y al miembro que la creó:
+
+- Las solicitudes solo ven los datos de ese espacio de trabajo.
+- Aplican el rol y los permisos de registro de ese miembro: una clave no puede leer ni modificar entidades que su miembro no puede.
+
+## Límites de tasa
+
+Las solicitudes tienen un límite de tasa por clave: por defecto, 1.000 solicitudes por hora. Cada respuesta incluye el estado actual:
+
+| Encabezado | Significado |
+| --- | --- |
+| `X-RateLimit-Limit` | Solicitudes permitidas en la ventana actual |
+| `X-RateLimit-Remaining` | Solicitudes restantes en la ventana |
+| `X-RateLimit-Reset` | Cuándo se reinicia la ventana |
+
+Cuando se supera el límite, las solicitudes devuelven `429` hasta que la ventana se reinicia.

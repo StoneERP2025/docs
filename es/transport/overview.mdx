@@ -1,0 +1,58 @@
+---
+title: "Gestión de transporte"
+description: "Gestión nacional de transporte de carga por carretera en Colombia: desde la orden de servicio del cliente hasta el manifiesto, la facturación, la liquidación del transportador y el reporte al RNDC."
+icon: "truck"
+---
+
+El módulo de transporte gestiona el transporte nacional de carga por carretera en Colombia: toda la cadena, desde la solicitud de transporte de un cliente hasta el viaje en la vía, la factura al cliente, la liquidación con el transportador y el reporte regulatorio al Ministerio de Transporte.
+
+## Dónde encontrarlo
+
+Transporte se entrega como páginas en la sección **Programas** de la barra lateral. Si el módulo de transporte está habilitado en tu espacio de trabajo, sus tablas aparecen en tu menú de Programas; lo que puedes hacer en cada una depende de tu rol y tus permisos.
+
+## La cadena de documentos
+
+Todo viaje avanza por la misma secuencia de documentos:
+
+1. **Orden de servicio** — la solicitud de transporte del cliente, con sus detalles, vehículos, costos y pólizas.
+2. **Orden de carga** — la asignación de la carga o los contenedores a la orden de servicio.
+3. **Remesa** — el documento del despacho, uno por viaje o por carga.
+4. **Manifiesto** — el documento del viaje que vincula el vehículo, el conductor y las remesas que viajan juntas.
+
+Después de ejecutado el viaje, la cadena se divide en dos ramas de liquidación:
+
+- **Facturar al cliente** — la facturación agrupa las remesas y produce la factura de cliente.
+- **Liquidar al transportador** — el cumplido prueba que el viaje se completó, la legalización lo consolida y una factura de proveedor le paga al transportador o al propietario del vehículo.
+
+## Reporte regulatorio
+
+Los despachos se reportan al **RNDC** (Registro Nacional de Despachos de Carga), el registro nacional de despachos de carga del Ministerio de Transporte. Consulta [RNDC y monitoreo de flota](/es/transport/fleet-monitoring) para ver cómo funcionan el reporte y el seguimiento del viaje.
+
+## Antes de empezar
+
+La cadena depende de datos maestros que deben existir primero:
+
+- **Interesados** — clientes, conductores y propietarios de vehículos.
+- **Vehículos** — con sus documentos y pólizas de seguro al día.
+- **Rutas y peajes** — la geografía por la que corren tus viajes.
+- **Tarifas de flete** — las tablas de precios que resuelven cuánto cuesta un viaje.
+- **Conceptos de liquidación** — los conceptos que calculan el flete y las deducciones en ambas ramas de liquidación.
+
+Los documentos y las pólizas de seguro de los vehículos se gestionan con [Seguros y jurídico](/es/operations/insurance-and-legal); las pólizas vencidas bloquean el avance de las operaciones.
+
+## Explora las guías de transporte
+
+<CardGroup cols={2}>
+  <Card title="Operaciones de transporte" icon="route" href="/es/transport/operations">
+    Trabaja la cadena en el día a día: órdenes de servicio, órdenes de carga, remesas y manifiestos.
+  </Card>
+  <Card title="Facturación y liquidación" icon="file-invoice-dollar" href="/es/transport/billing-and-settlement">
+    Factura al cliente y liquida al transportador después del viaje.
+  </Card>
+  <Card title="RNDC y monitoreo de flota" icon="satellite-dish" href="/es/transport/fleet-monitoring">
+    Reporta los despachos al RNDC y sigue los viajes con proveedores GPS.
+  </Card>
+  <Card title="Seguros y jurídico" icon="shield-halved" href="/es/operations/insurance-and-legal">
+    Mantén vigentes las pólizas de los vehículos para que las operaciones nunca se bloqueen.
+  </Card>
+</CardGroup>

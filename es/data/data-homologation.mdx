@@ -1,0 +1,63 @@
+---
+title: Homologación de datos
+description: Mapea estructuras y códigos de datos externos a los campos y valores de tu espacio de trabajo, para que la información de sistemas externos llegue al lugar correcto.
+icon: shuffle
+---
+
+Cuando tu espacio de trabajo intercambia datos con sistemas externos — proveedores, documentos electrónicos, plataformas de transporte — el mundo exterior rara vez habla el idioma de tu espacio de trabajo. Los nombres de los campos difieren, y también los códigos que contienen: lo que un proveedor llama de una forma, tus tablas lo llaman de otra. La homologación de datos es la manera en que Fail Fast traduce entre ambos, en dos capas.
+
+<Info>
+Las pantallas de homologación se abren desde entradas del menú **Programas**, si están habilitadas para tu espacio de trabajo. Si no las ves, puede que no formen parte de tu configuración.
+</Info>
+
+## Las dos capas
+
+| Pantalla | Qué mapea | Ejemplo |
+| --- | --- | --- |
+| **Homologación de datos** | Los campos de una estructura de datos externa a campos internos de Fail Fast | La columna "código de cliente" del archivo del proveedor alimenta tu campo de cliente |
+| **Configuración de Homologación** | Valores externos (códigos) a valores internos, por proveedor y estructura de datos | El código de producto del proveedor corresponde a tu código de producto interno |
+
+Piénsalo como estructura primero y valores después: la homologación de datos decide *dónde* va cada pieza de información externa, y la configuración de homologación decide *qué significa cada código* una vez que llega.
+
+### Homologación de datos
+
+En la pantalla **Homologación de datos** mapeas los campos de una estructura de datos externa a campos internos de Fail Fast, para que la información importada llegue al lugar correcto. Una vez mapeada la estructura, los datos que entran desde esa fuente fluyen a tus tablas sin reorganización manual.
+
+### Configuración de Homologación
+
+En la pantalla **Configuración de Homologación** eliges un **Proveedor** y una **Estructura de Datos**, y luego mantienes los mapeos a nivel de valor: códigos externos emparejados con tus códigos internos. Esta es configuración viva: a medida que los proveedores agregan códigos o tus catálogos crecen, vuelves aquí para mantener los mapeos al día.
+
+## Cuándo necesitas homologación
+
+- **Procesamiento de documentos electrónicos** — los documentos que se intercambian a través de la DIAN llevan códigos estandarizados que deben resolverse contra tus registros internos. Consulta [Facturación electrónica](/es/finance/electronic-invoicing).
+- **Importación de archivos de proveedores** — archivos recurrentes de proveedores cuyas columnas y códigos no coinciden con tus tablas.
+- **Integraciones de transporte** — plataformas externas de transporte que intercambian datos con tu operación.
+
+## Configurar un mapeo
+
+<Steps>
+  <Step title="Mapea la estructura de datos">
+    Abre **Homologación de datos** desde el menú de Programas. Recorre los campos de la estructura externa y mapea cada uno al campo interno de Fail Fast donde deben llegar sus datos.
+  </Step>
+  <Step title="Agrega homologaciones de valores">
+    Abre **Configuración de Homologación**, elige el **Proveedor** y la **Estructura de Datos**, y agrega los mapeos que emparejan cada código externo con su equivalente interno.
+  </Step>
+</Steps>
+
+<Tip>
+Cuando la información que entra llega a un lugar inesperado, revisa las capas en orden: primero el mapeo de campos en Homologación de datos y luego los mapeos de valores en Configuración de Homologación. Un mapeo de valor faltante es la causa más común de registros individuales que no se resuelven.
+</Tip>
+
+## Páginas relacionadas
+
+<CardGroup cols={2}>
+  <Card title="Facturación electrónica" icon="file-invoice" href="/es/finance/electronic-invoicing">
+    Los documentos electrónicos (DIAN) son el principal consumidor de los mapeos de homologación.
+  </Card>
+  <Card title="Integraciones" icon="plug" href="/es/admin/integrations">
+    Cómo conectar tu espacio de trabajo con sistemas externos.
+  </Card>
+  <Card title="Importar y exportar datos" icon="file-import" href="/es/data/import-export">
+    Importaciones de Excel puntuales y recurrentes con el asistente de Migración de Datos.
+  </Card>
+</CardGroup>

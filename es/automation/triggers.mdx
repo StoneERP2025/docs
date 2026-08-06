@@ -1,0 +1,61 @@
+---
+title: Disparadores
+description: Los eventos que inician un workflow, desde ejecuciones manuales hasta horarios, webhooks, formularios y documentos.
+icon: bolt-lightning
+---
+
+Todo workflow parte de un disparador. El disparador es el primer nodo del lienzo: define el evento que pone el workflow en marcha, y todo lo que se conecta después se ejecuta en respuesta. Cuando construyes un workflow nuevo, el editor te pide **Agregar un disparador** antes que nada.
+
+Hay seis nodos disparadores. Elige el que corresponda a la forma en que debe iniciar tu automatización.
+
+<AccordionGroup>
+  <Accordion title="Al hacer clic en 'Ejecutar workflow'">
+    Ejecuta el workflow cuando haces clic en el botón del disparador en el editor.
+
+    Úsalo para ejecuciones manuales, bajo demanda, y también mientras construyes, porque te permite probar el workflow cuando quieras sin esperar a que ocurra un evento real. Un workflow solo puede tener uno de estos disparadores.
+  </Accordion>
+  <Accordion title="Webhook">
+    Ejecuta el workflow cuando se recibe un webhook.
+
+    Úsalo para conectar sistemas externos capaces de invocar una URL: cuando el sistema externo envía su solicitud, tu workflow arranca y puede actuar sobre lo que recibió.
+  </Accordion>
+  <Accordion title="Horario">
+    Ejecuta el workflow a una hora específica.
+
+    Úsalo para trabajos recurrentes: todo lo que deba ocurrir con un ritmo regular en lugar de responder a una acción del usuario, como verificaciones periódicas o notificaciones de rutina.
+  </Accordion>
+  <Accordion title="Cuando se ejecuta por otro workflow">
+    Ejecuta el workflow cuando otro workflow lo invoca.
+
+    Úsalo para componer subworkflows reutilizables: construye una pieza de lógica una vez e invócala desde otros workflows con el nodo de ejecución **Llamar otro Workflow**. Un workflow solo puede tener uno de estos disparadores.
+  </Accordion>
+  <Accordion title="Cuando se sube un documento">
+    Ejecuta el workflow cuando se sube un documento.
+
+    Úsalo para flujos de recepción y validación de documentos; por ejemplo, revisar un documento recién cargado apenas llega. Consulta [Gestión de documentos](/es/documents/document-management) para ver cómo funcionan los documentos en tu espacio de trabajo.
+  </Accordion>
+  <Accordion title="Cuando se envía un formulario">
+    Ejecuta el workflow cuando se envía un formulario.
+
+    Úsalo para reaccionar a registros nuevos o actualizados: cada vez que alguien envía el formulario, el workflow arranca con los datos de ese envío. Consulta [Formularios](/es/data/forms) para ver cómo capturan datos los formularios.
+  </Accordion>
+</AccordionGroup>
+
+## Elegir un disparador
+
+| Quieres que el workflow inicie... | Disparador |
+|---|---|
+| Cuando haces clic en un botón | **Al hacer clic en 'Ejecutar workflow'** |
+| Cuando un sistema externo invoca una URL | **Webhook** |
+| A una hora específica, de forma recurrente | **Horario** |
+| Cuando otro workflow lo invoca | **Cuando se ejecuta por otro workflow** |
+| Cuando se sube un documento | **Cuando se sube un documento** |
+| Cuando se envía un formulario | **Cuando se envía un formulario** |
+
+<Tip>
+Mientras construyes cualquier workflow, conviene probarlo primero con **Al hacer clic en 'Ejecutar workflow'**, porque controlas exactamente cuándo se ejecuta. Una vez que la cadena de acciones funcione, puedes rehacerla alrededor del disparador que realmente necesitas.
+</Tip>
+
+## Próximos pasos
+
+Después del disparador, el resto del workflow se compone de nodos de acción: las acciones, transformaciones y pasos de control que hacen el trabajo. Consulta la [Referencia de nodos](/es/automation/nodes) para verlos todos.

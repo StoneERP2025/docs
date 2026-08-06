@@ -1,0 +1,79 @@
+---
+title: "Contabilidad"
+description: "El libro mayor de tu empresa: plan de cuentas, libros contables, comprobantes, control de periodos y reportes financieros."
+icon: "calculator"
+---
+
+Contabilidad es el libro mayor al que registra todo lo que ocurre en Fail Fast. Ventas, compras, tesorería, inventarios y los demás módulos operativos generan aquí sus asientos contables, y tú completas el panorama con comprobantes manuales, cierres de periodo y reportes.
+
+## Dónde encontrarlo
+
+Las páginas de contabilidad aparecen en la sección **Programas** de la barra lateral cuando el módulo de finanzas está habilitado en tu espacio de trabajo. El acceso a comprobantes, cierres y reportes depende de tu rol y tus permisos.
+
+## Conceptos clave
+
+- **Plan de cuentas** — un árbol jerárquico de cuentas organizado por clases, basado en la estructura del PUC colombiano. Cada línea de un comprobante apunta a una cuenta de este plan.
+- **Libros contables** — puedes llevar varios libros, con homologación de cuentas entre ellos, de modo que una misma transacción se represente en cada libro bajo su propia estructura de cuentas.
+- **Comprobantes contables** — los movimientos en sí: cada comprobante lleva líneas de detalle y sus detalles de impuestos.
+- **Saldos** — saldos de cuenta construidos a partir de los comprobantes registrados, por periodo.
+- **Diferidos y amortizaciones** — distribuye un valor a lo largo de varios periodos en lugar de reconocerlo todo de una vez.
+
+## Control de periodos
+
+- **Periodos bloqueados** — un periodo bloqueado rechaza cualquier registro nuevo en ese mes, protegiendo cifras que ya reportaste.
+- **Cierre de mes** — la contabilidad se cierra por año y mes. El cierre es el fin formal del periodo.
+
+<Warning>
+Cerrar el mes contable bloquea nuevos registros en ese periodo. Asegúrate de que todos los módulos operativos hayan terminado de registrar el mes — facturas, pagos, depreciación, costeo de inventario — antes de cerrar.
+</Warning>
+
+## Reportes
+
+- **Libro mayor** — saldos por cuenta para un periodo.
+- **Auxiliar** — el movimiento detallado de una cuenta específica (detalle de cuenta).
+- **Detalle de movimientos** — detalle a nivel de comprobante a través de las cuentas.
+- **Certificados de retención** — los certificados que tu empresa emite a terceros por los impuestos retenidos.
+
+## Qué se registra aquí
+
+Los módulos operativos generan su contabilidad automáticamente: ventas, compras, punto de venta, tesorería, costeo de inventario, activos fijos y transporte registran asientos en el libro mayor. Los comprobantes manuales cubren todo lo que no se origina en un módulo operativo.
+
+## Tareas frecuentes
+
+<Steps>
+  <Step title="Registrar un comprobante manual">
+    Abre la página de comprobantes contables en tu menú de Programas y crea uno nuevo desde su formulario. Agrega las líneas de detalle — cuenta, valores y detalles de impuestos donde apliquen — y guarda. El comprobante se registra en el libro y el periodo seleccionados.
+  </Step>
+  <Step title="Cerrar el mes contable">
+    Confirma que todos los módulos operativos terminaron de registrar el mes y luego ejecuta el cierre para ese año y mes. Una vez cerrado, el periodo deja de aceptar registros.
+  </Step>
+  <Step title="Generar un certificado de retención">
+    Abre el reporte de certificados de retención, selecciona el tercero y el periodo, y genera el certificado para entregárselo.
+  </Step>
+</Steps>
+
+## Cómo se conecta la contabilidad con otros módulos
+
+- **Tesorería** — pagos, ingresos, traslados y notas registran aquí sus asientos; consulta [Tesorería](/es/finance/treasury).
+- **Activos fijos** — cada corrida de depreciación registra sus asientos; consulta [Activos fijos](/es/finance/fixed-assets).
+- **Operaciones** — ventas, compras, POS y costeo de inventario alimentan el libro mayor de forma continua.
+- **Reportes** — las cifras del libro mayor alimentan los tableros y reportes que construyes en [Tableros y reportes](/es/reporting/dashboards-and-reports).
+
+## Limitaciones
+
+- Los registros en periodos bloqueados o cerrados se rechazan; reabre o desbloquea el periodo antes de corregir.
+- Representar una transacción en varios libros requiere que esté configurada la homologación de cuentas entre esos libros.
+
+## Guías relacionadas
+
+<CardGroup cols={2}>
+  <Card title="Activos fijos" icon="industry" href="/es/finance/fixed-assets">
+    Las corridas de depreciación y los asientos que registran en el libro mayor.
+  </Card>
+  <Card title="Tesorería" icon="building-columns" href="/es/finance/treasury">
+    Los movimientos de dinero detrás de muchos de tus comprobantes.
+  </Card>
+  <Card title="Tableros y reportes" icon="chart-line" href="/es/reporting/dashboards-and-reports">
+    Construye reportes sobre tus cifras contables.
+  </Card>
+</CardGroup>

@@ -1,0 +1,79 @@
+---
+title: Gestión de documentos
+description: Adjunta archivos a tus registros de negocio con tipos de documento, validación, control de vencimientos y flujos de recepción automatizados.
+icon: folder-open
+---
+
+La gestión de documentos mantiene los archivos con los que opera tu negocio — contratos, certificados, facturas, soportes — adjuntos a los registros a los que pertenecen, con estructura y control. En lugar de una carpeta suelta de archivos, cada documento tiene un tipo, metadatos opcionales y un registro dueño claro.
+
+## Cómo se organizan los documentos
+
+### Tipos de documento
+
+Los tipos de documento definen qué clases de documentos maneja tu espacio de trabajo. Cada tipo puede exigir campos de metadatos, así un documento no es solo un archivo: lleva consigo la información estructurada que tu equipo necesita. Los administradores crean y gestionan los tipos de documento del espacio de trabajo.
+
+### Configuración de almacenamiento
+
+Una pantalla de gestión de almacenamiento asocia los tipos de documento con los buckets de almacenamiento. Así es como los administradores controlan dónde se guarda cada clase de documento.
+
+### Los documentos viven en los registros
+
+Los documentos se adjuntan a registros. Abre cualquier registro y usa el selector **Documentos** para ver los archivos adjuntos y subir nuevos. Las tablas también pueden declarar documentos obligatorios para sus registros, así tu equipo sabe exactamente qué soportes necesita cada registro.
+
+Los documentos complementan los datos estructurados que capturan tus registros mediante los [formularios](/es/data/forms): el formulario recoge los campos y la gestión de documentos recoge los archivos.
+
+## Qué puedes hacer con los documentos
+
+- **Subir** archivos a cualquier registro al que tengas acceso.
+- **Capturar metadatos** definidos por el tipo del documento.
+- **Validar** los documentos cargados con flujos de aprobación y rechazo.
+- **Controlar vencimientos** asignando fechas de vencimiento a los documentos.
+- **Ver documentos** directamente en la aplicación con los visores integrados.
+- **Ejecutar operaciones masivas** como administrador cuando necesites actuar sobre muchos documentos a la vez.
+- **Recorrer el registro de documentos** para ver qué existe en todo el espacio de trabajo.
+
+## Automatizar el manejo de documentos
+
+<Note>
+La gestión de documentos se conecta directamente con los [workflows](/es/automation/workflows):
+
+- El disparador **Cuando se sube un documento** inicia un workflow en el momento en que llega un documento.
+- El disparador **Cuando el documento está próximo a vencer** se activa antes de la fecha de vencimiento, para que puedas renovarlo o reemplazarlo a tiempo.
+- El nodo **Validar Documento** revisa los documentos contra reglas predefinidas dentro de un workflow.
+
+Combínalos para construir flujos de recepción → validación → notificación: se sube un documento, un workflow lo valida y se notifica el resultado a las personas indicadas. Consulta [disparadores](/es/automation/triggers) y [nodos](/es/automation/nodes) para los detalles.
+</Note>
+
+## Tareas frecuentes
+
+### Subir un documento a un registro
+
+<Steps>
+  <Step title="Abre el registro">
+    Ve a la tabla y abre el registro al que pertenece el documento.
+  </Step>
+  <Step title="Cambia a documentos">
+    Usa el selector **Documentos** para ver los archivos del registro.
+  </Step>
+  <Step title="Sube el archivo">
+    Sube tu archivo y completa los campos de metadatos que exija el tipo de documento.
+  </Step>
+</Steps>
+
+### Crear un tipo de documento (administradores)
+
+<Steps>
+  <Step title="Define el tipo">
+    Crea un tipo de documento nuevo que describa la clase de documento que maneja tu espacio de trabajo.
+  </Step>
+  <Step title="Agrega campos de metadatos">
+    Agrega los campos de metadatos que el tipo debe exigir, para que todos los documentos de ese tipo lleven información consistente.
+  </Step>
+  <Step title="Asócialo al almacenamiento">
+    En la pantalla de configuración de almacenamiento, asocia el tipo de documento con el bucket donde deben guardarse sus archivos.
+  </Step>
+</Steps>
+
+<Tip>
+Si un documento tiene ciclo de renovación — pólizas de seguro, licencias, certificados — asígnale su fecha de vencimiento y combínalo con el disparador **Cuando el documento está próximo a vencer** para que nadie tenga que recordar el plazo.
+</Tip>

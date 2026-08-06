@@ -12,127 +12,267 @@
     "dark": "/images/icon.png"
   },
   "navigation": {
-    "tabs": [
+    "languages": [
       {
-        "tab": "Guides",
-        "groups": [
+        "language": "en",
+        "default": true,
+        "tabs": [
           {
-            "group": "Getting started",
-            "pages": [
-              "index",
-              "getting-started/quickstart",
-              "getting-started/create-your-workspace",
-              "getting-started/navigate-the-app"
+            "tab": "Guides",
+            "groups": [
+              {
+                "group": "Getting started",
+                "pages": [
+                  "index",
+                  "getting-started/quickstart",
+                  "getting-started/create-your-workspace",
+                  "getting-started/navigate-the-app"
+                ]
+              },
+              {
+                "group": "Platform fundamentals",
+                "pages": [
+                  "platform/core-concepts",
+                  "platform/programs-and-pages",
+                  "platform/block-editor",
+                  "platform/calendar-and-tasks",
+                  "platform/sharing-and-publishing"
+                ]
+              },
+              {
+                "group": "Build and manage data",
+                "pages": [
+                  "data/tables",
+                  "data/views",
+                  "data/fields",
+                  "data/forms",
+                  "data/page-designer",
+                  "data/field-rules",
+                  "data/import-export",
+                  "data/data-homologation"
+                ]
+              },
+              {
+                "group": "Automate work",
+                "pages": [
+                  "automation/workflows",
+                  "automation/triggers",
+                  "automation/nodes",
+                  "automation/credentials",
+                  "automation/executions"
+                ]
+              },
+              {
+                "group": "AI and communication",
+                "pages": [
+                  "ai/ai-assistant",
+                  "ai/whatsapp-chats",
+                  "ai/email-tools"
+                ]
+              },
+              {
+                "group": "Business operations",
+                "pages": [
+                  "operations/overview",
+                  "operations/crm",
+                  "operations/sales",
+                  "operations/purchasing",
+                  "operations/inventory",
+                  "operations/pos",
+                  "operations/marketplace",
+                  "operations/insurance-and-legal"
+                ]
+              },
+              {
+                "group": "Finance",
+                "pages": [
+                  "finance/treasury",
+                  "finance/bank-reconciliation",
+                  "finance/accounting",
+                  "finance/fixed-assets",
+                  "finance/electronic-invoicing"
+                ]
+              },
+              {
+                "group": "Transport",
+                "pages": [
+                  "transport/overview",
+                  "transport/operations",
+                  "transport/billing-and-settlement",
+                  "transport/fleet-monitoring"
+                ]
+              },
+              {
+                "group": "Documents and reporting",
+                "pages": [
+                  "documents/document-management",
+                  "reporting/dashboards-and-reports"
+                ]
+              },
+              {
+                "group": "Workspace administration",
+                "pages": [
+                  "admin/account-settings",
+                  "admin/team-and-invitations",
+                  "admin/roles-and-permissions",
+                  "admin/api-keys",
+                  "admin/integrations",
+                  "admin/workspace-settings"
+                ]
+              }
             ]
           },
           {
-            "group": "Platform fundamentals",
-            "pages": [
-              "platform/core-concepts",
-              "platform/programs-and-pages",
-              "platform/block-editor",
-              "platform/calendar-and-tasks",
-              "platform/sharing-and-publishing"
-            ]
-          },
-          {
-            "group": "Build and manage data",
-            "pages": [
-              "data/tables",
-              "data/views",
-              "data/fields",
-              "data/forms",
-              "data/page-designer",
-              "data/field-rules",
-              "data/import-export",
-              "data/data-homologation"
-            ]
-          },
-          {
-            "group": "Automate work",
-            "pages": [
-              "automation/workflows",
-              "automation/triggers",
-              "automation/nodes",
-              "automation/credentials",
-              "automation/executions"
-            ]
-          },
-          {
-            "group": "AI and communication",
-            "pages": [
-              "ai/ai-assistant",
-              "ai/whatsapp-chats",
-              "ai/email-tools"
-            ]
-          },
-          {
-            "group": "Business operations",
-            "pages": [
-              "operations/overview",
-              "operations/crm",
-              "operations/sales",
-              "operations/purchasing",
-              "operations/inventory",
-              "operations/pos",
-              "operations/marketplace",
-              "operations/insurance-and-legal"
-            ]
-          },
-          {
-            "group": "Finance",
-            "pages": [
-              "finance/treasury",
-              "finance/bank-reconciliation",
-              "finance/accounting",
-              "finance/fixed-assets",
-              "finance/electronic-invoicing"
-            ]
-          },
-          {
-            "group": "Transport",
-            "pages": [
-              "transport/overview",
-              "transport/operations",
-              "transport/billing-and-settlement",
-              "transport/fleet-monitoring"
-            ]
-          },
-          {
-            "group": "Documents and reporting",
-            "pages": [
-              "documents/document-management",
-              "reporting/dashboards-and-reports"
-            ]
-          },
-          {
-            "group": "Workspace administration",
-            "pages": [
-              "admin/account-settings",
-              "admin/team-and-invitations",
-              "admin/roles-and-permissions",
-              "admin/api-keys",
-              "admin/integrations",
-              "admin/workspace-settings"
+            "tab": "API reference",
+            "groups": [
+              {
+                "group": "API documentation",
+                "pages": [
+                  "api-reference/introduction",
+                  "api-reference/authentication",
+                  "api-reference/pagination-and-filtering",
+                  "api-reference/errors"
+                ]
+              },
+              {
+                "group": "Endpoints",
+                "openapi": {
+                  "source": "/api-reference/openapi.json",
+                  "directory": "api-reference"
+                }
+              }
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
-        "groups": [
+        "language": "es",
+        "tabs": [
           {
-            "group": "API documentation",
-            "pages": [
-              "api-reference/introduction",
-              "api-reference/authentication",
-              "api-reference/pagination-and-filtering",
-              "api-reference/errors"
+            "tab": "Guías",
+            "groups": [
+              {
+                "group": "Primeros pasos",
+                "pages": [
+                  "es/index",
+                  "es/getting-started/quickstart",
+                  "es/getting-started/create-your-workspace",
+                  "es/getting-started/navigate-the-app"
+                ]
+              },
+              {
+                "group": "Fundamentos de la plataforma",
+                "pages": [
+                  "es/platform/core-concepts",
+                  "es/platform/programs-and-pages",
+                  "es/platform/block-editor",
+                  "es/platform/calendar-and-tasks",
+                  "es/platform/sharing-and-publishing"
+                ]
+              },
+              {
+                "group": "Construye y gestiona datos",
+                "pages": [
+                  "es/data/tables",
+                  "es/data/views",
+                  "es/data/fields",
+                  "es/data/forms",
+                  "es/data/page-designer",
+                  "es/data/field-rules",
+                  "es/data/import-export",
+                  "es/data/data-homologation"
+                ]
+              },
+              {
+                "group": "Automatiza el trabajo",
+                "pages": [
+                  "es/automation/workflows",
+                  "es/automation/triggers",
+                  "es/automation/nodes",
+                  "es/automation/credentials",
+                  "es/automation/executions"
+                ]
+              },
+              {
+                "group": "IA y comunicación",
+                "pages": [
+                  "es/ai/ai-assistant",
+                  "es/ai/whatsapp-chats",
+                  "es/ai/email-tools"
+                ]
+              },
+              {
+                "group": "Operaciones de negocio",
+                "pages": [
+                  "es/operations/overview",
+                  "es/operations/crm",
+                  "es/operations/sales",
+                  "es/operations/purchasing",
+                  "es/operations/inventory",
+                  "es/operations/pos",
+                  "es/operations/marketplace",
+                  "es/operations/insurance-and-legal"
+                ]
+              },
+              {
+                "group": "Finanzas",
+                "pages": [
+                  "es/finance/treasury",
+                  "es/finance/bank-reconciliation",
+                  "es/finance/accounting",
+                  "es/finance/fixed-assets",
+                  "es/finance/electronic-invoicing"
+                ]
+              },
+              {
+                "group": "Transporte",
+                "pages": [
+                  "es/transport/overview",
+                  "es/transport/operations",
+                  "es/transport/billing-and-settlement",
+                  "es/transport/fleet-monitoring"
+                ]
+              },
+              {
+                "group": "Documentos y reportes",
+                "pages": [
+                  "es/documents/document-management",
+                  "es/reporting/dashboards-and-reports"
+                ]
+              },
+              {
+                "group": "Administración del espacio de trabajo",
+                "pages": [
+                  "es/admin/account-settings",
+                  "es/admin/team-and-invitations",
+                  "es/admin/roles-and-permissions",
+                  "es/admin/api-keys",
+                  "es/admin/integrations",
+                  "es/admin/workspace-settings"
+                ]
+              }
             ]
           },
           {
-            "group": "Endpoints",
-            "openapi": "/api-reference/openapi.json"
+            "tab": "Referencia de API",
+            "groups": [
+              {
+                "group": "Documentación de la API",
+                "pages": [
+                  "es/api-reference/introduction",
+                  "es/api-reference/authentication",
+                  "es/api-reference/pagination-and-filtering",
+                  "es/api-reference/errors"
+                ]
+              },
+              {
+                "group": "Endpoints",
+                "openapi": {
+                  "source": "/api-reference/openapi.json",
+                  "directory": "es/api-reference"
+                }
+              }
+            ]
           }
         ]
       }

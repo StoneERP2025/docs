@@ -1,0 +1,73 @@
+---
+title: "Punto de venta"
+description: "Vende rápido en el mostrador y mantén control total de las sesiones de caja y los cierres de sucursal"
+icon: "cash-register"
+---
+
+**POS** es una pantalla dedicada de venta rápida para tiendas y mostradores, uno de los dos módulos con pantalla propia en lugar de solo páginas de **Programas**. Está construido para la velocidad en la caja, y combina el flujo de venta con un control completo de la sesión de caja: saldos de apertura, movimientos de efectivo durante el día y un cierre con arqueo que revela cualquier diferencia.
+
+## Dónde encontrarlo
+
+La pantalla de **POS** está disponible cuando el módulo está habilitado en tu espacio de trabajo. El acceso depende de tu rol y tus permisos, así que los cajeros normalmente ven la pantalla de venta mientras que los supervisores además gestionan sesiones y cierres.
+
+## Vender en el mostrador
+
+La pantalla de POS muestra un catálogo de productos y un carrito. Para vender:
+
+- Agrega productos al carrito — se admiten variantes, y un diálogo de peso captura la cantidad de los productos pesados.
+- Recibe el pago.
+- Completa la venta — los documentos (factura o remisión) se generan a partir de ella.
+- Agrega documentos de soporte cuando la venta los requiera.
+
+Un **tiquete abierto** es una orden temporal: puedes dejarla en espera mientras el cliente sigue comprando o se retira un momento, y se convierte en venta cuando la completas.
+
+Las **devoluciones** se admiten contra ventas anteriores, así la mercancía que regresa queda registrada contra la transacción original.
+
+## Sesiones de caja
+
+Cada día de venta transcurre dentro de una sesión de caja:
+
+<Steps>
+  <Step title="Abre la caja registradora">
+    Inicia la sesión registrando el saldo de apertura del cajón.
+  </Step>
+  <Step title="Vende y registra los movimientos de efectivo">
+    Vende a lo largo del día. Registra las entradas y salidas de efectivo a medida que ocurren, y anota los traslados a caja fuerte cuando se retira dinero del cajón para su custodia.
+  </Step>
+  <Step title="Cierra la sesión con arqueo por denominación">
+    Cuenta el cajón por denominación. El sistema calcula el total esperado a partir de la actividad de la sesión, lo compara con tu conteo y registra cualquier diferencia.
+  </Step>
+</Steps>
+
+<Warning>
+Cerrar una sesión con descuadre registra una diferencia contra la sesión. Cuenta con cuidado por denominación antes de confirmar el cierre.
+</Warning>
+
+## Cierre de sucursal
+
+El cierre de sucursal es un cierre diario que consolida todas las sesiones de caja de la sucursal en el día, con las verificaciones de ingresos e inventario relacionadas. Úsalo como el control de fin de día que confirma que el dinero y las existencias de la sucursal cuadran con lo que se vendió.
+
+## Cómo se conecta POS con otros módulos
+
+- **Inventarios** — cada venta mueve existencias, así los saldos se mantienen al día sin pasos adicionales.
+- **Tesorería** — el dinero de la sesión fluye a tesorería cuando las sesiones se cierran y se controlan.
+- **Contabilidad** — la actividad de POS registra sus asientos contables.
+- **Cuentas por cobrar** — las ventas que generan saldos de clientes se controlan como cualquier otra cuenta por cobrar.
+
+<Note>
+POS es para ventas rápidas de mostrador. Para cotizaciones y documentos comerciales más grandes construidos visualmente desde un catálogo, usa [Marketplace](/es/operations/marketplace).
+</Note>
+
+## Guías relacionadas
+
+<CardGroup cols={2}>
+  <Card title="Inventarios" icon="boxes-stacked" href="/es/operations/inventory">
+    Mira cómo cada venta registra una salida de existencias.
+  </Card>
+  <Card title="Tesorería" icon="building-columns" href="/es/finance/treasury">
+    Donde se controla y se registra el dinero de las sesiones.
+  </Card>
+  <Card title="Marketplace" icon="store" href="/es/operations/marketplace">
+    La pantalla de catálogo y carrito para cotizaciones, órdenes y facturas.
+  </Card>
+</CardGroup>

@@ -1,0 +1,92 @@
+---
+title: Campos y tipos de campo
+description: Los tipos de campo disponibles para tus tablas, qué almacena cada uno y cómo agregarlos y configurarlos.
+icon: rectangle-list
+---
+
+Los campos definen qué almacena cada registro de una tabla. Elegir el tipo correcto importa: el tipo determina cómo se ingresa un valor en los formularios, cómo se muestra en las tablas y qué filtro rápido recibe. Esta página lista los tipos disponibles y cómo configurarlos.
+
+## Tipos de campo
+
+### Texto y contacto
+
+| Tipo | Almacena |
+| --- | --- |
+| Texto | Texto libre |
+| Correo | Una dirección de correo electrónico |
+| Teléfono | Un número telefónico |
+| Persona | Un miembro de tu espacio de trabajo |
+
+### Números
+
+| Tipo | Almacena |
+| --- | --- |
+| Número | Un número entero |
+| Decimal | Un número con decimales |
+| Casilla de verificación | Un valor sí/no |
+
+### Opciones
+
+| Tipo | Almacena |
+| --- | --- |
+| Selección | Una opción de una lista definida |
+| Selección múltiple | Varias opciones de una lista definida |
+| Árbol | Una opción de una lista jerárquica — categorías con subcategorías |
+
+### Fechas y hora
+
+| Tipo | Almacena |
+| --- | --- |
+| Fecha | Una fecha del calendario |
+| Fecha y hora | Una fecha con hora del día |
+| Periodo | Un periodo de tiempo |
+| Año | Un año |
+| Mes | Un mes |
+| Hora | Una hora del día |
+
+### Relaciones
+
+| Tipo | Almacena |
+| --- | --- |
+| Relación | Un vínculo a un registro de otra tabla |
+| Rollup | Un resumen de valores de registros relacionados |
+| Detalle | Una tabla hija embebida con líneas de detalle — las líneas de una orden, por ejemplo |
+
+### Archivos y datos enriquecidos
+
+| Tipo | Almacena |
+| --- | --- |
+| Documento | Un archivo adjunto — consulta [Gestión de documentos](/es/documents/document-management) |
+| Galería | Un conjunto de imágenes |
+| Ubicación | Una ubicación geográfica |
+| JSON | Datos estructurados |
+
+## Agregar un campo
+
+Los campos se agregan desde la configuración de la tabla o del formulario con los controles de **nuevo campo**: elige un nombre y un tipo, y luego completa la configuración adicional que requiera ese tipo. Puedes agregar campos personalizados a cualquier tabla si tienes el permiso para hacerlo.
+
+Algunos tipos requieren configuración adicional antes de poder usarse:
+
+- **Relación** — elige la tabla relacionada a la que apunta el campo.
+- **Rollup** — elige el origen de los valores y cómo agregarlos.
+- **Detalle** — elige la tabla hija que contiene las líneas de detalle.
+- **Selección** y **Árbol** — define la lista de opciones; en los campos de árbol, organiza las opciones en su jerarquía.
+
+## Configurar un campo
+
+Cada campo tiene un panel de configuración, y su contenido varía según el tipo: los campos numéricos exponen el formato, los campos de opciones gestionan sus listas, los campos de relación apuntan a su tabla relacionada, y los campos de documento definen qué se exige del archivo adjunto. Abre el panel desde la misma configuración de tabla o formulario donde se creó el campo.
+
+## Cómo el tipo moldea la interfaz
+
+El tipo de campo lo acompaña en todas partes donde aparece:
+
+- Los **filtros rápidos** se adaptan al tipo: los campos de fecha filtran por rangos, los de selección filtran por sus opciones y los de relación filtran por registros vinculados. Consulta [Trabaja con tablas](/es/data/tables).
+- Los **widgets del formulario** corresponden al tipo: un campo de fecha abre un selector de fechas, un campo de selección muestra sus opciones y un campo de detalle renderiza una tabla de líneas editable. Consulta [Formularios y plantillas de formulario](/es/data/forms).
+
+<Tip>
+Prefiere un campo de selección o de árbol antes que texto libre siempre que los valores vengan de una lista conocida. Los valores consistentes hacen que filtrar, agrupar y reportar sea mucho más útil de lo que jamás será un campo de texto.
+</Tip>
+
+<Note>
+Los campos definen lo que un formulario *puede* mostrar; las [reglas de campo](/es/data/field-rules) definen cómo se *comporta* el formulario: ocultando secciones, exigiendo campos de forma condicional o validando la información antes de guardar.
+</Note>

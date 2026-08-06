@@ -1,0 +1,91 @@
+---
+title: Roles y permisos
+description: Controla qué puede ver y hacer cada persona con roles, permisos de tabla, acceso a nivel de registro y visibilidad del menú.
+icon: user-shield
+---
+
+Los roles son la forma de decidir qué puede ver y hacer cada persona del espacio de trabajo. Defines los roles una vez, se los asignas a los miembros y la aplicación aplica las reglas en todas partes: tablas, registros, funciones y el menú de **Programas**.
+
+## Gestionar roles
+
+Abre **Configuración → Rol** para ver la lista de **Roles Actuales**. Desde ahí puedes:
+
+- Hacer clic en **Nuevo** y luego en **Crear rol** para agregar un rol.
+- Usar **Permisos** en un rol para configurar qué permite.
+- Usar **Duplicar** para partir de un rol existente.
+- Usar **Eliminar** para quitar un rol que ya no necesites.
+
+Asigna los roles a las personas desde la lista del equipo — consulta [equipo e invitaciones](/es/admin/team-and-invitations).
+
+## Las capas de permisos
+
+Los permisos funcionan por capas, desde el acceso amplio a las tablas hasta los elementos individuales del menú.
+
+| Capa | Qué controla | Qué ven los usuarios |
+| --- | --- | --- |
+| Permisos de tabla | Por tabla, un rol recibe crear, leer, actualizar, eliminar, exportar e importar | Controles como **Nuevo**, **Exportar** e **Importar** solo aparecen cuando el rol tiene el permiso correspondiente |
+| Permisos a nivel de registro | Acceso otorgado o restringido para registros específicos | Los usuarios solo alcanzan los registros que tienen permitidos |
+| Capacidades del espacio de trabajo | Acciones a nivel de rol que habilitan funciones | Las funciones aparecen o funcionan solo para los roles que las tienen |
+| Visibilidad del menú | Qué roles ven cada elemento de **Programas** | Los elementos quedan ocultos para los roles sin acceso |
+
+### Permisos de tabla
+
+Para cada [tabla](/es/data/tables), un rol puede recibir crear, leer, actualizar, eliminar, exportar e importar. La interfaz sigue al permiso: quien no tenga el permiso de crear no verá el botón **Nuevo** en esa tabla, y **Exportar** e **Importar** solo aparecen para los roles que tengan esos permisos.
+
+### Permisos a nivel de registro
+
+Más allá de las tablas completas, el acceso se puede otorgar o restringir para registros específicos: útil cuando un equipo debe trabajar con una tabla pero solo ver sus propios registros.
+
+### Capacidades del espacio de trabajo
+
+Los roles también pueden llevar capacidades a nivel de espacio de trabajo que activan funciones y acciones administrativas. Entre los ejemplos verificados están:
+
+- Acceso a los chats de WhatsApp
+- Gestionar permisos
+- Gestionar roles
+- Eliminar usuarios
+- Editar el menú de **Programas**
+
+### Visibilidad del menú
+
+Cada elemento del [menú de Programas](/es/platform/programs-and-pages) se puede limitar a los roles que elijas desde la opción **Permisos** del elemento. Los elementos también se pueden configurar como editables o de solo lectura, para que un rol pueda leer una página sin modificarla.
+
+<Note>
+Aquí solo se listan los nombres de permisos verificados en el producto; tu espacio de trabajo puede definir más, según sus aplicaciones habilitadas y su plantilla.
+</Note>
+
+Los administradores además gestionan las invitaciones y la configuración del espacio de trabajo, que no están disponibles para otros roles.
+
+## Tareas frecuentes
+
+### Crear un rol y asignarle permisos
+
+<Steps>
+  <Step title="Crea el rol">
+    Abre **Configuración → Rol**, haz clic en **Nuevo** y luego en **Crear rol**.
+  </Step>
+  <Step title="Configura los permisos">
+    Usa **Permisos** en el rol nuevo para definir sus permisos de tabla, sus capacidades del espacio de trabajo y las restricciones a nivel de registro.
+  </Step>
+  <Step title="Asígnalo">
+    Asigna el rol a los miembros desde la lista del equipo. Consulta [equipo e invitaciones](/es/admin/team-and-invitations).
+  </Step>
+</Steps>
+
+### Restringir un elemento de Programas a un rol
+
+<Steps>
+  <Step title="Abre los permisos del elemento">
+    En el elemento de **Programas** que quieres restringir, abre su opción **Permisos**.
+  </Step>
+  <Step title="Elige quién lo ve">
+    Selecciona los roles que deben ver el elemento. Los demás no lo encontrarán en su menú.
+  </Step>
+  <Step title="Define el nivel de acceso">
+    Decide si esos roles pueden editar el elemento o usarlo en modo de solo lectura.
+  </Step>
+</Steps>
+
+<Tip>
+Parte de **Duplicar** cuando un rol nuevo sea una variante cercana de uno existente: ajusta las diferencias en lugar de reconstruir todos los permisos.
+</Tip>

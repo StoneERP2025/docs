@@ -1,0 +1,54 @@
+---
+title: "Conceptos básicos"
+description: "El modelo mental detrás de Fail Fast — desde tu espacio de trabajo hasta las tablas, los formularios y las reglas que los conectan."
+icon: "cubes"
+---
+
+Fail Fast se construye a partir de un conjunto pequeño de primitivas que se apilan de arriba hacia abajo. Una vez que las conoces, cualquier pantalla del producto se vuelve fácil de leer.
+
+## Los bloques de construcción
+
+<AccordionGroup>
+  <Accordion title="Espacio de trabajo">
+    Un espacio de trabajo representa una empresa. Todo lo demás — personas, páginas, datos, automatizaciones — vive dentro de él. Una misma cuenta puede pertenecer a varios espacios de trabajo, con un rol distinto en cada uno.
+  </Accordion>
+  <Accordion title="Miembros, invitados, roles y equipos">
+    Las personas se unen a un espacio de trabajo como miembros o como invitados. Los invitados tienen acceso de solo lectura a lo que se comparte con ellos y ven una interfaz reducida. Los roles y los equipos determinan qué puede ver y hacer cada persona — consulta [Roles y permisos](/es/admin/roles-and-permissions).
+  </Accordion>
+  <Accordion title="Programas">
+    El árbol de navegación de la barra lateral. Cada espacio de trabajo tiene su propio árbol de páginas, organizado y con permisos por elemento — consulta [Programas y páginas](/es/platform/programs-and-pages).
+  </Accordion>
+  <Accordion title="Páginas">
+    Pantallas basadas en bloques. Una página puede contener texto, tablas embebidas, formularios, reportes y tableros, compuestos con un editor de bloques — consulta [Construye páginas con bloques](/es/platform/block-editor).
+  </Accordion>
+  <Accordion title="Tablas">
+    Donde viven tus registros. Cada tabla tiene campos que definen su estructura, y la barra de herramientas te permite buscar, filtrar y ordenar — consulta [Tablas](/es/data/tables).
+  </Accordion>
+  <Accordion title="Vistas">
+    Distintas lentes sobre la misma tabla: Tabla, Tablero, Calendario, Galería y Dashboard. Cada vista puede tener sus propios filtros y su propia disposición.
+  </Accordion>
+  <Accordion title="Formularios y plantillas de formulario">
+    Los formularios son la forma en que se crean y editan los registros. Una tabla puede tener varias plantillas de formulario, de modo que procesos distintos capturen campos distintos sobre los mismos datos.
+  </Accordion>
+  <Accordion title="Workflows y reglas de campo">
+    La automatización vive en dos niveles: los [workflows](/es/automation/workflows) reaccionan a eventos de todo tu espacio de trabajo, mientras que las reglas de campo hacen dinámicos los formularios individuales — mostrando, ocultando, validando o calculando campos a medida que las personas escriben.
+  </Accordion>
+</AccordionGroup>
+
+## Los módulos son configuraciones, no aplicaciones
+
+CRM, ventas, inventarios, finanzas, transporte: estos módulos de negocio no son aplicaciones separadas. Son configuraciones de las primitivas anteriores: páginas en Programas, construidas sobre tablas, formularios, vistas y tableros. Por eso dos espacios de trabajo pueden verse completamente distintos aunque funcionen sobre la misma plataforma.
+
+Algunas funciones sí tienen pantallas dedicadas fuera de Programas: POS, Marketplace, Calendario, Chats y las herramientas de correo.
+
+## Capas de permisos
+
+Tres capas deciden qué experimenta cada persona:
+
+1. **Permisos de menú** — qué elementos ves en el árbol de Programas. Un elemento oculto para tu rol simplemente no aparece.
+2. **Permisos de registro** — qué puedes hacer con los datos: crear, leer, actualizar, eliminar, exportar e importar, controlado por tabla.
+3. **Capacidades del espacio de trabajo** — facultades de nivel administrador gestionadas a través de los roles, como invitar compañeros o cambiar la configuración.
+
+## La disponibilidad varía
+
+Lo que ve cada miembro depende de las aplicaciones habilitadas en el espacio de trabajo, de la plantilla de la empresa y de su rol y permisos. Cuando esta documentación dice que un módulo existe "si está habilitado para tu espacio de trabajo", se refiere a este mecanismo.

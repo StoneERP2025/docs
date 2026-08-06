@@ -1,0 +1,75 @@
+---
+title: "Visión general de los módulos de negocio"
+description: "Cómo Fail Fast entrega CRM, ventas, compras, inventarios y finanzas como páginas dentro de tu espacio de trabajo"
+icon: "briefcase"
+---
+
+Fail Fast entrega sus módulos de negocio — CRM, ventas, compras, inventarios, finanzas y más — como conjuntos de páginas de **Programas** construidas sobre las primitivas centrales de la plataforma: tablas, formularios, vistas y tableros. No hay una aplicación aparte que instalar por cada módulo. Cuando un módulo está habilitado en tu espacio de trabajo, sus páginas y tablas aparecen en tu menú de **Programas** junto a todo lo demás que usa tu empresa.
+
+## Cómo funcionan los módulos
+
+Todo módulo de negocio sigue el mismo patrón:
+
+- Las **tablas** guardan los registros del módulo: cotizaciones, órdenes de compra, movimientos de inventario, pólizas.
+- Los **formularios** crean y editan esos registros, con los campos y las validaciones que tu espacio de trabajo tenga configurados.
+- Las **vistas** te permiten buscar, filtrar, ordenar y exportar los mismos registros con la disposición que le sirva a cada tarea.
+- Los **botones de acción** en las páginas correspondientes ejecutan operaciones como confirmar un documento o generar el siguiente del flujo.
+
+Como todo se construye sobre las mismas primitivas, lo que aprendes en un módulo te sirve en los demás. Si sabes filtrar una tabla y diligenciar un formulario, ya sabes trabajar en cualquier módulo.
+
+Dos módulos agregan pantallas dedicadas sobre sus páginas de **Programas**: **POS** ofrece una pantalla de venta rápida para tiendas y mostradores, y **Marketplace** ofrece una forma visual de catálogo y carrito para construir documentos comerciales.
+
+<Info>
+Qué módulos ves depende de las aplicaciones habilitadas en tu espacio de trabajo, de la plantilla de tu empresa y de tu rol y permisos. Si una página descrita en estas guías no aparece en tu menú de **Programas**, pregúntale a tu administrador si el módulo está habilitado para ti.
+</Info>
+
+## Módulos de operaciones
+
+<CardGroup cols={2}>
+  <Card title="CRM e interesados" icon="address-book" href="/es/operations/crm">
+    Registros maestros compartidos de personas y empresas, además de leads, oportunidades, campañas y tickets.
+  </Card>
+  <Card title="Cotizaciones y órdenes de venta" icon="handshake" href="/es/operations/sales">
+    De la orden al cobro: cotizaciones, órdenes, facturas de cliente, listas de precios y cuentas por cobrar.
+  </Card>
+  <Card title="Compras" icon="basket-shopping" href="/es/operations/purchasing">
+    De la compra al pago: órdenes de compra, entradas de mercancía, facturas de proveedor y cuentas por pagar.
+  </Card>
+  <Card title="Inventarios" icon="boxes-stacked" href="/es/operations/inventory">
+    Productos y variantes, bodegas, movimientos, lotes, seriales y costo promedio.
+  </Card>
+  <Card title="Punto de venta" icon="cash-register" href="/es/operations/pos">
+    Una pantalla dedicada de venta rápida con control completo de sesión de caja y cierre de sucursal.
+  </Card>
+  <Card title="Marketplace" icon="store" href="/es/operations/marketplace">
+    Construye cotizaciones, órdenes y facturas desde un catálogo visual de productos y un carrito.
+  </Card>
+  <Card title="Registros de seguros y jurídicos" icon="scale-balanced" href="/es/operations/insurance-and-legal">
+    Registra pólizas de seguros y procesos jurídicos con sus catálogos de apoyo.
+  </Card>
+</CardGroup>
+
+## Finanzas y transporte
+
+<CardGroup cols={2}>
+  <Card title="Tesorería" icon="building-columns" href="/es/finance/treasury">
+    Registra ingresos y pagos, y liquida los saldos que generan tus operaciones.
+  </Card>
+  <Card title="Contabilidad" icon="calculator" href="/es/finance/accounting">
+    El libro donde los documentos operativos registran sus asientos contables.
+  </Card>
+  <Card title="Transporte" icon="truck" href="/es/transport/overview">
+    Gestiona las operaciones de transporte, la facturación y liquidación, y el monitoreo de flota.
+  </Card>
+</CardGroup>
+
+## Cómo encaja todo
+
+El hilo conductor de todos los módulos es que los documentos operativos alimentan las finanzas:
+
+- Las **ventas** generan saldos de cuentas por cobrar que recaudas a través de Tesorería.
+- Las **compras** generan saldos de cuentas por pagar que pagas a través de Tesorería.
+- Las ventas de **POS** mueven inventario y dinero de la sesión de caja con cada tiquete.
+- Todo se registra en la **contabilidad**, para que tus libros reflejen lo que realmente hizo la operación.
+
+Empieza por el módulo más cercano a tu trabajo diario y sigue sus conexiones desde ahí.

@@ -1,0 +1,59 @@
+---
+title: "RNDC y monitoreo de flota"
+description: "Reporta los despachos al registro RNDC del Ministerio de Transporte y sigue los viajes con los eventos de tus proveedores GPS."
+icon: "satellite-dish"
+---
+
+Mientras tus camiones están en la vía ocurren dos cosas: el despacho debe reportarse al registro nacional, y tú quieres saber dónde va realmente el viaje. Fail Fast maneja ambas con workflows: el reporte al RNDC y los proveedores GPS son nodos de workflow que ensamblas según tu operación.
+
+## Reporte al RNDC
+
+Los despachos — tus remesas y manifiestos — se reportan al **RNDC** (Registro Nacional de Despachos de Carga), el registro del Ministerio de Transporte, con el nodo de workflow **RNDC**. Las respuestas del registro quedan guardadas en tus registros, así puedes verificar el estado de registro de cada despacho y actuar sobre los rechazos.
+
+## Monitoreo de flota
+
+La información del viaje llega desde los proveedores GPS y de rastreo conectados a través de nodos de workflow:
+
+- **Monitor** — integración de rastreo y despacho.
+- **Satrack** — obtiene la última ubicación de un vehículo o sus eventos en un rango de fechas.
+- **Integrador Transporte** — un nodo genérico para otros proveedores de rastreo de transporte.
+
+Los manifiestos de viaje y los eventos del viaje — ubicaciones e hitos — llegan por estos nodos, y las alertas en tiempo real muestran los eventos nuevos en las tablas correspondientes, así los operadores ven el movimiento a medida que ocurre sin refrescar la página.
+
+Los eventos del viaje también pueden llevar conceptos de liquidación. Cuando lo hacen, los valores que representan alimentan la liquidación del transportador — consulta [Facturación y liquidación de transporte](/es/transport/billing-and-settlement).
+
+## Cómo configurarlo
+
+La configuración se hace en Workflows: construyes workflows que usan los nodos de RNDC y de los proveedores, con credenciales para tus cuentas de proveedor. Consulta [Nodos](/es/automation/nodes) para saber cómo se configuran los nodos de workflow y [Credenciales](/es/automation/credentials) para guardar de forma segura el acceso a tus proveedores.
+
+<Steps>
+  <Step title="Configura un workflow de rastreo">
+    En Workflows, crea un workflow que use el nodo de tu proveedor — **Monitor**, **Satrack** o **Integrador Transporte** — y conéctalo con las credenciales de tu cuenta. El workflow trae los manifiestos y los eventos de viaje a tus tablas de transporte.
+  </Step>
+  <Step title="Revisa los eventos de un viaje">
+    Abre los registros del viaje en tu menú de Programas y revisa sus eventos: ubicaciones e hitos reportados por el proveedor. Las alertas en tiempo real destacan los eventos nuevos apenas llegan, y las respuestas del RNDC en los documentos de despacho confirman el estado de registro.
+  </Step>
+</Steps>
+
+<Note>
+Los proveedores de rastreo disponibles para ti dependen de las integraciones de tu espacio de trabajo. Si falta el nodo de un proveedor, consulta con tu administrador.
+</Note>
+
+## Limitaciones
+
+- Los eventos de viaje solo llegan de los proveedores que hayas conectado mediante workflows con credenciales válidas.
+- El estado de registro en el RNDC refleja las respuestas guardadas del registro: verifica el estado en los documentos de despacho en lugar de asumir que un reporte fue exitoso.
+
+## Guías relacionadas
+
+<CardGroup cols={2}>
+  <Card title="Nodos" icon="circle-nodes" href="/es/automation/nodes">
+    Los nodos de workflow detrás del reporte al RNDC y del rastreo GPS.
+  </Card>
+  <Card title="Credenciales" icon="key" href="/es/automation/credentials">
+    Guarda de forma segura las credenciales de tus cuentas de proveedor.
+  </Card>
+  <Card title="Facturación y liquidación" icon="file-invoice-dollar" href="/es/transport/billing-and-settlement">
+    Cómo los conceptos de liquidación de los eventos del viaje alimentan la liquidación del transportador.
+  </Card>
+</CardGroup>

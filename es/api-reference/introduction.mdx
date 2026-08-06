@@ -1,0 +1,70 @@
+---
+title: "Introducción"
+description: "Trabaja con los datos de tu espacio de trabajo de Fail Fast a través de una API REST"
+icon: "code"
+---
+
+La API de Fail Fast es una API REST que le da a las herramientas externas acceso a los mismos registros con los que trabaja tu equipo en la aplicación: interesados, cotizaciones, órdenes, facturas, inventario, registros de tesorería, datos de CRM y tareas. Úsala para conectar plataformas de integración como n8n y Zapier, o tus propios servicios.
+
+## URL base
+
+Todos los endpoints se sirven desde:
+
+```
+https://api.failfast.ai
+```
+
+## Autenticación
+
+Cada solicitud necesita una clave API del espacio de trabajo enviada como bearer token:
+
+```
+Authorization: Bearer failfast_...
+```
+
+Las claves se crean en la aplicación, en **Configuración → Espacio de Trabajo → Claves API**. Consulta [Autenticación](/es/api-reference/authentication) para conocer los detalles, los límites de tasa y la gestión de claves.
+
+## Envoltura de respuesta
+
+Toda respuesta — exitosa o fallida — usa la misma envoltura JSON:
+
+```json
+{
+  "message": "Human-readable outcome",
+  "error": false,
+  "data": { }
+}
+```
+
+- `message` describe lo que ocurrió.
+- `error` es `false` cuando la operación fue exitosa y `true` cuando falló.
+- `data` transporta el contenido: un registro, una lista paginada o los detalles del error.
+
+El código de estado HTTP sigue señalando la clase de resultado (2xx éxito, 4xx error del cliente). Consulta [Errores](/es/api-reference/errors).
+
+## Alcance de esta referencia
+
+Esta referencia documenta las entidades de negocio centrales: la superficie estable y curada, pensada para integraciones externas. Cada entidad admite las operaciones estándar: listar, consultar, crear, actualizar y eliminar.
+
+<Note>
+Las eliminaciones son lógicas: `DELETE` marca el registro como eliminado en lugar de borrarlo, y el registro se puede recuperar desde la aplicación.
+</Note>
+
+Tu clave API actúa sobre un solo espacio de trabajo y hereda los permisos del miembro al que pertenece. Las solicitudes contra entidades que ese miembro no puede leer o modificar se rechazan, y los módulos que no están habilitados en el espacio de trabajo no contienen datos.
+
+## Páginas relacionadas
+
+<CardGroup cols={2}>
+  <Card title="Autenticación" icon="key" href="/es/api-reference/authentication">
+    Claves API, límites de tasa y gestión de claves.
+  </Card>
+  <Card title="Paginación y filtros" icon="filter" href="/es/api-reference/pagination-and-filtering">
+    Recorre listas por páginas y acota los resultados con filtros por campo.
+  </Card>
+  <Card title="Errores" icon="triangle-exclamation" href="/es/api-reference/errors">
+    Códigos de estado y la envoltura de error.
+  </Card>
+  <Card title="Claves API en la aplicación" icon="gear" href="/es/admin/api-keys">
+    Cómo los administradores crean y revocan claves.
+  </Card>
+</CardGroup>

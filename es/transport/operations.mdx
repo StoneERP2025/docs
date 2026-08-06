@@ -1,0 +1,64 @@
+---
+title: "Operaciones de transporte"
+description: "Opera la cadena diaria de transporte: crea órdenes de servicio, asigna órdenes de carga, genera remesas y arma manifiestos."
+icon: "route"
+---
+
+Las operaciones de transporte son el trabajo diario de mover carga: recibir la solicitud del cliente, asignar vehículos, generar los documentos de despacho y despachar el viaje. Cada paso de la cadena se construye sobre el anterior, y las validaciones impiden que avancen viajes incompletos o que no cumplen.
+
+## Dónde encontrarlo
+
+Las páginas operativas — órdenes de servicio, órdenes de carga, remesas y manifiestos — aparecen en la sección **Programas** de la barra lateral cuando el módulo de transporte está habilitado en tu espacio de trabajo.
+
+## El flujo diario
+
+<Steps>
+  <Step title="Crea la orden de servicio">
+    Registra la solicitud del cliente con sus detalles: productos y carga, origen y destino, y los precios acordados. Las validaciones revisan el cliente, los vehículos y las pólizas requeridas antes de que la orden pueda avanzar. Haz seguimiento al avance y al estado de la orden a medida que progresa la cadena.
+  </Step>
+  <Step title="Crea las órdenes de carga">
+    Asigna vehículos o contenedores a la orden de servicio mediante órdenes de carga, decidiendo cómo se distribuye la carga.
+  </Step>
+  <Step title="Genera las remesas">
+    Genera las remesas de la carga: un documento de despacho por viaje o por carga. Se admiten correcciones y cargos adicionales cuando la realidad difiere del plan, y puedes registrar los precintos del despacho.
+  </Step>
+  <Step title="Arma el manifiesto">
+    Crea el manifiesto que vincula las remesas con el vehículo y el conductor que hacen el viaje. Los totales del manifiesto se calculan a partir de los conceptos de liquidación. Desde el manifiesto puedes crear anticipos al transportador: se convierten en anticipos a proveedores dentro de cuentas por pagar y se cruzan después contra la liquidación del transportador.
+  </Step>
+</Steps>
+
+## Tarifas
+
+Las tarifas de flete se resuelven automáticamente desde tus tablas configuradas de rutas y precios: dada la ruta y la carga, el sistema determina el flete acordado, así los operadores no tarifan cada viaje a mano.
+
+## Validaciones que bloquean el avance
+
+<Warning>
+Las validaciones de pólizas, vehículo y conductor impiden que un documento avance hasta que se resuelvan. Una póliza de seguro vencida, por ejemplo, detiene la cadena en ese punto. Mantén al día los documentos y las pólizas de los vehículos en [Seguros y jurídico](/es/operations/insurance-and-legal) para evitar demoras en el despacho.
+</Warning>
+
+## Cómo continúan las operaciones
+
+- **Pólizas** — las órdenes de servicio verifican las pólizas de seguro requeridas; consulta [Seguros y jurídico](/es/operations/insurance-and-legal).
+- **Cuentas por pagar** — los anticipos creados desde el manifiesto se convierten en anticipos a proveedores, saldados contra la legalización del transportador.
+- **RNDC** — las remesas y los manifiestos se reportan al registro del Ministerio de Transporte; consulta [RNDC y monitoreo de flota](/es/transport/fleet-monitoring).
+- **Facturación y liquidación** — una vez ejecutado el viaje, los documentos alimentan ambas ramas de liquidación; consulta [Facturación y liquidación de transporte](/es/transport/billing-and-settlement).
+
+## Limitaciones
+
+- Un documento no puede avanzar mientras sus validaciones fallen: resuelve primero el problema señalado de cliente, vehículo, conductor o póliza.
+- Los valores de flete vienen de las tablas configuradas de rutas y precios; las rutas sin tarifas deben configurarse antes de que las órdenes sobre ellas puedan resolver precios.
+
+## Guías relacionadas
+
+<CardGroup cols={2}>
+  <Card title="Facturación y liquidación" icon="file-invoice-dollar" href="/es/transport/billing-and-settlement">
+    Lo que ocurre después del viaje: facturar al cliente y liquidar al transportador.
+  </Card>
+  <Card title="RNDC y monitoreo de flota" icon="satellite-dish" href="/es/transport/fleet-monitoring">
+    Reporta los despachos y sigue el viaje en la vía.
+  </Card>
+  <Card title="Seguros y jurídico" icon="shield-halved" href="/es/operations/insurance-and-legal">
+    Las pólizas que revisan tus validaciones antes de que un viaje pueda avanzar.
+  </Card>
+</CardGroup>

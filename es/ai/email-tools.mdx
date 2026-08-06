@@ -1,0 +1,48 @@
+---
+title: Herramientas de correo
+description: Conecta cuentas de envío, diseña plantillas HTML con datos de tus registros y envía correos desde tu espacio de trabajo.
+icon: envelope
+---
+
+Fail Fast incluye tres herramientas de correo que, juntas, cubren el envío de correos desde tu espacio de trabajo: una para conectar las cuentas desde las que envías, otra para diseñar plantillas y otra para redactar y enviar. Cuando están habilitadas en tu espacio de trabajo, cada una se abre desde su propia entrada en el menú de Programas — consulta [Programas y páginas](/es/platform/programs-and-pages) para ver cómo se organizan esas entradas.
+
+<Tabs>
+  <Tab title="Configuración de Correo">
+    **Configuración de Correo** es donde conectas las cuentas de correo desde las que envía tu espacio de trabajo. Puedes conectar una cuenta de dos formas:
+
+    - **SMTP** — ingresa directamente los parámetros de correo saliente de la cuenta.
+    - **Inicio de sesión con OAuth** — conéctate iniciando sesión en el proveedor de correo y autorizando a Fail Fast.
+
+    Una vez configurada la cuenta, las demás herramientas de correo pueden enviar a través de ella.
+  </Tab>
+  <Tab title="Email Editor">
+    **Email Editor** es donde diseñas plantillas de correo en HTML. Construye una sola vez la disposición y el contenido del mensaje, y reutilízalo cada vez que salga ese tipo de correo.
+
+    Las plantillas admiten **comodines**: marcadores que insertas en la plantilla y que se reemplazan con datos del registro cuando se envía el correo. Así una sola plantilla produce correos personalizados: el mensaje de cada destinatario se completa con los valores del registro correspondiente.
+  </Tab>
+  <Tab title="Enviador de Email">
+    **Enviador de Email** es donde redactas y envías los correos. Elige la cuenta configurada desde la que quieres enviar, selecciona una de tus plantillas (o escribe el mensaje), indica el destinatario y envía.
+  </Tab>
+</Tabs>
+
+## De cero a enviado
+
+<Steps>
+  <Step title="Configura una cuenta de envío">
+    En **Configuración de Correo**, conecta la cuenta desde la que debe enviar tu espacio de trabajo, con parámetros SMTP o con inicio de sesión OAuth ante el proveedor.
+  </Step>
+  <Step title="Diseña una plantilla">
+    En **Email Editor**, construye la plantilla HTML del mensaje. Inserta comodines donde el correo deba mostrar datos del registro, como el nombre del destinatario o los detalles del registro al que se refiere el correo.
+  </Step>
+  <Step title="Redacta y envía">
+    En **Enviador de Email**, elige la cuenta configurada y la plantilla, indica el destinatario y envía. Los comodines se completan con los datos del registro al salir.
+  </Step>
+</Steps>
+
+<Note>
+Estas herramientas no son la única fuente de correo en Fail Fast. Los workflows y las notificaciones también pueden producir correos, según cómo esté configurado tu espacio de trabajo — consulta la [Referencia de nodos](/es/automation/nodes) para ver qué pueden hacer los workflows.
+</Note>
+
+<Tip>
+Mantén las plantillas generales y deja que los comodines hagan la personalización. Una plantilla bien construida con comodines vale más que mantener plantillas casi idénticas para cada pequeña variación.
+</Tip>

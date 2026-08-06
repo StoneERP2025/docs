@@ -1,0 +1,67 @@
+---
+title: Vistas
+description: Mira la misma tabla como cuadrícula, tablero kanban, calendario, galería o dashboard — cada vista con su propia configuración guardada.
+icon: table-columns
+---
+
+Una tabla puede tener varias vistas. Cada vista es una forma distinta de mirar los mismos registros, y cada una conserva su propia disposición y configuración guardada, incluidos filtros, ordenamiento y campos visibles. Construye una vista para triaje, otra para planeación y otra para reportes, todas sobre los mismos datos.
+
+## Tipos de vista
+
+<AccordionGroup>
+  <Accordion title="Tabla">
+    Una cuadrícula de filas y columnas parecida a una hoja de cálculo. Es la vista de trabajo por excelencia para navegar y editar registros, y el único tipo de vista que admite **Agrupar por** para plegar filas en grupos. Consulta [Trabaja con tablas](/es/data/tables) para conocer la barra de herramientas completa.
+  </Accordion>
+  <Accordion title="Tablero">
+    Un tablero kanban con una columna por cada valor del campo que elijas: estado, etapa o responsable, por ejemplo. Los registros aparecen como tarjetas y arrastras las tarjetas entre columnas para cambiar el valor de ese campo. Ideal para embudos y procesos que avanzan por etapas.
+  </Accordion>
+  <Accordion title="Calendario">
+    Registros con fechas ubicados en un calendario. Úsala para todo lo que esté programado — citas, entregas, fechas límite — y ver la semana o el mes de un vistazo.
+  </Accordion>
+  <Accordion title="Galería">
+    Tarjetas visuales dispuestas en una cuadrícula. Las vistas de galería brillan cuando los registros tienen imágenes o cuando el reconocimiento visual importa; los catálogos de productos son el caso clásico.
+  </Accordion>
+  <Accordion title="Dashboard">
+    Gráficos e indicadores calculados sobre los datos de la tabla. Una vista de dashboard mantiene el análisis junto a los registros que describe. Para reportes de todo el espacio de trabajo, consulta [Tableros y reportes](/es/reporting/dashboards-and-reports).
+  </Accordion>
+</AccordionGroup>
+
+## Gestionar vistas
+
+Las vistas aparecen como pestañas sobre la tabla.
+
+- **Agregar una vista** — selecciona **Agregar vista** y elige el tipo. Las vistas de tablero, calendario, galería y dashboard piden configuración al crearse, como qué campo determina las columnas o qué campo contiene las fechas.
+- **Renombrar** — renombra una vista directamente desde su pestaña.
+- **Reordenar** — arrastra las pestañas para reorganizarlas.
+- **Elegir un ícono** — dale un ícono a cada vista para distinguir las pestañas fácilmente.
+
+La pestaña de cada vista también tiene un menú con:
+
+| Acción | Qué hace |
+| --- | --- |
+| **Duplicar** | Copia la vista con toda su configuración |
+| **Configuración** | Reabre las opciones de configuración — disponible para vistas de tablero, calendario, galería y dashboard |
+| **Eliminar** | Quita la vista |
+
+<Tip>
+Duplica una vista existente antes de experimentar con filtros nuevos o una disposición distinta. Conservas la original intacta y puedes eliminar la copia si el experimento no funciona.
+</Tip>
+
+## Cada vista recuerda su propia configuración
+
+Una vista guarda sus propios filtros, su ordenamiento y sus campos visibles. Cambiar el filtro en una vista no afecta a ninguna otra vista de la misma tabla, así que una tabla compartida puede servir a varios equipos a la vez, cada uno trabajando desde la vista que le sirve.
+
+<Note>
+Las vistas viven en la tabla dentro de una página. Cómo se ubican las tablas en las páginas se cubre en [Editor de bloques](/es/platform/block-editor).
+</Note>
+
+## Páginas relacionadas
+
+<CardGroup cols={2}>
+  <Card title="Trabaja con tablas" icon="table" href="/es/data/tables">
+    Filtrado, ordenamiento, agrupación y el resto de la barra de herramientas.
+  </Card>
+  <Card title="Tableros y reportes" icon="chart-line" href="/es/reporting/dashboards-and-reports">
+    Reportes a nivel de espacio de trabajo, más allá de una sola tabla.
+  </Card>
+</CardGroup>

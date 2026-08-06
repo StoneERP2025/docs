@@ -1,0 +1,64 @@
+---
+title: Ejecuciones e historial
+description: Revisa cada corrida de un workflow, inspecciona lo que produjo cada nodo y depura las fallas.
+icon: clock-rotate-left
+---
+
+Cada vez que un workflow se ejecuta — por un clic manual, un horario, un webhook o cualquier otro [disparador](/es/automation/triggers) — queda registrada una ejecución. La pestaña **Ejecuciones** del editor de workflows muestra este historial, así siempre sabes qué corrió, cuándo y cómo salió.
+
+## La pestaña Ejecuciones
+
+Abre un workflow y cambia de **Editor** a **Ejecuciones**. Cada corrida aparece con su estado, su duración y sus tiempos.
+
+| Estado | Significado |
+|---|---|
+| Exitosa | La corrida se completó y todos los nodos terminaron sin errores. |
+| En espera | La corrida está pausada, esperando algo para poder continuar. |
+| En ejecución | La corrida está en curso en este momento. |
+| Error | La corrida falló: al menos un nodo tuvo un error. |
+
+Si el workflow nunca se ha ejecutado, la pestaña muestra un estado vacío que te invita a ejecutarlo para ver aquí las corridas.
+
+## Inspeccionar una corrida
+
+Selecciona una corrida para abrirla. Puedes recorrer el workflow nodo por nodo y ver la salida que produjo cada uno: los datos que recibió, qué hizo con ellos y qué entregó al siguiente. En las corridas fallidas, el nodo que falló muestra el error, así ves exactamente dónde y por qué se detuvo.
+
+Eso convierte a las ejecuciones en la principal superficie de depuración de los workflows: en vez de adivinar, miras datos reales de una corrida real.
+
+## Depurar un workflow que falla
+
+<Steps>
+  <Step title="Ejecuta el workflow">
+    Selecciona **Ejecutar workflow** en el editor para producir una corrida nueva.
+  </Step>
+  <Step title="Abre la corrida fallida">
+    Cambia a la pestaña **Ejecuciones** y selecciona la corrida marcada con Error.
+  </Step>
+  <Step title="Inspecciona las salidas de arriba hacia abajo">
+    Sigue la corrida desde el disparador hacia abajo. Revisa la salida de cada nodo hasta llegar al que falló y lee su error. Con frecuencia el problema real está un nodo antes: un nodo previo entregó los datos con una forma que el nodo fallido no esperaba.
+  </Step>
+  <Step title="Corrige la configuración del nodo">
+    Vuelve a la pestaña **Editor** y ajusta la configuración del nodo responsable.
+  </Step>
+  <Step title="Guarda">
+    Selecciona **Guardar**. Este paso importa — mira el consejo de abajo.
+  </Step>
+  <Step title="Ejecuta de nuevo">
+    Selecciona **Ejecutar workflow** una vez más y confirma que la nueva corrida sea exitosa.
+  </Step>
+</Steps>
+
+<Tip>
+Las corridas siempre usan la última versión guardada del workflow. Si corriges un nodo pero olvidas **Guardar**, la siguiente corrida repite la falla anterior, y es fácil confundir eso con que la corrección no funcionó. Cuando una corrida no refleje tu cambio, revisa primero la hora del último guardado en el encabezado.
+</Tip>
+
+## Páginas relacionadas
+
+<CardGroup cols={2}>
+  <Card title="Workflows" icon="diagram-project" href="/es/automation/workflows">
+    El editor, la lista de workflows y cómo construir tu primera automatización.
+  </Card>
+  <Card title="Referencia de nodos" icon="circle-nodes" href="/es/automation/nodes">
+    Qué hace cada nodo de acción — útil al leer las salidas de una corrida.
+  </Card>
+</CardGroup>
