@@ -1,0 +1,46 @@
+---
+title: "Errors"
+description: "How the API reports failures"
+icon: "triangle-exclamation"
+---
+
+Failures return the same `{message, error, data}` envelope as successes, with `error: true` and an HTTP status code that signals the failure class.
+
+```json
+{
+  "message": "Validation failed",
+  "error": true,
+  "data": {
+    "detail": "..."
+  }
+}
+```
+
+## Status codes
+
+| Status | Meaning |
+| --- | --- |
+| `400` | Validation failed — `data` describes the invalid fields |
+| `401` | Missing, invalid, expired, or disabled API key |
+| `403` | The key's member lacks permission for this entity or record |
+| `404` | Record not found in the key's workspace |
+| `409` | Conflict — for example, deleting a record that still has active related records; `data.blocking` lists them |
+| `429` | Rate limit exceeded — retry after the window resets |
+
+## Deletion conflicts
+
+`DELETE` performs a logical delete. If active related records depend on the record, the API refuses with `409` and lists the blocking records so you can resolve them first:
+
+```json
+{
+  "message": "Cannot delete: active related records exist.",
+  "error": true,
+  "data": {
+    "blocking": []
+  }
+}
+```
+
+## Rate limiting
+
+`429` responses mean the key exhausted its hourly window. Check the `X-RateLimit-Remaining` and `X-RateLimit-Reset` headers on previous responses to pace your requests — see [Authentication](/api-reference/authentication).

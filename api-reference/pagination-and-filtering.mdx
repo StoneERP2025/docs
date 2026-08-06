@@ -1,0 +1,70 @@
+---
+title: "Pagination and filtering"
+description: "Page through lists, choose fields, sort, and filter results"
+icon: "filter"
+---
+
+All list endpoints share the same pagination, sorting, field-selection, and filtering conventions.
+
+## Pagination
+
+Lists are paginated with two query parameters:
+
+| Parameter | Meaning | Default |
+| --- | --- | --- |
+| `page` | Page number | `1` |
+| `take` | Results per page (maximum 200) | `20` |
+
+`take=all` returns the maximum page size in a single page.
+
+A paginated response's `data` contains:
+
+```json
+{
+  "count": 137,
+  "next": "https://api.failfast.ai/order/sales_quote/?page=3",
+  "previous": "https://api.failfast.ai/order/sales_quote/?page=1",
+  "results": []
+}
+```
+
+## Field selection
+
+Pass `fields` with a comma-separated list to return only the fields you need:
+
+```
+GET /inventory/product/?fields=id,name,brand
+```
+
+## Sorting
+
+Pass `sort` with comma-separated field names. Prefix a field with `-` for descending order:
+
+```
+GET /order/sales_quote/?sort=-created_at,customer
+```
+
+## Filtering
+
+Filter lists with `field__operator=value` query parameters. Multiple filters combine with AND by default.
+
+| Operator | Meaning | Example |
+| --- | --- | --- |
+| `__exact` | Equals | `status__exact=active` |
+| `__iexact` | Equals, case-insensitive | `name__iexact=acme` |
+| `__icontains` | Contains, case-insensitive | `name__icontains=cement` |
+| `__in` | In a comma-separated set | `status__in=draft,sent` |
+| `__gt` / `__gte` | Greater than / or equal | `total__gte=1000` |
+| `__lt` / `__lte` | Less than / or equal | `total__lt=5000` |
+| `__startswith` | Starts with | `code__startswith=INV` |
+| `__range` | Between two values | `created_at__range=2026-01-01,2026-01-31` |
+| `__isnull` | Is null / not null | `approved_at__isnull=true` |
+
+Two prefixes modify how a condition combines:
+
+- `or__` — combine the condition with OR instead of AND: `or__status__exact=draft`
+- `not__` — negate the condition: `not__status__exact=cancelled`
+
+<Note>
+Filters address the fields of the entity you are querying, including related fields with the `related__field` form where the entity exposes them. Filtering on a field the entity does not have returns a validation error.
+</Note>

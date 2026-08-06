@@ -1,0 +1,47 @@
+---
+title: "Authentication"
+description: "Authenticate requests with a workspace API key"
+icon: "key"
+---
+
+The API authenticates with workspace API keys sent as bearer tokens.
+
+## Send your key
+
+Include the key in the `Authorization` header of every request:
+
+```bash
+curl https://api.failfast.ai/order/sales_quote/ \
+  --header "Authorization: Bearer failfast_your_api_key"
+```
+
+Keys start with the `failfast_` prefix. A missing, invalid, expired, or disabled key returns `401` with the standard [error envelope](/api-reference/errors).
+
+## Get a key
+
+API keys are created in the app: open **Settings → Workspace → API Keys** and choose **New API key**. The key value is shown once at creation — copy it immediately and store it securely. See [API keys](/admin/api-keys) for the full workflow.
+
+Keys can be given an expiration date, disabled, and deleted. Deleting a key revokes it immediately.
+
+<Warning>
+Treat API keys like passwords. Anyone holding the key can read and modify workspace data with the permissions of the member the key belongs to. Never commit keys to code repositories or share them in plain text.
+</Warning>
+
+## Workspace and permission scope
+
+Each key is bound to one workspace and to the member who created it:
+
+- Requests only see that workspace's data.
+- The member's role and record permissions apply — a key cannot read or modify entities its member cannot.
+
+## Rate limits
+
+Requests are rate-limited per key — by default 1,000 requests per hour. Every response includes the current state:
+
+| Header | Meaning |
+| --- | --- |
+| `X-RateLimit-Limit` | Requests allowed in the current window |
+| `X-RateLimit-Remaining` | Requests left in the window |
+| `X-RateLimit-Reset` | When the window resets |
+
+When the limit is exceeded, requests return `429` until the window resets.

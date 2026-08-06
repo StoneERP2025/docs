@@ -1,33 +1,70 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: "Introduction"
+description: "Work with your Fail Fast workspace data over a REST API"
+icon: "code"
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+The Fail Fast API is a REST API that gives external tools access to the same records your team works with in the app — stakeholders, quotes, orders, invoices, inventory, treasury records, CRM data, and tasks. Use it to connect integration platforms like n8n and Zapier or your own custom services.
 
-## Welcome
+## Base URL
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+All endpoints are served from:
 
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+```
+https://api.failfast.ai
+```
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+Every request needs a workspace API key sent as a bearer token:
+
+```
+Authorization: Bearer failfast_...
+```
+
+Keys are created in the app under **Settings → Workspace → API Keys**. See [Authentication](/api-reference/authentication) for details, rate limits, and key management.
+
+## Response envelope
+
+Every response — success or failure — uses the same JSON envelope:
 
 ```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+{
+  "message": "Human-readable outcome",
+  "error": false,
+  "data": { }
+}
 ```
+
+- `message` describes what happened.
+- `error` is `false` on success and `true` on failure.
+- `data` carries the payload: a record, a paginated list, or error details.
+
+The HTTP status code still signals the outcome class (2xx success, 4xx client error). See [Errors](/api-reference/errors).
+
+## Scope of this reference
+
+This reference documents the core business entities — the stable, curated surface intended for external integrations. Each entity supports the standard operations: list, retrieve, create, update, and delete.
+
+<Note>
+Deletes are logical: `DELETE` marks the record as deleted instead of removing it, and the record can be recovered from the app.
+</Note>
+
+Your API key acts on one workspace and inherits the permissions of the member it belongs to. Requests against entities the member cannot read or modify are rejected, and modules that are not enabled for the workspace hold no data.
+
+## Related pages
+
+<CardGroup cols={2}>
+  <Card title="Authentication" icon="key" href="/api-reference/authentication">
+    API keys, rate limits, and key management.
+  </Card>
+  <Card title="Pagination and filtering" icon="filter" href="/api-reference/pagination-and-filtering">
+    Page through lists and narrow results with field filters.
+  </Card>
+  <Card title="Errors" icon="triangle-exclamation" href="/api-reference/errors">
+    Status codes and the error envelope.
+  </Card>
+  <Card title="API keys in the app" icon="gear" href="/admin/api-keys">
+    How administrators create and revoke keys.
+  </Card>
+</CardGroup>
