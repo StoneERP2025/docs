@@ -109,12 +109,9 @@
   },
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-    "mcp"
+    "chatgpt",
+    "claude",
+    "copy"
   ]
   },
   "footer": {
