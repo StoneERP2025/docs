@@ -5,11 +5,11 @@
   "colors": {
     "primary": "#4867FF",
     "light": "#7b9cff",
-    "dark": "#15803D"
+    "dark": "#4867ff"
   },
   "favicon": {
-    "light": "/favicon.svg",
-    "dark": "/favicon.svg"
+    "light": "/images/icon.png",
+    "dark": "/images/icon.png"
   },
   "navigation": {
     "tabs": [
@@ -91,14 +91,14 @@
     }
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "/images/logo-black.png",
+    "dark": "/images/logo-white.png"
   },
   "navbar": {
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:support@failfast.ai"
       }
     ],
     "primary": {
@@ -114,16 +114,24 @@
      "chatgpt",
      "claude",
      "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+    "mcp"
+  ]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "x": "https://x.com/FailFastAI",
+      "linkedin": "https://www.linkedin.com/company/failfastai",
+      "instagram": "https://www.instagram.com/failfastai",
+      "youtube": "https://www.youtube.com/@FailFastAI"
     }
+  },
+  "background": {
+    "color": {
+      "dark": "#000000"
+    }
+  },
+  "appearance": {
+    "default": "dark",
+    "strict": true
   }
 }
