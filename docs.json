@@ -3,11 +3,14 @@
   "theme": "mint",
   "name": "Fail Fast",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
+    "primary": "#4867FF",
+    "light": "#7b9cff",
     "dark": "#15803D"
   },
-  "favicon": "/favicon.svg",
+  "favicon": {
+    "light": "/favicon.svg",
+    "dark": "/favicon.svg"
+  },
   "navigation": {
     "tabs": [
       {
