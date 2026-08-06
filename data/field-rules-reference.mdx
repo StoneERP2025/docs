@@ -1,0 +1,299 @@
+---
+title: Field rule reference
+description: Every method, property, and helper available inside a field rule — the field object, form and note helpers, workspace context, and built-in objects.
+icon: book
+---
+
+This is the complete surface a [field rule](/data/field-rules) can call. Everything listed here is in scope inside a rule body — no imports, no setup.
+
+<Note>
+New to rules? Read [Field rules](/data/field-rules) first. It covers events, function naming, and how to build a field key — the parts you need before any of this is useful.
+</Note>
+
+## The field object
+
+Every field on the form is reachable as `field.<fieldKey>`. Inside an OnChange, OnBlur, OnFocus, or OnClick handler, the argument you receive **is** that same object, so `value.getValue` and `field.<its own key>.getValue` are equivalent.
+
+### Reading and writing the value
+
+| Member | Type | What it does |
+| --- | --- | --- |
+| `getValue` | Property | The field's current value. Type depends on the field. |
+| `setValue({ value, onchange })` | Method | Sets the value. `onchange: true` re-runs the field's OnChange rule; `false` does not. |
+| `setValueAsync({ value, onchange }, options?)` | Method | Same, but returns a promise that resolves once the field has settled. Use it for form-type fields, and `await` it. Accepts `{ timeoutMs }`. |
+| `getObject` | Property | The full selected object on selector and foreign fields, not just the id. |
+| `getObjectAsync(options?)` | Method | Resolves `getObject` once it is populated. Accepts `{ timeoutMs }`. |
+| `e` | Property | The current event payload. What it holds depends on the field type. |
+| `applyPatch(value)` | Method | Writes the value straight to the record, without waiting for a submit. |
+
+<Warning>
+`setValue` takes an **object**, not a bare value: `setValue({ value: 'abc', onchange: false })`. Passing a bare value does nothing.
+
+On foreign and selector fields, pass **only the id** — not a hand-built object.
+</Warning>
+
+<Note>
+`getValue` on a table or detail field does **not** return the data painted into it. If you need that data at submit time, rebuild it in the submit handler rather than reading it back.
+</Note>
+
+### Validation state
+
+| Member | Type | What it does |
+| --- | --- | --- |
+| `error` | Property | The current error state: `{ valid, message }`. |
+| `setError({ valid, message })` | Method | Sets the error state. `valid: false` marks the field invalid and shows the message. |
+| `isMandatory` | Property | Whether the field is currently required. |
+| `setIsMandatory(bool)` | Method | Makes the field required or optional. |
+| `onValidate(value)` | Method | Runs the field's validation and returns `{ valid, message? }`. |
+| `setOnValidate(fn)` | Method | Replaces the field's validation logic. |
+
+### Visibility and interaction
+
+| Member | Type | What it does |
+| --- | --- | --- |
+| `visible` | Property | Whether the field is currently visible. |
+| `setVisible(bool)` | Method | Shows or hides the field. It stays mounted. |
+| `render` | Property | Whether the field is currently rendered. |
+| `setRender(bool)` | Method | Mounts or unmounts the field entirely. |
+| `enabled` | Property | Whether the field accepts input. |
+| `setEnabled(bool)` | Method | Enables or disables input. |
+| `focus()` | Method | Moves focus to the field, switching to its tab if needed. |
+
+<Note>
+`setVisible` and `setRender` are no-ops in table render context. For behavior that must work in a table, change values, errors, or enabled state instead.
+</Note>
+
+### Identity
+
+| Member | Type | What it does |
+| --- | --- | --- |
+| `dbname` | Property | The field's stored name. |
+| `clientname` | Property | The field's display name. |
+
+### Events
+
+Call the `on*` members to re-trigger a field's own event. Call the `setOn*` members to replace a handler at runtime — rules normally attach through the Page Designer instead, so these are rare in a rule body.
+
+| Member | What it does |
+| --- | --- |
+| `onChange(e)` | Runs the field's OnChange handler. |
+| `onBlur(e)` | Runs the field's OnBlur handler. |
+| `onFocus(e)` | Runs the field's OnFocus handler. |
+| `onClick()` | Runs the field's OnClick handler. |
+| `setOnChange(fn)` | Replaces the OnChange handler. |
+| `setOnBlur(fn)` | Replaces the OnBlur handler. |
+| `setOnFocus(fn)` | Replaces the OnFocus handler. |
+| `setOnClick(fn)` | Replaces the OnClick handler. |
+
+<Warning>
+Never re-trigger a field's own event from the rules that write into it. If several source fields call `field.<target>.onChange()`, the target's OnChange becomes the composition handler — and typing directly into the target then overwrites the user's input. Write with `setValue({ onchange: false })` instead.
+</Warning>
+
+<Note>
+OnChange handlers are debounced by **500 ms**. Set `_delay` on the handler function to change it — for example `myHandler._delay = 0` for no debounce.
+</Note>
+
+### Extra properties
+
+`setProperties(props)` sets field-type-specific options. On a date field, for example, it constrains which dates can be picked:
+
+```js
+field.order_delivery_date.setProperties([
+  { type: 'after',  date: new Date(2026, 0, 1) },
+  { type: 'before', date: new Date(2026, 0, 15) },
+  { type: 'exact',  date: new Date(2026, 0, 20) },
+  { type: 'range',  start: new Date(2026, 1, 1), end: new Date(2026, 1, 10) }
+])
+```
+
+## Form helpers
+
+`failfast.myFormHelpers` controls the form as a whole. These are what OnLoad, OnSubmit, and OnDelete rules work through.
+
+| Member | What it does |
+| --- | --- |
+| `getFormData()` | The object the form will submit. |
+| `getRecord()` | The record being edited. `getRecord().id` is falsy in create mode and the record's id in edit mode. |
+| `setNewRecord(id)` | Sets the record id after a save. |
+| `handleSubmit()` | Submits the form. Resolves with the saved record, or with `{ error: true, message }` on failure. |
+| `setHandleSubmit(fn)` | Replaces the form's submit handler. |
+| `setEnabledSubmit(bool)` | Enables (`true`) or disables (`false`) the submit button. |
+| `setOnLoad(fn)` | Replaces the form's load handler. |
+| `runOnLoad()` | Runs the form's load handler. |
+| `invalidateRelatedQueries()` | Refreshes the data related to this form. |
+| `windowViewState(false)` | Closes the current form window. |
+
+<Warning>
+`handleSubmit()` can fail. Always check the result before continuing — especially on an embedded form, where a failed save would otherwise be followed by steps that assume it succeeded:
+
+```js
+const record = await failfast.myFormHelpers.handleSubmit()
+if (!record || record.error) return
+```
+
+Use `throw result` instead of `return` when the surrounding rule must also stop.
+</Warning>
+
+## Note helpers
+
+`failfast.myNoteHelpers` reads and writes the form's note. All three are asynchronous — if the editor hasn't mounted yet, the call waits and applies once it does.
+
+| Member | What it does |
+| --- | --- |
+| `isReady()` | Resolves once the note editor is available. |
+| `setContent(content)` | Replaces the whole note. Accepts markdown or blocks. |
+| `append(content)` | Adds content to the end of the note. Accepts markdown or blocks. |
+
+<Warning>
+Writing to the note counts as a user edit and is saved the same way. An OnLoad rule that writes to the note will overwrite what is already saved unless you stop in edit mode first:
+
+```js
+if (failfast.record) return // create mode only
+await failfast.myNoteHelpers.append('- Additional note')
+```
+</Warning>
+
+## Workspace context
+
+`failfast` carries information about who is working and in what context. `field` and `failfast` are the same object, so either name works.
+
+| Member | What it holds |
+| --- | --- |
+| `failfast.company` | The current company. |
+| `failfast.user` | The signed-in user. |
+| `failfast.isAdmin` | Whether that user is an administrator. |
+| `failfast.userActions` | The actions available to the user. |
+| `failfast.record` | The id of the record being edited. |
+| `failfast.nameEntity` | The name of the form's entity. |
+| `failfast.typeRender` | The render context: `'form'` or `'table'`. |
+| `failfast.parentFormId` | The composed id of the parent form, when there is one. |
+
+<Tip>
+Guard behavior that only makes sense on a full form with `if (failfast.typeRender === 'table') return`. The same rule runs in both contexts.
+</Tip>
+
+### Context actions
+
+| Member | What it does |
+| --- | --- |
+| `failfast.loading(bool)` | Shows or hides the loading screen. |
+| `failfast.setEditEnabled(bool)` | Enables or disables the edit button. Table context only. |
+| `failfast.setViewEnabled(bool)` | Enables or disables the view button. Table context only. |
+| `failfast.setDeleteEnabled(bool)` | Enables or disables the delete button. Table context only. |
+| `failfast.setNewEnabled(bool)` | Enables or disables the new-record button. Form context only. The member name carries the entity it applies to. |
+
+### Services and processes
+
+| Member | What it does |
+| --- | --- |
+| `failfast.getIntegration(name, params)` | Calls a configured [integration](/admin/integrations). |
+| `failfast.process(id, name, params)` | Runs a process. |
+| `failfast.globalProcess(id, name, params)` | Runs a global process. |
+
+## Registries
+
+Four names give a rule access to fields — the difference is which form's fields they hold.
+
+| Registry | Alias | Reaches | Lifetime |
+| --- | --- | --- | --- |
+| `field` | `failfast` | The current form | Cleared when the form unmounts |
+| `fieldParent` | `failfastParent` | The parent form, or `null` when there isn't one | Follows the parent form |
+| `page` | `failfast2` | Every mounted form — parent, detail, and embedded subforms | Survives navigation |
+
+These are live objects, so anything you assign to one is visible to every rule that runs afterwards. That is how you share a helper between rules — see [sharing logic](/data/field-rules#common-patterns).
+
+<Warning>
+`page` keys share a namespace with form identifiers, so put your helpers under one container such as `page.__helpers` rather than at the top level.
+
+`page` is never cleared, so a helper defined by one form is still there after you navigate to another. Always reassign it (`page.__helpers.x = …`) instead of only defining it when missing, or a stale version from a previous form will be used.
+</Warning>
+
+## Built-in objects
+
+These are in scope in every rule body.
+
+| Name | What it is |
+| --- | --- |
+| `axiosFailFast` | Request client for Fail Fast data, with the workspace context applied. |
+| `axios` | Plain request client for external services. |
+| `apis` | Named endpoints for the workspace's entities, used with `axiosFailFast`. |
+| `toast` | Shows a notification to the user. |
+| `formulajs` | Spreadsheet-style formula functions. |
+| `postgresqlFunction` | Calls a stored database function. |
+| `executeWorkflow` | Runs a [workflow](/automation/workflows). |
+| `showComponent(name, props, options, callbacks)` | Opens a component, such as a dialog or an embedded form. |
+| `entityName` | The name of the form's entity. |
+| `getUUIDByNameEntity(name)` | Resolves an entity name to its identifier. |
+| `getNameByUUIDEntity(id)` | Resolves an entity identifier to its name. |
+| `XMLParser` | Parses XML responses. |
+| `companyId` | The current company's identifier. |
+| `formId` | The current form's identifier. |
+| `isVirtual` | Whether the form is rendering virtually. |
+| `openedFrom` | Where the form was opened from. |
+| `executeOnload` | Whether the load handler runs at compile time. |
+| `waitForHelpersReady` | Waits until the form's helpers are available. |
+
+<Note>
+`await` works anywhere in a rule body — asynchronous handling is applied for you.
+
+Load related data in **one request** using the `fields` parameter rather than one request per relation. `fields=customer__name,customer__document_number` walks forward through relations; a reverse relation comes back as an array. The request and response formats are documented in the [API reference](/api-reference/pagination-and-filtering).
+</Note>
+
+## Shared helpers
+
+These functions come from your workspace's rule catalog and are callable by name from any rule.
+
+| Helper | Use it in | What it does |
+| --- | --- | --- |
+| `validateOnLoad(fields, record)` | OnLoad | Applies initial values and state in **create** mode only. Each entry is `[field, initialValue, enabled, visible]`. |
+| `validateOnLoadUpdate(fields, record)` | OnLoad | Applies state in **edit** mode only. Each entry is `[field, enabled, visible]` — no initial value, because the record supplies it. |
+| `validateOnSubmit(fields, formelements, api, unique, recordId, …)` | OnSubmit | Validates the listed fields and saves. Must be awaited. |
+| `validateNotNullField(event)` | Field events | Checks that a field has a value and sets its error state. |
+
+<Warning>
+The `fields` array you pass to `validateOnSubmit` must include **every field the record requires** — not only the ones a condition touches. Anything you leave out is not validated, reaches the save, and fails there without a message the user can act on.
+</Warning>
+
+<Note>
+Your workspace may define additional catalog helpers beyond these four. Open the **Code** menu in the [Page Designer](/data/page-designer) to see what is available.
+</Note>
+
+## Selector configuration
+
+An OnClick rule on a selector field returns a configuration object. Every key is optional — return only what you need.
+
+| Key | What it sets |
+| --- | --- |
+| `endPoint` | The data source to query. |
+| `id` | The column to use as the value. |
+| `display` | The column shown as the main label. |
+| `subtitle` | The column shown as a secondary label. |
+| `search` | The column or columns the search box looks in. |
+| `filter` | A filter applied to the query. |
+| `foreign` | The related column to filter on. |
+| `idForeign` | The related identifier to filter by. |
+| `relations` | Additional related columns to resolve. |
+| `multiple` | Whether several options can be selected. |
+| `viewAvatar` | Whether to show the referenced image as an avatar. |
+| `placeHolder` | The placeholder text. |
+| `allowDelete` | Whether each selection gets a clear button. |
+
+## Return values by event
+
+| Event | Must return |
+| --- | --- |
+| Validation | `{ valid: boolean, message?: string }` |
+| `visible`, `enabled`, `render` | A boolean |
+| OnClick on a selector | A selector configuration object |
+| All other events | Nothing |
+
+## Related pages
+
+<CardGroup cols={2}>
+  <Card title="Field rules" icon="wand-magic-sparkles" href="/data/field-rules">
+    Events, naming, field keys, and the patterns these methods are used in.
+  </Card>
+  <Card title="Page Designer" icon="pen-ruler" href="/data/page-designer">
+    Where rules are attached, under the Code menu.
+  </Card>
+</CardGroup>

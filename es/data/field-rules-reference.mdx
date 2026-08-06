@@ -1,0 +1,299 @@
+---
+title: Referencia de reglas de campo
+description: Cada método, propiedad y helper disponible dentro de una regla de campo — el objeto del campo, los helpers de formulario y nota, el contexto del espacio de trabajo y los objetos integrados.
+icon: book
+---
+
+Esta es la superficie completa que puede invocar una [regla de campo](/es/data/field-rules). Todo lo que aparece aquí está en alcance dentro del cuerpo de una regla: sin importaciones ni configuración previa.
+
+<Note>
+¿Es tu primer contacto con las reglas? Lee primero [Reglas de campo](/es/data/field-rules). Cubre los eventos, la nomenclatura de las funciones y cómo construir la clave de un campo — las piezas que necesitas antes de que esto sea útil.
+</Note>
+
+## El objeto del campo
+
+Cada campo del formulario se alcanza como `field.<claveDelCampo>`. Dentro de un manejador OnChange, OnBlur, OnFocus u OnClick, el argumento que recibes **es** ese mismo objeto, así que `value.getValue` y `field.<su propia clave>.getValue` son equivalentes.
+
+### Leer y escribir el valor
+
+| Miembro | Tipo | Qué hace |
+| --- | --- | --- |
+| `getValue` | Propiedad | El valor actual del campo. El tipo depende del campo. |
+| `setValue({ value, onchange })` | Método | Asigna el valor. `onchange: true` vuelve a ejecutar la regla OnChange del campo; `false` no. |
+| `setValueAsync({ value, onchange }, options?)` | Método | Igual, pero retorna una promesa que se resuelve cuando el campo termina de asentarse. Úsalo en campos de tipo formulario, con `await`. Acepta `{ timeoutMs }`. |
+| `getObject` | Propiedad | El objeto seleccionado completo en campos de selector y foráneos, no solo el id. |
+| `getObjectAsync(options?)` | Método | Resuelve `getObject` cuando ya está poblado. Acepta `{ timeoutMs }`. |
+| `e` | Propiedad | La carga útil del evento actual. Su contenido depende del tipo de campo. |
+| `applyPatch(value)` | Método | Escribe el valor directamente en el registro, sin esperar a un guardado. |
+
+<Warning>
+`setValue` recibe un **objeto**, no un valor suelto: `setValue({ value: 'abc', onchange: false })`. Pasar un valor suelto no hace nada.
+
+En campos foráneos y de selector, pasa **solo el id**, no un objeto armado a mano.
+</Warning>
+
+<Note>
+`getValue` sobre un campo de tabla o de detalle **no** devuelve los datos pintados en él. Si necesitas esos datos al guardar, reconstrúyelos en el manejador de guardado en lugar de leerlos de vuelta.
+</Note>
+
+### Estado de validación
+
+| Miembro | Tipo | Qué hace |
+| --- | --- | --- |
+| `error` | Propiedad | El estado de error actual: `{ valid, message }`. |
+| `setError({ valid, message })` | Método | Asigna el estado de error. `valid: false` marca el campo como inválido y muestra el mensaje. |
+| `isMandatory` | Propiedad | Si el campo es obligatorio en este momento. |
+| `setIsMandatory(bool)` | Método | Hace el campo obligatorio u opcional. |
+| `onValidate(value)` | Método | Ejecuta la validación del campo y retorna `{ valid, message? }`. |
+| `setOnValidate(fn)` | Método | Reemplaza la lógica de validación del campo. |
+
+### Visibilidad e interacción
+
+| Miembro | Tipo | Qué hace |
+| --- | --- | --- |
+| `visible` | Propiedad | Si el campo está visible en este momento. |
+| `setVisible(bool)` | Método | Muestra u oculta el campo. Sigue montado. |
+| `render` | Propiedad | Si el campo está renderizado en este momento. |
+| `setRender(bool)` | Método | Monta o desmonta el campo por completo. |
+| `enabled` | Propiedad | Si el campo acepta entrada. |
+| `setEnabled(bool)` | Método | Habilita o deshabilita la entrada. |
+| `focus()` | Método | Mueve el foco al campo, cambiando de pestaña si hace falta. |
+
+<Note>
+`setVisible` y `setRender` no tienen efecto en contexto de tabla. Para comportamientos que deban funcionar en una tabla, cambia valores, errores o el estado habilitado.
+</Note>
+
+### Identidad
+
+| Miembro | Tipo | Qué hace |
+| --- | --- | --- |
+| `dbname` | Propiedad | El nombre con el que se almacena el campo. |
+| `clientname` | Propiedad | El nombre visible del campo. |
+
+### Eventos
+
+Invoca los miembros `on*` para volver a disparar el evento propio de un campo. Invoca los miembros `setOn*` para reemplazar un manejador en tiempo de ejecución; normalmente las reglas se adjuntan desde el Diseñador de páginas, así que son poco frecuentes dentro del cuerpo de una regla.
+
+| Miembro | Qué hace |
+| --- | --- |
+| `onChange(e)` | Ejecuta el manejador OnChange del campo. |
+| `onBlur(e)` | Ejecuta el manejador OnBlur del campo. |
+| `onFocus(e)` | Ejecuta el manejador OnFocus del campo. |
+| `onClick()` | Ejecuta el manejador OnClick del campo. |
+| `setOnChange(fn)` | Reemplaza el manejador OnChange. |
+| `setOnBlur(fn)` | Reemplaza el manejador OnBlur. |
+| `setOnFocus(fn)` | Reemplaza el manejador OnFocus. |
+| `setOnClick(fn)` | Reemplaza el manejador OnClick. |
+
+<Warning>
+Nunca vuelvas a disparar el evento propio de un campo desde las reglas que escriben en él. Si varios campos origen llaman `field.<destino>.onChange()`, el OnChange del destino se convierte en el manejador de composición, y escribir directamente en el destino sobrescribe lo que ingresa el usuario. Escribe con `setValue({ onchange: false })`.
+</Warning>
+
+<Note>
+Los manejadores OnChange tienen un retardo de **500 ms**. Asigna `_delay` a la función del manejador para cambiarlo — por ejemplo `myHandler._delay = 0` para no tener retardo.
+</Note>
+
+### Propiedades adicionales
+
+`setProperties(props)` define opciones propias del tipo de campo. En un campo de fecha, por ejemplo, restringe qué fechas se pueden elegir:
+
+```js
+field.order_delivery_date.setProperties([
+  { type: 'after',  date: new Date(2026, 0, 1) },
+  { type: 'before', date: new Date(2026, 0, 15) },
+  { type: 'exact',  date: new Date(2026, 0, 20) },
+  { type: 'range',  start: new Date(2026, 1, 1), end: new Date(2026, 1, 10) }
+])
+```
+
+## Helpers del formulario
+
+`failfast.myFormHelpers` controla el formulario como un todo. Es lo que usan las reglas OnLoad, OnSubmit y OnDelete.
+
+| Miembro | Qué hace |
+| --- | --- |
+| `getFormData()` | El objeto que el formulario va a enviar. |
+| `getRecord()` | El registro que se está editando. `getRecord().id` es falsy en modo creación y el id del registro en modo edición. |
+| `setNewRecord(id)` | Asigna el id del registro después de guardar. |
+| `handleSubmit()` | Envía el formulario. Se resuelve con el registro guardado, o con `{ error: true, message }` si falla. |
+| `setHandleSubmit(fn)` | Reemplaza el manejador de guardado del formulario. |
+| `setEnabledSubmit(bool)` | Habilita (`true`) o deshabilita (`false`) el botón de guardar. |
+| `setOnLoad(fn)` | Reemplaza el manejador de carga del formulario. |
+| `runOnLoad()` | Ejecuta el manejador de carga del formulario. |
+| `invalidateRelatedQueries()` | Refresca los datos relacionados con este formulario. |
+| `windowViewState(false)` | Cierra la ventana del formulario actual. |
+
+<Warning>
+`handleSubmit()` puede fallar. Verifica siempre el resultado antes de continuar, sobre todo en un formulario embebido, donde a un guardado fallido le seguirían pasos que asumen que funcionó:
+
+```js
+const record = await failfast.myFormHelpers.handleSubmit()
+if (!record || record.error) return
+```
+
+Usa `throw result` en lugar de `return` cuando la regla que lo rodea también deba detenerse.
+</Warning>
+
+## Helpers de la nota
+
+`failfast.myNoteHelpers` lee y escribe la nota del formulario. Los tres son asíncronos: si el editor todavía no se ha montado, la operación espera y se aplica cuando lo haga.
+
+| Miembro | Qué hace |
+| --- | --- |
+| `isReady()` | Se resuelve cuando el editor de notas está disponible. |
+| `setContent(content)` | Reemplaza toda la nota. Acepta markdown o bloques. |
+| `append(content)` | Agrega contenido al final de la nota. Acepta markdown o bloques. |
+
+<Warning>
+Escribir en la nota cuenta como una edición del usuario y se guarda igual. Una regla OnLoad que escriba en la nota va a sobrescribir lo que ya está guardado, a menos que cortes primero en modo edición:
+
+```js
+if (failfast.record) return // solo en creación
+await failfast.myNoteHelpers.append('- Observación adicional')
+```
+</Warning>
+
+## Contexto del espacio de trabajo
+
+`failfast` lleva la información de quién está trabajando y en qué contexto. `field` y `failfast` son el mismo objeto, así que cualquiera de los dos nombres funciona.
+
+| Miembro | Qué contiene |
+| --- | --- |
+| `failfast.company` | La empresa actual. |
+| `failfast.user` | El usuario con la sesión iniciada. |
+| `failfast.isAdmin` | Si ese usuario es administrador. |
+| `failfast.userActions` | Las acciones disponibles para el usuario. |
+| `failfast.record` | El id del registro que se está editando. |
+| `failfast.nameEntity` | El nombre de la entidad del formulario. |
+| `failfast.typeRender` | El contexto de renderizado: `'form'` o `'table'`. |
+| `failfast.parentFormId` | El id compuesto del formulario padre, cuando existe. |
+
+<Tip>
+Protege con `if (failfast.typeRender === 'table') return` el comportamiento que solo tenga sentido en un formulario completo. La misma regla se ejecuta en ambos contextos.
+</Tip>
+
+### Acciones del contexto
+
+| Miembro | Qué hace |
+| --- | --- |
+| `failfast.loading(bool)` | Muestra u oculta la pantalla de carga. |
+| `failfast.setEditEnabled(bool)` | Habilita o deshabilita el botón de editar. Solo en contexto de tabla. |
+| `failfast.setViewEnabled(bool)` | Habilita o deshabilita el botón de ver. Solo en contexto de tabla. |
+| `failfast.setDeleteEnabled(bool)` | Habilita o deshabilita el botón de eliminar. Solo en contexto de tabla. |
+| `failfast.setNewEnabled(bool)` | Habilita o deshabilita el botón de nuevo registro. Solo en contexto de formulario. El nombre del miembro lleva la entidad a la que aplica. |
+
+### Servicios y procesos
+
+| Miembro | Qué hace |
+| --- | --- |
+| `failfast.getIntegration(name, params)` | Invoca una [integración](/es/admin/integrations) configurada. |
+| `failfast.process(id, name, params)` | Ejecuta un proceso. |
+| `failfast.globalProcess(id, name, params)` | Ejecuta un proceso global. |
+
+## Registros
+
+Cuatro nombres le dan a una regla acceso a los campos; la diferencia está en de qué formulario son esos campos.
+
+| Registro | Alias | Alcanza | Duración |
+| --- | --- | --- | --- |
+| `field` | `failfast` | El formulario actual | Se limpia al desmontar el formulario |
+| `fieldParent` | `failfastParent` | El formulario padre, o `null` si no hay | Sigue al formulario padre |
+| `page` | `failfast2` | Todos los formularios montados: padre, detalle y embebidos | Sobrevive a la navegación |
+
+Son objetos vivos, así que todo lo que les asignes queda visible para cada regla que corra después. Ese es el mecanismo para compartir un helper entre reglas — consulta [compartir lógica](/es/data/field-rules#patrones-frecuentes).
+
+<Warning>
+Las claves de `page` comparten espacio de nombres con los identificadores de formulario, así que pon tus helpers dentro de un contenedor como `page.__helpers` en lugar de dejarlos en el nivel superior.
+
+`page` nunca se limpia, así que un helper definido por un formulario sigue ahí después de navegar a otro. Reasígnalo siempre (`page.__helpers.x = …`) en lugar de definirlo solo cuando falte, o se usará una versión obsoleta de un formulario anterior.
+</Warning>
+
+## Objetos integrados
+
+Están en alcance en el cuerpo de toda regla.
+
+| Nombre | Qué es |
+| --- | --- |
+| `axiosFailFast` | Cliente de solicitudes para los datos de Fail Fast, con el contexto del espacio de trabajo aplicado. |
+| `axios` | Cliente de solicitudes simple para servicios externos. |
+| `apis` | Endpoints con nombre de las entidades del espacio de trabajo, para usar con `axiosFailFast`. |
+| `toast` | Muestra una notificación al usuario. |
+| `formulajs` | Funciones de fórmula al estilo de una hoja de cálculo. |
+| `postgresqlFunction` | Invoca una función almacenada de la base de datos. |
+| `executeWorkflow` | Ejecuta un [workflow](/es/automation/workflows). |
+| `showComponent(name, props, options, callbacks)` | Abre un componente, como un diálogo o un formulario embebido. |
+| `entityName` | El nombre de la entidad del formulario. |
+| `getUUIDByNameEntity(name)` | Resuelve el nombre de una entidad a su identificador. |
+| `getNameByUUIDEntity(id)` | Resuelve el identificador de una entidad a su nombre. |
+| `XMLParser` | Analiza respuestas XML. |
+| `companyId` | El identificador de la empresa actual. |
+| `formId` | El identificador del formulario actual. |
+| `isVirtual` | Si el formulario se renderiza de forma virtual. |
+| `openedFrom` | Desde dónde se abrió el formulario. |
+| `executeOnload` | Si el manejador de carga se ejecuta al compilar. |
+| `waitForHelpersReady` | Espera hasta que los helpers del formulario estén disponibles. |
+
+<Note>
+`await` funciona en cualquier punto del cuerpo de una regla: el manejo asíncrono se aplica por ti.
+
+Carga los datos relacionados en **una sola solicitud** usando el parámetro `fields` en lugar de una solicitud por relación. `fields=customer__name,customer__document_number` avanza hacia adelante por las relaciones; una relación inversa regresa como arreglo. Los formatos de solicitud y respuesta están documentados en la [Referencia de API](/es/api-reference/pagination-and-filtering).
+</Note>
+
+## Helpers compartidos
+
+Estas funciones provienen del catálogo de reglas de tu espacio de trabajo y se pueden invocar por su nombre desde cualquier regla.
+
+| Helper | Úsalo en | Qué hace |
+| --- | --- | --- |
+| `validateOnLoad(fields, record)` | OnLoad | Aplica valores iniciales y estado solo en modo **creación**. Cada entrada es `[campo, valorInicial, habilitado, visible]`. |
+| `validateOnLoadUpdate(fields, record)` | OnLoad | Aplica estado solo en modo **edición**. Cada entrada es `[campo, habilitado, visible]` — sin valor inicial, porque lo aporta el registro. |
+| `validateOnSubmit(fields, formelements, api, unique, recordId, …)` | OnSubmit | Valida los campos listados y guarda. Debe invocarse con `await`. |
+| `validateNotNullField(event)` | Eventos de campo | Verifica que un campo tenga valor y asigna su estado de error. |
+
+<Warning>
+El arreglo `fields` que le pasas a `validateOnSubmit` debe incluir **todos los campos que el registro exige**, no solo los que toca una condición. Lo que omitas no se valida, llega al guardado y falla allí sin un mensaje sobre el que el usuario pueda actuar.
+</Warning>
+
+<Note>
+Tu espacio de trabajo puede definir helpers de catálogo adicionales además de estos cuatro. Abre el menú **Código** en el [Diseñador de páginas](/es/data/page-designer) para ver cuáles están disponibles.
+</Note>
+
+## Configuración del selector
+
+Una regla OnClick sobre un campo selector retorna un objeto de configuración. Todas las claves son opcionales: retorna solo lo que necesites.
+
+| Clave | Qué define |
+| --- | --- |
+| `endPoint` | La fuente de datos a consultar. |
+| `id` | La columna que se usa como valor. |
+| `display` | La columna que se muestra como etiqueta principal. |
+| `subtitle` | La columna que se muestra como etiqueta secundaria. |
+| `search` | La columna o columnas en las que busca el cuadro de búsqueda. |
+| `filter` | Un filtro aplicado a la consulta. |
+| `foreign` | La columna relacionada por la que filtrar. |
+| `idForeign` | El identificador relacionado por el que filtrar. |
+| `relations` | Columnas relacionadas adicionales que se deben resolver. |
+| `multiple` | Si se pueden seleccionar varias opciones. |
+| `viewAvatar` | Si se muestra la imagen referenciada como avatar. |
+| `placeHolder` | El texto de marcador de posición. |
+| `allowDelete` | Si cada selección tiene un botón para limpiarla. |
+
+## Valores de retorno por evento
+
+| Evento | Debe retornar |
+| --- | --- |
+| Validation | `{ valid: boolean, message?: string }` |
+| `visible`, `enabled`, `render` | Un booleano |
+| OnClick sobre un selector | Un objeto de configuración del selector |
+| Todos los demás eventos | Nada |
+
+## Páginas relacionadas
+
+<CardGroup cols={2}>
+  <Card title="Reglas de campo" icon="wand-magic-sparkles" href="/es/data/field-rules">
+    Eventos, nomenclatura, claves de campo y los patrones en los que se usan estos métodos.
+  </Card>
+  <Card title="Diseñador de páginas" icon="pen-ruler" href="/es/data/page-designer">
+    Donde se adjuntan las reglas, bajo el menú Código.
+  </Card>
+</CardGroup>

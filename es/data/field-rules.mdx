@@ -1,26 +1,38 @@
 ---
 title: Reglas de campo
-description: Agrega comportamiento a los formularios — valida la información, muestra u oculta secciones, asigna valores y reacciona a lo que hacen los usuarios.
+description: Agrega comportamiento a los formularios — valida la información, muestra u oculta secciones, asigna valores, invoca servicios y reacciona a lo que hacen los usuarios.
 icon: wand-magic-sparkles
 ---
 
 Las reglas de campo agregan comportamiento a los formularios. Un formulario simple muestra campos y guarda valores; las reglas lo hacen reaccionar: validan la información, muestran u ocultan partes del formulario, asignan valores, hacen campos obligatorios o los deshabilitan, o invocan servicios. Las reglas son lo que convierte una disposición estática en un formulario que guía a las personas hacia datos correctos.
 
+Cada regla es una función pequeña de JavaScript asociada a un evento de un campo (o del formulario completo). La escribes en el [Diseñador de páginas](/es/data/page-designer), bajo el menú **Código**.
+
+<Note>
+Esta página explica cómo funcionan las reglas y cómo escribirlas. Para la lista completa de todo lo que puede invocar una regla — cada método de campo, cada helper de formulario y cada objeto integrado — consulta la [Referencia de reglas de campo](/es/data/field-rules-reference).
+</Note>
+
 ## Cuándo se ejecutan las reglas
 
 Cada regla está ligada a un evento. Cuando ocurre el evento, la regla se ejecuta.
 
-| Evento | Cuándo se dispara |
-| --- | --- |
-| **OnLoad** | Se abre el formulario |
-| **OnSubmit** | Antes de guardar el registro — la regla puede validar y detener el guardado |
-| **OnDelete** | Antes de eliminar el registro |
-| Al cambiar | Cambia el valor de un campo específico |
-| Al salir del campo | El usuario abandona un campo específico |
-| Al entrar al campo | El usuario entra a un campo específico |
-| Al hacer clic | El usuario hace clic en un elemento específico |
+| Evento | Cuándo se dispara | Alcance |
+| --- | --- | --- |
+| **OnLoad** | Se abre el formulario | Formulario |
+| **OnSubmit** | Antes de guardar el registro — la regla puede validar y detener el guardado | Formulario |
+| **OnDelete** | Antes de eliminar el registro | Formulario |
+| **OnChange** | Cambia el valor de un campo específico | Campo |
+| **OnBlur** | El usuario abandona un campo específico | Campo |
+| **OnFocus** | El usuario entra a un campo específico | Campo |
+| **OnClick** | El usuario hace clic en un elemento específico | Campo |
+| **Validation** | Se verifica el valor del campo | Campo |
+| **Action** | Se ejecuta una acción configurada desde el campo | Campo |
 
-Los eventos a nivel de formulario (OnLoad, OnSubmit, OnDelete) gobiernan todo el ciclo de vida del formulario; los eventos a nivel de campo reaccionan a lo que el usuario hace en un campo puntual.
+Los eventos a nivel de formulario gobiernan todo su ciclo de vida; los eventos a nivel de campo reaccionan a lo que el usuario hace en un campo puntual.
+
+<Note>
+**OnLoad**, **OnSubmit** y **OnDelete** aplican únicamente cuando la regla pertenece a la entidad propia del formulario. **OnDelete** solo se ejecuta en contexto de tabla.
+</Note>
 
 ## Qué pueden hacer las reglas
 
@@ -38,6 +50,248 @@ Las reglas se escriben y se gestionan en el [Diseñador de páginas](/es/data/pa
 Las reglas pertenecen a una plantilla de formulario, no a la tabla. Si una tabla tiene varias plantillas, cada plantilla lleva sus propias reglas — consulta [Formularios y plantillas de formulario](/es/data/forms). Tenlo presente cuando un comportamiento parezca "desaparecer": puede que estés viendo otra plantilla.
 </Note>
 
+Hay **una regla por campo y por evento**. Si ya existe una regla para el campo y el evento que quieres, la estás editando, no agregando una segunda al lado.
+
+## Anatomía de una regla
+
+Una regla es una sola función con nombre. El **nombre** decide a qué se asocia la regla; el **cuerpo** es el comportamiento.
+
+```js
+function global_stakeholder_person_email_onblur(value) {
+  const v = value.getValue
+  if (typeof v === 'string' && v !== v.toLowerCase()) {
+    value.setValue({ value: v.toLowerCase(), onchange: false })
+  }
+}
+```
+
+El nombre tiene tres partes:
+
+```
+global _ stakeholder_person_email _ onblur
+  │                │                   │
+alcance      clave del campo        evento
+```
+
+- **Alcance** — el primer segmento. Usa `global` para una regla de formulario normal.
+- **Clave del campo** — el segmento intermedio. Identifica a qué campo se asocia la regla, y debe ser exacta.
+- **Evento** — el último segmento: `onchange`, `onblur`, `onfocus`, `onclick`, `onload`, `onsubmit`, `ondelete`, `validate` o `action`.
+
+### Construye la clave del campo
+
+La clave del campo **no** es el nombre crudo del campo. Se construye en dos pasos:
+
+<Steps>
+  <Step title="Parte del nombre del campo en la base de datos y quita el sufijo _id">
+    `location_id` se convierte en `location`; `document_type_id` en `document_type`; `first_name` se queda como `first_name`.
+  </Step>
+  <Step title="Antepón el nombre de la entidad propia del campo, con los puntos reemplazados por guiones bajos">
+    Un campo de la entidad `stakeholder.person` llamado `email` se convierte en `stakeholder_person_email`. Un campo traído de una entidad relacionada usa el nombre de **esa** entidad, no el del formulario.
+  </Step>
+</Steps>
+
+No hay excepción para los campos de la entidad propia del formulario: llevan prefijo exactamente igual que los relacionados.
+
+<Warning>
+Una clave de campo incorrecta **falla en silencio**. La regla se omite sin error ni advertencia, lo que se ve idéntico a una regla que sí corre pero no hace nada. Antes de escribir una regla nueva, abre una regla existente sobre el mismo campo y copia su clave literalmente.
+</Warning>
+
+<Tip>
+Los campos de llave foránea tienen una asimetría que vale la pena memorizar: el **nombre de la función conserva** `_id`, mientras que el **cuerpo direcciona el campo sin él**. Una regla llamada `global_account_receivable_salesman_stakeholder_id_onchange` opera sobre `field.account_receivable_salesman_stakeholder`.
+</Tip>
+
+### Qué recibe el manejador
+
+El argumento depende del evento:
+
+| Evento | Argumento | Notas |
+| --- | --- | --- |
+| OnChange, OnBlur, OnFocus, OnClick | El **objeto del campo** | Lee `value.getValue`, escribe con `value.setValue(...)`, inspecciona el evento crudo en `value.e` |
+| Validation | El **valor crudo** | Debe retornar `{ valid, message? }` |
+| OnSubmit | El objeto con los **elementos del formulario** | Modifícalo para cambiar lo que se guarda |
+| OnLoad, OnDelete | Nada | Trabaja a través de `failfast.myFormHelpers` |
+
+Dentro de un manejador de entrada, el parámetro y `field.<su propia clave>` son el mismo objeto: usa el que se lea mejor.
+
+### Direccionar otros campos
+
+Cualquier otro campo del formulario se alcanza mediante el registro `field`:
+
+```js
+field.stakeholder_person_state.setEnabled(true)
+field.stakeholder_person_legal_name.setVisible(false)
+field.stakeholder_person_total.setValue({ value: 1000, onchange: false })
+```
+
+`field` y `failfast` son el mismo objeto, así que `field.myFormHelpers` y `failfast.myFormHelpers` son intercambiables. La [referencia](/es/data/field-rules-reference) lista todos los métodos disponibles en un campo.
+
+## Reglas de booleano calculado
+
+Cuatro tipos de regla no ejecutan acciones: responden una pregunta sobre el campo y **retornan un booleano**. El formulario las reevalúa a medida que cambian los valores.
+
+```js
+function visible_company_name() {
+  return field.stakeholder_person_user_type.getValue === 'employee'
+}
+```
+
+Usa `visible`, `enabled` y `render` para el estado que sea función pura de otros valores. Recurre a una regla OnChange cuando necesites un efecto, no una respuesta.
+
+## Trabajo asíncrono y tiempos
+
+Puedes usar `await` dentro de una regla: el manejo asíncrono se aplica automáticamente cuando el cuerpo lo necesita.
+
+```js
+async function global_stakeholder_person_document_number_onblur(value) {
+  const x = value.getValue
+  if (!x) return
+  const res = await axiosFailFast.get(`${apis.stakeholder__stakeholder}?document_number__exact=${x}`)
+  if (Array.isArray(res.results) && res.results.length) {
+    value.setError({ valid: false, message: 'El documento ya está registrado.' })
+  }
+}
+```
+
+<Note>
+**Las reglas OnChange tienen un retardo de 500 ms** para no dispararse en cada tecla. Para cambiarlo, asigna `_delay` al manejador: `myHandler._delay = 0` lo ejecuta de inmediato.
+</Note>
+
+Prefiere **OnBlur** sobre **OnChange** para todo lo costoso y para todo lo que reformatee lo que el usuario está escribiendo. OnChange se dispara mientras escribe; OnBlur corre una sola vez, cuando sale del campo.
+
+## Patrones frecuentes
+
+<AccordionGroup>
+  <Accordion title="Mostrar u ocultar según otro campo">
+    ```js
+    function global_stakeholder_person_entity_type_onchange(value) {
+      const isPerson = value.getValue === 'person'
+      field.stakeholder_person_legal_name.setVisible(!isPerson)
+      field.stakeholder_person_legal_rep.setVisible(!isPerson)
+    }
+    ```
+
+    `setVisible` oculta el campo pero lo mantiene montado; `setRender` lo elimina por completo. Ambos no tienen efecto en contexto de tabla: ahí cambia valores, errores o el estado habilitado.
+  </Accordion>
+  <Accordion title="Exigir un campo solo bajo una condición">
+    ```js
+    function global_order_payment_method_onchange(value) {
+      const needsReference = value.getValue === 'transfer'
+      field.order_transfer_reference.setIsMandatory(needsReference)
+      field.order_transfer_reference.setVisible(needsReference)
+    }
+    ```
+
+    Combina la obligatoriedad con la visibilidad para que nunca se le exija a un usuario un campo que no puede ver.
+  </Accordion>
+  <Accordion title="Configurar las opciones de un selector">
+    Una regla OnClick sobre un campo selector retorna un objeto de configuración que determina qué consulta y qué muestra el selector.
+
+    ```js
+    function global_location_city_onclick() {
+      const country = field.location_country.getValue
+      return {
+        endPoint: apis.location__city,
+        display: 'name',
+        id: 'id',
+        filter: country ? `?country__exact=${country}` : ''
+      }
+    }
+    ```
+
+    Retorna solo las claves que necesites. El conjunto completo está en la [referencia](/es/data/field-rules-reference#configuración-del-selector).
+  </Accordion>
+  <Accordion title="Inicializar campos al abrir el formulario">
+    Asignar valores directamente en el cuerpo de un OnLoad compite con la carga de datos del propio formulario. En su lugar, encamina la inicialización por los dos helpers, según el modo:
+
+    ```js
+    function global_stakeholder_person_onload() {
+      if (failfast.typeRender === 'table') return
+      const record = failfast.myFormHelpers.getRecord().id
+
+      // Solo en modo creación — [campo, valorInicial, habilitado, visible]
+      validateOnLoad([
+        [field.stakeholder_person_is_active, 'true', true, true]
+      ], record)
+
+      // Solo en modo edición — [campo, habilitado, visible]
+      validateOnLoadUpdate([
+        [field.stakeholder_person_document_number, false, true]
+      ], record)
+    }
+    ```
+
+    `validateOnLoad` corre solo cuando aún no hay registro; `validateOnLoadUpdate` corre solo cuando ya lo hay. Los campos foráneos y de selector reciben **únicamente el id** como valor inicial, nunca un objeto armado a mano.
+  </Accordion>
+  <Accordion title="Validar y transformar al guardar">
+    ```js
+    async function global_stakeholder_person_onsubmit(formelements) {
+      const fields = [
+        field.stakeholder_person_document_number,
+        field.stakeholder_person_first_name,
+        field.stakeholder_person_last_name
+      ]
+
+      await validateOnSubmit(
+        fields,
+        formelements,
+        apis.stakeholder__person,
+        ['Person-Unique-Document'],
+        failfast.myFormHelpers.getRecord().id
+      )
+    }
+    ```
+
+    <Warning>
+    El arreglo `fields` debe listar **todos los campos que el registro exige**, siempre — no solo los que toca tu condición. `validateOnSubmit` únicamente verifica lo que le entregas; lo que omitas llega al guardado y falla allí, sin un mensaje útil para el usuario. Los requisitos condicionales se suman a esa base, nunca la reemplazan.
+    </Warning>
+  </Accordion>
+  <Accordion title="Compartir lógica entre reglas">
+    Cada regla se evalúa por separado, así que un helper declarado dentro del cuerpo de una regla desaparece cuando ese cuerpo termina. En su lugar, asígnalo a un registro desde una regla OnLoad:
+
+    ```js
+    function global_stakeholder_person_onload() {
+      // Solo este formulario
+      field.composeCompleteName = () => { /* … */ }
+
+      // Todos los formularios montados, incluidos los de detalle y los embebidos
+      page.__helpers = page.__helpers || {}
+      page.__helpers.composeFullName = (target, sources) => { /* … */ }
+    }
+    ```
+
+    Elige por alcance: `field` cuando el helper fija las claves de este formulario, `page` cuando un formulario de detalle o embebido también deba invocarlo. Como OnLoad no siempre corre antes que las demás reglas, protege el punto de llamada: `if (typeof field.composeCompleteName === 'function')`.
+  </Accordion>
+  <Accordion title="Sincronizar un campo compuesto con sus partes">
+    Un campo como `complete_name` y sus partes (`first_name`, `last_name`) que deben actualizarse mutuamente van a pelear entre sí a menos que rompas el ciclo de forma estructural.
+
+    | Regla en | Evento | Hace |
+    | --- | --- | --- |
+    | Cada campo parte | OnChange | Compone hacia el campo destino |
+    | El campo compuesto | OnBlur | Separa de vuelta hacia las partes |
+    | El campo compuesto | OnChange | Se desactiva |
+
+    Ambas direcciones escriben con `setValue({ value, onchange: false })`, que no vuelve a disparar el OnChange del destino, así que ninguna dirección puede activar la otra.
+
+    <Warning>
+    Nunca dispares la composición desde el evento **propio** del campo destino. Si los campos parte llaman `field.<destino>.onChange()`, escribir directamente en el destino ejecuta el manejador de composición y sobrescribe lo que el usuario está escribiendo.
+    </Warning>
+
+    Separa en **OnBlur**, no en OnChange: separar mientras el usuario escribe pondría `J`, `Ju`, `Jua` en la primera parte. Agrega una comparación de igualdad en ambos lados para que entrar y salir del campo sin editar no haga nada.
+  </Accordion>
+</AccordionGroup>
+
+## Errores frecuentes
+
+<Warning>
+Estos provocan fallas silenciosas: la regla parece instalada pero no ocurre nada.
+
+- **Una clave de campo incorrecta.** La regla se omite sin error. Copia la clave de una regla existente sobre el mismo campo.
+- **Un campo obligatorio ausente del arreglo `fields` de un OnSubmit.** El guardado falla en el servidor sin un mensaje útil.
+- **Leer un campo de tabla o detalle con `getValue`.** No devuelve los datos pintados. Reconstruye el valor en el manejador de guardado.
+- **`setVisible` y `setRender` en contexto de tabla.** Ahí no tienen efecto.
+- **Un helper declarado dentro del cuerpo de una regla.** Muere cuando el cuerpo termina; asígnalo a `field` o a `page` desde OnLoad.
+</Warning>
+
 ## El asistente de IA para reglas
 
 No tienes que construir las reglas a mano. El asistente de IA genera una regla a partir de una descripción en lenguaje natural del comportamiento que quieres: descríbelo como se lo explicarías a un colega, por ejemplo "cuando cambie X, oculta la sección Y", y el asistente produce la regla para que la revises y la adjuntes.
@@ -50,4 +304,24 @@ Describe el disparador y el efecto de forma explícita: *cuándo* ocurre algo y 
 
 - Empieza por las reglas de visibilidad y de obligatoriedad condicional: son las que más valor aportan en el día a día y las más fáciles de razonar.
 - Usa la validación **OnSubmit** para todo lo que nunca deba guardarse mal; las verificaciones a nivel de campo ayudan al usuario temprano, pero la validación al guardar es la última barrera.
+- Prefiere **OnBlur** para el trabajo costoso y para todo lo que reescriba lo que el usuario ingresó.
+- Mantén cada regla enfocada en un solo comportamiento. Dos reglas pequeñas en eventos distintos son más fáciles de depurar que una que lo hace todo.
+- Escribe una descripción útil en cada regla: es lo que aparece cuando algo sale mal.
 - Prueba las reglas con **Vista previa** en el Diseñador de páginas antes de guardar, recorriendo los escenarios que la regla debe cubrir.
+
+## Páginas relacionadas
+
+<CardGroup cols={2}>
+  <Card title="Referencia de reglas de campo" icon="book" href="/es/data/field-rules-reference">
+    Cada método, propiedad y helper disponible dentro de una regla.
+  </Card>
+  <Card title="Diseñador de páginas" icon="pen-ruler" href="/es/data/page-designer">
+    Donde se escriben y se adjuntan las reglas, bajo el menú Código.
+  </Card>
+  <Card title="Formularios y plantillas de formulario" icon="clipboard-list" href="/es/data/forms">
+    Las reglas pertenecen a una plantilla: así se gestionan las plantillas.
+  </Card>
+  <Card title="Campos y tipos de campo" icon="rectangle-list" href="/es/data/fields">
+    Lo que un formulario puede mostrar, antes de que las reglas definan cómo se comporta.
+  </Card>
+</CardGroup>

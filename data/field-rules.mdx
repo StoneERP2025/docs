@@ -1,26 +1,38 @@
 ---
 title: Field rules
-description: Add behavior to forms — validate input, show or hide sections, set values, and react to what users do.
+description: Add behavior to forms — validate input, show or hide sections, set values, call services, and react to what users do.
 icon: wand-magic-sparkles
 ---
 
 Field rules add behavior to forms. A plain form shows fields and saves values; rules make it react — validating input, showing or hiding parts of the form, setting values, requiring or disabling fields, or calling services. Rules are what turn a static layout into a form that guides people toward correct data.
 
+Each rule is a small JavaScript function attached to one event on one field (or on the form as a whole). You write it in the [Page Designer](/data/page-designer), under the **Code** menu.
+
+<Note>
+This page explains how rules work and how to write them. For the complete list of everything a rule can call — every field method, form helper, and built-in object — see the [Field rule reference](/data/field-rules-reference).
+</Note>
+
 ## When rules run
 
 Every rule is tied to an event. When the event happens, the rule runs.
 
-| Event | When it fires |
-| --- | --- |
-| **OnLoad** | The form opens |
-| **OnSubmit** | Before the record is saved — the rule can validate and stop the save |
-| **OnDelete** | Before the record is deleted |
-| On change | A specific field's value changes |
-| On blur | The user leaves a specific field |
-| On focus | The user enters a specific field |
-| On click | The user clicks a specific element |
+| Event | When it fires | Scope |
+| --- | --- | --- |
+| **OnLoad** | The form opens | Form |
+| **OnSubmit** | Before the record is saved — the rule can validate and stop the save | Form |
+| **OnDelete** | Before the record is deleted | Form |
+| **OnChange** | A specific field's value changes | Field |
+| **OnBlur** | The user leaves a specific field | Field |
+| **OnFocus** | The user enters a specific field | Field |
+| **OnClick** | The user clicks a specific element | Field |
+| **Validation** | The field's value is checked | Field |
+| **Action** | A configured action runs from the field | Field |
 
-Form-level events (OnLoad, OnSubmit, OnDelete) govern the whole form's lifecycle; field-level events react to what the user does in a particular field.
+Form-level events govern the whole form's lifecycle; field-level events react to what the user does in a particular field.
+
+<Note>
+**OnLoad**, **OnSubmit**, and **OnDelete** apply only when the rule belongs to the form's own entity. **OnDelete** runs in table context only.
+</Note>
 
 ## What rules can do
 
@@ -38,6 +50,248 @@ Rules are written and managed in the [Page Designer](/data/page-designer), under
 Rules belong to a form template, not to the table. If a table has several templates, each template carries its own rules — see [Forms and form templates](/data/forms). Keep that in mind when a behavior seems to "disappear": you may be looking at a different template.
 </Note>
 
+There is **one rule per field per event**. If a rule already exists for the field and event you want, you are editing that rule, not adding a second one beside it.
+
+## Anatomy of a rule
+
+A rule is a single named function. The **name** decides what the rule is attached to; the **body** is the behavior.
+
+```js
+function global_stakeholder_person_email_onblur(value) {
+  const v = value.getValue
+  if (typeof v === 'string' && v !== v.toLowerCase()) {
+    value.setValue({ value: v.toLowerCase(), onchange: false })
+  }
+}
+```
+
+The name has three parts:
+
+```
+global _ stakeholder_person_email _ onblur
+  │              │                    │
+  scope       field key             event
+```
+
+- **Scope** — the first segment. Use `global` for a normal form rule.
+- **Field key** — the middle. This identifies which field the rule attaches to, and it must be exact.
+- **Event** — the last segment: `onchange`, `onblur`, `onfocus`, `onclick`, `onload`, `onsubmit`, `ondelete`, `validate`, or `action`.
+
+### Build the field key
+
+The field key is **not** the raw field name. Build it in two steps:
+
+<Steps>
+  <Step title="Start from the field's database name and drop a trailing _id">
+    `location_id` becomes `location`; `document_type_id` becomes `document_type`; `first_name` stays `first_name`.
+  </Step>
+  <Step title="Prefix it with the field's own entity name, with dots replaced by underscores">
+    A field on entity `stakeholder.person` named `email` becomes `stakeholder_person_email`. A field pulled in from a related entity uses **that** entity's name, not the form's.
+  </Step>
+</Steps>
+
+There is no exemption for fields on the form's own entity — they are prefixed exactly like related ones.
+
+<Warning>
+A wrong field key **fails silently**. The rule is skipped with no error and no warning, which looks identical to a rule that runs but does nothing. Before writing a new rule, open an existing rule on the same field and copy its key verbatim.
+</Warning>
+
+<Tip>
+Foreign-key fields have an asymmetry worth memorizing: the **function name keeps** `_id`, while the **body addresses the field without it**. A rule named `global_account_receivable_salesman_stakeholder_id_onchange` operates on `field.account_receivable_salesman_stakeholder`.
+</Tip>
+
+### What the handler receives
+
+The argument depends on the event:
+
+| Event | Argument | Notes |
+| --- | --- | --- |
+| OnChange, OnBlur, OnFocus, OnClick | The **field object** itself | Read `value.getValue`, write with `value.setValue(...)`, inspect the raw event at `value.e` |
+| Validation | The **raw value** | Must return `{ valid, message? }` |
+| OnSubmit | The **form elements** object | Mutate it to change what gets saved |
+| OnLoad, OnDelete | Nothing | Work through `failfast.myFormHelpers` |
+
+Inside an input handler, the parameter and `field.<its own key>` are the same object — use whichever reads better.
+
+### Addressing other fields
+
+Any other field on the form is reachable through the `field` registry:
+
+```js
+field.stakeholder_person_state.setEnabled(true)
+field.stakeholder_person_legal_name.setVisible(false)
+field.stakeholder_person_total.setValue({ value: 1000, onchange: false })
+```
+
+`field` and `failfast` are the same object, so `field.myFormHelpers` and `failfast.myFormHelpers` are interchangeable. The [reference](/data/field-rules-reference) lists every method available on a field.
+
+## Computed-boolean rules
+
+Four rule types don't perform actions — they answer a question about the field and **return a boolean**. The form re-evaluates them as values change.
+
+```js
+function visible_company_name() {
+  return field.stakeholder_person_user_type.getValue === 'employee'
+}
+```
+
+Use `visible`, `enabled`, and `render` for state that is a pure function of other values. Reach for an OnChange rule instead when you need a side effect, not an answer.
+
+## Async work and timing
+
+You can `await` inside a rule — asynchronous handling is applied automatically when the body needs it.
+
+```js
+async function global_stakeholder_person_document_number_onblur(value) {
+  const x = value.getValue
+  if (!x) return
+  const res = await axiosFailFast.get(`${apis.stakeholder__stakeholder}?document_number__exact=${x}`)
+  if (Array.isArray(res.results) && res.results.length) {
+    value.setError({ valid: false, message: 'Document already registered.' })
+  }
+}
+```
+
+<Note>
+**OnChange rules are debounced by 500 ms** so they don't fire on every keystroke. To change that, set `_delay` on the handler — `myHandler._delay = 0` runs it immediately.
+</Note>
+
+Prefer **OnBlur** over **OnChange** for anything expensive or anything that reformats what the user is typing. OnChange fires as they type; OnBlur runs once, when they leave the field.
+
+## Common patterns
+
+<AccordionGroup>
+  <Accordion title="Show or hide depending on another field">
+    ```js
+    function global_stakeholder_person_entity_type_onchange(value) {
+      const isPerson = value.getValue === 'person'
+      field.stakeholder_person_legal_name.setVisible(!isPerson)
+      field.stakeholder_person_legal_rep.setVisible(!isPerson)
+    }
+    ```
+
+    `setVisible` hides the field but keeps it mounted; `setRender` removes it entirely. Both are no-ops in table context — there, change values, errors, or enabled state instead.
+  </Accordion>
+  <Accordion title="Require a field only under a condition">
+    ```js
+    function global_order_payment_method_onchange(value) {
+      const needsReference = value.getValue === 'transfer'
+      field.order_transfer_reference.setIsMandatory(needsReference)
+      field.order_transfer_reference.setVisible(needsReference)
+    }
+    ```
+
+    Pair the required flag with visibility so users are never asked for a field they can't see.
+  </Accordion>
+  <Accordion title="Configure a selector's options">
+    An OnClick rule on a selector field returns a configuration object that drives what the selector queries and shows.
+
+    ```js
+    function global_location_city_onclick() {
+      const country = field.location_country.getValue
+      return {
+        endPoint: apis.location__city,
+        display: 'name',
+        id: 'id',
+        filter: country ? `?country__exact=${country}` : ''
+      }
+    }
+    ```
+
+    Return only the keys you need. The full set of accepted keys is in the [reference](/data/field-rules-reference#selector-configuration).
+  </Accordion>
+  <Accordion title="Initialize fields when the form opens">
+    Setting values directly in an OnLoad body races the form's own data loading. Route initialization through the two helpers instead, chosen by mode:
+
+    ```js
+    function global_stakeholder_person_onload() {
+      if (failfast.typeRender === 'table') return
+      const record = failfast.myFormHelpers.getRecord().id
+
+      // Create mode only — [field, initialValue, enabled, visible]
+      validateOnLoad([
+        [field.stakeholder_person_is_active, 'true', true, true]
+      ], record)
+
+      // Edit mode only — [field, enabled, visible]
+      validateOnLoadUpdate([
+        [field.stakeholder_person_document_number, false, true]
+      ], record)
+    }
+    ```
+
+    `validateOnLoad` runs only when there is no record yet; `validateOnLoadUpdate` runs only when there is. Foreign and selector fields take **just the id** as their initial value, never a hand-built object.
+  </Accordion>
+  <Accordion title="Validate and transform on submit">
+    ```js
+    async function global_stakeholder_person_onsubmit(formelements) {
+      const fields = [
+        field.stakeholder_person_document_number,
+        field.stakeholder_person_first_name,
+        field.stakeholder_person_last_name
+      ]
+
+      await validateOnSubmit(
+        fields,
+        formelements,
+        apis.stakeholder__person,
+        ['Person-Unique-Document'],
+        failfast.myFormHelpers.getRecord().id
+      )
+    }
+    ```
+
+    <Warning>
+    The `fields` array must list **every field the record requires**, every time — not just the ones your condition touches. `validateOnSubmit` only checks what you hand it; anything you leave out reaches the save and fails there, with no useful message for the user. Conditional requirements are additions on top of that baseline, never a replacement for it.
+    </Warning>
+  </Accordion>
+  <Accordion title="Share logic between rules">
+    Each rule is evaluated on its own, so a helper declared inside one rule body disappears when that body returns. Assign it to a registry from an OnLoad rule instead:
+
+    ```js
+    function global_stakeholder_person_onload() {
+      // This form only
+      field.composeCompleteName = () => { /* … */ }
+
+      // Every mounted form, including detail and embedded subforms
+      page.__helpers = page.__helpers || {}
+      page.__helpers.composeFullName = (target, sources) => { /* … */ }
+    }
+    ```
+
+    Pick by reach: `field` when the helper hardcodes this form's keys, `page` when a detail or embedded subform must call it too. Because OnLoad does not always run before other rules, guard the call site — `if (typeof field.composeCompleteName === 'function')`.
+  </Accordion>
+  <Accordion title="Keep a composed field and its parts in sync">
+    A field like `complete_name` and its parts (`first_name`, `last_name`) that must update each other will fight unless you break the loop structurally.
+
+    | Rule on | Event | Does |
+    | --- | --- | --- |
+    | Each part field | OnChange | Composes into the target |
+    | The composed field | OnBlur | Splits back into the parts |
+    | The composed field | OnChange | Deactivated |
+
+    Both directions write with `setValue({ value, onchange: false })`, which does not re-fire the destination's OnChange — so neither direction can trigger the other.
+
+    <Warning>
+    Never trigger the composition from the target's **own** event. If the part fields call `field.<target>.onChange()`, then typing directly into the target runs the composition handler and overwrites what the user is typing.
+    </Warning>
+
+    Split on **OnBlur**, not OnChange — splitting as the user types would put `J`, `Ju`, `Jua` into the first part. Add an equality guard on both sides so a focus-in/focus-out with no edit is a genuine no-op.
+  </Accordion>
+</AccordionGroup>
+
+## Pitfalls
+
+<Warning>
+These cause silent failures — the rule appears to be installed but nothing happens:
+
+- **A wrong field key.** The rule is skipped without an error. Copy the key from an existing rule on the same field.
+- **A missing required field in an OnSubmit `fields` array.** The save fails at the server with no useful message.
+- **Reading a table or detail field back with `getValue`.** It does not return the painted data. Rebuild the value in the submit handler instead.
+- **`setVisible` and `setRender` in table context.** They are no-ops there.
+- **A helper declared inside a rule body.** It dies when the body returns; assign it to `field` or `page` from OnLoad.
+</Warning>
+
 ## The AI rule assistant
 
 You don't have to build rules by hand. The AI rule assistant generates a rule from a plain-language description of the behavior you want — describe it the way you'd explain it to a colleague, such as "when X changes, hide section Y", and the assistant produces the rule for you to review and attach.
@@ -50,4 +304,24 @@ Describe the trigger and the effect explicitly — *when* something happens, *wh
 
 - Start with visibility and required-when rules — they deliver the most day-to-day value and are the easiest to reason about.
 - Use **OnSubmit** validation for anything that must never be saved wrong; field-level checks help users early, but submit-time validation is the final gate.
+- Prefer **OnBlur** for expensive work and for anything that rewrites the user's input.
+- Keep one rule focused on one behavior. Two small rules on different events are easier to debug than one that does everything.
+- Write a useful description on every rule — it is what appears when something goes wrong.
 - Test rules with **Preview** in the Page Designer before saving, walking through the scenarios the rule is supposed to handle.
+
+## Related pages
+
+<CardGroup cols={2}>
+  <Card title="Field rule reference" icon="book" href="/data/field-rules-reference">
+    Every method, property, and helper available inside a rule.
+  </Card>
+  <Card title="Page Designer" icon="pen-ruler" href="/data/page-designer">
+    Where rules are written and attached, under the Code menu.
+  </Card>
+  <Card title="Forms and form templates" icon="clipboard-list" href="/data/forms">
+    Rules belong to a template — this is how templates are managed.
+  </Card>
+  <Card title="Fields and field types" icon="rectangle-list" href="/data/fields">
+    What a form can show, before rules decide how it behaves.
+  </Card>
+</CardGroup>

@@ -48,6 +48,7 @@
                   "data/forms",
                   "data/page-designer",
                   "data/field-rules",
+                  "data/field-rules-reference",
                   "data/import-export",
                   "data/data-homologation"
                 ]
@@ -179,6 +180,7 @@
                   "es/data/forms",
                   "es/data/page-designer",
                   "es/data/field-rules",
+                  "es/data/field-rules-reference",
                   "es/data/import-export",
                   "es/data/data-homologation"
                 ]
