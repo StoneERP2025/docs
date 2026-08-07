@@ -8,8 +8,8 @@
     "dark": "#4867ff"
   },
   "favicon": {
-    "light": "/images/icon.png",
-    "dark": "/images/icon.png"
+    "light": "/images/favicon.png",
+    "dark": "/images/favicon.png"
   },
   "navigation": {
     "languages": [
@@ -282,7 +282,8 @@
   },
   "logo": {
     "light": "/images/logo-black.png",
-    "dark": "/images/logo-white.png"
+    "dark": "/images/logo-white.png",
+    "href": "https://www.failfast.ai"
   },
   "navbar": {
     "links": [
