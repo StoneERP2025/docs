@@ -1,3 +1,847 @@
 ---
 title: "TMS"
+icon: "truck-container"
+---
+
+# Playbook del RNDC y la Operación de Transporte de Carga en Colombia
+
+## 1. Introducción
+
+### Qué es el RNDC
+
+El **Registro Nacional de Despachos de Carga (RNDC)** es el sistema de información que administra el Ministerio de Transporte y que recibe, valida y transmite los datos de las operaciones de transporte terrestre de carga en Colombia. Funciona desde hace más de una década y es la fuente principal de estadística del sector.
+
+> El RNDC es el sistema estatal que registra y valida la operación de transporte de carga: quién contrata, qué mercancía se moviliza, en qué vehículo, bajo qué manifiesto, cuánto se paga, cuánto dura el viaje y cómo se cierra.
+
+### Qué problema resuelve
+
+Antes del RNDC, la relación económica entre el generador de carga, la empresa de transporte y el dueño del camión era básicamente invisible para el Estado. No se sabía cuánto se pagaba realmente por un flete, cuánto tardaba un vehículo esperando en un patio, ni si el propietario del camión recibía lo pactado.
+
+El RNDC ataca eso con un mecanismo simple: **si la operación no se registra, la operación no existe legalmente**. Sin manifiesto electrónico expedido en el RNDC, el conductor no puede transitar amparado; sin cumplido de manifiesto no se liquida el valor a pagar; sin factura electrónica registrada y aceptada, el generador no cumple su obligación de reportar el flete. El sistema convierte cada eslabón del negocio en un dato verificable.
+
+### Quiénes deben reportar
+
+La resolución identifica cuatro grupos de obligados: las empresas habilitadas para prestar el servicio público de transporte terrestre automotor de carga, los generadores de carga, los titulares de manifiesto (propietario, poseedor o tenedor del vehículo) y, en general, las personas naturales o jurídicas que realizan transporte terrestre automotor de carga.
+
+Además hay actores que interactúan de manera opcional o por consulta: empresas de monitoreo de flota, conductores, municipios, INVÍAS, ANI, puertos, operadores portuarios, la Superintendencia de Transporte y la Dirección de Tránsito y Transporte de la Policía Nacional, entre otros.
+
+### Qué documentos controla
+
+Cuatro documentos sostienen todo el sistema:
+
+1. **Remesa terrestre de carga** — sigue a la mercancía.
+2. **Manifiesto electrónico de carga** — sigue al vehículo y al viaje.
+3. **Cumplido de remesa y cumplido de manifiesto** — confirman lo que realmente ocurrió.
+4. **Factura electrónica de transporte** — cobra el servicio y, al registrarse en el RNDC, sirve para reportar el flete.
+
+### Cómo se conecta con el dinero
+
+Esta es la parte que se suele subestimar. El RNDC no es un sistema estadístico: es el lugar donde se determina cuánto plata se mueve y cuándo.
+
+- El **flete** es lo que el generador de carga le paga a la empresa de transporte. Se reporta al RNDC cargando el XML de la factura electrónica, y el generador debe aceptarlo.
+- El **valor a pagar** es lo que la empresa de transporte le paga al propietario, poseedor o tenedor del vehículo. Va en el manifiesto y se liquida definitivamente en el cumplido de manifiesto.
+- Ninguno de los dos puede quedar por debajo de los **costos eficientes de operación del SICE-TAC**. El RNDC valida esto y bloquea la expedición del manifiesto.
+- Sobre el valor a pagar se calculan **retención en la fuente, reteICA y la retención FOPAT del 0,1 %**, y sobre ese mismo valor se determina el anticipo y el saldo.
+- El manifiesto cumplido, con las condiciones de claridad, carácter expreso y exigibilidad actual, **presta mérito ejecutivo**: sirve para cobrar judicialmente sin tener que probar la deuda desde cero.
+
+### Por qué es fundamental para una transportadora
+
+Porque el RNDC tiene frenos automáticos. Si la empresa acumula cumplidos de manifiesto pendientes por encima del 20 % de los manifiestos de los últimos 30 días, el sistema deja de dejarla expedir manifiestos nuevos. Si acumula facturas sin aceptar por un generador por encima del 20 %, deja de dejarla crear remesas para ese generador. Si no está al día con el pago del FOPAT a la DIAN, tampoco puede expedir manifiestos.
+
+En otras palabras: **el atraso administrativo se convierte en parálisis operativa**. Una transportadora que no controla sus pendientes no puede despachar.
+
+### Qué papel cumple Fail Fasr
+
+Fail Fast hace cinco cosas que el portal del RNDC por sí solo no hace:
+
+1. **Evita el doble digitado.** Los datos se capturan una vez en el sistema comercial y se transmiten por (webservice).
+2. **Anticipa las validaciones.** Antes de enviar, verifica localmente lo que el RNDC va a rechazar: SOAT vencido, licencia vencida, peso fuera de rango, valor por debajo del SICE-TAC.
+3. **Vigila los porcentajes de bloqueo.** Alerta cuando los pendientes se acercan a los umbrales, no cuando ya bloquearon la operación.
+4. **Conserva evidencia.** Guarda el payload enviado, la respuesta, el radicado, la fecha y hora, el usuario y el PDF/XML resultante.
+5. **Cierra el círculo contable.** Conecta manifiesto → cumplido → valor a pagar → retenciones → cuenta por pagar al propietario, y remesa → cumplido → factura → cuenta por cobrar al generador.
+
+Ninguna de esas cinco cosas es una obligación legal. Todas son la diferencia entre una operación que escala y una que vive apagando incendios.
+
+---
+
+## 2. Mapa general de la operación
+
+El flujo completo, de punta a punta:
+
+```text
+Solicitud de transporte → cotización → contratación
+→ registro de generador, remitente y destinatario
+→ remesa → manifiesto → aceptación → despacho → cargue
+→ viaje → monitoreo → descargue
+→ cumplido de remesa → cumplido de manifiesto
+→ valor a pagar → factura electrónica → aceptación del flete
+→ pago → cierre contable
+```
+
+A continuación cada etapa, con lo que pasa en el negocio y lo que pasa en el sistema.
+
+### 2.1 Solicitud de transporte
+
+- **Quién participa:** generador de carga y empresa de transporte.
+- **Qué ocurre:** el generador necesita mover mercancía de un punto A a un punto B y pide una propuesta.
+- **Qué se registra en el RNDC:** nada todavía.
+- **Información necesaria:** origen, destino, tipo y cantidad de mercancía, fechas tentativas, condiciones de cargue y descargue.
+
+- **Validaciones que pueden bloquear:** ninguna en el RNDC.
+
+### 2.2 Cotización
+
+- **Quién participa:** empresa de transporte y generador.
+- **Qué ocurre:** la transportadora calcula el costo del viaje y propone un precio.
+- **Qué se registra en el RNDC:** nada. Pero **aquí es donde debe consultarse el SICE-TAC**, porque el costo eficiente será el piso obligatorio más adelante.
+- **Información necesaria:** ruta origen-destino, tipo de vehículo y configuración, tipo de carga, horas estimadas de espera, cargue y descargue.
+- **Documento generado:** cotización comercial.
+- **Validaciones:** ninguna todavía, pero cotizar por debajo del SICE-TAC garantiza un bloqueo en la etapa de manifiesto. La consulta SICE-TAC esta embebida en Fail Fast, no es un paso manual posterior.
+
+### 2.3 Contratación
+
+- **Quién participa:** generador y empresa de transporte; después, empresa de transporte y propietario del vehículo.
+- **Qué ocurre:** se cierra el contrato de transporte. Si la transportadora no usa flota propia, contrata a un tercero (propietario, poseedor o tenedor) y pacta con él el valor a pagar.
+- **Qué se registra en el RNDC:** nada aún, pero se define quién tendrá la calidad de generador frente al contrato, dato que luego va en la remesa.
+- **Documento generado:** contrato u orden de servicio. En muchas operaciones basta la orden de compra del generador, que puede reportarse en la remesa.
+- **Validaciones:** las relaciones económicas no pueden pactarse por debajo de los costos eficientes del SICE-TAC.
+
+### 2.4 Registro de terceros: generador, remitente, destinatario, propietario, conductor y vehículo
+
+- **Quién participa:** empresa de transporte.
+- **Qué ocurre:** se crean o actualizan los maestros en el RNDC antes de poder documentar el viaje.
+- **Qué se registra en el RNDC:** terceros (con sus sedes y coordenadas georreferenciadas para puntos de cargue y descargue), conductores y vehículos motorizados y no motorizados.
+- **Información necesaria:** identificación, nombre, dirección, municipio, teléfono; para conductores, categoría y vigencia de la licencia; para vehículos, placas y configuración.
+- **Documento generado:** radicados de creación en el RNDC.
+- **Validaciones que pueden bloquear:** el RNDC cruza los datos con RUNT, RUES, SISCONMP, INVÍAS y SICE-TAC. Un vehículo con matrícula inactiva, servicio distinto a público o modalidad distinta a carga no sirve. Un conductor sin licencia vigente tampoco.
+
+### 2.5 Remesa terrestre de carga
+
+- **Quién participa:** empresa de transporte (la crea); generador, remitente y destinatario aparecen en ella.
+- **Qué ocurre:** se documenta la mercancía que se va a mover.
+- **Qué se registra en el RNDC:** registro obligatorio de remesa. Se devuelve un **número de radicado**.
+- **Información necesaria:** consecutivo interno único, identificación del generador de carga, sedes de cargue y descargue, naturaleza y código de la mercancía, peso o volumen, unidad y cantidad de empaques, tiempos pactados de cargue y descargue en horas y minutos, citas de cargue y descargue, y opcionalmente el seguro de la mercancía.
+- **Documento generado:** radicado de remesa; la empresa puede generar el PDF bajo su responsabilidad.
+- **Validaciones que pueden bloquear:** habilitación activa de la empresa; consecutivo no repetido; código de mercancía válido; cita de descargue no más de 6 días después de la de cargue (con excepciones para maquinaria extradimensionada); citas no más de 30 días hacia adelante ni 30 días hacia atrás sin excepción registrada; y el control del 20 % de remesas cumplidas sin dato de flete en factura electrónica.
+
+### 2.6 Manifiesto electrónico de carga
+
+- **Quién participa:** empresa de transporte (lo expide), titular del manifiesto y conductor (quedan relacionados).
+- **Qué ocurre:** se asigna el vehículo y el conductor al viaje y se define el valor a pagar.
+- **Qué se registra en el RNDC:** registro obligatorio de manifiesto. El sistema devuelve un **número de radicado** y un **código de seguridad cifrado** cuya representación gráfica va en el PDF.
+- **Información necesaria:** tipo de manifiesto, fecha de expedición, origen y destino, datos del titular, placas (motorizado y remolques), datos del conductor (y segundo conductor si aplica), valor a pagar con lugar y fecha de pago, tarifa de reteICA, retención en la fuente, retención FOPAT del 0,1 %, anticipo, neto y saldo; remesas vinculadas; NIT de la empresa de monitoreo de flota autorizada; permiso INVÍAS si la carga es extrapesada o extradimensionada.
+- **Documento generado:** PDF del manifiesto en el formato estándar del Ministerio, con el código cifrado.
+- **Validaciones que pueden bloquear:** valor a pagar inferior al SICE-TAC, cumplidos pendientes por encima del 20 %, FOPAT no pagado a la DIAN, vehículo con omisiones en el registro inicial, SOAT o RTM vencidos frente a la fecha de descargue, y exceso de peso frente a la configuración.
+
+### 2.7 Aceptación del manifiesto
+
+- **Quién participa:** titular del manifiesto, o el conductor si el titular lo autoriza.
+- **Qué ocurre:** el dueño del camión confirma electrónicamente las condiciones escritas por la empresa de transporte.
+- **Qué se registra en el RNDC:** registro **opcional** de aceptación del manifiesto, con su propio radicado y con fecha y hora.
+- **Nota:** conviene no confundirlo con la aceptación del _cumplido_ de manifiesto, que sí tiene consecuencias fuertes y reglas de silencio positivo.
+
+### 2.8 Despacho y cargue
+
+- **Quién participa:** conductor, personal del generador o del operador logístico en el punto de cargue.
+- **Qué ocurre:** el vehículo llega al punto de control de cargue, espera, carga y sale.
+- **Qué se registra en el RNDC:** nada directamente en este momento por parte de la empresa; los tiempos se capturan por monitoreo de flota y llegan después.
+- **Información necesaria:** fecha y hora reales de llegada, entrada, inicio y salida del cargue.
+- **Validaciones:** el conductor debe portar el manifiesto, físico o digital, durante toda la operación.
+
+### 2.9 Viaje y monitoreo
+
+- **Quién participa:** conductor, empresa de monitoreo de flota (o la propia transportadora si tiene certificado de condiciones técnicas para usar herramienta propia), autoridades en vía.
+- **Qué ocurre:** el vehículo se desplaza y pasa por puntos de control georreferenciados.
+- **Qué se registra en el RNDC:** **registro de monitoreo de manifiesto**, un registro por punto de control, con fecha y hora de llegada y de salida. Se envía después de que el vehículo sale de ese punto de control. Si hay algo anormal, se registra una **novedad de monitoreo**.
+- **Documento generado:** radicado de registro de monitoreo (o de novedad).
+- **Validaciones:** el manifiesto debe estar activo y no cumplido; el punto de control debe estar asignado al NIT de la empresa de monitoreo autorizada.
+
+### 2.10 Descargue
+
+- **Quién participa:** conductor y destinatario.
+- **Qué ocurre:** llegada, espera, descargue y salida en el punto de destino.
+- **Qué se registra:** igual que en el cargue, vía monitoreo de flota.
+
+### 2.11 Cumplido inicial de remesa
+
+- **Quién participa:** el sistema RNDC, de forma automática.
+- **Qué ocurre:** el RNDC toma los tiempos del registro de monitoreo y los **distribuye automáticamente** entre las remesas ligadas al mismo manifiesto, según la regla de la Guía de Monitoreo de Flota.
+- **Qué se registra:** radicado de cumplido inicial de remesa.
+- **Por qué importa:** Este es el punto donde Fail Fast lee de vuelta del RNDC. Los tiempos oficiales son los que el RNDC distribuyó, no los que el TMS calculó por su cuenta.
+
+### 2.12 Cumplido de remesa terrestre de carga
+
+- **Quién participa:** empresa de transporte.
+- **Qué ocurre:** se confirma qué se entregó realmente y cuándo.
+- **Qué se registra en el RNDC:** registro obligatorio. Toma los datos del cumplido inicial y les suma la **cantidad real entregada** y las fechas y horas de entrada al cargue y al descargue.
+- **Documento generado:** radicado y PDF del cumplido de remesa.
+- **Validaciones que pueden bloquear:** los tiempos deben estar en orden cronológico estricto (llegada al cargue ≤ entrada al cargue \< salida del cargue \< llegada al descargue ≤ entrada al descargue \< salida del descargue); horas en formato 00:00–23:59 en hora legal colombiana; la cantidad entregada no puede ser menor al 10% ni mayor al 200% de la cargada sin autorizar previamente el caso especial; la remesa debe estar ligada a un manifiesto activo.
+- **Para qué sirve:** con el cumplido de remesa, la empresa ya tiene la información necesaria para **facturarle al generador**.
+
+### 2.13 Cumplido de manifiesto y liquidación del valor a pagar
+
+- **Quién participa:** empresa de transporte (lo registra) y titular del manifiesto (lo acepta o lo rechaza).
+- **Qué ocurre:** se liquida el valor a pagar definitivo, que puede diferir del pactado en la expedición del manifiesto por los tiempos logísticos realmente ejecutados, por variación de ruta o por viaje incompleto.
+- **Qué se registra en el RNDC:** registro obligatorio de cumplido de manifiesto, con ajustes al valor a pagar, sus causales y la retención FOPAT del 0,1 % sobre el valor a pagar. Requiere que **todas** las remesas del manifiesto estén previamente cumplidas.
+- **Documento generado:** radicado y PDF del cumplido en formato estándar.
+- **Reglas de aceptación:** el titular debe aceptar o rechazar **dentro del día siguiente** a la radicación del cumplido. Si no se pronuncia, el RNDC lo acepta automáticamente. Si lo rechaza, la empresa debe anular el cumplido y registrar uno nuevo con los ajustes acordados.
+- **Servicios adicionales:** los valores por servicios que no son propios de la movilización de la mercancía se registran en **casilla independiente** del valor a pagar y **no pueden descontarse** de él.
+- **Plazo del pago:** la fecha del valor a pagar no puede pasar de cinco días hábiles siguientes al recibo de la carga, contados desde el día siguiente a la expedición del cumplido de manifiesto.
+
+### 2.14 Factura electrónica y registro del flete
+
+- **Quién participa:** empresa de transporte (factura al generador) y, opcionalmente, el titular del manifiesto (factura a la empresa de transporte).
+- **Qué ocurre:** la empresa emite la factura electrónica de transporte a la DIAN y luego carga en el RNDC el archivo XML **embebido** (con firma digital y el XML original enviado a la DIAN).
+- **Qué se registra en el RNDC:** registro de facturación electrónica. El XML debe traer el consecutivo y el radicado de la o las remesas facturadas.
+- **Plazo:** las remesas deben facturarse dentro de los 5 días siguientes a la entrega de la mercancía. Si la empresa y el generador pactaron otro plazo, el generador debe reportarlo al RNDC **antes de la expedición de la remesa**, y ese plazo no puede superar 90 días.
+
+### 2.15 Aceptación del flete por el generador
+
+- **Quién participa:** generador de carga.
+- **Qué ocurre:** el generador cumple su obligación de reportar el flete **aceptando en el RNDC la factura electrónica** que la empresa de transporte registró.
+- **Plazo:** dentro de los 5 días hábiles siguientes al vencimiento del plazo pactado para facturar o de la fecha real de entrega.
+- **Silencio:** el RNDC acepta automáticamente el valor del flete después de esos 5 días hábiles, siempre que el valor cumpla las reglas de relaciones económicas del Decreto 1079 de 2015 —es decir, que no esté por debajo de los costos eficientes del SICE-TAC.
+- **Rechazo:** si el generador rechaza, todas las remesas de esa factura quedan pendientes por facturar y la empresa debe subsanar de inmediato para no activar el control del 20 %.
+
+### 2.16 Pago
+
+- **Al propietario del vehículo:** el saldo del valor a pagar, en la fecha registrada en el manifiesto, dentro del máximo legal.
+- **Al transportador por parte del generador:** conforme al plazo pactado y reportado.
+- **Qué se registra en el RNDC:** el sistema no es una pasarela de pagos. Registra las obligaciones y su aceptación, no la transferencia bancaria.
+
+### 2.17 Cierre contable
+
+- **Quién participa:** contabilidad de la empresa de transporte.
+- **Qué ocurre:** se reconoce el ingreso propio, el costo del transporte contratado a terceros, las retenciones practicadas y las recibidas, el ICA por municipio de despacho y la obligación FOPAT pendiente de pago a la DIAN.
+- **Punto crítico:** cuando el transporte se presta con vehículos de terceros, el artículo 102-2 del Estatuto Tributario obliga a registrar el ingreso separado: para el propietario del vehículo la parte que le corresponde en la negociación, y para la transportadora solo el remanente. Esto afecta renta e ICA.
+
+---
+
+## 3. Conceptos fundamentales del RNDC
+
+### Las seis frases que hay que memorizar
+
+Antes del glosario largo, estas seis ideas explican el 80 % del sistema:
+
+1. **La remesa sigue la mercancía.** Un envío = una remesa. Si en un viaje van cargas de tres clientes, hay tres remesas.
+2. **El manifiesto sigue el vehículo y el viaje.** Un viaje = un manifiesto. Un manifiesto puede llevar varias remesas.
+3. **El cumplido confirma lo que realmente ocurrió.** Cantidad entregada, horas reales, ajustes al valor.
+4. **La factura cobra el servicio.** Y al registrarse en el RNDC, sirve además para reportar el flete.
+5. **El registro de flete informa el precio pactado con el generador.** Es obligación del generador, y se cumple aceptando la factura.
+6. **El valor a pagar determina lo que recibe el propietario o tenedor del vehículo.** Es cosa distinta del flete.
+
+### Definiciones, con ejemplo
+
+**Registro Nacional de Despachos de Carga (RNDC).** Sistema de información administrado por el Ministerio de Transporte que recibe, valida y transmite información de las operaciones de transporte terrestre de carga, y consolida la estadística nacional del sector para política pública y control.
+
+**Empresa de transporte.** Persona natural o jurídica legalmente constituida y **habilitada** por el Ministerio de Transporte, cuyo objeto es movilizar cosas en vehículos automotores registrados para servicio público de carga. En el RNDC tiene un usuario principal, que crea y administra usuarios dependientes. _Ejemplo:_ Transportes del Valle S.A.S., habilitada, con 4 camiones propios y 60 vehículos vinculados de terceros.
+
+**Generador de carga.** Es el titular del contrato de transporte o remitente, en los términos de los artículos 1008 y 1009 del Código de Comercio, y se obliga —por cuenta propia o ajena— a entregar las cosas para la conducción. **También puede ser el destinatario, cuando este acepta el contrato de transporte.** Es el adquirente de la factura electrónica que expide la empresa de transporte. _Ejemplo:_ Molinos del Cauca S.A. contrata el traslado de 30 toneladas de arroz de Jamundí a Bogotá. Molinos es el generador.
+
+**Remitente.** Quien entrega la mercancía para su conducción. En la mayoría de las operaciones coincide con el generador.
+
+**Destinatario.** Quien recibe la mercancía en el punto de descargue.
+
+**Contratante.** Término genérico para quien contrata el servicio. En el RNDC, el rol formal que se registra en la remesa es el de generador de carga.
+
+> **Cómo resolver la confusión generador / remitente / destinatario.** La regla operativa es esta: la empresa de transporte debe registrar en cada remesa **la persona que tiene la calidad de generador frente al contrato de transporte**, no simplemente a quien esté físicamente en el punto de cargue. _Caso típico:_ una comercializadora en Buenaventura compra mercancía a un importador y contrata ella el transporte hasta su bodega en Medellín. Físicamente, quien entrega la carga en el puerto es el operador portuario; el destinatario es la comercializadora. Pero como es la comercializadora quien contrató el transporte y quien recibirá la factura, **ella es el generador**, aunque además sea el destinatario. Registrar al operador portuario como generador es un error que después impide que el flete se acepte, porque el que debe aceptar la factura es el adquirente real.
+
+**Titular del manifiesto.** El propietario, poseedor o tenedor del vehículo de servicio público de carga. Es a quien se le paga el valor a pagar del manifiesto cumplido. Accede al RNDC por la aplicación móvil, donde puede aceptar cumplidos y delegar la firma al conductor.
+
+**Propietario, poseedor y tenedor.** Tres figuras distintas que el RNDC trata de manera equivalente para efectos del pago: propietario es quien figura como dueño en el RUNT; poseedor es quien ejerce el señorío sin título inscrito; tenedor es quien tiene el vehículo reconociendo dominio ajeno, típicamente bajo leasing o renting. _Nota práctica:_ cuando el vehículo está en leasing con una entidad financiera y la empresa de transporte figura como locataria en el RUNT, el RNDC lo trata como flota propia para el control del valor a pagar mayor a cero.
+
+**Conductor.** Persona designada por el propietario del vehículo como autorizada para conducir. Tiene usuario propio en el RNDC, puede configurar firma electrónica y puede recibir delegación del titular para aceptar cumplidos.
+
+**Remesa terrestre de carga.** Documento que expide la empresa de transporte conforme a los artículos 1018 y 1019 del Código de Comercio, con las especificaciones del artículo 1010, proporcionadas por el contratante del servicio, más las condiciones generales del contrato de transporte. _Tipos de operación de remesa:_ general, mercancía consolidada, contenedor cargado y contenedor vacío.
+
+**Manifiesto electrónico de carga.** Documento expedido gratuitamente por la empresa de transporte a través del RNDC, que ampara el transporte de mercancías ante las autoridades y que el conductor debe portar durante todo el recorrido. Una vez ejecutado el contrato, **presta mérito ejecutivo** cuando cumple las condiciones de claridad, carácter expreso y exigibilidad actual del artículo 422 del Código General del Proceso.
+
+**Cumplido de remesa terrestre de carga.** Registro obligatorio de la empresa de transporte con los datos del cumplido inicial más la cantidad real entregada y las fechas y horas de entrada al cargue y al descargue. Habilita la facturación al generador.
+
+**Cumplido de manifiesto electrónico de carga.** Registro obligatorio que hace parte integral del manifiesto y donde se ingresan los valores de los eventos del viaje con sus causales. Permite obtener el valor a pagar definitivo, al que solo se aplican los descuentos autorizados por el Decreto 1079 de 2015.
+
+**Registro de flete.** Registro obligatorio del generador de carga, mediante el cual reporta el valor del flete de cada remesa. En la práctica se cumple aceptando en el RNDC la factura electrónica registrada por la transportadora.
+
+**Valor a pagar.** Lo que la empresa de transporte le paga al propietario, poseedor o tenedor del vehículo por el viaje, en los términos del artículo 2.2.1.7.4 del Decreto 1079 de 2015.
+
+**Registro de contratación directa.** Registro que hace el propietario del vehículo cuando presta el servicio directamente al generador, sin empresa de transporte, bajo las disposiciones sobre acarreo de productos especiales del Decreto 2044 de 1988. El registro genera un PDF con código QR que **ampara la operación** y debe portarse durante el trayecto.
+
+**Registro de monitoreo.** Registro de fecha y hora de llegada y de salida del vehículo en cada punto de control del viaje. Un registro por punto de control. Los datos deben obtenerse mediante sistemas de monitoreo de flota.
+
+**Tiempo logístico.** La suma de las horas totales de cargue y las horas totales de descargue. Ver el desglose completo en la sección 9.
+
+**Radicado.** Número que el RNDC entrega por cada registro recibido, en señal de aceptación de los datos. Es la prueba de que el reporte se hizo. Si el radicado no quedó guardado, para efectos prácticos el registro no existe.
+
+**Interoperabilidad.** Acceso en línea al RNDC mediante webservice u otra tecnología de intercambio de información, a través de la URL habilitada por el Ministerio. Es una de las tres formas válidas de operar, junto con el portal web y las aplicaciones móviles oficiales.
+
+**Contingencia.** Esquema que permite seguir operando cuando el RNDC no está disponible: se generan manifiesto y remesas en medios físicos o electrónicos **sin número de radicado y sin código QR**, y se reportan al sistema una vez restablecido el servicio, dentro de los plazos de la Guía de Plan de Contingencia.
+
+**Anulación.** Dejar sin efecto un registro por errores de digitación o cambios en las características del servicio. El RNDC conserva la historia; un consecutivo anulado no puede reutilizarse. Toda anulación exige motivo.
+
+**Corrección.** En el RNDC no existe una "edición" libre de registros radicados. Corregir significa, casi siempre, **anular y volver a registrar**. Esa es la razón por la que la calidad del dato de entrada importa tanto.
+
+**Aceptación y rechazo.** Mecanismo por el cual el titular del manifiesto acepta o rechaza el valor a pagar del cumplido, y por el cual el generador acepta o rechaza el flete de la factura. Ambos tienen reglas de aceptación automática por silencio.
+
+**Anticipo.** Pago inicial que sobre el valor a pagar se hace para el inicio de la movilización de la mercancía.
+
+**Cita.** Fecha y hora acordadas entre el generador y la empresa de transporte para realizar el cargue y el descargue. Es la referencia contra la cual se miden las esperas.
+
+**Punto de control.** Espacio definido por coordenadas georreferenciadas donde se realizan cargue, descargue o pasos intermedios. Cada punto debe tener cita previa. Los puntos intermedios los define el Ministerio en la Guía de Monitoreo de Flota.
+
+**Viaje municipal / viaje intermunicipal.** Municipal es el que ocurre dentro del radio de acción de un mismo municipio (urbano o rural). Intermunicipal es aquel cuyos puntos de origen y destino tienen distintos los primeros 5 dígitos del código Divipola del DANE. Importante: si los municipios están en la misma área metropolitana pero tienen códigos Divipola distintos, para el RNDC el viaje es intermunicipal.
+
+## 4. Actores y responsabilidades
+
+| Actor | Qué hace en la operación | Qué reporta al RNDC | Qué documento recibe | Qué puede bloquear |
+| --- | --- | --- | --- | --- |
+| **Generador de carga** | Contrata el transporte y entrega la mercancía. Puede ser también el destinatario si acepta el contrato. Es el adquirente de la factura. | **Registro de flete**, que se cumple aceptando la factura electrónica de la transportadora. Puede administrar el listado de empresas de transporte autorizadas a registrarlo como generador. Debe reportar el plazo pactado de facturación si es distinto a 5 días, antes de expedirse la remesa. | Factura electrónica de transporte; consultas del RNDC sobre sus operaciones. | No aceptar facturas: acumula pendientes y, superado el 20 %, la transportadora no puede crear remesas nuevas para él. También bloquea si no tiene autorizada a la transportadora en el módulo de control de empresas. |
+| **Remitente** | Entrega físicamente la mercancía. Suele coincidir con el generador. | No tiene registro propio: aparece dentro de la remesa. | Copia de remesa. | Datos incorrectos de sede o coordenadas impiden registrar la remesa. |
+| **Destinatario** | Recibe la mercancía y confirma cantidades. | No tiene registro propio: aparece en la remesa y su recepción alimenta el cumplido. | Remesa cumplida. | Diferencias de cantidad fuera del rango 10 %–200 % obligan a autorizar caso especial antes de cumplir la remesa. Demoras en el descargue aumentan los tiempos logísticos y el valor a pagar. |
+| **Empresa de transporte** | Organiza el servicio, contrata el vehículo, expide documentos, factura y paga al propietario. | Remesa, manifiesto, cumplido de remesa, cumplido de manifiesto, registro de facturación electrónica, y monitoreo si tiene certificado de herramienta propia. | Radicados; PDF de manifiesto y de cumplido en formato estándar; PDF de cumplido de remesa. | Es la que más se puede autobloquear: cumplidos pendientes \>20 %, facturas sin aceptar \>20 % por generador, manifiestos tardíos \>10 %, anulaciones por encima de los rangos permitidos, FOPAT no pagado a la DIAN, habilitación inactiva. |
+| **Propietario del vehículo** | Aporta el vehículo. En contratación directa, presta el servicio él mismo. | En contratación directa: registro del viaje y su finalización; autorización al conductor. Opcionalmente, factura del valor a pagar. | PDF de contratación directa con código QR; cumplido de manifiesto. | Vehículo con omisiones en el registro inicial, SOAT o RTM vencidos: no hay manifiesto. |
+| **Titular del manifiesto** | Es el propietario, poseedor o tenedor. Recibe el valor a pagar. | Aceptación o rechazo del manifiesto (opcional) y del cumplido de manifiesto (con silencio positivo al día siguiente). Opcionalmente factura el valor a pagar. | Manifiesto y cumplido en PDF, consultables desde la app móvil. | Rechazar el cumplido obliga a la empresa a anularlo y rehacerlo, retrasando el pago y consumiendo cupo de anulaciones. |
+| **Conductor** | Conduce, porta el manifiesto y ejecuta cargue y descargue. | Puede aceptar manifiesto y cumplido si el titular lo autoriza; en contratación directa puede enviar el registro si está autorizado. | Manifiesto físico o digital con código cifrado. | Licencia vencida antes de la última cita de descargue, o curso de mercancías peligrosas vencido: no se expide manifiesto. |
+| **Empresa de monitoreo de flota** | Rastrea el vehículo y captura tiempos reales en los puntos de control. | Registro de monitoreo de manifiesto (uno por punto de control) y novedades de monitoreo. | Consulta de manifiestos autorizados a monitorear por webservice. | Si no reporta, no se genera el cumplido inicial de remesa y el cumplido de remesa no se puede completar correctamente. |
+| **Superintendencia de Transporte** | Inspección, vigilancia y control. | No reporta: consulta. | Acceso a la base de datos y a las alertas del sistema. | Investigaciones y sanciones por incumplimientos detectados. Recibe reporte automático de anulaciones por encima de los rangos permitidos. |
+| **Policía de Tránsito (DITRA)** | Control en carretera. | No reporta: consulta y verifica. | Acceso a consulta del manifiesto por código cifrado desde app móvil. | Inmoviliza o sanciona si el vehículo no porta manifiesto válido. |
+| **Ministerio de Transporte** | Administra el RNDC y el SICE-TAC, expide la norma y las guías. | Recibe y valida. | Estadística sectorial. | Puede activar el plan de contingencia; define validaciones, tablas paramétricas y umbrales. |
+
+**Actores adicionales que aparecen en el Anexo 1:** INVÍAS y ANI (pasos por básculas y gálibos en puestos de control en carretera), operadores portuarios y terminales portuarias (módulo INSIDE, citas), Federación Nacional de Departamentos (sistema SIANCO, control de bebidas alcohólicas y tabaco), Ministerio de Ambiente (consulta de viajes con mercancías y residuos peligrosos), UGPP y otras entidades públicas por consulta.
+
+---
+
+## 5. El flujo de documentos
+
+### 5.1 Remesa terrestre de carga
+
+**Qué representa.** El contrato de transporte de una carga concreta. Es el documento de la mercancía: qué se mueve, de dónde a dónde, de quién a quién, en cuánto tiempo se pactó cargar y descargar.
+
+**Quién la crea.** La empresa de transporte, siempre. Ni el generador ni el propietario crean remesas.
+
+**Qué información contiene.**
+
+| Bloque | Datos |
+| --- | --- |
+| Identificación | Consecutivo interno único de la empresa (hasta 15 caracteres alfanuméricos); opcionalmente el consecutivo de la información preliminar de carga |
+| Partes | Nombre e identificación del generador de carga (remitente o destinatario) |
+| Lugares | Sede y dirección de cargue y de descargue, con coordenadas georreferenciadas cuando la operación no tiene recolección ni distribución |
+| Mercancía | Naturaleza, código armonizado (con dos ceros al inicio), descripción, peso o volumen, unidad de empaque y cantidad de unidades |
+| Tiempos | Tiempo total pactado de cargue y de descargue, en horas y minutos; cita de cargue y cita de descargue con fecha y hora |
+| Opcional | Información del seguro que ampara la mercancía; orden de compra del generador; peso del contenedor vacío en operaciones de contenedor |
+
+**Relación con remitente, destinatario y generador.** El campo que el RNDC exige es el del **generador de carga**, entendido como quien tiene esa calidad frente al contrato. El destinatario aparece como parte de los datos mínimos de la remesa (nombre, dirección y lugar de entrega). El remitente, cuando es distinto del generador, es información del negocio, no un rol independiente con obligaciones de reporte.
+
+**Qué ocurre cuando hay varias remesas.** Es lo normal en manifiestos multiparada, ida y regreso y consolidados. Reglas a tener presentes:
+
+- Una remesa asociada a un manifiesto **no puede asociarse a otro viaje**, salvo trasbordo de mercancía. En el trasbordo, la misma remesa pasa al manifiesto nuevo; no se genera una remesa adicional.
+- La suma de las cantidades de todas las remesas se valida contra la capacidad máxima de la configuración vehicular.
+- Los tiempos logísticos capturados a nivel de manifiesto se **distribuyen automáticamente** entre las remesas del manifiesto según la regla de la Guía de Monitoreo de Flota.
+- En mercancía consolidada, si la empresa no tiene habilitación de mensajería expresa del MinTIC, debe hacer **mínimo una remesa por generador**, y en ese caso sí aplica el control de facturación electrónica.
+
+**Tipos de operación de remesa.** General (todo lo que no sea contenedor ni consolidado), mercancía consolidada, contenedor cargado y contenedor vacío. En contenedor vacío la cantidad de mercancía debe ser 0; en las demás operaciones debe ser mayor a 0. El serial del contenedor debe cumplir la norma ISO 6346.
+
+### 5.2 Manifiesto electrónico de carga
+
+**Qué representa.** El viaje. Vincula un vehículo, un conductor, un titular y una o más remesas, y fija el dinero que recibirá el dueño del camión.
+
+**Cuándo se expide.** Después de registrar las remesas y antes de que el vehículo salga. La fecha de expedición es la fecha pactada de inicio del viaje; no puede ser futura más de 30 días ni anterior al límite de "manifiesto tardío" definido por el Ministerio sin registrar la excepción.
+
+**Qué vehículo y conductor relaciona.**
+
+- Placa del vehículo motorizado, placa del remolque o semirremolque y, opcionalmente, una segunda placa de remolque.
+- Conductor con tipo y número de identificación, nombre, dirección, teléfono, municipio, y categoría y vencimiento de la licencia. Opcionalmente un segundo conductor, con los mismos requisitos.
+- Titular del manifiesto con identificación, nombre, teléfono, dirección, municipio y sede.
+
+**Qué valor a pagar contiene.** El bloque económico del manifiesto incluye: valor a pagar por el viaje, lugar de pago, tarifa de retención de ICA, fecha de pago, neto a pagar, valor del anticipo, saldo del valor a pagar, retención en la fuente según tarifas DIAN y **valor de retención FOPAT equivalente al 0,1 % del valor a pagar**. Si el viaje incluye trayectos en vacío, deben registrarse sus valores.
+
+**Cómo se porta y verifica.** El conductor lo lleva físico o digital durante toda la ejecución del contrato. El RNDC genera un **código de seguridad cifrado** cuya representación gráfica se imprime en el PDF estándar; las autoridades de control en vía lo consultan desde las aplicaciones móviles dispuestas para eso y validan autenticidad y operación.
+
+### 5.3 Cumplido
+
+Hay que separar tres cosas que la gente suele llamar "el cumplido":
+
+|  | Cumplido inicial de remesa | Cumplido de remesa | Cumplido de manifiesto |
+| --- | --- | --- | --- |
+| **Quién lo hace** | El RNDC, automáticamente | Empresa de transporte | Empresa de transporte |
+| **De dónde salen los datos** | Distribución automática de los tiempos del registro de monitoreo entre las remesas del manifiesto | Cumplido inicial \+ datos que agrega la empresa | Cumplidos de remesa \+ ajustes económicos |
+| **Qué agrega** | Nada; reparte | Cantidad real entregada; fecha y hora de entrada al cargue y al descargue | Valor a pagar definitivo, ajustes por tiempos reales, variación de ruta o viaje incompleto, retención FOPAT |
+| **Para qué sirve** | Base del cumplido de remesa | Habilita facturar al generador | Habilita liquidar y pagar al titular del vehículo |
+| **Requisito previo** | Registro de monitoreo | Cumplido inicial | **Todas** las remesas del manifiesto cumplidas |
+
+**Qué eventos registra el cumplido de manifiesto.** Valores adicionales o valores a descontar del valor a pagar pactado, correspondientes a eventos del viaje, cada uno con su causal. Los descuentos solo pueden ser los autorizados por el artículo 2.2.1.7.6.7 del Decreto 1079 de 2015.
+
+**Cómo se acepta o rechaza.**
+
+- La **empresa de transporte** se entiende que acepta el cumplido cuando el RNDC le asigna el número de radicado de aceptación al expedirlo.
+- El **titular del manifiesto** debe aceptar o rechazar dentro del día siguiente a la fecha de radicación. Puede hacerlo desde la app móvil del RNDC o autorizar al conductor para que lo haga en su nombre y representación.
+- Si el titular no se pronuncia dentro de ese plazo, **el RNDC acepta automáticamente**.
+- Si rechaza, debe dejar constancia de las razones. La empresa de transporte tiene que **anular el cumplido y registrar uno nuevo** con los ajustes acordados.
+- El PDF del cumplido puede modificarse hasta un mes contado desde su registro inicial cuando haya sido rechazado por el titular.
+
+**Qué ocurre si queda pendiente.** Esta es la consecuencia más costosa de todo el sistema. Los cumplidos de manifiesto pendientes con más de 5 días hábiles —contados desde la fecha y hora de salida del descargue registrada en el cumplido de remesa, o desde la cita pactada de descargue si no se reportó el cumplido de remesa— entran al conteo del 20 %. Superado ese porcentaje sobre los manifiestos de los últimos 30 días calendario, **el RNDC no deja expedir manifiestos nuevos**. El sistema ofrece una consulta de manifiestos pendientes y vencidos, precisamente para que la empresa no llegue a ese punto.
+
+**Cómo afecta la liquidación.** El valor a pagar del cumplido puede ser distinto del valor pactado en el manifiesto, porque los tiempos logísticos reales pueden ser mayores o menores que los pactados, y porque puede haber variación de ruta o viaje incompleto. Ese valor final es el que se factura, sobre el que se recalcula la retención FOPAT del 0,1 % y el que constituye la obligación de pago al titular.
+
+---
+
+## 5. Tipos de manifiesto
+
+| Tipo | Cuándo usarlo | Reglas propias | Errores frecuentes |
+| --- | --- | --- | --- |
+| **General** | Viaje corriente de un origen a un destino distintos, que no encaja en ninguno de los otros cuatro tipos | Origen y destino deben ser municipios diferentes, salvo cuando hay trayecto en vacío que genere viaje redondo | Usarlo para operaciones con paradas intermedias de cargue o descargue, que en realidad son multiparada |
+| **Varios viajes en un día** | Un mismo vehículo repite la misma ruta origen-destino varias veces en el mismo día para mover una cantidad de carga que no cabe en un solo viaje | **Solo se puede asociar una remesa.** Hay que definir cuántos viajes se planean en la fecha de expedición | Crear un manifiesto por cada vuelta, con lo que se dispara el límite de 10 manifiestos por placa por día; o intentar asociar varias remesas |
+| **Multiparada** | Viaje con paradas en municipios intermedios de la ruta para cargar o descargar | Debe asociarse **más de una remesa**, y pueden ser de generadores distintos | Meter una operación de recolección o distribución urbana como multiparada; olvidar que el municipio de origen debe coincidir con al menos un sitio de cargue y el de destino con al menos un sitio de descargue |
+| **Ida y regreso** | El origen y el destino del viaje son el mismo municipio y hay un municipio intermedio de retorno, ejecutado por el mismo vehículo | Hay que **definir el municipio intermedio**. Transporta mínimo dos remesas, que pueden ser de generadores distintos | No registrar el municipio intermedio; usar este tipo cuando en realidad el retorno va en vacío y corresponde a un manifiesto general con trayecto en vacío |
+| **Viaje municipal** | Operaciones dentro del radio de acción municipal: áreas urbanas (viaje urbano) y rurales (viaje rural) de la misma cabecera | Es el único tipo exento del límite de 10 manifiestos por placa y por día | Usarlo entre municipios de la misma área metropolitana. Si los primeros 5 dígitos del código Divipola difieren, el viaje es **intermunicipal**, aunque "se sienta" local |
+
+**Nota sobre monitoreo por tipo de manifiesto.** El parágrafo del artículo 2 acota el reporte de tiempos logísticos a través de empresas de monitoreo de flota a los manifiestos de tipo **general, multiparada e ida y regreso**, y a manifiestos con remesas de carga general, contenedor cargado, contenedor vacío y mercancía consolidada, **siempre que no haya operaciones de recolección o distribución**. Esto tiene una implicación de diseño: no todos los viajes generan la misma cadena de registros, y un TMS que asuma un flujo único va a fallar en las excepciones.
+
+---
+
+## 6. SICE-TAC
+
+### Qué es el SICE-TAC
+
+Es una herramienta del Ministerio de Transporte que calcula los **costos eficientes de operación** de un viaje de transporte de carga, según las características de ese viaje: ruta origen-destino, tipo de vehículo y configuración, tipo de carga y horas estimadas de espera, cargue y descargue.
+
+Nació dentro de la política de **libertad vigilada de tarifas**: el Estado no fija el precio del flete, pero sí calcula cuánto cuesta operar de manera eficiente y vigila que nadie pague por debajo de eso.
+
+### Qué problema resuelve
+
+El transporte de carga colombiano tiene una asimetría estructural: muchos propietarios de camiones pequeños frente a pocos generadores de carga grandes. Sin un piso de referencia, la presión sobre el flete recae sobre el eslabón más débil, que termina absorbiéndola recortando mantenimiento, seguridad o su propia remuneración.
+
+El SICE-TAC pone un piso técnico. La pregunta deja de ser "¿cuánto quiere pagar el generador?" y pasa a ser "¿cuánto cuesta realmente mover esto?".
+
+### Cómo calcula los costos eficientes
+
+La estructura general es de tres bloques:
+
+- **Costos variables:** los que se generan por mover el vehículo. Combustible, mantenimiento y reparaciones, llantas, peajes, lubricantes, lavado y engrase, imprevistos.
+- **Costos fijos:** los que existen aunque el vehículo no viaje. Salario y prestaciones del conductor, seguros, impuestos de rodamiento, gastos de administración y comunicación, recuperación de capital sobre la inversión en el vehículo.
+- **Otros costos y tiempos:** las horas de espera, cargue y descargue, que se traducen en costo porque el vehículo y el conductor están inmovilizados.
+
+Las fórmulas de cada componente fueron revisadas y validadas por la Mesa Técnica del Observatorio del Transporte de Carga por Carretera (OTCC) en el proceso que produjo la versión 2.0 de la herramienta, con parámetros como rendimiento de combustible y velocidad promedio por tipo de terreno, duración de llantas, frecuencia de cambios de aceite y filtros.
+
+El sistema se **actualiza periódicamente** con las variables que cambian: salario mínimo, precio del combustible, peajes y costos fijos. En enero de 2026, por ejemplo, el Ministerio incorporó de forma progresiva el nuevo salario mínimo, el precio del combustible y los peajes.
+
+### Qué variables considera
+
+| Variable | Efecto |
+| --- | --- |
+| Ruta origen-destino | Distancia, tipo de terreno, peajes del corredor |
+| Tipo de vehículo y configuración | Capacidad, consumo, costo de reposición, número de ejes |
+| Tipo de carga | Requerimientos especiales (granel líquido, contenedor, refrigerada) |
+| Horas de espera para cargue y descargue | Costo del vehículo inmovilizado |
+| Horas de cargue y descargue | Ídem |
+| Vía alterna | El manifiesto tiene un campo de "código de vía alterna según SICE-TAC" |
+| Periodo (año-mes) | El valor del SICE-TAC es **fijo para cada mes**. El primer parámetro de cualquier consulta es el periodo |
+
+### La diferencia entre seis conceptos que se confunden
+
+Esta tabla resuelve la mayor parte de las discusiones que se dan en una implementación:
+
+| Concepto | Qué es | Quién lo determina | Rol frente al RNDC |
+| --- | --- | --- | --- |
+| **Costo eficiente SICE-TAC** | Cuánto cuesta operar el viaje de forma eficiente | Ministerio de Transporte | **Piso obligatorio.** El RNDC no expide manifiesto por debajo de él |
+| **Costo operativo** | Lo que le cuesta a _esta_ empresa o a _este_ propietario hacer _este_ viaje | La propia empresa | No se reporta. Es gestión interna |
+| **Flete** | Lo que el generador le paga a la empresa de transporte | Negociación generador–transportadora | Se reporta vía factura electrónica; el generador lo acepta |
+| **Valor a pagar** | Lo que la transportadora le paga al propietario, poseedor o tenedor del vehículo | Negociación transportadora–titular | Va en el manifiesto y se liquida en el cumplido |
+| **Tarifa comercial** | El precio de lista o negociado que la transportadora ofrece a un cliente, que puede incluir servicios adicionales | Política comercial de la empresa | No es un concepto del RNDC. Los servicios que no son propios de la movilización deben ir en casilla independiente |
+| **Margen de la transportadora** | Diferencia entre el flete y lo que paga por el vehículo y demás costos directos | Resultado | No se reporta, pero se deduce: el RNDC tiene flete y valor a pagar del mismo viaje |
+
+**El punto incómodo que hay que decir en voz alta:** como el RNDC captura tanto el flete como el valor a pagar de la misma operación, el Estado puede calcular el margen bruto de intermediación viaje por viaje. Eso no es una consecuencia accidental del diseño; es el diseño.
+
+### Qué ocurre si el valor pactado queda por debajo del parámetro aplicable
+
+- **En el manifiesto:** las empresas de transporte únicamente pueden expedir manifiestos que registren un valor a pagar **igual o superior** a los costos eficientes de operación del SICE-TAC. Si el valor está por debajo, el RNDC no permite la expedición. Es un bloqueo técnico, no una advertencia.
+- **En el flete:** cuando el generador no se pronuncia sobre la factura, el RNDC acepta automáticamente el valor del flete después de 5 días hábiles, **siempre que ese valor cumpla las reglas de relaciones económicas del artículo 2.2.1.7.6.2 del Decreto 1079 de 2015**, es decir, que en ningún caso se efectúen pagos por debajo de los costos eficientes del SICE-TAC. El RNDC revisa que el flete de cada remesa reportada en el XML cumpla el mínimo; si encuentra una remesa sin facturar, marca la factura como "sin aceptación automática".
+- **Consecuencias adicionales:** el artículo 7 de la resolución establece la comparación de datos del RNDC contra el SICE-TAC, y el artículo 16 prevé un esquema de alertas por presuntos incumplimientos disponible para la Superintendencia de Transporte.
+
+### Cómo se consulta o se integra en un TMS
+
+El Ministerio ofrece varias vías:
+
+1. **Herramienta web del SICE-TAC**, de acceso gratuito previo registro, en la que se ingresan las características del viaje y se obtiene el costo.
+2. **Consulta desde el RNDC**, tanto por el **portal web interactivo** como por el **webservice del RNDC**. Esta es la ruta relevante para un ERP/TMS: la Guía de consulta del SICE-TAC desde webservice y portal explica los parámetros, empezando por el periodo año-mes.
+3. **Validación implícita** en el momento de expedir el manifiesto: el RNDC compara y bloquea.
+
+Fail Fast consulta el SICE-TAC **en la cotización**, no en el despacho. Descubrir que el flete quedó por debajo del piso cuando el camión ya está cargado es un problema comercial, no técnico. Además cachea el valor por combinación (periodo \+ ruta \+ configuración \+ tipo de carga \+ horas), porque el valor es fijo dentro del mes.
+
+### Cómo debe registrarse la evidencia de la consulta
+
+No hay una obligación normativa expresa de conservar el soporte de la consulta al SICE-TAC como documento aparte. Pero desde el punto de vista de defensa ante una investigación de la Superintendencia, es una práctica altamente recomendable.
+
+Fail Fast guarda por cada cotización y por cada manifiesto:
+
+- Periodo (año-mes) consultado.
+- Parámetros exactos enviados: origen, destino, configuración vehicular, tipo de carga, horas de espera y de cargue/descargue, vía alterna.
+- Valor devuelto por el sistema.
+- Fecha, hora y usuario de la consulta.
+- Respuesta cruda del servicio.
+- Vínculo al manifiesto o cotización donde se usó.
+
+Con eso, la empresa puede demostrar que el valor pactado se determinó contra el parámetro vigente en ese momento, y no reconstruirlo después.
+
+### Cómo se usa para cotizar y para validar
+
+- **Para cotizar:** el costo eficiente es el punto de partida del precio, no el precio. Sobre él se agregan el margen de la transportadora y los servicios adicionales que no son propios de la movilización.
+- **Para validar el cumplimiento económico:** antes de expedir el manifiesto, el valor a pagar debe ser ≥ SICE-TAC. Antes de facturar, el flete por remesa debe ser ≥ SICE-TAC.
+
+### Ejemplo completo (cifras ilustrativas)
+
+> **Advertencia sobre las cifras.** Los valores de esta tabla son **hipotéticos y no fueron consultados en el SICE-TAC**. Sirven para explicar la mecánica, no para usarse como referencia de precios. El valor real depende del periodo, la ruta, la configuración y los tiempos, y se debe consultar en el sistema.
+
+| Elemento | Dato |
+| --- | --- |
+| Ruta | Buenaventura → Bogotá |
+| Tipo de vehículo | Tractocamión, configuración 3S3 |
+| Carga | 32 toneladas de mercancía general en contenedor cargado |
+| Tiempos pactados | 4 horas de cargue, 4 horas de descargue |
+| **Costo eficiente SICE-TAC (hipotético)** | **\$3.150.000** |
+| Valor a pagar pactado con el propietario | \$3.300.000 |
+| Flete pactado con el generador | \$4.200.000 |
+| Margen bruto de la transportadora | \$900.000 |
+
+**Cómo se registra y valida:**
+
+1. En la **cotización**, la transportadora consulta el SICE-TAC del periodo y obtiene $$3.150.000. Cotiza $$4.200.000 al generador.
+2. Registra la **remesa** con las citas y los tiempos pactados. Recibe radicado.
+3. Expide el **manifiesto** con valor a pagar $$3.300.000. El RNDC compara: $$3.300.000 ≥ $$3.150.000 → **pasa**. Si hubiera intentado $$3.000.000, el sistema habría bloqueado la expedición.
+4. Sobre el valor a pagar se calculan retención en la fuente, reteICA y **FOPAT del 0,1 % = \$3.300**.
+5. Terminado el viaje, se registran monitoreo, cumplido de remesa y **cumplido de manifiesto** con el valor a pagar definitivo (ver el ejemplo con esperas adicionales en la sección 9).
+6. Se emite la **factura electrónica** por \$4.200.000 al generador y se registra el XML en el RNDC.
+7. El generador **acepta el flete**. El RNDC verifica que \$4.200.000 (distribuido por remesa) cumpla el mínimo SICE-TAC.
+8. Se paga al propietario el saldo del valor a pagar, dentro del plazo registrado.
+
+**Qué ver en este ejemplo:** hay tres números distintos para el mismo viaje ($$3.150.000 de costo eficiente, $$3.300.000 de valor a pagar, \$4.200.000 de flete) y cada uno tiene un dueño, un momento y una validación diferentes. Confundirlos es la causa número uno de errores en implementaciones de TMS.
+
+---
+
+## 9. Tiempos logísticos y monitoreo
+
+### Las definiciones, en orden
+
+Estas definiciones vienen del artículo 3 de la resolución y hay que respetarlas al pie de la letra, porque de ellas sale el dinero:
+
+| Concepto | Definición |
+| --- | --- |
+| **Cita** | Fecha y hora acordadas entre el generador y la empresa de transporte para hacer el cargue o el descargue |
+| **Horas de espera para el cargue** | Desde que el vehículo está disponible en el lugar señalado hasta que **inicia** el cargue. Si el vehículo llega antes de la hora programada, la espera se cuenta **a partir de la hora de la cita** |
+| **Horas de cargue** | Desde que inicia el cargue hasta que el vehículo sale cargado del lugar |
+| **Horas totales de cargue** | Espera para el cargue \+ horas de cargue |
+| **Horas de espera para el descargue** | Desde que el vehículo está disponible en el lugar hasta que inicia el descargue. Misma regla de la cita si llega antes |
+| **Horas de descargue** | Desde que inicia el descargue hasta que el vehículo sale descargado |
+| **Horas totales de descargue** | Espera para el descargue \+ horas de descargue |
+| **Horas logísticas** | Horas totales de cargue \+ horas totales de descargue |
+
+**Tiempo pactado** es el que se registró en la remesa (tiempo total pactado de cargue y de descargue, en horas y minutos). **Tiempo real** es el que capturó el monitoreo de flota. La diferencia entre ambos es lo que ajusta el valor a pagar en el cumplido de manifiesto.
+
+**La regla de la cita es la que más plata mueve.** Si el conductor llega a las 4 de la mañana para una cita de las 8, la espera no empieza a las 4: empieza a las 8. Esto elimina la práctica de llegar de madrugada para inflar el tiempo de espera.
+
+### Eventos de llegada y salida
+
+El **registro de monitoreo de manifiesto** captura, por cada punto de control: fecha y hora de llegada, y fecha y hora de salida. Se envía **después** de que el vehículo sale del punto de control. Cada registro corresponde a un solo punto de control.
+
+El **cumplido de remesa** agrega dos datos que el monitoreo no captura por sí solo: la **fecha y hora de entrada** al lugar de cargue y al lugar de descargue, y la **cantidad real entregada**.
+
+De ahí sale la secuencia completa, que el RNDC valida en orden cronológico estricto:
+
+```text
+Llegada al cargue ≤ Entrada al cargue < Salida del cargue
+< Llegada al descargue ≤ Entrada al descargue < Salida del descargue
+```
+
+Todas las horas en formato militar 00:00 a 23:59, en hora legal colombiana.
+
+### GPS y empresas de monitoreo
+
+- Los datos de tiempos logísticos **deben obtenerse mediante sistemas de monitoreo de flota**. No es válido digitarlos a mano como práctica ordinaria.
+- El registro lo hace la **empresa de monitoreo de flota autorizada por la empresa de transporte** para cada manifiesto. Por eso el manifiesto lleva el NIT de esa empresa.
+- La empresa de transporte puede hacer el registro ella misma **si diligencia el certificado de condiciones técnicas** de su herramienta tecnológica propia, establecido por el Ministerio en la Guía de Monitoreo de Flota.
+- La empresa de monitoreo consulta por webservice los manifiestos que tiene autorizados a monitorear (manifiestos nuevos, de las últimas 24 horas, de la última hora, o uno específico).
+- Si el vehículo se demora en un punto de control más del tiempo estipulado en la guía, la empresa de monitoreo debe informar al RNDC enviando el registro con la aclaración de "sin salida".
+- Si el monitoreo no reporta, la empresa de transporte puede enviar el registro **detallando el motivo** por el cual no se reportó a través de la empresa de monitoreo.
+- Las anomalías se registran como **novedades de monitoreo**, con tipo de novedad según la guía. Registrar una novedad anula la asignación de ese punto de control a la empresa de monitoreo.
+
+### Evidencias
+
+Fail Fast conserva por cada viaje: trazas GPS crudas con timestamp y coordenadas, la geocerca del punto de control usada para determinar entrada y salida, el payload enviado al RNDC, el radicado recibido, las novedades registradas y el cumplido inicial de remesa que devolvió el RNDC tras la distribución automática.
+
+La razón: cuando el titular del vehículo rechaza un cumplido porque no le reconocieron unas horas de espera, la discusión se gana o se pierde con esta evidencia.
+
+### Ejemplo numérico: cómo una espera real modifica la liquidación
+
+Continuamos con el viaje Buenaventura → Bogotá de la sección 8. **Todas las cifras son ilustrativas.**
+
+**Lo pactado en la remesa:** 4 horas de cargue, 4 horas de descargue. Cita de cargue: día 1, 08:00. Cita de descargue: día 2, 09:00.
+
+**Lo que realmente pasó:**
+
+| Evento | Hora real |
+| --- | --- |
+| Llegada al cargue | Día 1, 08:00 |
+| Entrada al cargue | Día 1, 13:00 |
+| Salida del cargue | Día 1, 15:00 |
+| Llegada al descargue | Día 2, 08:30 |
+| Entrada al descargue | Día 2, 10:00 |
+| Salida del descargue | Día 2, 12:00 |
+
+**Cálculo de tiempos:**
+
+| Concepto | Cálculo | Resultado |
+| --- | --- | --- |
+| Espera para cargue | 08:00 (cita) → 13:00 | 5 h |
+| Horas de cargue | 13:00 → 15:00 | 2 h |
+| **Horas totales de cargue** | 5 \+ 2 | **7 h** (pactado 4 h → **\+3 h**) |
+| Espera para descargue | 09:00 (cita, porque llegó antes) → 10:00 | 1 h |
+| Horas de descargue | 10:00 → 12:00 | 2 h |
+| **Horas totales de descargue** | 1 \+ 2 | **3 h** (pactado 4 h → **−1 h**) |
+| **Horas logísticas** | 7 \+ 3 | **10 h** (pactado 8 h → **\+2 h netas**) |
+
+**Efecto en el valor a pagar** (suponiendo un reconocimiento pactado de \$60.000 por hora):
+
+| Concepto | Valor |
+| --- | --- |
+| Valor a pagar del manifiesto | \$3.300.000 |
+| Ajuste por exceso en cargue (\+3 h) | \+\$180.000 |
+| Ajuste por menor tiempo en descargue (−1 h) | −\$60.000 |
+| **Valor a pagar definitivo del cumplido** | **\$3.420.000** |
+
+**Retenciones sobre el valor a pagar definitivo** (tarifas ilustrativas; verificar las aplicables):
+
+| Concepto | Base | Tarifa | Valor |
+| --- | --- | --- | --- |
+| Retención en la fuente | \$3.420.000 | 1 % | \$34.200 |
+| ReteICA (municipio de despacho) | \$3.420.000 | 6 × mil | \$20.520 |
+| Retención FOPAT | \$3.420.000 | 0,1 % | \$3.420 |
+| **Total retenciones** |  |  | **\$58.140** |
+| **Neto a pagar** |  |  | **\$3.361.860** |
+| Menos anticipo entregado |  |  | −\$1.500.000 |
+| **Saldo por pagar al titular** |  |  | **\$1.861.860** |
+
+_Verificación del límite del anticipo:_ al expedir el manifiesto, el anticipo no podía superar $$3.300.000 − ($$33.000 \+ $$19.800 + $$3.300) = $$3.243.900$$. El anticipo de 1.500.000 estaba dentro del límite.
+
+**Dos advertencias sobre este ejemplo:**
+
+1. **La compensación entre cargue y descargue no está definida en la resolución.** El texto habla de ajustes "por tiempos logísticos reales mayores o tiempos logísticos reales menores", pero **la regla exacta de cálculo está en la guía correspondiente del Ministerio**. Aquí se netearon las horas para ilustrar; podría ser que la regla vigente trate cargue y descargue por separado, o que aplique topes. Hay que verificarlo en la guía antes de programarlo.
+2. **El reconocimiento por hora no es un valor libre.** Los tiempos de espera, cargue y descargue son variables del propio cálculo del SICE-TAC, de modo que el costo eficiente ya incorpora un reconocimiento de esos tiempos. El valor a pagar final debe seguir siendo ≥ al costo eficiente aplicable.
+
+### Qué debe hace Fail Fast
+
+| Función | Detalle |
+| --- | --- |
+| Recibe eventos GPS | Ingesta continua desde el proveedor de rastreo o desde equipos propios |
+| Relaciona eventos con puntos de control | Geocercas asociadas a las coordenadas georreferenciadas registradas en el RNDC para cada sede |
+| Guarda fecha y hora | En hora legal colombiana, con precisión de minuto, y conservando la traza cruda |
+| Detecta inconsistencias | Orden cronológico roto, saltos de posición imposibles, permanencia excesiva, punto de control no visitado |
+| Envia información al RNDC | Registro de monitoreo por punto de control, después de la salida; novedades cuando aplique |
+| Genera alertas | Espera excediendo lo pactado (en tiempo real, para que el comercial pueda negociar antes de que sea un reclamo), manifiesto sin monitoreo, cumplido inicial no generado |
+| Leer de vuelta | Consumir el cumplido inicial de remesa que el RNDC generó, en lugar de calcular la distribución por cuenta propia |
+
+---
+
+## 10. Flete, valor a pagar y facturación
+
+### Los cuatro conceptos, sin ambigüedad
+
+| Concepto | Quién paga | Quién recibe | Dónde vive en el RNDC |
+| --- | --- | --- | --- |
+| **Flete** | Generador de carga | Empresa de transporte | Registro de flete, vía XML de factura electrónica; el generador lo acepta |
+| **Valor a pagar** | Empresa de transporte | Propietario, poseedor o tenedor del vehículo (titular del manifiesto) | Manifiesto (pactado) y cumplido de manifiesto (definitivo) |
+| **Anticipo** | Empresa de transporte | Titular del manifiesto | Campo del manifiesto. Pago parcial sobre el valor a pagar para iniciar la movilización |
+| **Servicios adicionales** | Según lo pactado | Según lo pactado | **Casilla independiente** del valor a pagar en el cumplido de manifiesto. No pueden descontarse del valor a pagar |
+
+**Sobre los servicios adicionales.** Cuando la empresa de transporte y el titular pactan condiciones que requieren servicios que **no son propios** del servicio público de transporte terrestre automotor de carga —según el artículo 2.2.1.7.3 del Decreto 1079 de 2015—, esos valores deben registrarse de forma diferenciada en el cumplido de manifiesto, en casilla aparte, y no se pueden descontar del valor a pagar. Ejemplos típicos: escolta contratada aparte, alquiler de equipos especiales, maniobras que no forman parte de la movilización.
+
+### Ejemplo completo, paso a paso
+
+Mismo viaje: Buenaventura → Bogotá, tractocamión 3S3, 32 toneladas en contenedor cargado. **Cifras ilustrativas.**
+
+**1. El generador contrata a la transportadora.** Comercializadora Andina S.A.S. (generador y también destinatario, porque recibe en su bodega de Bogotá) contrata a Transportes del Valle S.A.S. Flete pactado: **\$4.200.000**.
+
+**2. La transportadora contrata un vehículo tercero.** Contrata al señor Ramírez, propietario del tractocamión. Valor a pagar pactado: $$3.300.000$$ por encima del costo eficiente SICE-TAC hipotético de 3.150.000.
+
+**3. Se registran los documentos.** Remesa con generador = Comercializadora Andina, citas y tiempos pactados. Manifiesto con placas, conductor, titular = Ramírez, valor a pagar \$3.300.000, retenciones y anticipo.
+
+**4. Se entrega un anticipo.** \$1.500.000, dentro del límite legal (valor a pagar menos las tres retenciones).
+
+**5. Se realiza el viaje y se registran los tiempos.** Monitoreo de flota reporta los puntos de control. El RNDC genera el cumplido inicial de remesa.
+
+**6. Se genera el cumplido de remesa.** Cantidad real entregada: 32 toneladas. Fechas y horas de entrada al cargue y al descargue.
+
+**7. Se genera el cumplido de manifiesto y se modifica el valor final.** Por las 3 horas de exceso en cargue y la hora menos en descargue, el valor a pagar sube a $$3.420.000$$. Se registra la retención FOPAT de 3.420.
+
+**8. El titular acepta el cumplido.** Ramírez lo acepta desde whatsapp dentro del día siguiente. Si no lo hubiera hecho, el RNDC lo habría aceptado automáticamente. Si lo hubiera rechazado, Transportes del Valle habría tenido que anular y rehacer.
+
+**9. Se emite la factura al generador.** Factura electrónica por $$4.200.000$$ por el servicio de transporte de carga. **Servicio excluido de IVA**. El generador practica retención en la fuente del 1 % = 42.000 y reteICA según el municipio de despacho, que es Buenaventura. El XML embebido se registra en el RNDC con el consecutivo y radicado de la remesa, dentro de los 5 días siguientes a la entrega, salvo plazo distinto pactado y reportado previamente.
+
+**10. El generador acepta el flete.** Comercializadora Andina acepta la factura en el RNDC dentro de los 5 días hábiles. Con eso cumple su obligación de registro del flete. Si no se pronuncia, el RNDC acepta automáticamente siempre que el valor cumpla el mínimo SICE-TAC.
+
+**11. Se paga al propietario.** Saldo de \$1.861.860, dentro del plazo registrado en el manifiesto, que no puede pasar de 5 días hábiles siguientes al recibo de la carga contados desde el día siguiente a la expedición del cumplido.
+
+**12. Cierre.**
+
+| Concepto | Valor |
+| --- | --- |
+| Flete facturado al generador | \$4.200.000 |
+| Valor a pagar al propietario | \$3.420.000 |
+| **Diferencia bruta de la transportadora** | **\$780.000** |
+
+Obsérvese que el margen bajó de $$900.000$$ (proyectado) a  780.000 (real), porque las esperas en el cargue las absorbió la transportadora. Ese es exactamente el tipo de fuga que el TMS debe hacer visible **durante** el viaje, no en el cierre del mes: si el sistema alerta a la hora 5 de espera, el comercial todavía puede negociar un recargo con el generador.
+
+**Nota tributaria clave para el cierre.** Por el artículo 102-2 del Estatuto Tributario, cuando el transporte se presta con vehículos de terceros, para efectos de impuestos nacionales y territoriales el ingreso se registra separado: para el propietario del vehículo, la parte que le corresponde en la negociación ($$3.420.000$$); para la empresa transportadora, el valor que le corresponde una vez descontado el ingreso del propietario (780.000). No es opcional y afecta tanto renta como ICA.
+
+---
+
+## 11. Impuestos relacionados con el flujo RNDC
+
+> Aquí solo se explican los conceptos en la medida en que tocan el flujo del RNDC. Las tarifas, bases mínimas y calidades tributarias dependen de la operación concreta, del municipio, del régimen del contribuyente y de la normativa vigente en cada momento.
+
+### 11.1 IVA
+
+**Qué es.** El impuesto sobre las ventas, que grava la venta de bienes y la prestación de servicios en el territorio nacional.
+
+**Cómo afecta la factura del servicio de transporte.** El **servicio de transporte de carga está excluido de IVA** por el artículo 476 del Estatuto Tributario, que en su numeral vigente excluye el transporte público, terrestre, fluvial y marítimo de personas en el territorio nacional, y el transporte público o privado nacional e internacional de carga marítimo, fluvial, terrestre y aéreo. La DIAN lo ha reiterado en múltiples pronunciamientos.
+
+Consecuencia práctica: la factura de transporte de carga que la transportadora expide al generador **no lleva IVA** por el servicio de transporte.
+
+**Diferencia entre gravado, excluido y no gravado.**
+
+| Categoría | Qué significa | Efecto en el IVA descontable |
+| --- | --- | --- |
+| **Gravado** | El servicio genera IVA a la tarifa correspondiente | El prestador puede descontar el IVA de sus compras asociadas |
+| **Excluido** | La ley lo saca del impuesto | **El prestador NO puede descontar** el IVA de sus compras; ese IVA se vuelve mayor valor del costo |
+| **Exento** | Está gravado a tarifa 0 % | El prestador sí puede descontar y solicitar devolución |
+| **No gravado / no sujeto** | No se realiza el hecho generador | No aplica |
+
+**El error más caro:** tratar el transporte de carga como _exento_ en lugar de _excluido_. Al ser excluido, el IVA que la transportadora paga en combustible, llantas, repuestos y servicios **no es descontable**: se convierte en costo. Un modelo financiero que asuma lo contrario subestima el costo operativo.
+
+**Cuidado con los servicios conexos.** No todo lo que rodea al transporte está excluido. La DIAN ha sostenido que forman parte del servicio de transporte de carga y por tanto están excluidos—los servicios que se prestan en puertos y aeropuertos **con motivo de la movilización de la carga**; pero otros servicios, aunque se presten en el mismo lugar y por la misma empresa, pueden estar gravados. El almacenamiento de carga o contenedores y el agenciamiento son ejemplos frecuentemente discutidos.
+
+**Relación con DIAN y RNDC.** El RNDC no valida el tratamiento de IVA. Lo que valida es que el XML de la factura electrónica cumpla el anexo técnico de la DIAN para el sector transporte, esté firmado y traiga el consecutivo y el radicado de las remesas facturadas. Si la factura fue mal construida en materia de IVA, el problema aparece con la DIAN, no con el RNDC.
+
+**Quién factura.** La empresa de transporte factura al generador de carga (obligatorio registrar en el RNDC). El titular del manifiesto factura a la empresa de transporte por el valor a pagar si está obligado a facturar; ese registro en el RNDC es **opcional**, y quienes no están obligados a facturar pueden hacerlo voluntariamente y registrarlo.
+
+**Errores frecuentes.** Facturar IVA sobre el transporte; mezclar en la misma línea de factura el transporte y servicios gravados; no separar los servicios adicionales; descontar IVA de insumos asociados a un servicio excluido.
+
+### 11.2 Retención en la fuente
+
+**Qué es.** Un mecanismo de recaudo anticipado del impuesto de renta. No es un impuesto adicional: es un abono al impuesto del beneficiario del pago.
+
+**Quién retiene.** El agente de retención que hace el pago. En el flujo del RNDC hay dos momentos:
+
+1. El **generador de carga** retiene a la **empresa de transporte** cuando le paga el flete.
+2. La **empresa de transporte** retiene al **titular del manifiesto** cuando le paga el valor a pagar.
+
+**Sobre qué operación aplica.** Sobre el pago o abono en cuenta por el servicio de transporte de carga. La DIAN ha indicado que a los pagos por servicio de transporte de carga les aplica la tarifa especial del **1 %** sobre el valor bruto del pago que hagan las personas jurídicas o sociedades de hecho.
+
+**Por qué la tarifa depende del concepto y del perfil tributario.** Dos operaciones aparentemente iguales pueden tener retención distinta porque:
+
+- El **concepto** cambia: transporte de carga tiene una tarifa; otros servicios tienen otras.
+- El **perfil del beneficiario** cambia: no es lo mismo un declarante que un no declarante, ni una persona jurídica que una natural, ni alguien del régimen ordinario que un contribuyente del **régimen SIMPLE**.
+- Existen **bases mínimas** por debajo de las cuales no se practica retención para ciertos conceptos.
+
+**Sobre el régimen SIMPLE hay discusión abierta.** La regla general del régimen SIMPLE es que sus contribuyentes no están sujetos a retención en la fuente ni obligados a practicarla, salvo en pagos laborales. La DIAN ha sostenido una postura sobre la retención a transportadores independientes del SIMPLE que ha sido cuestionada doctrinalmente. **No es un tema cerrado**; si la empresa contrata vehículos de propietarios inscritos en el SIMPLE, hay que resolverlo con asesoría específica.
+
+**Diferencia entre retención practicada y autorretención.** En la retención practicada, quien paga descuenta y consigna a nombre del beneficiario. En la autorretención, el propio beneficiario del ingreso se retiene a sí mismo y consigna; ocurre cuando la DIAN lo autoriza o cuando la ley lo establece (como en la autorretención especial de renta).
+
+**Registro contable.** Para el agente retenedor, la retención practicada es un **pasivo** hasta que se declara y paga. Para el beneficiario, la retención sufrida es un **activo** (anticipo de impuesto) que se cruza en la declaración de renta.
+
+### 11.3 ICA
+
+**Qué es.** El impuesto de industria y comercio: un tributo **municipal** sobre la realización de actividades industriales, comerciales o de servicios en la jurisdicción del municipio.
+
+**Por qué depende del municipio.** Cada concejo municipal fija sus tarifas dentro de los rangos legales, y cada municipio tiene su propio calendario, su propio formulario y sus propias reglas de retención. No hay una tarifa nacional de ICA.
+
+**Actividad económica de transporte.** El transporte es una actividad de servicios. En la actividad de transporte son sujetos pasivos tanto las empresas transportadoras como sus asociados que ejercen la actividad con vehículos propios.
+
+**Territorialidad: la regla que hay que grabarse.** El artículo 343 de la Ley 1819 de 2016 estableció que, en la actividad de servicios, el ingreso se entiende percibido donde se ejecuta la prestación, **salvo** casos especiales; y el primero de esos casos es el transporte: _en la actividad de transporte el ingreso se entiende percibido en el municipio o distrito **desde donde se despacha** el bien, mercancía o persona._
+
+Consecuencia directa: **el ICA se causa en el municipio de origen del viaje, no en el de destino ni en el del domicilio de la empresa.** Una transportadora con sede en Cali que despacha desde Buenaventura, Yumbo y Palmira tributa ICA en esos tres municipios.
+
+Esto explica por qué el manifiesto electrónico incluye el campo de **tarifa de retención de ICA** y por qué el RNDC valida que el factor de reteICA (con base en mil) sea el definido por el **municipio del sitio de cargue**. Si un municipio no ha cargado su factor en el RNDC, esa validación no se hace.
+
+**ICA propio vs. ReteICA.** El _ICA propio_ es el impuesto que la empresa declara y paga en cada municipio donde causó ingresos. El _ReteICA_ es la retención que el pagador practica anticipadamente y consigna en el municipio correspondiente; para el beneficiario es un anticipo del ICA propio de ese mismo municipio.
+
+**Base gravable en transporte con vehículos de terceros.** Aquí se conectan el artículo 102-2 del ET y la regla de territorialidad: para determinar los ingresos que hacen parte de la base gravable del ICA, se aplica la distribución del artículo 102-2. La transportadora no incluye en su base el ingreso que corresponde al propietario del vehículo.
+
+**Impacto en facturación y contabilidad.** Fail Fast maneja: tabla de municipios con tarifa de ICA y de reteICA vigentes, determinación automática del municipio de despacho por remesa, acumulación de base gravable por municipio, y generación de las declaraciones municipales. Hacerlo con hojas de cálculo es donde se pierden las empresas medianas.
+
+### 11.4 FOPAT — la retención del 0,1 %
+
+**Qué es.** El **FOPAT** es el **Fondo para la Promoción de Ascenso Tecnológico**, creado por el artículo 33 de la Ley 2169 de 2021 y reglamentado por el Decreto 1266 de 2024. Opera como patrimonio autónomo constituido mediante contrato de fiducia entre el Ministerio de Transporte y la fiduciaria seleccionada, y funciona a través de cuatro subcuentas específicas: movilidad de bajas o cero emisiones para sistemas de transporte público de pasajeros cofinanciados; modernización de transporte de carga liviana y volquetas; **modernización de transporte de carga pesada**; y modernización del parque automotor de taxis.
+
+**De dónde sale la obligación.** El artículo 21 de la **Ley 2251 de 2022** (Ley Julián Esteban, de seguridad vial) adicionó fuentes de financiación del fondo y dispuso que se financiaría, entre otras, con un porcentaje del valor de las operaciones de transporte terrestre de carga prestadas como servicio público intermunicipal o nacional, en vehículos con peso bruto vehicular **superior a 10,5 toneladas**. Fijó la tarifa en **no más del 0,1 %**, calculada sobre el **valor a pagar determinado en el respectivo manifiesto de carga**, y señaló a las empresas transportadoras como **agentes de retención**, delegando el recaudo en la DIAN. El artículo 24 del Decreto 1017 de 2025 adicionó el artículo 2.2.1.7.7.16 al Decreto 1079 de 2015 y facultó a la DIAN para reglamentar el procedimiento.
+
+**Cuándo aplica.** Según la **Resolución DIAN 000008 del 25 de marzo de 2026**, que rige desde el 1 de abril de 2026: operaciones de transporte terrestre de carga prestadas como **servicio público intermunicipal o nacional**, en vehículos con **PBV superior a 10,5 toneladas**.
+
+La Guía de Retención FOPAT del Ministerio precisa que el RNDC solicita de manera obligatoria el campo "Valor FOPAT (0,1 %)" para operaciones intermunicipales realizadas con vehículos clase **tractocamión, camión de 3 y 4 ejes, y camión de dos ejes con PBV superior a 10,5 toneladas**, y aclara que **no aplica** a camionetas, camiones de dos ejes con PBV igual o menor a 10,5 toneladas ni volquetas, porque esos hacen parte de la subcuenta de modernización de carga liviana y volquetas.
+
+**Sobre qué valor se calcula.** Sobre el **valor a pagar** determinado en el manifiesto de carga. La tarifa es del 0,1 %.
+
+**En qué momento se causa.** Este es el punto más importante y el que más se equivoca. El artículo 1.8.2.5.6 de la Resolución DIAN 000008 de 2026 lo dice sin ambigüedad: **la retención se causa en la fecha en que se realiza la aceptación del cumplido de manifiesto electrónico de carga en el RNDC**, que es donde se confirma el valor a pagar de cada operación. Y agrega: _sin perjuicio del registro contable y electrónico desde la expedición del manifiesto_.
+
+Es decir: se **registra** desde el manifiesto, se **causa** con la aceptación del cumplido.
+
+**Cómo se refleja en el cumplido y en el valor a pagar.** El campo de retención FOPAT aparece tanto en las entradas del manifiesto (0,1 % del valor a pagar pactado) como en las del cumplido de manifiesto (0,1 % del valor a pagar definitivo). Si el valor a pagar cambió por tiempos logísticos, el FOPAT cambia con él. El anticipo no puede superar el valor a pagar menos la suma de las tres retenciones, incluida la de FOPAT.
+
+**Quién es responsable y cómo se paga.** Son agentes de retención las **empresas de transporte habilitadas**. Pagan a la DIAN dentro de los **primeros 10 días hábiles de cada mes** las sumas retenidas durante el mes inmediatamente anterior, mediante el **Recibo Oficial de Pago Impuestos Nacionales, formulario 490, concepto 81**. El incumplimiento genera intereses moratorios conforme al artículo 635 del Estatuto Tributario. Los recursos ingresan a una cuenta del Banco de la República y la DIAN los traslada al FOPAT como pago no presupuestal.
+
+**Diferencia frente a IVA, retención en la fuente y reteICA.**
+
+|  | FOPAT 0,1 % | Retención en la fuente | ReteICA | IVA |
+| --- | --- | --- | --- | --- |
+| **Naturaleza** | Contribución destinada a un fondo; se recauda con mecánica de retención | Anticipo del impuesto de renta | Anticipo del ICA municipal | Impuesto al consumo |
+| **A quién beneficia el valor retenido** | Al FOPAT (subcuenta de carga pesada). **No es un anticipo a favor del retenido** | Al retenido: se cruza en su declaración de renta | Al retenido: se cruza en su ICA municipal | — |
+| **Declaración** | No genera declaración de retención ni se declara en el formulario de retenciones en la fuente; se paga por formulario 490, concepto 81 | Declaración mensual de retenciones | Declaración municipal | Declaración de IVA |
+| **Momento** | Aceptación del cumplido de manifiesto | Pago o abono en cuenta | Pago o abono en cuenta | Prestación del servicio |
+| **En transporte de carga** | Aplica según PBV y tipo de operación | Aplica | Aplica según municipio de despacho | Excluido |
+
+**El punto que más confunde:** aunque se llame "retención" y se calcule como una retención, el 0,1 % del FOPAT **no le sirve al retenido para descontar de ningún impuesto propio**. Es un costo de la operación con destino a un fondo sectorial. Contablemente no es lo mismo que una retefuente.
+
+**Control cruzado con el RNDC.** Cada vez que una empresa de transporte quiere expedir un manifiesto nuevo, el sistema verifica que esté al día en el pago a la DIAN por concepto del 0,1 % del FOPAT, correspondiente a las retenciones causadas en el tercer mes anterior al mes en curso más los saldos pendientes, conforme al procedimiento de la Guía de Retención FOPAT. **No estar al día bloquea la expedición de manifiestos.**
+
+### 11.5 Tabla resumen
+
+| Concepto | Base | Responsable | Momento | Documento relacionado | Tratamiento contable |
+| --- | --- | --- | --- | --- | --- |
+| **IVA** | No aplica al servicio de transporte de carga (excluido, art. 476 ET). Sí puede aplicar a servicios conexos gravados | Prestador del servicio gravado | Prestación del servicio | Factura electrónica | El IVA pagado en insumos asociados a un servicio excluido **no es descontable**: mayor valor del costo |
+| **Retención en la fuente (flete)** | Valor bruto del pago del flete | Generador de carga como agente retenedor | Pago o abono en cuenta | Factura electrónica de la transportadora | Para el generador: pasivo por retenciones. Para la transportadora: anticipo de renta (activo) |
+| **Retención en la fuente (valor a pagar)** | Valor bruto del valor a pagar | Empresa de transporte como agente retenedor | Pago o abono en cuenta | Manifiesto / cumplido de manifiesto | Para la empresa: pasivo. Para el titular: anticipo de renta |
+| **ReteICA** | Valor del servicio, según reglas del municipio | Agente retenedor definido por el municipio | Pago o abono en cuenta | Manifiesto (lleva la tarifa) / factura | Pasivo por retención a favor del municipio; anticipo de ICA para el retenido |
+| **ICA propio** | Ingresos gravados en el municipio, aplicando la distribución del art. 102-2 ET | Empresa de transporte y titular, cada uno por su ingreso | Percepción del ingreso, en el municipio **desde donde se despacha** | Remesa (define el sitio de cargue) | Gasto por impuestos; pasivo hasta declarar y pagar |
+| **FOPAT 0,1 %** | Valor a pagar del manifiesto | **Empresa de transporte habilitada** como agente de retención | **Aceptación del cumplido de manifiesto en el RNDC**; registro contable desde la expedición del manifiesto | Manifiesto y cumplido de manifiesto | Pasivo con la DIAN hasta el pago por formulario 490 concepto 81, dentro de los primeros 10 días hábiles del mes siguiente |
+
+---
+
+## Fuentes Adicionales
+
+**Norma principal del RNDC**
+
+- Resolución 20263040016075 del 29 de abril de 2026 — [enlace al documento en el Portal Logístico de Colombia](https://plc.mintransporte.gov.co/LinkClick.aspx?fileticket=oC7wjhVhwEI%3D&mid=392&portalid=0&tabid=33) · [PDF directo](https://plc.mintransporte.gov.co/Portals/0/Documentos/04_RESOLUCION%20RNDC%20No.%2016075%202026.pdf)
+- [Repositorio oficial de normatividad del RNDC](https://plc.mintransporte.gov.co/RNDC/Normatividad)
+
+**Normas y sistemas relacionados**
+
+- Decreto 1079 de 2015 — Decreto Único Reglamentario del Sector Transporte (Capítulo 7, Título 1, Parte 2, Libro 2: transporte terrestre automotor de carga).
+- [Decreto 1017 de 2025](https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=264276) — modifica, adiciona y deroga artículos del Capítulo 7 del Decreto 1079 de 2015.
+- [Decreto 1266 de 2024](https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=253276) — reglamenta el FOPAT y sus subcuentas.
+- Ley 2251 de 2022 (Ley Julián Esteban), artículo 21 — crea la tarifa del 0,1 % con destino al fondo de modernización del parque automotor de carga.
+- [Resolución DIAN 000008 del 25 de marzo de 2026](https://normograma.dian.gov.co/dian/compilacion/docs/resolucion_dian_0008_2026.htm) — procedimiento de recaudo y pago de la tarifa del 0,1 %.
+- [Guía de Liquidación de Retención FOPAT (Ministerio de Transporte)](https://plc.mintransporte.gov.co/Portals/0/Manuales/Guia%20de%20Liquidacion%20Retenci%C3%B3n%20FOPAT%20V2.pdf)
+- [SICE-TAC — página institucional del Ministerio de Transporte](https://mintransporte.gov.co/publicaciones/359/sistema-de-informacion-de-costos-eficientes-para-el-transporte-automotor-de-carga-sicetac/) · [ABC del SICE-TAC en el Portal Logístico](https://plc.mintransporte.gov.co/SiceTAC/ABC-SICE-TAC) · [Trámite de consulta SICE-TAC](https://mintransporte.gov.co/tramites/66/sistema-de-informacion-de-costos-eficientes-de-operacion-del-transporte-automotor-de-carga-sice-tac/)
+- [Guía de consulta del SICE-TAC desde el webservice y el portal del RNDC](https://plc.mintransporte.gov.co/Portals/0/Manuales/Consulta%20de%20SiceTac%20desde%20webservice%20y%20portal%20web.pdf)
+- [Comunicado del Ministerio sobre la actualización del SICE-TAC — Resolución 20263040018445 (26 de mayo de 2026)](https://mintransporte.gov.co/publicaciones/12356/mintransporte-actualiza-el-sice-tac-costos-mas-acordes-con-la-realidad-inclusion-de-transporte-de-carga-liviana-y-garantia-de-pago-minimo-para-transportadores/)
+- [Comunicado del Ministerio sobre activación del Plan de Contingencia del RNDC (8 de abril de 2026)](https://mintransporte.gov.co/publicaciones/12332/ministerio-de-transporte-activa-plan-de-contingencia-del-rndc/)
+
+**Materia tributaria**
+
+- Estatuto Tributario, artículo 476 (servicios excluidos de IVA) y artículo 102-2 (distribución de ingresos en el transporte terrestre automotor).
+- [Oficio DIAN 907319 de 2020](https://normograma.dian.gov.co/dian/compilacion/docs/oficio_dian_907319_2020.htm) y [Oficio DIAN 903358 de 2022](https://normograma.dian.gov.co/dian/compilacion/docs/oficio_dian_903358_2022.htm) — alcance de la exclusión de IVA en transporte de carga.
+- Ley 1819 de 2016, artículo 343 — territorialidad del ICA; regla especial para la actividad de transporte.
+
+**Portales operativos**
+
+- [RNDC](http://rndc.mintransporte.gov.co/) · [Portal Logístico de Colombia](https://plc.mintransporte.gov.co/) · [DIAN](https://www.dian.gov.co) · [RUNT](https://www.runt.gov.co) · [RUES](https://www.rues.org.co) · [Superintendencia de Transporte](https://www.supertransporte.gov.co) · [INVÍAS](https://www.invias.gov.co) · [ANI](https://www.ani.gov.co)
+
 ---
