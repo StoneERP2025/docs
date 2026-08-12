@@ -1,0 +1,84 @@
+---
+title: "Configuracion Base"
+---
+
+Core es la capa de configuración que comparten todos los módulos de Fail Fast. Aquí defines tu estructura organizacional — sucursales, centros de costo, clasificaciones finacieras, unidades de negocio, son las definiciones que usan otros módulos, y el catálogo de operaciones: el conjunto de reglas que determina cómo se numera cada transacción, si genera asientos contables, y quién puede verla o autorizarla.
+
+Prácticamente ningún módulo funciona sin esta configuracion base: una factura de venta, un movimiento de inventario o un cierre de caja necesitan una sucursal, un centro de costo y una operación configurada de antemano.
+
+## Dónde encontrarlo
+
+Core se entrega como un conjunto de páginas en la sección **Programas** de la barra lateral, normalmente bajo configuración general o administración. Sus tablas — sucursales, centros de costo, categorías, operaciones — están disponibles para cualquier espacio de trabajo, ya que son la base sobre la que se configuran los demás módulos. Lo que puedes ver y hacer depende de tu rol y tus permisos.
+
+## Estructura organizacional
+
+- **Clasificación financiera** — un catálogo transversal que conecta los centros de costo con el plan de cuentas, habilitando la integración automática con contabilidad.
+
+- **Sucursales** — cada oficina, tienda o punto de operación de la empresa, con su ubicación geográfica y su estado activo/inactivo. Sirven para coordinar logística, generar reportes por ubicación y dar contexto a cada transacción, cuando se crea la empresa por defecto se crea la sucursal con nombre principal.
+- **Centros de costo** — unidades para rastrear y asignar gastos dentro de la compañía. Cada centro de costo pertenece a una sucursal y a una clasificación financiera, lo que permite análisis de costos por área y por ubicación al mismo tiempo.
+
+- **Unidades de Negocio** — clasificación genérica reutilizable en distintos módulos para organizar procesos de negocio, con soporte de árboles jerárquicos personalizables por cliente, aplicable solo cuando la empresa define manejar unidades de negocio.
+
+<Info>
+  Sucursales, centros de costo y unidades de negocio soportan árboles organizacionales personalizados (`tree_hash`), lo que permite que cada empresa configure su propia jerarquía sin tocar la estructura base del sistema.
+</Info>
+
+## Catálogo de operaciones
+
+El catálogo de operaciones es el corazón de Core: define **qué tipos de transacción existen** en cada módulo y **cómo se comportan**.
+
+- **Operaciones** — cada tipo de transacción (una factura, un pago, un movimiento de entrada de inventario, un ingreso, una nota de cartera, o de bancos) se configura como una operación, con su código, sus iniciales y el módulo (`app`) al que pertenece. Cada operación controla:
+  - **Tipo** — Entrada, Salida, Débito, Crédito o N/A, que determina el sentido del movimiento.
+  - **Numeración consecutiva** — Manual, Perpetua o Anual, según cómo la empresa quiera numerar sus documentos.
+  - **Impacto contable** — si la operación genera asientos contables (`affects_accounting`) y si esos asientos se resumen o quedan al detalle (`summarize_accounting`).
+  - **Visibilidad y control** — si la operación es visible para el usuario, si requiere autorización previa, y si la fecha del documento se puede editar.
+  - **Libros excluidos** — un arreglo de libros contables que se excluyen de la generación de movimientos para esa operación, aplicable solo cuando la empresa usa contabilidad multilibro.
+- **Formularios de operación** — vincula cada operación con el formulario (layout de campos) que se usa para capturar sus datos, permitiendo que una misma operación tenga un formulario distinto según el contexto o la entidad del catálogo.
+- **Consecutivos anuales** — lleva el control del número consecutivo vigente para cada operación, por año. El año `0` se reserva para operaciones con numeración perpetua que no reinicia.
+
+<Info>
+  Cuando una operación usa numeración de tipo **Anual (Y)**, el sistema mantiene un registro de consecutivo por cada combinación de operación \+ año, evitando choques de numeración entre periodos.
+</Info>
+
+## Tareas frecuentes
+
+<Steps>
+  <Step title="Crear una sucursal">
+    Abre la página de sucursales en tu menú de Programas y crea un registro nuevo. Asigna un código único, un nombre y, si aplica, la ubicación geográfica. La sucursal queda disponible de inmediato para asociarse a centros de costo y a transacciones de otros módulos.
+  </Step>
+  <Step title="Configurar una nueva operación con numeración anual">
+    Abre la página de operaciones, crea un registro indicando el módulo (`app`) al que pertenece, el tipo de operación y sus iniciales. Selecciona el tipo de consecutivo **Anual**. El primer registro de consecutivo para el año en curso se crea automáticamente al generar la primera transacción con esa operación.
+  </Step>
+</Steps>
+
+## Cómo se conecta Core con otros módulos
+
+- **Todos los módulos transaccionales** — sucursal, centro de costo y operación son datos obligatorios en prácticamente cualquier documento del ERP (órdenes de compra, movimientos de inventario, pagos, facturas), ya que dan contexto organizacional y controlan la numeración y el comportamiento contable de cada transacción.
+- **Contabilidad** — las operaciones marcadas con `affects_accounting` generan asientos en [Contabilidad](/es/finance/accounting); la clasificación financiera conecta los centros de costo con el plan de cuentas.
+- **Tesorería** — pagos, ingresos y traslados en [Tesorería](/es/finance/treasury) se configuran como operaciones dentro de este catálogo.
+- **Sistema** — cada operación pertenece a una aplicación (`app`) del catálogo de módulos habilitados en el espacio de trabajo.
+
+## Limitaciones
+
+- La exclusión de libros contables en `excluded_books` solo se evalúa cuando el tenant tiene habilitada la configuración de multilibro; en caso contrario, se ignora.
+- Qué páginas de Core ves depende de las aplicaciones habilitadas en tu espacio de trabajo y de tus permisos.
+
+## Guías relacionadas
+
+<CardGroup cols={2}>
+  <Card title="Contabilidad" icon="calculator" href="/es/finance/accounting">
+    Mira cómo las operaciones con impacto contable generan asientos en el libro mayor.
+  </Card>
+
+  <Card title="Tesorería" icon="building-columns" href="/es/finance/treasury">
+    Pagos e ingresos configurados como operaciones dentro del catálogo de Core.
+  </Card>
+
+  <Card title="Compras" icon="basket-shopping" href="/es/operations/purchasing">
+    Órdenes de compra que dependen de sucursal, centro de costo y operación.
+  </Card>
+
+  <Card title="Ventas" icon="cart-shopping" href="/es/operations/sales">
+    Facturas de cliente que usan el catálogo de operaciones para su numeración y contabilización.
+  </Card>
+</CardGroup>

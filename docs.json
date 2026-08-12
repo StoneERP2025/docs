@@ -151,14 +151,15 @@
         "tabs": [
           {
             "tab": "Guías",
-            "groups": [
+            "pages": [
               {
                 "group": "Primeros pasos",
                 "pages": [
                   "es/index",
                   "es/getting-started/quickstart",
                   "es/getting-started/create-your-workspace",
-                  "es/getting-started/navigate-the-app"
+                  "es/getting-started/navigate-the-app",
+                  "untitled-page-2"
                 ]
               },
               {
@@ -216,6 +217,7 @@
                   "es/operations/insurance-and-legal"
                 ]
               },
+              "untitled-page",
               {
                 "group": "Finanzas",
                 "pages": [
