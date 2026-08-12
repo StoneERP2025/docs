@@ -210,22 +210,32 @@
                   "es/operations/overview",
                   "es/operations/crm",
                   "es/operations/sales",
-                  "es/operations/purchasing",
-                  "es/operations/inventory",
-                  "es/operations/pos",
-                  "es/operations/marketplace",
-                  "es/operations/insurance-and-legal"
+                  "es/operations/marketplace"
                 ]
               },
               "untitled-page",
+              "es/operations/pos",
+              {
+                "group": "Administrativa",
+                "pages": [
+                  "es/operations/purchasing",
+                  "es/operations/inventory",
+                  "es/finance/fixed-assets",
+                  "es/operations/insurance-and-legal"
+                ]
+              },
               {
                 "group": "Finanzas",
                 "pages": [
                   "es/finance/treasury",
-                  "es/finance/bank-reconciliation",
                   "es/finance/accounting",
-                  "es/finance/fixed-assets",
-                  "es/finance/electronic-invoicing"
+                  "es/finance/electronic-invoicing",
+                  {
+                    "group": "Cuentas Por Pagar",
+                    "pages": [
+                      "untitled-page-3"
+                    ]
+                  }
                 ]
               },
               {
