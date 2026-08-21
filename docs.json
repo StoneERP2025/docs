@@ -90,6 +90,7 @@
                   "finance/treasury",
                   "finance/bank-reconciliation",
                   "finance/accounting",
+                  "finance/tax-configuration",
                   "finance/fixed-assets",
                   "finance/electronic-invoicing"
                 ]
@@ -229,6 +230,7 @@
                 "pages": [
                   "es/finance/treasury",
                   "es/finance/accounting",
+                  "es/finance/tax-configuration",
                   "es/finance/electronic-invoicing",
                   {
                     "group": "Cuentas Por Pagar",

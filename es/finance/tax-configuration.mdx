@@ -1,0 +1,316 @@
+---
+title: "Parametrización de impuestos"
+description: "Configura el motor de impuestos de Fail Fast: impuestos, directivas, árbol de impuestos y excepciones por producto y por tercero."
+icon: "percent"
+---
+
+El motor de impuestos de Fail Fast es un conjunto dinámico de reglas tributarias que aprende de las reglas de negocio de tu empresa. Los impuestos son el núcleo de todas las operaciones del ERP: una vez parametrizados, cada documento los calcula solo, sin que quien registra la transacción tenga que seleccionarlos.
+
+## Dónde impacta
+
+La parametrización de impuestos se refleja de forma transversal en toda la operación:
+
+| Área | Módulos |
+| --- | --- |
+| Compras | Orden de Compra · Cuentas por Pagar · Causación Automática Factura Proveedor |
+| Ventas | Orden de Pedido · Cuentas por Cobrar |
+| Punto de venta | Pedido de POS · Ventas de POS |
+| Transporte | Manifiesto de Transporte · Legalización de Transporte · Facturación de Transporte |
+
+## Antes de empezar
+
+Verifica que tu espacio de trabajo cumpla con lo siguiente:
+
+1. **Cuentas contables parametrizadas** — haber migrado o configurado el plan de cuentas en Fail Fast. Consulta [Contabilidad](/es/finance/accounting).
+2. **Árbol de impuestos en terceros** — tener terceros: compañía o persona con su árbol de impuestos configurado.
+3. **Proveedores o clientes creados** — contar con terceros registrados como proveedores o clientes.
+4. **Productos y tipos de producto parametrizados** — tener creados los productos y servicios con su respectivo tipo de producto, necesario para la parametrización de impuestos por producto o servicio.
+
+<Warning>
+  Si alguno de estos prerrequisitos no está listo, complétalo antes de continuar: los pasos siguientes dependen directamente de esta configuración base.
+</Warning>
+
+## Pasos para la parametrización
+
+<Steps>
+  <Step title="Crear los impuestos">
+    El primer paso es crear cada **impuesto** como registro maestro. Un impuesto representa una obligación fiscal impuesta por una autoridad gubernamental sobre transacciones, productos, servicios o actividades dentro del ERP.
+
+    Esta configuración es la que luego permite:
+
+    - Definir y administrar los distintos tipos de impuestos aplicables a las transacciones del negocio.
+    - Habilitar el cálculo automático de impuestos en los flujos de ventas, compras y financieros.
+    - Asegurar el cumplimiento de la normativa fiscal local y nacional.
+
+    <Note>
+      **Tipo de impuesto** es un catálogo precargado por Fail Fast, alineado al estándar de la DIAN (IVA, ICA, Retención en la Fuente, Autorretención). No lo crea el usuario: al crear un impuesto nuevo simplemente **seleccionas** el tipo correspondiente de esta lista y completas los demás campos.
+    </Note>
+
+    Abre el módulo **Impuestos por Empresa**, donde encontrarás el listado de todos los impuestos ya creados con su código, nombre, tipo, clase, método de liquidación y estado.
+
+    <Frame caption="Listado de impuestos por empresa — cada fila es un impuesto: IVA Ventas, IVA Compras, ICA Ventas, Retención en la Fuente, Autorretención, entre otros.">
+      <img src="/images/impuestos/01-listado-impuestos.png" alt="Listado de Impuestos por Empresa en Fail Fast" />
+    </Frame>
+
+    Haz clic en **Nuevo** para abrir el formulario de creación.
+
+    <Frame caption="Formulario Impuesto — campos requeridos antes de dar clic en Crear.">
+      <img src="/images/impuestos/02-formulario-impuesto.png" alt="Formulario de creación de un nuevo impuesto en Fail Fast" />
+    </Frame>
+
+    Diligencia los siguientes campos:
+
+    - **Código** — identificador corto del impuesto, usado como referencia rápida en transacciones y documentos financieros.
+    - **Nombre** — nombre descriptivo completo, usado en documentos oficiales, reportes de cumplimiento y listas de selección.
+    - **Tipo de impuesto** — se selecciona del catálogo precargado según el estándar DIAN; no se crea manualmente.
+    - **Tipo** — indica si aplica a Ventas, Compras u otro flujo de la operación.
+    - **Clase de impuesto** — categoría adicional de clasificación.
+    - **Método de liquidación** — define cómo se calcula el impuesto: Porcentaje, Valor fijo, Cantidad o Rango, entre otros.
+    - **¿Está activo?** — controla si el impuesto está disponible para usarse en el procesamiento de transacciones.
+
+    Haz clic en **Crear** para guardar el impuesto.
+
+    <Tip>
+      Cada impuesto creado aquí queda disponible para órdenes de compra, cuentas por pagar y por cobrar, POS y transporte, y para asociarse más adelante al árbol de impuestos de los terceros.
+    </Tip>
+  </Step>
+
+  <Step title="Crear las directivas de impuestos">
+    Una vez existen los impuestos base, configura las **directivas**. Una directiva define las reglas de aplicación de un impuesto: la tarifa, la ubicación geográfica donde rige y el comportamiento contable asociado. Es la tabla que le indica al motor de impuestos *cómo* comportarse en cada transacción.
+
+    Con las directivas puedes modelar escenarios como:
+
+    - **Tarifas por ubicación geográfica** — por ejemplo, un IVA de Compras del 100 % aplicado en Colombia.
+    - **Eventos temporales de impuesto** — activando **El impuesto es un acontecimiento** manejas casos como el Día sin IVA, con un periodo de vigencia específico.
+    - **Zonas francas** — según la ubicación geográfica seleccionada, la directiva refleja el tratamiento diferencial de una zona franca frente al resto del territorio.
+
+    Abre el módulo **Directiva**, donde verás cada regla creada con su impuesto asociado, clase, ubicación geográfica, porcentaje, redondeo, denominador y valor mínimo.
+
+    <Frame caption="Listado de directivas — ejemplo: IVA Compras, 100 %, Colombia.">
+      <img src="/images/impuestos/03-listado-directivas.png" alt="Listado de Directivas de impuestos en Fail Fast" />
+    </Frame>
+
+    Haz clic en **Nuevo** y diligencia **Información general** y **Reglas de cálculo**.
+
+    <Frame caption="Información general y reglas de cálculo de la directiva.">
+      <img src="/images/impuestos/04-directiva-informacion-general.png" alt="Formulario de creación de directiva — información general y reglas de cálculo" />
+    </Frame>
+
+    - **Nombre directiva** — nombre descriptivo de la regla.
+    - **Impuesto** — el impuesto base al que pertenece esta directiva. Actúa como agrupador para evitar que un mismo hecho económico se grave dos veces por directivas distintas.
+    - **Clase de impuesto** e **Impuesto para Ventas** — clasifican el tipo de operación, compras o ventas, a la que aplica.
+    - **¿Está activo?** — habilita o deshabilita la directiva sin necesidad de eliminarla.
+    - **Ubicación geográfica** — zona donde rige esta directiva: país, departamento o zona franca, y ciudad.
+    - **Redondeo** y **Denominador** — precisión decimal y base de cálculo del impuesto.
+    - **Valor mínimo** — monto mínimo de transacción a partir del cual se activa el impuesto.
+    - **El impuesto es un acontecimiento** — márcalo en **Sí** para directivas de eventos temporales como el Día sin IVA.
+    - **Periodo** — rango de vigencia, con fecha y hora de inicio y fin.
+
+    Más abajo, en **Configuración contable** e **Interesado**, define el registro contable y los terceros asociados.
+
+    <Frame caption="Configuración contable e interesado de la directiva.">
+      <img src="/images/impuestos/05-directiva-configuracion-contable.png" alt="Formulario de creación de directiva — configuración contable e interesado" />
+    </Frame>
+
+    - **Cuenta** — cuenta contable donde se causa el impuesto.
+    - **Cuenta contraria** — contrapartida contable para el registro en doble partida.
+    - **Cuenta de devolución** — cuenta usada para devoluciones o reembolsos del impuesto.
+    - **Tercero de impuesto fijo** — entidad gubernamental o beneficiario fijo asociado a la directiva, cuando aplica.
+    - **Tercero para cierre año** — tercero usado en el cierre y conciliación anual del impuesto.
+
+    Haz clic en **Crear** para guardar la directiva.
+
+    <Warning>
+      **Regla clave para ICA:** crea un solo agrupador de directivas de **Compras** y uno de **Ventas** por cada actividad económica. No crees una directiva por cada tarifa suelta: agrupar por actividad económica evita duplicidad y asegura que el motor aplique la tarifa correcta según el hecho generador.
+    </Warning>
+  </Step>
+
+  <Step title="Configurar el árbol de impuestos">
+    El **árbol de impuestos** es un control transaccional: define las reglas impositivas entre tu empresa y un tercero, y cómo afecta contablemente ese impuesto en cada operación.
+
+    Cada registro cruza tres cosas — el perfil fiscal de la empresa, el perfil fiscal del tercero (cliente o proveedor) y si la operación es de compra o de venta — para determinar qué impuestos aplican y si generan o no movimiento contable.
+
+    Abre el módulo **Árbol**, donde se listan las combinaciones ya configuradas: ¿Es venta?, árbol de empresa, árbol de terceros, tipo de impuesto, maneja contabilidad y maneja impuestos.
+
+    <Frame caption="Listado de árbol — ejemplo: Compra, IVA Compras, Retención en la Fuente, ICA Compras.">
+      <img src="/images/impuestos/06-listado-arbol.png" alt="Listado de árboles de impuestos en Fail Fast" />
+    </Frame>
+
+    Haz clic en **Nuevo**. El formulario se organiza en tres pestañas:
+
+    <Tabs>
+      <Tab title="Árbol Empresa">
+        Define primero si el registro aplica a **¿Es venta?** —Compra o Venta— y luego el perfil fiscal de **tu empresa** como parte de la transacción.
+
+        <Frame caption="Árbol Empresa — perfil fiscal de la compañía para este escenario (Compra).">
+          <img src="/images/impuestos/07-arbol-empresa.png" alt="Pestaña Árbol Empresa — perfil fiscal de la compañía" />
+        </Frame>
+
+        - **Origen** — Nacional o Extranjero.
+        - **Tipo de sociedad** — Jurídica o Natural.
+        - **Régimen en IVA** — Responsable o No responsable de IVA.
+        - **Calidad en renta** — Autorretenedor o No autorretenedor.
+        - **Declarante de renta** — Sí o No declarante.
+        - **Agente de retención** — Sí o No agente de retención.
+      </Tab>
+
+      <Tab title="Árbol Tercero">
+        Con la misma estructura de campos, define el perfil fiscal del **tercero** —cliente o proveedor— con el que se realiza la transacción.
+
+        <Frame caption="Árbol Tercero — perfil fiscal de la contraparte: Nacional, Natural, No responsable de IVA.">
+          <img src="/images/impuestos/08-arbol-tercero.png" alt="Pestaña Árbol Tercero — perfil fiscal del tercero" />
+        </Frame>
+
+        <Note>
+          El motor de impuestos cruza el perfil de **Árbol Empresa** con el de **Árbol Tercero**: la combinación exacta de ambos perfiles, más si es compra o venta, es lo que determina qué impuestos y reglas contables se disparan en la transacción.
+        </Note>
+      </Tab>
+
+      <Tab title="Impuestos">
+        Para la combinación de perfiles definida, selecciona qué impuestos participan y si cada uno maneja impuestos, contabilidad o ambos.
+
+        <Frame caption='Pestaña Impuestos — tabla "Obtener formulario de impuestos" con los checks de Maneja impuestos y Maneja contabilidad por tipo.'>
+          <img src="/images/impuestos/09-arbol-impuestos.png" alt="Pestaña Impuestos — obtener formulario de impuestos" />
+        </Frame>
+
+        - **Maneja impuestos** — indica si esta combinación de perfiles calcula ese impuesto en la transacción.
+        - **Maneja contabilidad** — indica si, además de calcularse, ese impuesto debe generar el asiento contable correspondiente.
+        - **Tipo de impuesto** — el impuesto del catálogo DIAN, creado en el paso 1, al que aplica esta regla.
+      </Tab>
+    </Tabs>
+
+    Selecciona las combinaciones necesarias y haz clic en **Actualizar** para guardar la configuración del árbol.
+
+    <Check>
+      **Ya tienes la parametrización base mínima.** Con los impuestos, las directivas y el árbol configurados, el motor sabe qué impuestos existen, con qué tarifas y reglas se calculan, y cómo aplican entre tu empresa y tus terceros. Los pasos 4 y 5 son excepciones opcionales sobre esta base: por producto o servicio y por tercero.
+    </Check>
+  </Step>
+
+  <Step title="Parametrizar impuestos por producto o servicio">
+    Los impuestos no se parametrizan producto por producto: se parametrizan a nivel de **tipo de producto**. Cada producto está asociado a un tipo, y es ese tipo el que trae consigo la configuración de impuestos que aplicará a todos los productos que pertenecen a él.
+
+    Abre el módulo **Tipo de producto/Servicios**, donde se listan todos los tipos ya creados con su nombre, si es servicio, si previene transacciones retroactivas y sus cuentas contables de inventario, costo de ventas, ingresos y devoluciones.
+
+    <Frame caption="Listado de tipos de producto — ejemplo: EPPS GRAVADOS, LLANTAS, DOTACIÓN.">
+      <img src="/images/impuestos/10-tipos-de-producto.png" alt="Listado de Tipo de producto/Servicios en Fail Fast" />
+    </Frame>
+
+    Abre un tipo de producto. En la parte inferior de **Información del producto** encontrarás tres pestañas: **Cuentas Contables**, **Impuestos** y **Clase Financiera**. Dentro de **Impuestos**, la configuración se separa en **Compras** y **Ventas**.
+
+    <Frame caption='Tipo de producto EPPS GRAVADOS — pestaña Impuestos → Compras, con la tabla "Impuesto de Compra" lista para configurar.'>
+      <img src="/images/impuestos/11-tipo-producto-compras.png" alt="Pestaña Impuestos del Tipo de Producto, sub-pestaña Compras" />
+    </Frame>
+
+    La configuración se hace directamente sobre la tabla: selecciona primero un **Tipo de impuesto** y luego un **Impuesto** que pertenezca a ese mismo tipo. Al seleccionarlo, el sistema muestra la directiva asociada para que valides tarifas y reglas antes de guardar.
+
+    <Frame caption='Impuesto de Compra configurado (IVA Compras) y su directiva asociada — "Purchase Registers" muestra la vigencia y el redondeo de la directiva.'>
+      <img src="/images/impuestos/12-tipo-producto-directiva.png" alt="Fila configurada con Tipo de impuesto, Impuesto y directiva asociada" />
+    </Frame>
+
+    - **Tipo de Producto** — se hereda automáticamente del registro que estás editando.
+    - **Tipo de impuesto** — el tipo del catálogo DIAN, por ejemplo IVA Compras.
+    - **Impuesto** — debe pertenecer al mismo tipo de impuesto seleccionado.
+    - **Requiere de directiva** — indica si el impuesto necesita una directiva activa para calcularse.
+    - **Iniciales** — abreviatura del impuesto para reportes y documentos, por ejemplo IVACOM.
+    - **Es adición**, **Es de ventas** y **Es de mayor** — banderas que controlan el comportamiento del impuesto dentro del documento y en la contabilización.
+
+    <Warning>
+      Para que la fila quede guardada es obligatorio marcar el **check** de la izquierda y usar el botón **Acción** — no el botón **Actualizar**. Si solo diligencias los campos sin marcar el check y confirmar con **Acción**, la configuración no se guarda.
+    </Warning>
+
+    <Frame caption="Fila guardada correctamente: check marcado, Tipo de impuesto e Impuesto diligenciados.">
+      <img src="/images/impuestos/13-tipo-producto-guardado.png" alt="Impuesto de compra guardado correctamente tras usar el check y el botón Acción" />
+    </Frame>
+
+    Repite el mismo procedimiento en la sub-pestaña **Ventas** para configurar los impuestos que aplican cuando este tipo de producto se vende.
+  </Step>
+
+  <Step title="Parametrizar impuestos por tercero">
+    Para agregar impuestos a un tercero, ve a los módulos **Proveedores** o **Clientes**. Puedes tener esta parametrización tanto a nivel general de proveedor o cliente como en el detalle de cada uno.
+
+    Abre el módulo **Proveedor** —o **Cliente**— y ubica el tercero al que le vas a configurar la excepción.
+
+    <Frame caption="Listado de Proveedor — tipo de documento, tercero, número de documento, condición comercial y gestor de compras.">
+      <img src="/images/impuestos/14-listado-proveedores.png" alt="Listado de Proveedores en Fail Fast" />
+    </Frame>
+
+    Al abrir el detalle del tercero encuentras primero su información general: tipo y número de documento, nombre, ubicación, datos de contacto, CIIU y responsabilidad fiscal.
+
+    <Frame caption="Información general del tercero — base para su perfil fiscal.">
+      <img src="/images/impuestos/15-cliente-informacion-general.png" alt="Formulario de información general del Cliente" />
+    </Frame>
+
+    Más abajo, en la misma ficha, aparece el **perfil fiscal** del tercero —tipo de sociedad, régimen en IVA, calidad en renta, declarante de renta y agente de retención, la misma información que compone el árbol de terceros del paso 3— y debajo la sección de impuestos propia del tercero, con las pestañas **Purchase Taxes** y **Sales Taxes**.
+
+    <Frame caption='Customer Taxes → Purchase Taxes — tabla "Obtener Directiva Tributaria del Cliente".'>
+      <img src="/images/impuestos/16-cliente-impuestos.png" alt="Sección Customer Taxes — Obtener Directiva Tributaria del Cliente" />
+    </Frame>
+
+    La dinámica es la misma del paso 4: seleccionas un **Tipo de impuesto** y un **Impuesto** que pertenezca a ese tipo, el sistema muestra la **Directiva Contable** asociada para validar tarifas y reglas, y para guardar la fila marcas el **check** y usas el botón **Acción** —o **Guardar para todos** cuando configuras varias filas a la vez—. El botón **Guardar** de la parte superior solo aplica a la información general del tercero.
+
+    <Note>
+      En la captura la tabla aparece vacía —"No hay datos"— porque en este ejemplo aún no se ha creado ningún impuesto con un tipo habilitado para nivel de tercero. La tabla solo lista impuestos que pueden aplicarse en este contexto; si el catálogo del paso 1 no tiene impuestos de ese tipo, no hay opciones para seleccionar.
+    </Note>
+
+    <Warning>
+      Esta configuración es adicional y propia del tercero: no sustituye ni pasa por encima de las reglas ya definidas en el árbol de impuestos del paso 3. Úsala solo para excepciones puntuales de ese cliente o proveedor.
+    </Warning>
+
+    Repite el procedimiento en la pestaña **Sales Taxes** para configurar los impuestos que rigen cuando este tercero participa en una venta.
+
+    <Check>
+      **Parametrización completa.** Con los impuestos, las directivas, el árbol y las excepciones por producto y por tercero configurados, el motor de impuestos ya está listo para operar en todos los módulos.
+    </Check>
+  </Step>
+
+  <Step title="Verificar el resultado en una cuenta por pagar">
+    Para comprobar que la parametrización quedó correctamente aplicada, crea una **cuenta por pagar** y revisa que los impuestos se calculen automáticamente.
+
+    Al crear la **Factura**, junto a las pestañas de Información general, Datos del proveedor y Detalle de la factura, aparece la pestaña **Impuestos**. Ahí el sistema muestra, ya calculado, todo lo que configuraste en los pasos 1 a 5, sin que tengas que seleccionar nada manualmente.
+
+    <Frame caption="Factura → pestaña Impuestos: el motor aplicó automáticamente el IVA General Compras (19 %) según el árbol y la directiva configurados.">
+      <img src="/images/impuestos/17-factura-impuestos.png" alt="Pestaña Impuestos de una Factura con el cálculo automático de impuestos" />
+    </Frame>
+
+    La pestaña se organiza en tres tablas y un resumen de totales:
+
+    - **Impuestos de la factura** — resume el impuesto aplicado a nivel de documento: código, nombre (*IVA General Compras*), impuesto total, valor base, el tax inicial (*Ivacom*) y si su operación suma (*Incremental*) o resta sobre el total.
+    - **Impuestos del detalle de la factura** — muestra el cálculo línea por línea: cantidad, base de impuesto, subtotal, impuesto calculado, precio unitario y el **Porcentaje de impuesto** (19 %) heredado de la directiva del paso 2. El campo **Origen del impuesto** confirma que vino del *Product* —tipo de producto, paso 4— y no de una excepción del tercero.
+    - **Impuestos excluidos de la factura** — lista los impuestos que, aunque existen en el catálogo, no aplican a esta combinación de árbol, producto y tercero. Aparece vacía —*Not Found*— cuando no hay exclusiones.
+
+    El bloque inferior consolida **Valor de otro descuento**, **Valor de descuento**, **Valor IVA incluido**, **Subtotal** y **Total**. Los dos últimos son de solo lectura y se calculan automáticamente.
+
+    <Tip>
+      Este es el resultado esperado de una parametrización correcta: quien registra la factura no configura impuestos manualmente, solo ve el cálculo ya resuelto por el motor con base en los impuestos, directivas, árbol y excepciones definidos en los pasos anteriores.
+    </Tip>
+  </Step>
+</Steps>
+
+## Cómo encajan las piezas
+
+| Configuración | Qué define | Alcance |
+| --- | --- | --- |
+| Impuesto | Qué obligaciones fiscales existen | Toda la empresa |
+| Directiva | Tarifa, vigencia, ubicación y contabilización | Por impuesto y ubicación geográfica |
+| Árbol de impuestos | Qué impuestos aplican entre dos perfiles fiscales y si contabilizan | Por combinación empresa–tercero y compra/venta |
+| Impuestos por tipo de producto | Excepciones según el ítem transado | Por tipo de producto, en compras y ventas |
+| Impuestos por tercero | Excepciones propias de un cliente o proveedor | Por tercero, sin sobreescribir el árbol |
+
+El mismo comportamiento aplica de forma transversal en todos los módulos listados al inicio de esta guía, desde una orden de compra hasta la facturación de transporte.
+
+## Guías relacionadas
+
+<CardGroup cols={2}>
+  <Card title="Contabilidad" icon="calculator" href="/es/finance/accounting">
+    Plan de cuentas, comprobantes y cierres de periodo donde se causan los impuestos.
+  </Card>
+  <Card title="Facturación electrónica" icon="file-invoice" href="/es/finance/electronic-invoicing">
+    Cómo se reportan a la DIAN los documentos con sus impuestos calculados.
+  </Card>
+  <Card title="Compras" icon="basket-shopping" href="/es/operations/purchasing">
+    Órdenes de compra y cuentas por pagar que consumen esta parametrización.
+  </Card>
+  <Card title="Facturación y liquidación de transporte" icon="file-invoice-dollar" href="/es/transport/billing-and-settlement">
+    Documentos de transporte donde también se aplica el motor de impuestos.
+  </Card>
+</CardGroup>
