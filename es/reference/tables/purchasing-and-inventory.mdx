@@ -1,0 +1,43 @@
+---
+title: Compras e inventarios
+description: Órdenes de compra y su detalle de impuestos, y las tablas de inventario — productos, variantes, bodegas, lotes, seriales, movimientos y saldos.
+icon: boxes-stacked
+---
+
+Las tablas de compras registran lo que le pides a tus proveedores; las de inventarios sostienen el catálogo de productos y el movimiento de existencias que alimenta a ventas, compras y contabilidad. Consulta [Compras](/es/operations/purchasing), [Inventarios](/es/operations/inventory) y [Catálogo de tablas](/es/reference/table-catalog).
+
+## Compras (`purchase`)
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Order | `purchase.order` | La orden de compra que formaliza la intención de adquirir bienes o servicios, con sus condiciones comerciales y financieras. |
+| Order Detail | `purchase.order_detail` | Las líneas de la orden: producto, centro de costo, categoría, cantidades en unidad base y alterna, precio y descuento. |
+| Order Tax Product | `purchase.order_tax_product` | Los impuestos calculados sobre cada producto de la orden, incluidas las variaciones territoriales y su registro contable. |
+| Order Tax Stakeholder | `purchase.order_tax_stakeholder` | Los impuestos y cargos adicionales aplicados a los ítems de la orden a nivel de tercero. |
+| Manager | `purchase.manager` | Los responsables de compras y sus límites de autorización, base de los flujos de aprobación. |
+
+## Catálogo de productos (`inventory`)
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Product | `inventory.product` | El catálogo de productos y servicios, con su clasificación, unidades de medida, método de control y niveles mínimos. |
+| Product Variant | `inventory.product_variant` | Las variantes de un producto —talla, color, presentación— que se manejan como existencia independiente. |
+| Product Option | `inventory.product_option` | Las opciones configurables de un producto que dan origen a sus variantes. |
+| Product Option Value | `inventory.product_option_value` | Los valores posibles de cada opción de producto. |
+| Product Type | `inventory.product_type` | Los tipos de producto, que definen la configuración contable e impositiva de cada categoría de bienes y servicios. |
+| Product Type F Class | `inventory.product_type_f_class` | La combinación de tipo de producto y clase financiera que determina automáticamente la cuenta contable. |
+| Product Type Tax Directive | `inventory.product_type_tax_directive` | Los impuestos que aplican a cada tipo de producto y que se calculan solos al facturar. |
+| Brand | `inventory.brand` | Las marcas con que se clasifican los productos en compras, ventas e inventarios. |
+| Group | `inventory.group` | Los grupos jerárquicos con que se organiza el inventario y se controla el acceso por unidad de negocio. |
+
+## Existencias y movimientos (`inventory`)
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Warehouse | `inventory.warehouse` | Las bodegas y ubicaciones de almacenamiento, con su sucursal, su centro de costo y las transacciones que permiten. |
+| Movement | `inventory.movement` | Las entradas y salidas de inventario: tipo de movimiento, origen, descripción y moneda de la transacción. |
+| Inventory Movement Detail | `inventory.movement_detail` | Los productos de cada movimiento, con cantidades en doble unidad, costos y su información contable. |
+| Inventory Balance | `inventory.balance` | Los saldos acumulados de cantidad y costo por producto y bodega, mes a mes, con costo promedio ponderado. |
+| Lot | `inventory.lot` | Los lotes de los productos con control de trazabilidad, con fechas de producción y vencimiento. |
+| Serial | `inventory.serial` | El estado, la ubicación y la garantía de cada serial, actualizados con cada entrada y salida. |
+| Inventory Configuration | `inventory.configuration` | Los parámetros globales del módulo: manejo de unidades de empaque, control por lote y control por serial. |

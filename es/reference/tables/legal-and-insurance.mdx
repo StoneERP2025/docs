@@ -1,0 +1,45 @@
+---
+title: Legal y seguros
+description: Procesos judiciales y administrativos, autoridades, abogados, audiencias y requisitos, junto con las pólizas de seguros y sus coberturas.
+icon: scale-balanced
+---
+
+Las tablas legales llevan los procesos que la empresa atiende y todo lo que gira alrededor de ellos: autoridades, abogados, partes, audiencias y requisitos. Las de seguros registran las pólizas y las ubicaciones que amparan. Consulta [Seguros y legal](/es/operations/insurance-and-legal) y [Catálogo de tablas](/es/reference/table-catalog).
+
+## Procesos (`legal`)
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Process | `legal.process` | El proceso legal o administrativo: su identificación, sus valores en juego, sus fechas y la autoridad responsable. |
+| Process Type | `legal.process_type` | La clasificación del proceso —civil, comercial, administrativo, penal— que alimenta filtros, reportes y reglas de trabajo. |
+| Process Stakeholder | `legal.process_stakeholder` | Los terceros que participan en un proceso y el papel con que lo hacen. |
+| Stakeholder Role | `legal.stakeholder_role` | Los roles posibles dentro de un proceso: demandante, demandado, testigo o representante legal. |
+| Audience | `legal.audience` | Las audiencias programadas dentro de un proceso, con su tipo, su citación y sus conclusiones. |
+| Audience Type | `legal.audience_type` | Los tipos de audiencia asociados a cada tipo de proceso y a cada jurisdicción. |
+
+## Autoridades y abogados (`legal`)
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Justice Authority | `legal.justice_authority` | Los juzgados, tribunales, fiscalías y demás autoridades que conocen los procesos, con su clasificación y su contacto. |
+| Justice Type | `legal.justice_type` | La naturaleza de esas autoridades: juzgado, tribunal, corte, fiscalía, centro de arbitraje o de conciliación. |
+| Judicial Speciality | `legal.judicial_speciality` | La especialidad de la autoridad: civil, penal, laboral, fiscalía y demás. |
+| Jurisdiction Level | `legal.jurisdiction_level` | El nivel territorial de la autoridad: nacional, regional, distrital, de circuito, municipal o local. |
+| Lawyer | `legal.lawyer` | Los abogados internos y externos, con su identificación y su tarjeta profesional. |
+| Lawyer Specialization | `legal.lawyer_specialization` | Las áreas de práctica de cada abogado, que permiten asignar los casos por especialidad. |
+
+## Requisitos (`legal`)
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Requirements | `legal.requirements` | Los requisitos formales que deben revisarse y aprobarse antes de aceptarse dentro de un proceso. |
+| Process Requirements | `legal.process_requirements` | Los requisitos que debe cumplir cada proceso y el seguimiento de su cumplimiento. |
+| Team Requirements | `legal.team_requirements` | Los requisitos de los que responde cada equipo de la organización. |
+
+## Seguros (`insurance`)
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Policy | `insurance.policy` | Las pólizas de seguro entre aseguradora, intermediario y asegurado, desde su expedición hasta su renovación y sus reclamaciones. |
+| Policy Location | `insurance.policy_location` | Las ubicaciones y las instalaciones amparadas por cada póliza, para valorar el riesgo y validar los siniestros. |
+| Origin Of Policies | `insurance.origin_of_policies` | Las oficinas y zonas desde las que se originan y administran las pólizas. |

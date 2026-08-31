@@ -257,6 +257,23 @@
                 ]
               },
               {
+                "group": "Catálogo de tablas",
+                "pages": [
+                  "es/reference/table-catalog",
+                  "es/reference/tables/platform",
+                  "es/reference/tables/stakeholders-and-crm",
+                  "es/reference/tables/sales-and-pos",
+                  "es/reference/tables/purchasing-and-inventory",
+                  "es/reference/tables/accounts-receivable",
+                  "es/reference/tables/accounts-payable",
+                  "es/reference/tables/treasury-and-accounting",
+                  "es/reference/tables/transport",
+                  "es/reference/tables/legal-and-insurance",
+                  "es/reference/tables/surveys",
+                  "es/reference/tables/health"
+                ]
+              },
+              {
                 "group": "Administración del espacio de trabajo",
                 "pages": [
                   "es/admin/account-settings",

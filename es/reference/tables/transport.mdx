@@ -1,0 +1,138 @@
+---
+title: Transporte
+description: Órdenes de servicio, cargues, remesas, manifiestos, cumplidos y legalización, facturación al cliente, precios y rutas, vehículos y conductores, y monitoreo de flota.
+icon: truck
+---
+
+Estas tablas cubren el ciclo completo del transporte nacional de carga: lo que el cliente pide, cómo se despacha, qué se reporta al RNDC, cómo se le paga al transportador y cómo se le factura al cliente. Consulta [Transporte](/es/transport/overview), [Operación](/es/transport/operations), [Facturación y liquidación](/es/transport/billing-and-settlement), [Monitoreo de flota](/es/transport/fleet-monitoring) y [Catálogo de tablas](/es/reference/table-catalog).
+
+## Órdenes de servicio (`national_transport`)
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Service Order | `national_transport.service_order` | La orden de servicio: lo que pide el cliente, la carga, la configuración operativa, los cálculos financieros y su estado. |
+| Service Order Detail | `national_transport.service_order_detail` | Los productos o la carga de cada orden, con su precio, su ubicación y su información de liquidación. |
+| Service Order Detail Vehicle | `national_transport.service_order_detail_vehicle` | Los vehículos asignados a cada producto dentro de la orden, con sus configuraciones y requisitos especiales. |
+| Service Order Detail Additional Cost | `national_transport.service_order_detail_additional_cost` | Los costos adicionales, recargos e imprevistos de cada línea de la orden. |
+| Service Order Change | `national_transport.service_order_change` | Las solicitudes de cambio sobre una orden ya consolidada, en secuencia y con su rastro de auditoría. |
+| Service Order Policy | `national_transport.service_order_policy` | Las pólizas que amparan la orden, para verificar la cobertura durante todo el despacho. |
+
+## Cargues y contenedores
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Load Order | `national_transport.load_order` | La orden de cargue que asigna vehículo, remolque y conductor a la operación de carga. |
+| Load Order Container | `national_transport.load_order_container` | Los contenedores de una orden de cargue, con su programación de recogida y sus condiciones de refrigeración. |
+| Container | `national_transport.container` | Cada contenedor: identificación, propiedad y estado operativo. |
+| Container Type | `national_transport.container_type` | Los tipos de contenedor según los estándares ISO, con sus dimensiones, su capacidad y sus características especiales. |
+
+## Remesas
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Remittance | `national_transport.remittance` | La remesa: la asignación de vehículo y conductor, los tiempos de la operación y los documentos del despacho. |
+| Remittance Additional | `national_transport.remittance_additional` | Los costos adicionales de una remesa, vengan de la orden de servicio, de novedades del transportador, del cumplido o de la prefacturación. |
+| Remittance Policy | `national_transport.remittance_policy` | Las pólizas que amparan la remesa y las responsabilidades de cada parte. |
+| Remittance Seal | `national_transport.remittance_seal` | Los precintos asignados a la remesa, para garantizar la integridad de la carga. |
+| Remittance Correction | `national_transport.remittance_correction` | Cada corrección aplicada a una remesa y su transmisión al RNDC, con los valores anteriores, los nuevos y el motivo oficial. |
+| Remittance Correction Reason | `national_transport.remittance_correction_reason` | Los motivos oficiales de corrección definidos por el RNDC. |
+
+## Manifiestos
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Manifest | `national_transport.manifest` | El manifiesto de carga: vehículo y conductor, sitios de cargue y descargue, pagos e inspecciones. |
+| Manifest Remittance | `national_transport.manifest_remittance` | Las remesas incluidas en cada manifiesto, con su control operativo, financiero y regulatorio. |
+| Manifest Advance | `national_transport.manifest_advance` | Los anticipos asociados al manifiesto y su control por despacho. |
+
+## Cumplidos y legalización
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Compliment | `national_transport.compliment` | El cumplido del servicio: asignación de vehículo y conductor, tiempos de cargue y descargue y documentos de transporte. |
+| Compliment Detail | `national_transport.compliment_detail` | Los ajustes financieros y los cobros por tiempo de cada remesa dentro del cumplido. |
+| Compliment Settlement Concept | `national_transport.compliment_settlement_concept` | Los conceptos de liquidación aplicados manualmente durante el cumplido, como ingreso o como egreso. |
+| Legalization | `national_transport.legalization` | La legalización de los cumplidos con el proveedor, con sus valores consolidados y su estado. |
+| Legalization Compliment | `national_transport.legalization_compliment` | Los cumplidos incluidos en cada legalización, con sus valores al momento de legalizar. |
+| Legalization Settlement Concept | `national_transport.legalization_settlement_concept` | Los conceptos de la legalización: los que vienen del cumplido, los que se digitan y los que se calculan solos. |
+
+## Conceptos de liquidación
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Settlement Concept | `national_transport.settlement_concept` | El catálogo de conceptos de liquidación —costo financiero, deuda del transportador, bonificaciones, recargos— y su configuración de aplicación automática. |
+| Settlement Concept Config | `national_transport.settlement_concept_config` | La configuración vigente por periodo: porcentaje o valor fijo, y la base de cálculo. |
+| Settlement Concept Range | `national_transport.settlement_concept_range` | Los rangos de flete de los conceptos que se calculan por rango, sin traslapes entre ellos. |
+| Settlement Exception Journey | `national_transport.settlement_exception_journey` | Los trayectos que se excluyen o se incluyen expresamente en la aplicación de un concepto. |
+| Settlement Exception Owner | `national_transport.settlement_exception_owner` | Los propietarios o transportadores que se excluyen o se incluyen expresamente en un concepto. |
+
+## Facturación al cliente
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Billing | `national_transport.billing` | La facturación de las remesas ya prestadas, con sus valores consolidados y su estado. |
+| Billing Remittance | `national_transport.billing_remittance` | Las remesas incluidas en cada facturación, con sus valores al momento de facturar. |
+| Customer Billing | `national_transport.customer_billing` | La prefacturación aprobada por el cliente y su relación con las facturas generadas. |
+| Billing Return | `national_transport.billing_return` | La devolución de remesas o servicios adicionales ya facturados, seleccionando el cliente y sus facturas. |
+| Billing Return Detail | `national_transport.billing_return_detail` | Cada línea devuelta, que reversa exactamente una línea facturada. |
+
+## Precios, trayectos y rutas
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Freight Prices | `national_transport.freight_prices` | Los precios de flete por combinación de ruta, tipo de vehículo y carrocería, con su vigencia. |
+| Complementary Price | `national_transport.complementary_price` | Los precios complementarios por producto, lista, unidad de medida y, si aplica, origen y destino. |
+| Pricing Route Config | `national_transport.pricing_route_config` | Los rangos de precio y los parámetros de control de costo por ruta y configuración de vehículo. |
+| Pricing Source | `national_transport.pricing_source` | Las fuentes de precio y el peso con que cada una participa en los promedios. |
+| Journey | `national_transport.journey` | El trayecto entre dos municipios, base de la planeación de rutas. |
+| Route | `national_transport.route` | La ruta concreta de un trayecto, estándar o alterna, compuesta por una secuencia ordenada de tramos. |
+| Member Toll Point | `national_transport.member_toll_point` | Los peajes y puntos de control de tu empresa, tomados del catálogo por país. |
+
+## Vehículos, propietarios y conductores
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Vehicle | `national_transport.vehicle` | El vehículo con sus características técnicas y legales. |
+| Member Vehicle | `national_transport.member_vehicle` | La vinculación de un vehículo con tu empresa, que hereda la información general y agrega la propia. |
+| Member Vehicle Policy | `national_transport.member_vehicle_policy` | Las pólizas asociadas a un vehículo vinculado. |
+| Vehicle Driver | `national_transport.vehicle_driver` | La asignación —actual e histórica— de conductores a un vehículo, con su tenencia y propiedad. |
+| Vehicle Reengraving | `national_transport.vehicle_reengraving` | Los procesos de regrabación de motor, chasis, serie o VIN de un vehículo. |
+| Owner | `national_transport.owner` | El propietario del vehículo, para asociarlo a los vehículos y demás activos. |
+| Holder | `national_transport.holder` | El tenedor del vehículo. |
+| Veto | `national_transport.veto` | El catálogo de vetos y restricciones que pueden aplicarse en la operación, clasificados por el tipo de registro al que afectan. |
+
+## Inspecciones
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Vehicle Inspection Header | `national_transport.vehicle_inspection_header` | El encabezado de la inspección: vehículo, remolque, conductor y autorización. |
+| Inspection Group | `national_transport.inspection_group` | Los grupos de elementos que se inspeccionan: equipo de carretera, kit de derrames, sujeción de carga, documentos y elementos de protección personal. |
+| Inspection Criteria | `national_transport.inspection_criteria` | Los criterios concretos que se evalúan en cada inspección. |
+| Inspection Criteria Type | `national_transport.inspection_criteria_type` | La clasificación de esos criterios. |
+
+## Catálogos y configuración
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Transport Mode | `national_transport.transport_mode` | El modo de transporte con su línea de negocio y su naturaleza de carga: general, pesada, extradimensionada y demás. |
+| Transport Product | `national_transport.transport_product` | Los productos de transporte del catálogo del Ministerio (RNDC), que extienden a los productos de inventario. |
+| Transport Product Inventory Link | `national_transport.transport_product_inventory_link` | El enlace entre un producto del RNDC y un producto de tu inventario, para no tener que crearlos todos. |
+| Business Configuration | `national_transport.business_configuration` | La combinación de línea de negocio, naturaleza de carga y modo de transporte que define cada configuración operativa. |
+| Operation Configuration | `national_transport.operation_configuration` | Las reglas de operación por línea de negocio: modos, estados y requisitos aduaneros. |
+| Configuration | `national_transport.configuration` | Los parámetros del módulo: vigencia de los documentos de seguridad, límites de edad del conductor y autorizaciones especiales. |
+| Configuration Policy | `national_transport.configuration_policy` | Las pólizas asociadas a esa configuración, para cubrir la responsabilidad de la empresa transportadora. |
+| Configuration Seal | `national_transport.configuration_seal` | Los productos que sirven como precintos; solo se admiten productos controlados por serial. |
+| Branch Office Config | `national_transport.branch_office_config` | Los parámetros de transporte propios de cada sucursal, para órdenes de cargue y facturación automáticas. |
+| Stakeholder Branch | `national_transport.stakeholder_branch` | Las sedes de un tercero con su dirección y su código, cuando la operación exige manejarlas por separado. |
+
+## Monitoreo de flota (`fleet_monitor`)
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Trip Manifest | `fleet_monitor.trip_manifest` | El registro de un viaje en monitoreo, venga de un manifiesto propio o de un sistema externo. Guarda los datos que no cambian. |
+| Trip Manifest Sync | `fleet_monitor.trip_manifest_sync` | El estado dinámico del viaje en cada consulta al integrador GPS: una fila por ciclo. |
+| Trip Manifest Remittance | `fleet_monitor.trip_manifest_remittance` | Cada remesa del viaje con sus puntos de cargue y descargue y su código RNDC. |
+| Trip Manifest Remittance Time | `fleet_monitor.trip_manifest_remittance_time` | Los tiempos logísticos reales de cada remesa, desde la llegada al cargue hasta la salida del descargue, para el reporte al RNDC. |
+| Trip Event | `fleet_monitor.trip_event` | Las novedades ocurridas durante el viaje, importadas del integrador GPS o registradas por un operador. |
+| Trip Event Settlement Concept | `fleet_monitor.trip_event_settlement_concept` | Los conceptos de liquidación aplicados a una novedad, como ingreso o como egreso. |
+| Event Type | `fleet_monitor.event_type` | El catálogo de tipos de novedad del monitoreo de flota. |

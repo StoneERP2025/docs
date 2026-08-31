@@ -1,0 +1,59 @@
+---
+title: Cuentas por cobrar
+description: Facturas de venta, devoluciones y notas, recaudos y cruces, condiciones comerciales, listas de precios, vendedores y la cartera de clientes.
+icon: file-invoice-dollar
+---
+
+Aquí vive todo lo que le facturas a tus clientes y lo que ellos te deben: los documentos de venta, las condiciones con que se pactan, los precios y descuentos que se les aplican, y el estado de la cartera. Consulta [Facturación electrónica](/es/finance/electronic-invoicing) y [Catálogo de tablas](/es/reference/table-catalog).
+
+## Facturas y notas
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Invoice | `account_receivable.invoice` | La factura de venta emitida al cliente, con sus condiciones comerciales, impuestos y estado de pago. |
+| Invoice Detail | `account_receivable.invoice_detail` | Las líneas de la factura: producto, centro de costo, categoría, cantidades en unidad base y alterna, precio y descuento. |
+| Invoice Payment | `account_receivable.invoice_payment` | Cada pago aplicado a una factura, con su valor y su medio de pago, para conciliación y seguimiento. |
+| Invoice Return | `account_receivable.invoice_return` | La devolución sobre una factura ya emitida, que reversa la venta y ajusta inventario y cartera. |
+| Invoice Return Detail | `account_receivable.invoice_return_detail` | Los productos, cantidades y valores devueltos en cada línea. |
+| Invoice Return Tax Product | `account_receivable.invoice_return_tax_product` | Los impuestos por producto de la devolución, con su método de liquidación y su efecto contable. |
+| Invoice Return Tax Stakeholder | `account_receivable.invoice_return_tax_stakeholder` | Los impuestos de la devolución que dependen del tercero, con su base, su tarifa y su registro contable. |
+| Balance Return | `account_receivable.balance_return` | El enlace entre una devolución y su efecto sobre el saldo del cliente, para poder rastrear el valor devuelto. |
+| Note | `account_receivable.note` | Las notas de cliente —nota crédito, nota débito o anticipo— con su total, sus impuestos y su descuento. |
+| Note Detail | `account_receivable.note_detail` | Las líneas de una nota, con cantidades, valores y su asignación a centros de costo y categorías. |
+| Note Account | `account_receivable.note_account` | La distribución contable de una nota: cuenta, tercero, centro de costo, sucursal y valores débito y crédito. |
+| Note Tax Detail | `account_receivable.note_tax_detail` | Las retenciones e impuestos aplicados a cada línea de la nota, como retefuente o ReteICA. |
+| Electronic Document Issued | `account_receivable.electronic_document_issued` | Los documentos electrónicos emitidos ante la DIAN, con su ciclo completo: firma, transmisión, validación, representación gráfica y envío por correo. |
+
+## Recaudo y cruces
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Netting | `account_receivable.netting` | El cruce que compensa anticipos contra facturas pendientes. |
+| Netting Detail | `account_receivable.netting_detail` | Cada pareja de anticipo y factura dentro de un cruce, para poder auditarlo línea a línea. |
+| Account Receivable Payment Form | `account_receivable.payment_form` | Las formas de pago disponibles para los clientes —efectivo, crédito, pasarela— y sus reglas de negocio. |
+| Account Receivable Interest | `account_receivable.interest` | La configuración de intereses corrientes, de mora y de financiación: tasas, método de cálculo, periodos de gracia y tratamiento contable. |
+
+## Clientes y crédito
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Customer Detail | `account_receivable.customer_detail` | Las sedes y sucursales del cliente, con su contacto, sus direcciones de entrega y sus condiciones comerciales propias. |
+| Customer Type | `account_receivable.customer_type` | La clasificación del cliente y las cuentas contables que le corresponden para cartera, anticipos y deterioro. |
+| Customer Status | `account_receivable.customer_status` | Los estados del cliente, que pueden bloquear operaciones cuando la cartera está en mora. |
+| Customer Credit Limit | `account_receivable.customer_credit_limit` | El historial de cambios del cupo de crédito, con el valor anterior y el nuevo. |
+| Customer Financial Statement | `account_receivable.customer_financial_statement` | Los estados financieros periódicos que reporta el cliente, base del análisis de riesgo crediticio. |
+| Customer Detail Salesman | `account_receivable.customer_detail_salesman` | El vendedor asignado a cada cliente y los cambios de portafolio entre vendedores. |
+| Salesman | `account_receivable.salesman` | Los vendedores —internos, externos o independientes— con su estructura jerárquica y su esquema de comisiones. |
+| Account Receivable Configuration | `account_receivable.configuration` | Los parámetros del módulo: plazos, rangos de antigüedad, umbrales de saldo y flujo de cobranza. |
+
+## Condiciones comerciales, precios y descuentos
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Commercial Condition | `account_receivable.commercial_condition` | Las condiciones comerciales pactadas con el cliente: plazos y planes de pago. |
+| Account Receivable Commercial Condition Detail | `account_receivable.commercial_condition_detail` | El detalle de esas condiciones: cuotas, tasas de interés y descuentos aplicables. |
+| Account Receivable Conditional Discount | `account_receivable.conditional_discount` | Los descuentos condicionados al momento del pago, como el descuento por pronto pago, con su impacto contable. |
+| Discount Type | `account_receivable.discount_type` | Los tipos de descuento disponibles y su método de cálculo, en porcentaje o valor fijo. |
+| Price Discount | `account_receivable.price_discount` | Las reglas de descuento por combinación de sucursal, cliente, producto y demás alcances; el descuento aplica solo cuando se cumplen todas las condiciones. |
+| Product Price | `account_receivable.product_price` | Las listas de precios por producto y unidad de medida, con sus reglas de modificación y control de margen. |
+| Product Price Range | `account_receivable.product_price_range` | Los rangos de precio por cantidad dentro de una lista, para precios escalonados y topes de descuento. |

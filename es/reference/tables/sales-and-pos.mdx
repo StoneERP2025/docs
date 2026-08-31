@@ -1,0 +1,93 @@
+---
+title: Ventas y POS
+description: Cotizaciones y pedidos de venta, y todo el punto de venta — sesiones de caja, órdenes en curso, ventas, devoluciones y cierres de sucursal.
+icon: cash-register
+---
+
+Estas tablas cubren el ciclo comercial de venta y la operación del punto de venta. Consulta [Ventas](/es/operations/sales), [Punto de venta](/es/operations/pos) y [Catálogo de tablas](/es/reference/table-catalog).
+
+## Cotizaciones y pedidos (`order`)
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Sales Quote | `order.sales_quote` | El encabezado de la cotización de venta, con sus condiciones comerciales, financieras y logísticas. |
+| Quote Detail | `order.quote_detail` | Las líneas de la cotización: producto o servicio, cantidad, precio y descuento, con manejo de unidad base y alterna. |
+| Sales Quote Tax Product | `order.sales_quote_tax_product` | Los impuestos calculados sobre cada producto de la cotización, con su método de liquidación y su efecto contable. |
+| Sales Quote Tax Stakeholder | `order.sales_quote_tax_stakeholder` | Los impuestos y cargos adicionales aplicados a la cotización a nivel de encabezado. |
+| Order | `order.order` | El encabezado del pedido del cliente, desde su creación hasta el despacho, con precios, plazos de pago y coordinación de entrega. |
+| Order Payment | `order.order_payment` | Cada pago recibido contra un pedido, con su valor, su medio de pago y los datos propios de cada instrumento. |
+| Order Configuration | `order.configuration` | La configuración del módulo de pedidos: reglas de autorización automática y políticas de inventario por empresa. |
+
+## Punto de venta (`pos`)
+
+### Sesiones de caja
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Cash Session | `pos.cash_session` | La sesión de caja de un cajero: apertura, cierre, saldos y ciclo de vida de cada turno. |
+| Session Payment | `pos.session_payment` | El resumen financiero de la sesión por medio de pago y moneda: ventas, devoluciones, descuentos y número de transacciones. |
+| Session Denomination Detail | `pos.session_denomination_detail` | El conteo de billetes y monedas por denominación en la apertura y el cierre, frente a lo que calcula el sistema. |
+| Session Cash Movement | `pos.session_cash_movement` | Las entradas y salidas manuales de efectivo que no son ventas: gastos, consignaciones o fondos para cambio, con su aprobación. |
+| Session Discrepancy | `pos.session_discrepancy` | Los sobrantes y faltantes del cierre por medio de pago, con su justificación y aprobación. |
+| Safe Drop | `pos.safe_drop` | Cada traslado de efectivo de la caja a la caja fuerte, un registro por sesión y moneda. |
+| Currency Denomination | `pos.currency_denomination` | Las denominaciones de billetes y monedas disponibles por moneda para el conteo de efectivo. |
+
+### Cierre de sucursal
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Branch Closure | `pos.branch_closure` | El cierre diario de la sucursal, que consolida las sesiones de caja del día y genera los movimientos contables y de inventario. |
+| Branch Closure Session | `pos.branch_closure_session` | Las sesiones de caja incluidas en cada cierre de sucursal. |
+| Branch Closure Inventory Movement | `pos.branch_closure_inventory_movement` | Los movimientos de inventario que genera el cierre de sucursal. |
+| Inventory Discrepancy | `pos.inventory_discrepancy` | Las diferencias de inventario detectadas en el cierre cuando lo vendido supera lo disponible, y su investigación posterior. |
+
+### Órdenes en curso
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Temp Order | `pos.temp_order` | La orden abierta durante el servicio, antes de facturarse: creación, producción, solicitud de cuenta y división de la cuenta. |
+| Temp Order Lot Detail | `pos.temp_order_lot_detail` | Las cantidades por lote comprometidas en una orden abierta, para productos con trazabilidad. |
+| Payment | `pos.temp_order_payment` | Los pagos parciales recibidos sobre una orden abierta, con su medio de pago. |
+
+### Ventas
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Sale | `pos.sale` | La venta finalizada del punto de venta: el documento definitivo con sus valores, pagos e impacto en inventario. |
+| Sale Detail | `pos.sale_detail` | Las líneas de la venta: producto, cantidad, precio y descuento. |
+| Sale Lot Detail | `pos.sale_lot_detail` | Las cantidades por lote de cada línea, para mantener la trazabilidad de los productos con control de lotes. |
+| Sale Payment | `pos.sale_payment` | Cada pago con que se salda la venta, admitiendo pagos divididos entre varios medios. |
+| Sale State History | `pos.sale_state_history` | El historial completo de estados de la venta, incluidos los que traía desde la orden abierta. |
+| Sale Tax Product | `pos.sale_tax_product` | Los impuestos calculados por producto en la venta, con su método de liquidación y su efecto contable. |
+| Sale Tax Stakeholder | `pos.sale_tax_stakeholder` | Los impuestos de la venta a nivel de encabezado, con sus variaciones regionales y su tratamiento contable. |
+
+### Devoluciones
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Return Sale | `pos.return_sale` | El encabezado de la devolución, total o parcial, de una venta ya realizada; la venta original no se modifica. |
+| Return Sale Detail | `pos.return_sale_detail` | Los ítems devueltos con sus cantidades, precios y descuentos. |
+| Return Sale Payment | `pos.return_sale_payment` | Cómo se reintegra el dinero de la devolución: efectivo, transferencia, tarjeta o saldo a favor. |
+| Return Sale Tax Product | `pos.return_sale_tax_product` | Los impuestos por ítem devuelto, para la nota crédito y su registro contable. |
+| Return Sale Tax Stakeholder | `pos.return_sale_tax_stakeholder` | Los impuestos de la devolución a nivel de encabezado. |
+
+### Órdenes cerradas sin venta
+
+Cuando una sesión se cierra, las órdenes canceladas, sin pago o abandonadas se archivan aquí para conservar su historia.
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Closed Order | `pos.closed_order` | El archivo de las órdenes que se cerraron sin convertirse en venta, con toda su información original. |
+| Closed Order Detail | `pos.closed_order_detail` | Las líneas de esas órdenes, útiles para analizar qué productos se quedan sin vender. |
+| Closed Order Payment | `pos.closed_order_payment` | Los pagos parciales o intentos de pago que quedaron registrados en una orden cerrada. |
+| Closed Order State History | `pos.closed_order_state_history` | El recorrido completo de estados de la orden hasta su cierre. |
+| Closed Order Tax Product | `pos.closed_order_tax_product` | Los impuestos por producto que se habían calculado en la orden cerrada. |
+| Closed Order Tax Stakeholder | `pos.closed_order_tax_stakeholder` | Los impuestos de encabezado de la orden cerrada. |
+
+### Configuración
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Configuration | `pos.configuration` | Los parámetros globales del punto de venta para toda la empresa. |
+| Branch Configuration | `pos.branch_configuration` | Los parámetros del punto de venta propios de cada sucursal, que extienden o sobrescriben la configuración global. |
+| Concept | `pos.concept` | Los conceptos de ingreso y egreso del punto de venta distintos de ventas y devoluciones, como propinas o ajustes de caja, y su clasificación contable. |

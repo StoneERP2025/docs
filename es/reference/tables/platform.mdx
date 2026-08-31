@@ -1,0 +1,113 @@
+---
+title: Plataforma
+description: Tablas de configuración base del espacio de trabajo — sucursales, centros de costo, operaciones y consecutivos, menús y permisos, usuarios, tareas, catálogos del sistema e integraciones.
+icon: cubes
+---
+
+Estas son las tablas que sostienen al resto del espacio de trabajo. Definen la estructura de tu empresa, cómo se numeran y contabilizan los documentos, quién ve qué, y los catálogos que alimentan los campos de todos los módulos. Casi siempre las mantiene un administrador. Consulta [Catálogo de tablas](/es/reference/table-catalog) para saber cómo leer estas páginas.
+
+## Núcleo del espacio de trabajo (`core`)
+
+Estructura de la empresa, configuración de las operaciones y elementos que aparecen en cualquier módulo, como notas, categorías e indicadores.
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| App Choice Group | `core.app_choice_group` | Relaciona un módulo de la aplicación y una ubicación geográfica con el grupo de opciones que debe cargarse en un campo, para que los conjuntos de valores cambien según la aplicación y el país. |
+| Branch Office | `core.branch_office` | Sucursales, tiendas y establecimientos que operan como extensión de la empresa principal; es la base de la operación multisede. |
+| Cancellation | `core.cancellation` | Tipos y motivos de anulación por tabla, para que la reversión de transacciones siga siempre el mismo flujo y quede auditada. |
+| Category | `core.category` | Categorías jerárquicas para clasificar procesos de negocio y filtrar o reportar por ellas. |
+| Choice | `core.choice` | Las opciones propias de tu espacio de trabajo para los campos de selección de las tablas. |
+| Company Wildcard Note | `core.company_wildcard_note` | El texto que tu empresa asigna a cada comodín por tipo de documento, y cuál es el valor por defecto. |
+| Cost Center | `core.cost_center` | Centros de costo para distribuir y controlar el gasto por área, con jerarquía, sucursal y clasificación financiera. |
+| Dashboard | `core.dashboard` | Definición de los tableros: plantilla, parámetros y formato con que se generan. |
+| Field Template Config | `core.field_template_config` | Plantillas de campos: qué campos se copian y cómo se corresponden entre un formulario origen y uno destino. |
+| Financial Class | `core.financial_class` | Clasificación financiera jerárquica que segmenta y controla las operaciones financieras para reportes y análisis. |
+| Indicator | `core.indicator` | Definición de los indicadores (KPI) que alimentan los tableros dinámicos, con jerarquía padre-hijo y lógica condicional. |
+| Indicator Variable | `core.indicator_variable` | Las variables de cada indicador: de qué tabla y qué campo toma su valor la fórmula. |
+| Market Exchange Rate | `core.market_exchange_rate` | Tasas de cambio negociadas con un tercero, asociadas a la tasa oficial, para operaciones en varias monedas. |
+| Menu | `core.menu` | Menús de navegación personalizados por usuario y por rol, con estructura jerárquica. |
+| Month Block | `core.month_block` | Bloqueo de periodos mensuales por módulo y año, para impedir cambios mientras se cierra el mes. |
+| Note | `core.note` | Notas que los miembros adjuntan a cualquier registro del sistema para dar contexto y colaborar. |
+| Note Reason | `core.note_reason` | Motivos estandarizados de notas débito y crédito, diferenciando el contexto de cliente y el de proveedor. |
+| Operation | `core.operation` | Tipos de operación: numeración, impacto contable, autorizaciones y visibilidad de cada clase de transacción. |
+| Operation Account | `core.operation_account` | La configuración contable de cada operación: cuentas, categorías, centros de costo y reglas de cálculo del comprobante automático. |
+| Operation Form | `core.operation_form` | Relaciona operaciones con tablas y formularios, y así decide qué operaciones se ofrecen en cada contexto. |
+| Operation Resolution | `core.operation_resolution` | Rangos de numeración autorizados y su vigencia para los documentos de una operación. |
+| Operation Year Consecutive | `core.operation_year_consecutive` | Los consecutivos —anuales o perpetuos— con que se numeran facturas, pedidos y demás documentos. |
+| Page | `core.page` | Las páginas personalizadas del espacio de trabajo y su enrutamiento. Consulta [Programas y páginas](/es/platform/programs-and-pages). |
+| Page Documentation | `core.page_documentation` | Documentación asociada a los bloques y secciones de una página, para dar ayuda en contexto. |
+| Record Wildcard Note | `core.record_wildcard_note` | El valor de un comodín ya resuelto para un documento concreto: una factura, una nota o un documento soporte. |
+| Resource | `core.resource` | Recursos que se programan y asignan, como salas, consultorios o equipos. |
+| Resource Type | `core.resource_type` | La clasificación de los recursos disponibles. |
+| Wildcard | `core.wildcard` | Catálogo de comodines —encabezados, pies y observaciones— que se reemplazan al imprimir facturas, notas y documentos soporte. |
+
+## Catálogos del sistema (`system`)
+
+Metadatos y catálogos globales: la definición de las propias tablas, los grupos de opciones y los códigos estandarizados que usan varios módulos.
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Choice Group | `system.choice_group` | Grupos de opciones predefinidas que alimentan las listas desplegables de los formularios, con organización jerárquica y tipo de dato. |
+| Entity Catal | `system.entity_catal` | El catálogo de tablas del sistema: registra cada tabla, su configuración y si los miembros pueden verla. Es la fuente de esta referencia. |
+| Generic Table | `system.generic_table` | Catálogos de códigos estándar —CIE-10, SNOMED, CUPS, ATC, RxNorm— por organización y versión. |
+| Generic Table Detail | `system.generic_table_detail` | Los códigos individuales de cada catálogo configurado en Generic Table. |
+| Global Process | `system.global_process` | Procesos globales que ejecutan funciones avanzadas del motor de datos. |
+| Json Migration | `system.json_migration` | Registro de los archivos de formulario ya importados, para no importarlos dos veces. |
+| Rule Utils | `system.rule_utils` | Catálogo de propiedades, métodos y objetos disponibles al escribir reglas. Consulta [Referencia de reglas de campo](/es/data/field-rules-reference). |
+| Service Params | `system.service_params` | Parámetros de los servicios externos: endpoints, datos de autenticación y formato de las peticiones. |
+| Tariff Classification | `system.tariff_classification` | Clasificación arancelaria internacional para aduanas y comercio exterior, incluida la identificación de mercancías peligrosas. |
+| Transport Chapter | `system.transport_chapter` | Capítulo, el nivel superior de la clasificación de carga usada en aduanas y en el RNDC. |
+| Transport Heading | `system.transport_heading` | Partida, bajo un capítulo; guarda los atributos de peligrosidad, grupo de embalaje y homologación de la carga. |
+| Transport Detail | `system.transport_detail` | Subpartida, bajo una partida; refina la clasificación e indica si se requiere arancel o manejo especial. |
+| Transport Tariff | `system.transport_tariff` | El código arancelario específico de la DIAN que completa la clasificación bajo la subpartida. |
+
+## Usuarios, roles y permisos (`users`)
+
+Quién entra al espacio de trabajo y qué puede hacer. Consulta [Equipo e invitaciones](/es/admin/team-and-invitations) y [Roles y permisos](/es/admin/roles-and-permissions).
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Account | `users.account` | Las cuentas externas de inicio de sesión enlazadas a cada usuario. |
+| Api Key | `users.api_key` | Llaves de API para autenticar servicios externos, con vigencia y límites de uso. Consulta [Llaves de API](/es/admin/api-keys). |
+| Company Invitations | `users.company_invitation` | Las invitaciones que ha enviado la empresa, para consultarlas desde la aplicación. |
+| Jwks | `users.jwks` | Las llaves con que se firman y verifican los tokens de sesión. |
+| Menu Role Permission | `users.menu_role_permission` | Permisos de menú por rol; la herencia se resuelve sobre la jerarquía del menú y varios roles pueden sumar accesos. |
+| Role Permissions | `users.permission_role_configuration` | La gestión de permisos de cada rol. |
+| User Permissions | `users.permission_user_configuration` | La gestión de permisos de cada usuario. |
+| Users Role Configuration | `users.role_configuration` | La gestión de los roles del espacio de trabajo. |
+| Session | `users.session` | Las sesiones activas, con su vencimiento y el dispositivo desde el que se abrieron. |
+| Team | `users.team` | Equipos que agrupan usuarios y recursos por responsabilidad y función dentro de la empresa. |
+| Team | `users.team_configuration` | La gestión de los equipos. |
+| Verification | `users.verification` | Los códigos temporales de verificación de correo, restablecimiento de contraseña y doble factor. |
+
+## Tareas y calendario (`task`)
+
+Consulta [Calendario y tareas](/es/platform/calendar-and-tasks).
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Calendar | `task.calendar` | Los calendarios que organizan eventos y tareas por fecha y se comparten entre varias personas. |
+| Calendar Detail | `task.calendar_detail` | Las fechas y los eventos concretos que cuelgan de un calendario. |
+| Task | `task.task` | Tareas: asignación, programación, estado y seguimiento del trabajo. |
+
+## Integraciones (`integration`)
+
+Archivos e información que se intercambia con sistemas externos. Consulta [Integraciones](/es/admin/integrations).
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Files For Integration | `integration.files_for_integration` | Cada archivo plano que se carga y se transmite a un sistema externo, con su tipo, estado de transmisión y resultado. |
+| Imported File | `integration.imported_file` | Los archivos recibidos de proveedores externos, con su estado de procesamiento y sus errores. |
+| Integration File Type | `integration.integration_file_type` | El catálogo de tipos de archivo plano, que decide a qué proceso y a qué servicio se envía cada archivo cargado. |
+| Integration Log | `integration.integration_log` | La bitácora de las integraciones: datos de entrada y salida, estado de la ejecución y registros relacionados. |
+| Sao Concept | `integration.sao_concept` | Los conceptos que traducen las operaciones del sistema externo SAO a las entidades financieras internas. |
+| Sao Concept Tax Detail | `integration.sao_concept_tax_detail` | Las directivas e impuestos asociados a cada concepto SAO y el orden en que se aplican. |
+| Storage Credential | `integration.storage_credential` | Las credenciales y parámetros de conexión a almacenamientos externos como FTP, SFTP o nube. |
+
+## Otras tablas de plataforma
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Conversation Session | `agents.conversation_session` | Las sesiones de conversación entre los agentes de IA y los usuarios, que dan contexto e historial al asistente. Consulta [Asistente de IA](/es/ai/ai-assistant). |
+| Migration Job | `migration.migration_job` | Las ejecuciones de importación masiva en segundo plano, con su estado, avance y punto de reanudación. Consulta [Importar y exportar](/es/data/import-export). |
+| Member Template Entity | `business_model.member_template_entity` | Define qué tablas del catálogo se copian al crear un espacio de trabajo a partir de una plantilla. |

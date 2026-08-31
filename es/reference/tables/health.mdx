@@ -1,0 +1,59 @@
+---
+title: Salud
+description: Pacientes y su afiliación, historia clínica, diagnósticos, procedimientos y fórmulas, planes de tratamiento, autorizaciones y los datos del sector salud exigidos en la facturación.
+icon: stethoscope
+---
+
+Estas tablas sostienen la operación de un prestador de servicios de salud: quién es el paciente y con quién está afiliado, qué se le atendió, qué se le autorizó y qué datos regulatorios acompañan a la factura. Consulta [Catálogo de tablas](/es/reference/table-catalog).
+
+## Pacientes y afiliación
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Patient | `health.patient` | El paciente: extiende los datos de la persona con los atributos clínicos y administrativos de la atención en salud. |
+| Patient Health Company | `health.patient_health_company` | La afiliación del paciente a una EPS o aseguradora, con su plan y sus datos de vinculación. |
+| Medical Plan | `health.medical_plan` | Los planes que ofrece cada entidad de salud, base de la elegibilidad, la facturación y las autorizaciones. |
+
+## Prestador y profesionales
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Health Company Detail | `health.health_company_detail` | Las sedes habilitadas de un prestador según los registros REPS y SISPRO, con su información regulatoria y operativa. |
+| Health Company Detail Service | `health.health_company_detail_service` | Los servicios que puede prestar cada sede habilitada, con su modalidad, su complejidad y sus fechas. |
+| Health Professional | `health.health_professional` | Los profesionales de la salud, con su identificación y su estado de activación. |
+| Health Professional Specialization | `health.health_professional_specialization` | Las especialidades de cada profesional. |
+| Healthcare Provider Class | `health.healthcare_provider_class` | La clasificación de los prestadores según los estándares de los registros regulatorios. |
+| Attention Level | `health.attention_level` | Los niveles de atención reconocidos por la normativa, como primario, secundario y terciario. |
+
+## Historia clínica
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Medical Appointment | `health.medical_appointment` | La cita médica, que enlaza el evento del calendario con el paciente, el profesional, la historia clínica y la autorización. |
+| Medical Appointment Sale | `health.medical_appointment_sale` | El vínculo entre la cita y su venta o factura. |
+| Medical Record | `health.medical_record` | El encabezado de la historia clínica de una atención: prestador, profesional, modalidad, motivo de consulta y factores externos. |
+| Diagnosis | `health.diagnosis` | Los diagnósticos de la atención, principales y relacionados, con su código estandarizado. |
+| Medical Record Procedure | `health.medical_record_procedure` | Los procedimientos efectivamente realizados en la atención, con su código estandarizado y su autorización. |
+| Medical Record Resource | `health.medical_record_resource` | Los recursos efectivamente utilizados en la atención. |
+| Medical Prescription | `health.medical_prescription` | Los medicamentos formulados en la atención, con su código, su cobertura, su autorización y los datos de cantidad y duración que exige la norma. |
+| Product Medication | `health.product_medication` | La información farmacológica y regulatoria de un producto de inventario: registro INVIMA, cobertura, control especial y códigos CUM, ATC e IUM. |
+
+## Tratamientos
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Treatment | `health.treatment` | El catálogo de tratamientos reutilizables que luego se relacionan con procedimientos, productos y planes. |
+| Treatment Item | `health.treatment_item` | Los componentes de un tratamiento, ligados a códigos de procedimiento y a servicios autorizados, con sus reglas de programación. |
+| Treatment Resource | `health.treatment_resource` | Los recursos asignados a la ejecución de un tratamiento, ligados a las citas y a los ítems del plan. |
+| Medical Treatment Plan | `health.medical_treatment_plan` | El plan de tratamiento del paciente, que agrupa varios ítems y sesiones. |
+| Medical Treatment Plan Detail | `health.medical_treatment_plan_detail` | Cada componente del plan, enlazado con sus citas y sus ventas. |
+| Medical Treatment Map | `health.medical_treatment_map` | El mapa que conecta el plan con las citas y las ventas para seguir su ejecución. |
+
+## Autorizaciones y facturación
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Authorization | `health.authorization` | La autorización de servicios o procedimientos entre el paciente y la entidad de salud, con su estado y su vigencia. |
+| Authorization Service | `health.authorization_service` | Los servicios amparados por una autorización, con sus cantidades autorizadas y utilizadas. |
+| Billing Profile | `health.billing_profile` | Los datos del sector salud que se mantienen estables en el tiempo: código de prestador, modalidad de pago, plan de beneficios, número de contrato y número de póliza. |
+| Billing Record | `health.billing_record` | Los datos del sector salud que cambian en cada documento; se adjuntan a la factura, la venta o la nota correspondiente. |

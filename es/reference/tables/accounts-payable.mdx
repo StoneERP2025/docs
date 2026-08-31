@@ -1,0 +1,62 @@
+---
+title: Cuentas por pagar
+description: Facturas de proveedor y su causación, documentos electrónicos recibidos de la DIAN, anticipos, notas, descuentos, cruces y la clasificación de proveedores.
+icon: file-invoice
+---
+
+Aquí vive lo que le debes a tus proveedores: las facturas que recibes, cómo se causan y se pagan, los anticipos que se legalizan y las condiciones pactadas con cada proveedor. Consulta [Compras](/es/operations/purchasing), [Tesorería](/es/finance/treasury) y [Catálogo de tablas](/es/reference/table-catalog).
+
+## Facturas de proveedor
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Invoice | `account_payable.invoice` | La factura emitida por un proveedor por bienes o servicios, con su información financiera y su seguimiento de pago. |
+| Invoice Detail | `account_payable.invoice_detail` | Las líneas de la factura: producto, cantidades, precios, descuentos y cuentas contables asociadas. |
+| Invoice Discount | `account_payable.invoice_discount` | Los descuentos comerciales y condicionados aplicados a la factura, y el cálculo de las retenciones. |
+| Invoice Period | `account_payable.invoice_period` | El periodo de vigencia asociado a una línea de factura, para condiciones que dependen de un rango de fechas. |
+
+### Causación en curso
+
+Mientras una factura se está causando, sus datos viven en tablas temporales hasta que el documento queda en firme.
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Temp Invoice | `account_payable.temp_invoice` | La factura de proveedor en proceso de causación, antes de confirmarse. |
+| Temp Invoice Detail | `account_payable.temp_invoice_detail` | Las líneas de esa factura en curso, con sus cantidades, precios y cuentas. |
+| Temp Detail Taxes | `account_payable.temp_detail_taxes` | Los impuestos calculados por línea mientras se causa la factura. |
+| Temp Global Taxes | `account_payable.temp_global_taxes` | Los impuestos calculados sobre el total de la factura en curso. |
+
+## Documentos electrónicos recibidos
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Electronic Document Received | `account_payable.electronic_document_received` | Las facturas y notas electrónicas que llegan de los proveedores por la DIAN, con sus partes, sus valores y las marcas de tiempo de su ciclo de vida. |
+| Electronic Document Received Detail | `account_payable.electronic_document_received_detail` | Las líneas de esos documentos electrónicos recibidos. |
+
+## Anticipos, notas y cruces
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Advance | `account_payable.advance` | Los anticipos pagados a proveedores, con su valor, su estado y su avance de legalización. |
+| Netting | `account_payable.netting` | El cruce que compensa anticipos contra facturas pendientes del proveedor. |
+| Netting Detail | `account_payable.netting_detail` | Cada pareja de anticipo y factura dentro de un cruce. |
+| Note | `account_payable.note` | Las notas de proveedor —nota crédito, nota débito o anticipo— con su total después de impuestos y descuentos. |
+| Note Detail | `account_payable.note_detail` | Las líneas de la nota, con cantidades, valores y asignación a centros de costo y categorías. |
+| Note Account | `account_payable.note_account` | La distribución contable de la nota: una sola de las columnas, débito o crédito, lleva valor. |
+| Note Tax Detail | `account_payable.note_tax_detail` | Las retenciones aplicadas a cada línea de la nota, como retefuente o ReteICA. |
+
+## Proveedores y condiciones
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Supplier Detail | `account_payable.supplier_detail` | Las sedes y puntos de contacto de un proveedor, con sus datos, su ubicación y sus condiciones comerciales. |
+| Supplier Type | `account_payable.supplier_type` | Los tipos de proveedor y las cuentas de pasivo que les corresponden. |
+| Supplier Supplier Type | `account_payable.supplier_supplier_type` | La asignación de uno o varios tipos a cada proveedor. |
+| Account Payable Stakeholder Bank Account | `account_payable.stakeholder_bank_account` | Las cuentas bancarias de los terceros a las que se giran los pagos, incluidas las de otras monedas. |
+| Account Payable Commercial Condition | `account_payable.commercial_condition` | Las condiciones comerciales pactadas con el proveedor: plazos y planes de cuotas. |
+| Account Payable Commercial Condition Detail | `account_payable.commercial_condition_detail` | El detalle de esas condiciones: días de cada cuota, porcentajes, intereses corrientes y de mora, y descuentos condicionados. |
+| Account Payable Conditional Discount | `account_payable.conditional_discount` | Los descuentos por pronto pago y demás incentivos ligados a la fecha o condición de pago. |
+| Account Payable Discount Type | `account_payable.discount_type` | Los tipos de descuento disponibles para las facturas de proveedor, con su tarifa y su cuenta contable. |
+| Account Payable Payment Form | `account_payable.payment_form` | Las formas de pago disponibles para los proveedores —efectivo, crédito, portal de pagos— y su clasificación. |
+| Account Payable Interest | `account_payable.interest` | Las tasas de interés para pagos vencidos, con sus periodos de gracia, su frecuencia de liquidación y su tratamiento contable. |
+| Account Payable Configuration | `account_payable.configuration` | Los parámetros del módulo: plazos, cálculo de vencimientos, validaciones y flujos de autorización. |

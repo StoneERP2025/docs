@@ -1,0 +1,44 @@
+---
+title: Encuestas
+description: Cuestionarios y sus versiones, secciones, preguntas y reglas de lógica, la audiencia que los recibe, los ciclos de aplicación y las respuestas.
+icon: clipboard-question
+---
+
+El módulo de encuestas separa el cuestionario de su contenido y de su aplicación: la encuesta es estable, su contenido vive en versiones inmutables, y cada envío es un ciclo con su propia audiencia y sus propias respuestas. Consulta [Catálogo de tablas](/es/reference/table-catalog).
+
+## Cuestionarios y contenido
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Survey | `survey.survey` | La encuesta: su identidad, su anonimato, su modo de respuesta y su obligatoriedad. El contenido vive en sus versiones. |
+| Survey Version | `survey.survey_version` | La versión inmutable del contenido. Editar un cuestionario publicado crea una versión nueva y conserva el texto exacto que respondieron los destinatarios anteriores. |
+| Section | `survey.section` | Los bloques de preguntas dentro de una versión; marcan la paginación del formulario y son el destino de las reglas de navegación. |
+| Question | `survey.question` | Cada pregunta, con su tipo, sus validaciones, sus opciones y su posible mapeo a un campo del registro maestro. |
+| Question Type | `survey.question_type` | El catálogo global de tipos de pregunta, que define cómo se muestra, se valida y se guarda cada una. |
+| Question Option | `survey.question_option` | Las opciones de respuesta de las preguntas de selección, cada una con su código estable para poder comparar resultados entre versiones. |
+| Question Rule | `survey.question_rule` | Las reglas que muestran, ocultan, habilitan o exigen una pregunta o una sección según respuestas anteriores. |
+| Rule Condition | `survey.rule_condition` | Las condiciones individuales que evalúa una regla y que se combinan con **Y** u **O**. |
+
+## Audiencia y envío
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Audience | `survey.audience` | La población objetivo de una versión, resuelta con filtros dinámicos, con selección manual o combinando ambas. |
+| Audience Entity | `survey.audience_entity` | Las tablas cuyos registros pueden recibir encuestas, de modo que roles como cliente, proveedor, conductor o empleado queden disponibles como audiencia. |
+| Audience Field | `survey.audience_field` | Los campos habilitados como criterio de segmentación para cada tabla encuestable, con su etiqueta legible. |
+| Audience Filter | `survey.audience_filter` | Cada criterio de segmentación aplicado por una audiencia dinámica. |
+| Dispatch Rule | `survey.dispatch_rule` | La regla que decide cuándo se envía la encuesta: a demanda, con una periodicidad, o disparada por un evento como un pedido, una factura o una entrega. |
+| Dispatch Log | `survey.dispatch_log` | La traza de cada evaluación del envío, que garantiza una sola invitación por documento y aísla los fallos. |
+| Cycle | `survey.cycle` | Cada aplicación de la encuesta, que congela la versión enviada y agrupa a sus destinatarios y respuestas para poder compararlas. |
+| Recipient | `survey.recipient` | La invitación concreta de un tercero a un ciclo, con su rol, su usuario invitado, su vencimiento y el documento que la originó. |
+| Recipient Exclusion | `survey.recipient_exclusion` | Los terceros excluidos de recibir encuestas, sea por solicitud expresa o por una pausa automática tras ignorar varias invitaciones. |
+
+## Respuestas
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Response | `survey.response` | El encabezado del cuestionario respondido. En las encuestas anónimas se guarda sin referencia al destinatario ni al tercero. |
+| Response Detail | `survey.response_detail` | La respuesta a cada pregunta, guardada en la columna que corresponde a su tipo y conservando el valor anterior. |
+| Response Detail Option | `survey.response_detail_option` | Cada opción marcada en una pregunta de selección múltiple, una por fila, para poder agregarlas sin procesar estructuras. |
+| Data Update Request | `survey.data_update_request` | La solicitud de escribir una respuesta en el registro maestro al que se mapeó, para revisarla y aprobarla antes de aplicarla. |
+| Configuration | `survey.configuration` | Los parámetros globales del módulo: tiempos de espera entre encuestas, vigencia de las invitaciones y políticas de anonimato. |

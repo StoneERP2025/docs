@@ -1,0 +1,96 @@
+---
+title: Tesorería, contabilidad y activos
+description: Bancos, cajas, pagos y recaudos, conciliación bancaria, plan de cuentas y comprobantes, configuración de impuestos y el ciclo de los activos fijos.
+icon: building-columns
+---
+
+Estas tablas registran el movimiento del dinero y su reflejo contable: dónde está la plata, cómo entra y sale, cómo se concilia con el banco, cómo se contabiliza y cómo se deprecian los activos. Consulta [Tesorería](/es/finance/treasury), [Contabilidad](/es/finance/accounting), [Configuración de impuestos](/es/finance/tax-configuration), [Activos fijos](/es/finance/fixed-assets) y [Catálogo de tablas](/es/reference/table-catalog).
+
+## Bancos y cajas (`treasury`)
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Bank Account | `treasury.bank_account` | Las cuentas bancarias de la empresa, con su posición y sus transacciones. |
+| Bank Account Balance | `treasury.bank_account_balance` | Los saldos de cada cuenta bancaria: saldo inicial, movimiento del mes y cierre de año. |
+| Bank Movement | `treasury.bank_movement` | Cada movimiento de una cuenta bancaria, con su valor, su fecha, su descripción y su tipo. |
+| Bank Note | `treasury.bank_note` | Las notas débito y crédito bancarias —comisiones, impuestos, intereses ganados— y las transferencias entre cuentas. |
+| Bank Note Tax | `treasury.bank_note_tax` | Las retenciones aplicadas a una nota bancaria, como retefuente o ReteICA. |
+| Bank Note Transfer | `treasury.bank_note_transfer` | El vínculo entre la nota débito y la nota crédito que juntas forman una transferencia entre cuentas. |
+| Cash Register | `treasury.cash_register` | Las cajas de la empresa —caja principal, caja menor, punto de venta— con su responsable y su integración contable. |
+| Cash Register Balance | `treasury.cash_register_balance` | Los saldos de cada caja: saldo inicial, movimiento del mes y cierre de año. |
+| Cash Register User | `treasury.cash_register_user` | Los usuarios habilitados para operar cada caja. |
+| Treasury Cash | `treasury.cash` | Los movimientos de efectivo de la empresa, base del control de caja y su auditoría. |
+| Cash Note | `treasury.cash_note` | Las notas débito y crédito de caja y las transferencias entre cajas o hacia cuentas bancarias. |
+| Cash Note Tax | `treasury.cash_note_tax` | Las retenciones aplicadas a una nota de caja. |
+| Cash Note Transfer | `treasury.cash_note_transfer` | El vínculo entre las dos notas de caja que forman una transferencia. |
+
+## Ingresos y pagos (`treasury`)
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Income | `treasury.income` | Las entradas de dinero —recaudos de facturas, anticipos, devoluciones y otros conceptos— con manejo multimoneda. |
+| Income Payment | `treasury.income_payment` | Cada pago con que se compone un recaudo, con su valor y su medio de pago. |
+| Income Balance | `treasury.income_balance` | Cómo se aplica el recaudo a los saldos de cartera del cliente, incluso cuando cubre varias facturas. |
+| Income Balance Tax | `treasury.income_balance_tax` | Las retenciones aplicadas a cada saldo abonado dentro del recaudo. |
+| Income Account | `treasury.income_account` | La línea contable que genera el recaudo: cuenta afectada y valor débito o crédito. |
+| Payment | `treasury.payment` | Las salidas de dinero con que se cumplen las obligaciones de la empresa. |
+| Payment Schedule | `treasury.payment_schedule` | La programación de pagos futuros a terceros, base del control de flujo de caja. |
+| Payment Dispersion | `treasury.payment_dispersion` | Cada débito consolidado que se envía al banco: agrupa los pagos a una misma cuenta beneficiaria para no repetir transacciones ni comisiones. |
+| Payment Method | `treasury.payment_method` | Los medios de pago con que se mueve el dinero y su configuración. |
+| Discount | `treasury.discount` | Los descuentos aplicables a una transacción de ingreso o de egreso, con sus cuentas y sus rangos permitidos. |
+| Credit Card | `treasury.credit_card` | La configuración de los medios de pago con tarjeta: adquirente, cuenta de recaudo, comisiones y cuentas contables. |
+| Credit Card Detail | `treasury.credit_card_detail` | Los impuestos y cargos que el adquirente descuenta en la liquidación, además de la comisión base. |
+| Card Franchise | `treasury.card_franchise` | Las franquicias de tarjeta aceptadas, como Visa, Mastercard o American Express. |
+| Digital Payment | `treasury.digital_payment` | Los medios de pago digitales —PayPal, Nequi, Daviplata— y su enlace con cuentas bancarias y pasarelas. |
+| Member Payment Gateway | `treasury.member_payment_gateway` | Las credenciales y la configuración de cada pasarela de pago para tu empresa. |
+| Configuration | `treasury.configuration` | Los parámetros de tesorería, como la ruta donde se generan los archivos planos bancarios. |
+
+## Conciliación bancaria (`treasury`)
+
+Consulta [Conciliación bancaria](/es/finance/bank-reconciliation).
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Bank Statement Import | `treasury.bank_statement_import` | Cada importación de extracto bancario, con su cuenta, su tipo y su historial. |
+| Bank Reconciliation | `treasury.bank_reconciliation` | El proceso de conciliación de una cuenta contra un extracto importado, con su fecha y su estado. |
+| Reconciliation Entry | `treasury.reconciliation_entry` | Cada posible pareja entre una línea del extracto y uno o más registros del sistema, con su estado propuesto, aprobado o rechazado. |
+| Reconciliation Entry Bank Movement | `treasury.reconciliation_entry_bank_movement` | Los movimientos bancarios que participan en una pareja de conciliación. |
+| Reconciliation Entry Erp Movement | `treasury.reconciliation_entry_erp_movement` | Los movimientos del sistema que participan en una pareja de conciliación. |
+| Erp Movement | `treasury.erp_movement` | La vista unificada de los movimientos del sistema que se enfrentan al extracto: operación, fecha, valor, moneda y tercero. |
+| Movement Type | `treasury.movement_type` | La clasificación de los movimientos bancarios y del sistema —pago, ingreso, transferencia— y la tabla de negocio a la que corresponden. |
+| Bank Reconciliation Auto Creation Settings | `treasury.bank_reconciliation_auto_creation_settings` | Los valores por defecto que usa la creación automática de notas e ingresos para los movimientos que quedan sin conciliar. |
+
+## Contabilidad (`accounting`)
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Account | `accounting.account` | Las cuentas del plan contable con que se clasifican y registran las transacciones. |
+| Global Account | `accounting.global_account` | El plan de cuentas estándar común a los países de la región según el tipo de plan, que permite comparar reportes entre empresas. |
+| Movement | `accounting.movement` | Los comprobantes contables generados en el sistema, base de la auditoría y de los reportes. |
+| Accounting Movement Detail | `accounting.movement_detail` | Las líneas de cada comprobante: cuenta afectada, valor y datos exigidos por esa cuenta, como tercero, categoría o centro de costo. |
+| Account-Book Relationship | `accounting.book_account` | La asignación de una cuenta auxiliar como propia de un solo libro contable. |
+| Account Book Mapping | `accounting.account_book_mapping` | La homologación de una cuenta del libro principal a otra cuenta distinta en un libro secundario. |
+| Book Homologation Name Account | `accounting.book_homologation_name_account` | El nombre alterno con que se muestra una cuenta auxiliar cuando se consulta bajo un libro secundario; el movimiento se guarda una sola vez. |
+
+## Impuestos (`tax`)
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Tax Tax | `tax.tax` | Los impuestos que aplican a transacciones, productos, servicios o actividades. |
+| Directive | `tax.directive` | Las directivas que definen cómo se calcula cada impuesto según la ubicación geográfica y el tipo de producto, en compras y en ventas. |
+| Tree | `tax.tree` | La configuración fiscal según el rol de cada parte —comprador o vendedor— y la estructura de impuestos que le corresponde. |
+| Presentation Schedule | `tax.presentation_schedule` | El calendario de vencimientos para presentar cada declaración ante la autoridad tributaria. |
+
+## Activos fijos (`fixed_asset`)
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Asset Plate | `fixed_asset.asset_plate` | La placa del activo fijo: su identificación física y administrativa a lo largo de todo su ciclo de vida. |
+| Asset Addition | `fixed_asset.asset_addition` | La placa base y cada mejora posterior, con su información de adquisición, su proveedor y su valor. La base es la adición número 0 y lleva el nombre del activo. |
+| Asset Book | `fixed_asset.asset_book` | Los valores del activo en cada libro contable —NIIF, fiscal y demás— con su depreciación, sus revaluaciones y sus ajustes. |
+| Member Group | `fixed_asset.member_group` | La configuración del grupo de activos propia de tu empresa: numeración, manejo de adiciones, umbrales de capitalización y política de leasing. |
+| Group Book | `fixed_asset.group_book` | La configuración de ese grupo en cada libro: indicador, método, vida útil, modos, banderas de control y cuentas. Es lo que permite manejar NIIF y fiscal de forma independiente. |
+| Asset Novelty | `fixed_asset.asset_novelty` | El encabezado del documento de novedad: tipo, operación, consecutivo, fecha y descripción. |
+| Asset Novelty Detail | `fixed_asset.asset_novelty_detail` | El cuerpo de la novedad, con una fila por placa afectada —o por placa y libro cuando los valores difieren entre libros. |
+| Novelty Type Operation | `fixed_asset.novelty_type_operation` | La operación que usa tu empresa para cada tipo de novedad. |
+| Depreciation Run | `fixed_asset.depreciation_run` | Cada ejecución del proceso de depreciación de un periodo, que agrupa los movimientos generados y es la unidad que se anula. |

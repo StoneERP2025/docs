@@ -1,0 +1,65 @@
+---
+title: Terceros y CRM
+description: El maestro de terceros — personas, empresas, clientes, proveedores, empleados y conductores — con sus referencias y afiliaciones, y las tablas de gestión comercial.
+icon: address-book
+---
+
+Un **tercero** es el registro maestro compartido de las personas y las empresas con las que trabajas. Sobre ese registro se apoyan los roles: un mismo tercero puede ser cliente en ventas, proveedor en compras y empleado en nómina sin duplicar sus datos. Las tablas de CRM registran el trabajo comercial previo a la venta. Consulta [CRM](/es/operations/crm) y [Catálogo de tablas](/es/reference/table-catalog).
+
+## Terceros (`stakeholder`)
+
+### Identidad
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Stakeholder | `stakeholder.stakeholder` | El registro maestro de cualquier persona u organización con la que se relaciona tu empresa; unifica su comportamiento en todos los módulos. |
+| Person | `stakeholder.person` | Los datos personales y demográficos de un tercero que es persona natural. |
+| Company | `stakeholder.company` | Los datos de un tercero que es empresa: identificación legal, contacto, ubicación y relaciones entre matriz y filiales. |
+| Contact Information | `stakeholder.contact_information` | Los teléfonos y correos de un tercero, clasificados por tipo de contacto para dirigir cada comunicación al lugar correcto. |
+| Person Nationality | `stakeholder.person_nationality` | La nacionalidad de una persona, referida a un país o territorio. |
+| Specialization | `stakeholder.specialization` | El catálogo de especialidades profesionales o técnicas con que se clasifica el talento humano y los recursos. |
+
+### Roles comerciales
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Customer | `stakeholder.customer` | El rol de cliente de un tercero: clasificación comercial, cupo de crédito, condiciones de pago y datos de facturación. |
+| Supplier | `stakeholder.supplier` | El rol de proveedor de un tercero: relación de abastecimiento, compras y evaluación de desempeño. |
+| Supplier Associate | `stakeholder.supplier_associate` | Los beneficiarios autorizados a recibir pagos en nombre de un proveedor, para casos como factoring o pagos a empresas relacionadas. |
+| Employee | `stakeholder.employee` | El rol de empleado de una persona, con su estado laboral, para procesos de nómina y talento humano. |
+| Driver | `stakeholder.driver` | El rol de conductor: certificaciones, estado operativo y coberturas exigidas por la normativa de transporte. |
+| Principal | `stakeholder.principal` | El mandante que delega tareas o responsabilidades en agentes, prestadores de servicio o procesos internos. |
+| Customer Policy | `stakeholder.customer_policy` | Las pólizas asociadas a un cliente y el seguimiento de su cumplimiento. |
+
+### Verificación y referencias
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Reference | `stakeholder.reference` | Referencias personales y laborales de un tercero, con su contacto, relación y periodo, para estudios de verificación. |
+| Bank Reference | `stakeholder.bank_reference` | Referencias bancarias de un tercero: banco, número y tipo de cuenta, y observaciones para el estudio de crédito. |
+| Person Reference | `stakeholder.person_reference` | Las referencias asignadas a una persona. |
+| Person Bank Reference | `stakeholder.person_bank_reference` | Las referencias bancarias asignadas a una persona. |
+| Company Reference | `stakeholder.company_reference` | Las referencias asignadas a una empresa. |
+| Company Bank Reference | `stakeholder.company_bank_reference` | Las referencias bancarias asignadas a una empresa. |
+
+### Entidades y afiliaciones
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Insurer | `stakeholder.insurer` | Las aseguradoras disponibles por país, tomadas de los terceros ya registrados, para asociarlas a pólizas y siniestros. |
+| Health Company | `stakeholder.health_company` | Las entidades del sector salud —EPS, hospitales, clínicas, ARL— con las que se relaciona la empresa. |
+| Health Company Type | `stakeholder.health_company_type` | El catálogo que clasifica esas entidades de salud por tipo dentro de cada país. |
+| Pension Fund | `stakeholder.pension_fund` | Los fondos de pensiones asociados a la empresa y la afiliación de los empleados. |
+| Compensation Fund | `stakeholder.compensation_fund` | Las cajas de compensación asociadas a la empresa y a sus grupos de empleados. |
+| Workers Compensation Insurer | `stakeholder.workers_compensation_insurer` | Las administradoras de riesgos laborales que cubren accidentes de trabajo y enfermedad laboral. |
+| Gps Company | `stakeholder.gps_company` | Los proveedores de rastreo GPS que monitorean la flota y reportan al RNDC. |
+| Tax Authority | `stakeholder.tax_authority` | Las autoridades tributarias nacionales, departamentales y municipales frente a las que se cumplen las obligaciones. |
+
+## Gestión comercial (`crm`)
+
+| Tabla | Identificador | Para qué sirve |
+| --- | --- | --- |
+| Lead | `crm.lead` | El interés de un prospecto, sea una persona nueva o un tercero existente con una necesidad nueva; se califica antes de convertirlo. |
+| Opportunity | `crm.opportunity` | La oportunidad calificada que nace de un lead, con valor estimado, etapa y probabilidad de cierre para el pipeline. |
+| Segment | `crm.segment` | Los segmentos de contactos para campañas, estáticos o dinámicos según reglas de filtro. |
+| Campaign | `crm.campaign` | Las campañas de mercadeo por WhatsApp, correo o ambos canales, con sus plantillas de mensaje y su seguimiento. |
