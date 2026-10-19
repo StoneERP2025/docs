@@ -1,320 +1,239 @@
 ---
-title: "Tax configuration"
-description: "Set up the Fail Fast tax engine: taxes, directives, the tax tree, and exceptions by product and by third party."
+title: "Taxes"
+description: "How Fail Fast calculates the taxes on your invoices, what you have to configure, and how a tax is settled on a supplier invoice."
 icon: "percent"
 ---
 
-The Fail Fast tax engine is a dynamic set of tax rules that learns from your company's business rules. Taxes sit at the core of every ERP operation: once configured, each document calculates them on its own, without the person recording the transaction having to select anything.
+In Fail Fast you do not type taxes. When you save an invoice, the system looks at the document, applies the country's tax rules, and writes the result. Nobody keys in 19 % VAT or a 4 % withholding.
+
+Your job is to tell the system who your company is, who your stakeholders are, what you buy and sell, and which accounts the taxes post to. With that, every invoice settles itself.
+
+## How Fail Fast decides which taxes apply
+
+For each invoice line, the system looks at three things:
+
+| What it looks at | The question it answers | Where you configure it |
+|---|---|---|
+| **Who the stakeholder is** | Do they file income tax? Are they a legal entity? Do they self-withhold? Are they on the simple regime? | The **tax profile** of the supplier or customer |
+| **What the product is** | Is it a service, professional fees, taxable goods, an excluded item? | The **tax categories** of the product type |
+| **Where it happens** | In which municipality? That decides ICA | The **branch office** on the invoice |
+
+It also uses the document's **operation date**: the rate, the threshold, and the UVT value are the ones in force that day. A 2025 invoice you re-settle today uses 2025 values.
+
+### An example with numbers
+
+You buy cleaning services for **1,000,000** from a company that files income tax, on 15 October 2026, with a branch in Medellín. Your company is an income withholding agent and an ICA withholding agent in Medellín.
+
+| Tax | Base | Rate | Amount |
+|---|---|---|---|
+| VAT | 1,000,000 | 19 % | **190,000** |
+| Income withholding on services | 1,000,000 | 4 % | **40,000** |
+| ICA withholding | 1,000,000 | 1.8 per thousand | **1,800** |
+
+You pay the supplier `1,000,000 + 190,000 − 40,000 − 1,800 = 1,148,200`.
 
 <Note>
-  Screenshots in this guide come from the Spanish interface. UI labels are given in English with the Spanish label in parentheses so you can match them on screen.
+Withholding thresholds are expressed in UVT, not in pesos. The system does the arithmetic with the UVT of the document's date, so you do not have to update anything every January. The threshold is compared against the sum of the lines under the same rule in the document.
 </Note>
 
-## Where it applies
+## What Fail Fast does and what is up to you
 
-Tax configuration shows up across the whole operation:
-
-| Area | Modules |
-| --- | --- |
-| Purchasing | Purchase orders · Payables · Automatic supplier invoice accrual (causación) |
-| Sales | Sales orders · Receivables |
-| Point of sale | POS orders · POS sales |
-| Transport | Transport manifests · Transport settlement · Transport billing |
-
-## Before you start
-
-Check that your workspace meets the following:
-
-1. **Chart of accounts configured** — your accounts migrated into or set up in Fail Fast. See [Accounting](/finance/accounting).
-2. **Tax tree on third parties** — company or person third parties (terceros) with their tax tree configured.
-3. **Suppliers or customers created** — third parties registered as suppliers or customers.
-4. **Products and product types configured** — products and services created with their product type, required for tax configuration by product or service.
+| Fail Fast does this for you | You configure this once |
+|---|---|
+| Keeps the country's rates, thresholds, and validity periods | Your company's tax profile |
+| Picks the rule that applies to each line | The tax profile of your suppliers and customers (or loads it from their RUT) |
+| Calculates base, rate, and amount | The tax categories of your product types |
+| Explains why a tax did not apply | Which account each tax posts to |
+| Posts the accounting entry | Exceptions, only if your company needs them |
 
 <Warning>
-  If any of these prerequisites is missing, complete it before continuing: the steps below depend directly on this base configuration.
+Do not modify the country's rates or rules: they are the same for every company and are read-only. Whatever is different in your company is recorded as an **exception**.
 </Warning>
 
-## Configuration steps
+## Configure taxes step by step
+
+Follow this order: you cannot post a tax that is not calculated yet, nor calculate anything on a product that does not say what it is.
 
 <Steps>
-  <Step title="Create the taxes">
-    Start by creating each **tax** as a master record. A tax represents a fiscal obligation imposed by a government authority on transactions, products, services, or activities within the ERP.
+  <Step title="Complete your company's tax profile">
+    Open your own company's stakeholder record and go to the **Tax profile** grid. To the system your company is one more stakeholder: if nobody answered its responsibilities, it is nobody for tax purposes.
 
-    This configuration is what later lets you:
+    | Answer **Yes** if your company is… | If you leave it unanswered |
+    |---|---|
+    | **VAT responsible** | The VAT on your purchases is not deducted: it goes to cost |
+    | **Income withholding agent** | You withhold income tax from no supplier |
+    | **VAT withholding agent** | There is no VAT withholding on any invoice |
+    | **ICA withholding agent in the municipality** | You do not withhold ICA in that municipality. One row per municipality |
+    | **Income self-withholder** | Your customers withhold from you instead of you self-withholding |
 
-    - Define and manage the different taxes that apply to your business transactions.
-    - Enable automatic tax calculation across sales, purchasing, and financial flows.
-    - Stay compliant with local and national tax regulations.
+    The grid has more than one page: go through all of them before calling this step done.
+  </Step>
+  <Step title="Complete the tax profile of your suppliers and customers">
+    Create the stakeholder with their document and name, and answer their **Tax profile**. The fastest way is to upload their RUT and let AI fill it in: see [Load the RUT of a stakeholder](#load-the-rut-of-a-stakeholder).
 
-    <Note>
-      **Tax type** (Tipo de impuesto) is a catalog preloaded by Fail Fast, aligned with the DIAN standard — VAT (IVA), ICA, withholding at source (retención en la fuente), and self-withholding (autorretención). You do not create it: when creating a new tax you simply **select** the matching type from this list and fill in the remaining fields.
-    </Note>
+    The data that changes a purchase invoice the most:
 
-    Open the **Company Taxes** (Impuestos por Empresa) module, where you'll find every tax already created with its code, name, type, class, settlement method, and status.
+    | Supplier data | What it changes |
+    |---|---|
+    | **VAT responsible** | If they are not, the line settles with no VAT and there is no VAT withholding |
+    | **Income tax filer** | Picks the rate: 2.5 % or 3.5 % on goods, 4 % or 6 % on services |
+    | **Is a legal entity** | Picks the professional fees rate: 11 % legal entity, 10 % individual |
+    | **Income self-withholder** | You do not withhold income tax: they self-withhold |
+    | **Simple tax regime** | You withhold neither income tax nor ICA |
 
-    <Frame caption="Company taxes list — each row is a tax: sales VAT, purchase VAT, sales ICA, withholding at source, self-withholding, and so on.">
-      <img src="/images/impuestos/01-listado-impuestos.png" alt="Company taxes list in Fail Fast" />
-    </Frame>
+    The stakeholder's **location** is not just contact data: it is how the system knows whether they are abroad, and that decides whether the purchase carries VAT. The stakeholder is not saved without it.
+  </Step>
+  <Step title="Classify your product types">
+    This is the step most often forgotten. The tax category does not go on each product: it goes on the **product type**, and it is what connects an invoice line to a tax rule. Without it the invoice saves, the totals add up, and no tax appears.
 
-    Click **New** (Nuevo) to open the creation form.
+    | Field | What it decides |
+    |---|---|
+    | **VAT category** | Which VAT or consumption tax what you buy or sell triggers. It is required |
+    | **Withholding category** | Which income withholding applies. Without it there is no withholding |
+    | **Fixed asset** | On a purchase, the VAT goes to the asset's cost |
+    | **Own consumption** | On a purchase, the VAT goes to expense |
 
-    <Frame caption="Tax form — required fields before clicking Create.">
-      <img src="/images/impuestos/02-formulario-impuesto.png" alt="New tax creation form in Fail Fast" />
-    </Frame>
+    Some examples of **Withholding category** (with the 2026 UVT):
 
-    Fill in the following fields:
+    | If you buy… | Pick | Withholding |
+    |---|---|---|
+    | Services in general | General services | 4 % if they file income tax, 6 % if not · from 104,748 |
+    | Professional fees and commissions | Fees and commissions | 11 % legal entity, 10 % individual · no threshold |
+    | Goods | Purchases of goods | 2.5 % if they file income tax, 3.5 % if not · from 523,740 |
+    | Rent of premises or a warehouse | Rental of real estate | 3.5 % · from 523,740 |
+    | Freight transport | Freight transport | 1 % · from 104,748 |
 
-    - **Code** (Código) — short identifier for the tax, used as a quick reference in transactions and financial documents.
-    - **Name** (Nombre) — full descriptive name, used in official documents, compliance reports, and selection lists.
-    - **Tax type** (Tipo de impuesto) — selected from the preloaded DIAN catalog; not created manually.
-    - **Type** (Tipo) — whether it applies to sales, purchases, or another operational flow.
-    - **Tax class** (Clase de impuesto) — an additional classification category.
-    - **Settlement method** (Método de liquidación) — how the tax is calculated: percentage, fixed value, quantity, or range, among others.
-    - **Is active?** (¿Está activo?) — controls whether the tax is available for transaction processing.
+    And of **VAT category**:
 
-    Click **Create** (Crear) to save the tax.
+    | If you buy or sell… | Pick | What it triggers |
+    |---|---|---|
+    | Ordinary taxable goods | Taxed at the general rate | VAT 19 % |
+    | A reduced-rate good or service | Taxed at the 5 percent rate | VAT 5 % |
+    | An exempt good | VAT exempt | VAT 0 %, deductible |
+    | An excluded good | VAT excluded | No VAT |
+    | Restaurant, café, or bar | Restaurant, café, bar | Consumption tax 8 % |
+
+    Pick by **what the thing is**, not by the accounting account you post it to.
+  </Step>
+  <Step title="Say which account each tax posts to">
+    In **Tax accounts** you say, for each tax and each role it plays, which accounting account it posts to. The minimum to start buying:
+
+    | Tax | Account role |
+    |---|---|
+    | VAT | **Deductible**, for the VAT you pay and later deduct |
+    | VAT | **Higher cost value**, for the VAT you do not deduct |
+    | Income withholding | **Withholding applied**, what you withhold from the supplier and owe the DIAN |
+    | ICA withholding | **Withholding applied**, the same before the municipality |
+    | VAT withholding | **Withholding applied**, only if you are a VAT withholding agent |
+
+    Leave the **zone** empty so the row applies country-wide. Fill it in only when you need a different account per municipality, which is the norm for ICA.
+
+    Accounts that carry taxes must have **Require tax** set to **Yes** along with their tax concept. See [Create an account](/finance/accounting#create-an-account).
 
     <Tip>
-      Every tax created here becomes available for purchase orders, payables and receivables, POS, and transport, and can later be attached to the tax tree of your third parties.
+    A missing row does not cost you the invoice. The tax is calculated and stored; what is missing is the account to build the entry. Add the row and post it again.
     </Tip>
   </Step>
+  <Step title="Record your exceptions, if you need any">
+    When a country rule does not apply to your company, or applies at a different rate, record an exception with its validity period, its scope, and its reason:
 
-  <Step title="Create the tax directives">
-    Once the base taxes exist, configure the **directives** (directivas). A directive defines the application rules for a tax: the rate, the geographic location where it applies, and the associated accounting behavior. It is the table that tells the tax engine *how* to behave in each transaction.
+    | Exception | Example |
+    |---|---|
+    | **Do not apply this rule** | "This withholding does not apply to me" |
+    | **Apply a different rate** | "I withhold the agreed rate from this supplier" |
 
-    Directives let you model scenarios such as:
+    The emptier the scope, the broader it is: with no stakeholder it applies to everyone, with no zone it applies country-wide. The reason is required because the auditor reads it.
 
-    - **Rates by geographic location** — for example, a 100 % purchase VAT applied in Colombia.
-    - **Temporary tax events** — turning on **Tax is an event** (El impuesto es un acontecimiento) covers cases like the VAT-free day (Día sin IVA), with a specific validity period.
-    - **Free trade zones** — depending on the geographic location selected, the directive reflects the differential treatment of a free trade zone (zona franca) versus the rest of the territory.
-
-    Open the **Directive** (Directiva) module, where each rule appears with its associated tax, class, geographic location, percentage, rounding, denominator, and minimum value.
-
-    <Frame caption="Directives list — example: purchase VAT, 100 %, Colombia.">
-      <img src="/images/impuestos/03-listado-directivas.png" alt="Tax directives list in Fail Fast" />
-    </Frame>
-
-    Click **New** and fill in **General information** and **Calculation rules**.
-
-    <Frame caption="General information and calculation rules of the directive.">
-      <img src="/images/impuestos/04-directiva-informacion-general.png" alt="Directive creation form — general information and calculation rules" />
-    </Frame>
-
-    - **Directive name** (Nombre directiva) — descriptive name of the rule.
-    - **Tax** (Impuesto) — the base tax this directive belongs to. It acts as a grouper so the same economic event is not taxed twice by different directives.
-    - **Tax class** (Clase de impuesto) and **Sales tax** (Impuesto para Ventas) — classify the operation, purchase or sale, the directive applies to.
-    - **Is active?** (¿Está activo?) — enables or disables the directive without deleting it.
-    - **Geographic location** (Ubicación geográfica) — the zone where this directive applies: country, department or free trade zone, and city.
-    - **Rounding** (Redondeo) and **Denominator** (Denominador) — decimal precision and calculation base of the tax.
-    - **Minimum value** (Valor mínimo) — the minimum transaction amount at which the tax kicks in.
-    - **Tax is an event** (El impuesto es un acontecimiento) — set it to **Yes** for temporary event directives such as the VAT-free day.
-    - **Period** (Periodo) — validity range, with start and end date and time.
-
-    Further down, under **Accounting configuration** (Configuración contable) and **Stakeholder** (Interesado), define the accounting posting and the associated third parties.
-
-    <Frame caption="Accounting configuration and stakeholder of the directive.">
-      <img src="/images/impuestos/05-directiva-configuracion-contable.png" alt="Directive creation form — accounting configuration and stakeholder" />
-    </Frame>
-
-    - **Account** (Cuenta) — the account where the tax is posted.
-    - **Counter account** (Cuenta contraria) — the double-entry counterpart.
-    - **Return account** (Cuenta de devolución) — account used for tax returns or refunds.
-    - **Fixed tax third party** (Tercero de impuesto fijo) — the government entity or fixed beneficiary tied to the directive, where it applies.
-    - **Year-end third party** (Tercero para cierre año) — third party used in the annual close and reconciliation of the tax.
-
-    Click **Create** to save the directive.
-
-    <Warning>
-      **Key rule for ICA:** create a single directive grouper for **purchases** and one for **sales** per economic activity. Do not create a directive for each loose rate — grouping by economic activity avoids duplication and ensures the engine applies the correct rate for the taxable event.
-    </Warning>
-  </Step>
-
-  <Step title="Configure the tax tree">
-    The **tax tree** (árbol de impuestos) is a transactional control: it defines the tax rules between your company and a third party, and how that tax posts to accounting in each operation.
-
-    Each record crosses three things — your company's tax profile, the third party's tax profile (customer or supplier), and whether the operation is a purchase or a sale — to determine which taxes apply and whether they generate accounting movement.
-
-    Open the **Tree** (Árbol) module, which lists the combinations already configured: is sale?, company tree, third-party tree, tax type, handles accounting, and handles taxes.
-
-    <Frame caption="Tree list — example: purchase, purchase VAT, withholding at source, purchase ICA.">
-      <img src="/images/impuestos/06-listado-arbol.png" alt="Tax trees list in Fail Fast" />
-    </Frame>
-
-    Click **New**. The form is organized into three tabs:
-
-    <Tabs>
-      <Tab title="Company tree">
-        First set whether the record applies to **Is sale?** (¿Es venta?) — purchase or sale — and then the tax profile of **your company** as a party to the transaction.
-
-        <Frame caption="Company tree — the company's tax profile for this scenario (purchase).">
-          <img src="/images/impuestos/07-arbol-empresa.png" alt="Company tree tab — tax profile of the company" />
-        </Frame>
-
-        - **Origin** (Origen) — domestic or foreign.
-        - **Company type** (Tipo de sociedad) — legal entity or natural person.
-        - **VAT regime** (Régimen en IVA) — VAT responsible or not responsible.
-        - **Income tax status** (Calidad en renta) — self-withholder or not.
-        - **Income tax filer** (Declarante de renta) — yes or no.
-        - **Withholding agent** (Agente de retención) — yes or no.
-      </Tab>
-
-      <Tab title="Third-party tree">
-        With the same field structure, define the tax profile of the **third party** — customer or supplier — you transact with.
-
-        <Frame caption="Third-party tree — tax profile of the counterparty: domestic, natural person, not VAT responsible.">
-          <img src="/images/impuestos/08-arbol-tercero.png" alt="Third-party tree tab — tax profile of the third party" />
-        </Frame>
-
-        <Note>
-          The tax engine crosses the **company tree** profile with the **third-party tree** profile: the exact combination of both, plus whether it is a purchase or a sale, determines which taxes and accounting rules fire in the transaction.
-        </Note>
-      </Tab>
-
-      <Tab title="Taxes">
-        For the profile combination you defined, select which taxes take part and whether each one handles taxes, accounting, or both.
-
-        <Frame caption='Taxes tab — the "Obtener formulario de impuestos" table with the Handles taxes and Handles accounting checks per type.'>
-          <img src="/images/impuestos/09-arbol-impuestos.png" alt="Taxes tab — tax form retrieval table" />
-        </Frame>
-
-        - **Handles taxes** (Maneja impuestos) — whether this profile combination calculates that tax in the transaction.
-        - **Handles accounting** (Maneja contabilidad) — whether, beyond being calculated, that tax must generate the corresponding accounting entry.
-        - **Tax type** (Tipo de impuesto) — the DIAN catalog tax, created in step 1, this rule applies to.
-      </Tab>
-    </Tabs>
-
-    Select the combinations you need and click **Update** (Actualizar) to save the tree configuration.
-
-    <Check>
-      **You now have the minimum base configuration.** With taxes, directives, and the tree configured, the engine knows which taxes exist, at what rates and rules they are calculated, and how they apply between your company and your third parties. Steps 4 and 5 are optional exceptions layered on this base: by product or service, and by third party.
-    </Check>
-  </Step>
-
-  <Step title="Configure taxes by product or service">
-    Taxes are not configured product by product — they are configured at the **product type** level. Every product belongs to a type, and that type carries the tax configuration that applies to all products under it.
-
-    Open the **Product/Service Type** (Tipo de producto/Servicios) module, which lists every type already created with its name, whether it is a service, whether it prevents retroactive transactions, and its accounts for inventory, cost of sales, revenue, and returns.
-
-    <Frame caption="Product types list — example: EPPS GRAVADOS, LLANTAS, DOTACIÓN.">
-      <img src="/images/impuestos/10-tipos-de-producto.png" alt="Product/Service type list in Fail Fast" />
-    </Frame>
-
-    Open a product type. At the bottom of **Product information** you'll find three tabs: **Accounts** (Cuentas Contables), **Taxes** (Impuestos), and **Financial Class** (Clase Financiera). Inside **Taxes**, configuration is split into **Purchases** (Compras) and **Sales** (Ventas).
-
-    <Frame caption='Product type EPPS GRAVADOS — Taxes → Purchases tab, with the "Impuesto de Compra" table ready to configure.'>
-      <img src="/images/impuestos/11-tipo-producto-compras.png" alt="Taxes tab of the product type, Purchases sub-tab" />
-    </Frame>
-
-    Configuration happens directly on the table: first select a **Tax type** and then a **Tax** that belongs to that same type. On selection, the system shows the associated directive so you can validate rates and rules before saving.
-
-    <Frame caption='Purchase tax configured (purchase VAT) and its associated directive — "Purchase Registers" shows the directive validity and rounding.'>
-      <img src="/images/impuestos/12-tipo-producto-directiva.png" alt="Row configured with tax type, tax, and associated directive" />
-    </Frame>
-
-    - **Product type** (Tipo de Producto) — inherited automatically from the record you are editing.
-    - **Tax type** (Tipo de impuesto) — the DIAN catalog type, for example purchase VAT.
-    - **Tax** (Impuesto) — must belong to the selected tax type.
-    - **Requires directive** (Requiere de directiva) — whether the tax needs an active directive to be calculated.
-    - **Initials** (Iniciales) — abbreviation of the tax for reports and documents, for example IVACOM.
-    - **Is addition** (Es adición), **Is sales** (Es de ventas), and **Is major** (Es de mayor) — flags that control how the tax behaves inside the document and in accounting.
-
-    <Warning>
-      To save the row you must tick the **check** on the left and use the **Action** (Acción) button — not the **Update** button. If you only fill in the fields without ticking the check and confirming with **Action**, the configuration is not saved.
-    </Warning>
-
-    <Frame caption="Row saved correctly: check ticked, tax type and tax filled in.">
-      <img src="/images/impuestos/13-tipo-producto-guardado.png" alt="Purchase tax saved after using the check and the Action button" />
-    </Frame>
-
-    Repeat the same procedure in the **Sales** sub-tab to configure the taxes that apply when this product type is sold.
-  </Step>
-
-  <Step title="Configure taxes by third party">
-    To add taxes to a third party, go to the **Suppliers** (Proveedores) or **Customers** (Clientes) modules. You can hold this configuration both at the general supplier or customer level and in each record's detail.
-
-    Open the **Supplier** (Proveedor) — or **Customer** — module and find the third party you want to configure the exception for.
-
-    <Frame caption="Supplier list — document type, third party, document number, commercial terms, and purchasing manager.">
-      <img src="/images/impuestos/14-listado-proveedores.png" alt="Suppliers list in Fail Fast" />
-    </Frame>
-
-    Opening the third party's detail shows its general information first: document type and number, name, location, contact details, CIIU code, and tax responsibility.
-
-    <Frame caption="General information of the third party — the basis for its tax profile.">
-      <img src="/images/impuestos/15-cliente-informacion-general.png" alt="Customer general information form" />
-    </Frame>
-
-    Further down the same record you'll find the third party's **tax profile** — company type, VAT regime, income tax status, income tax filer, and withholding agent, the same information that makes up the third-party tree from step 3 — and below it, the third party's own tax section, with the **Purchase Taxes** and **Sales Taxes** tabs.
-
-    <Frame caption='Customer Taxes → Purchase Taxes — the "Obtener Directiva Tributaria del Cliente" table.'>
-      <img src="/images/impuestos/16-cliente-impuestos.png" alt="Customer Taxes section — customer tax directive retrieval" />
-    </Frame>
-
-    The mechanics are the same as step 4: select a **Tax type** and a **Tax** belonging to that type, the system shows the associated **accounting directive** so you can validate rates and rules, and to save the row you tick the **check** and use the **Action** button — or **Save for all** (Guardar para todos) when configuring several rows at once. The **Save** button at the top only applies to the third party's general information.
-
-    <Note>
-      In the screenshot the table is empty ("No hay datos") because in this example no tax has been created with a type enabled at third-party level. The table only lists taxes that can apply in this context; if the catalog from step 1 has no taxes of that type, there is nothing to select.
-    </Note>
-
-    <Warning>
-      This configuration is additional and specific to the third party: it does not replace or override the rules already defined in the tax tree in step 3. Use it only for one-off exceptions for that customer or supplier.
-    </Warning>
-
-    Repeat the procedure in the **Sales Taxes** tab to configure the taxes that apply when this third party takes part in a sale.
-
-    <Check>
-      **Configuration complete.** With taxes, directives, the tree, and the exceptions by product and by third party in place, the tax engine is ready to operate across all modules.
-    </Check>
-  </Step>
-
-  <Step title="Verify the result on a payable">
-    To confirm the configuration was applied correctly, create a **payable** and check that taxes are calculated automatically.
-
-    When you create the **Invoice** (Factura), alongside the General information, Supplier data, and Invoice detail tabs there is a **Taxes** (Impuestos) tab. There the system shows everything you configured in steps 1 to 5, already calculated, without you selecting anything manually.
-
-    <Frame caption="Invoice → Taxes tab: the engine automatically applied general purchase VAT (19 %) according to the configured tree and directive.">
-      <img src="/images/impuestos/17-factura-impuestos.png" alt="Taxes tab of an invoice with automatic tax calculation" />
-    </Frame>
-
-    The tab is organized into three tables and a totals summary:
-
-    - **Invoice taxes** (Impuestos de la factura) — summarizes the tax applied at document level: code, name (*IVA General Compras*), total tax, base value, the initial tax (*Ivacom*), and whether its operation adds (*Incremental*) or subtracts from the total.
-    - **Invoice detail taxes** (Impuestos del detalle de la factura) — shows the line-by-line calculation: quantity, tax base, subtotal, calculated tax, unit price, and the **tax percentage** (19 %) inherited from the step 2 directive. The **tax origin** field confirms it came from the *Product* — the product type from step 4 — and not from a third-party exception.
-    - **Excluded invoice taxes** (Impuestos excluidos de la factura) — lists taxes that exist in the catalog but do not apply to this tree, product, and third-party combination. It shows empty — *Not Found* — when there are no exclusions.
-
-    The bottom block consolidates **other discount value**, **discount value**, **VAT included value**, **subtotal**, and **total**. The last two are read-only and calculated automatically.
-
-    <Tip>
-      This is the expected result of a correct configuration: whoever records the invoice does not configure taxes manually, they only see the calculation already resolved by the engine from the taxes, directives, tree, and exceptions defined in the previous steps.
-    </Tip>
+    Having no exceptions is normal. If you have many, something in the tax profile or the categories is probably answered wrong.
   </Step>
 </Steps>
 
-## How the pieces fit together
+## Load the RUT of a stakeholder
 
-| Configuration | What it defines | Scope |
-| --- | --- | --- |
-| Tax | Which fiscal obligations exist | Whole company |
-| Directive | Rate, validity, location, and posting | Per tax and geographic location |
-| Tax tree | Which taxes apply between two tax profiles and whether they post | Per company–third party combination and purchase/sale |
-| Taxes by product type | Exceptions based on the item transacted | Per product type, in purchases and sales |
-| Taxes by third party | Exceptions specific to a customer or supplier | Per third party, without overriding the tree |
+Instead of typing the tax profile, you can upload the stakeholder's RUT and let AI read it.
 
-The same behavior applies across every module listed at the start of this guide, from a purchase order to transport billing.
+<Steps>
+  <Step title="Open the stakeholder record">
+    Open or create the supplier, customer, or stakeholder in its form. RUT reading is available on the form, not in the table view.
+  </Step>
+  <Step title="Upload the RUT">
+    From the AI button on the form's toolbar, choose **Read RUT** and upload the file you download from the DIAN, in PDF, PNG, or JPEG, up to 10 MB.
+  </Step>
+  <Step title="Review what AI filled in">
+    AI fills in the document number, the verification digit, the name or company name, the trade name, the email, the phone, the economic activities (CIIU), and the tax responsibilities. Fields filled by AI are marked. **Nothing is saved yet**: review and correct whatever needs it.
+  </Step>
+  <Step title="Confirm">
+    Choose **Confirm the tax data from the RUT**. The responsibilities are saved into the **Tax profile** with origin **from the RUT**.
+  </Step>
+</Steps>
+
+- If you add or remove a responsibility before confirming, it is saved as written by a person and takes precedence over the RUT.
+- A value that came from the RUT is not edited in the **Tax profile**: you change it in the stakeholder's tax responsibilities.
+- If the RUT belongs to a different stakeholder, or a stakeholder with that document already exists, the system tells you and does not merge the data.
+
+## Settle a supplier invoice
+
+<Steps>
+  <Step title="Create the invoice">
+    In supplier invoices, create a new one and fill in the header. Three fields decide the taxes:
+    1. **Operation date**: decides which rate and which UVT are used.
+    2. **Branch office**: decides the municipality and with it the ICA.
+    3. **Supplier**: brings in their tax profile. They have to be active.
+  </Step>
+  <Step title="Add the lines">
+    Add the products or services with their quantity and amount. The line's tax category arrives on its own from the product type. If it comes up empty, classify the product type before saving.
+  </Step>
+  <Step title="Save">
+    On save, Fail Fast settles every tax on the document. It is all or nothing: either all of them are calculated or none is.
+  </Step>
+  <Step title="Review the taxes tab">
+    You will find three grids, in this order:
+    - **Summary**: one line per tax, with its operation (tax, withholding, higher value), base, rate, and amount. This is what goes to accounting.
+    - **Detail**: the same, line by line, with the **rule** that applied. A tax with no rule was not calculated by the system: someone typed it in.
+    - **Not applied**: the rules that were evaluated and did not apply, each with its reason written out. This is the grid that explains a withholding you expected and did not get.
+  </Step>
+  <Step title="Post it">
+    With the tax accounts configured, the invoice posts with its taxes in the accounts you defined.
+  </Step>
+</Steps>
+
+## Why a tax did not come out
+
+Always start with the **not applied** grid: the reason is written there.
+
+| What you see | What happened | What to do |
+|---|---|---|
+| The invoice settles no tax at all | The product type has no tax category | Classify the product type |
+| It settles VAT but withholds nothing | Your company is not listed as a withholding agent, or the supplier self-withholds or is on the simple regime | Review both tax profiles |
+| VAT comes out as cost instead of deductible | Your company is not listed as VAT responsible | Complete your company's tax profile |
+| It withholds at the higher rate | Nobody answered whether the supplier files income tax | Answer **Income tax filer** on the supplier |
+| It withholds less on small invoices | The base did not reach the UVT threshold | Nothing: the reason carries both figures |
+| The tax is calculated but the invoice does not post | The account for that tax is missing | Add the row in **Tax accounts** |
+| A tax with no rule in the detail | Someone typed it in by hand | Review the line |
+
+<Note>
+When nobody answered a value a rule needs, the system does not assume it: it leaves the tax under **not applied** with the message "nobody answered…" and tells you which value to record. The exception is benefits the stakeholder has to evidence, such as the special regime or self-withholding: until they are recorded, the withholding is applied.
+</Note>
+
+The not-applied grid is long by design: it shows every rule that was evaluated, including the ones outside your line of business. That is not an error.
+
 
 ## Related guides
 
 <CardGroup cols={2}>
   <Card title="Accounting" icon="calculator" href="/finance/accounting">
-    Chart of accounts, journal entries, and period closes where taxes are posted.
+    The chart of accounts and how to create the accounts that carry taxes.
   </Card>
-  <Card title="Electronic documents (DIAN)" icon="file-invoice" href="/finance/electronic-invoicing">
-    How documents and their calculated taxes are reported to DIAN.
+  <Card title="Electronic invoicing" icon="file-invoice" href="/finance/electronic-invoicing">
+    How documents with their calculated taxes are reported to the DIAN.
   </Card>
   <Card title="Purchasing" icon="basket-shopping" href="/operations/purchasing">
-    Purchase orders and payables that consume this configuration.
+    Purchase orders and supplier invoices.
   </Card>
-  <Card title="Transport billing and settlement" icon="file-invoice-dollar" href="/transport/billing-and-settlement">
-    Transport documents where the tax engine also applies.
+  <Card title="Sales" icon="cart-shopping" href="/operations/sales">
+    Quotes, orders, and customer invoices.
+  </Card>
+  <Card title="Multi-book accounting" icon="books" href="/finance/multi-book">
+    How the same movement reads in each accounting book.
   </Card>
 </CardGroup>

@@ -90,6 +90,11 @@
                   "finance/treasury",
                   "finance/bank-reconciliation",
                   "finance/accounting",
+                  "finance/multi-book",
+                  "finance/book-own-accounts",
+                  "finance/account-book-mapping",
+                  "finance/book-account-names",
+                  "finance/operations",
                   "finance/tax-configuration",
                   "finance/fixed-assets",
                   "finance/electronic-invoicing"
@@ -229,7 +234,13 @@
                 "group": "Finanzas",
                 "pages": [
                   "es/finance/treasury",
+                  "es/finance/bank-reconciliation",
                   "es/finance/accounting",
+                  "es/finance/multi-book",
+                  "es/finance/book-own-accounts",
+                  "es/finance/account-book-mapping",
+                  "es/finance/book-account-names",
+                  "es/finance/operations",
                   "es/finance/tax-configuration",
                   "es/finance/electronic-invoicing",
                   {

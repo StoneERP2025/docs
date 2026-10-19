@@ -1,0 +1,62 @@
+---
+title: "Account mapping by book"
+description: "Make an account from the main book read as a different account in a secondary book."
+icon: "arrow-right-arrow-left"
+---
+
+Sometimes the same transaction goes to one account under IFRS and to a different account in the fiscal book. It is not that the account is named differently: it is a different account, with a different code. Mapping solves that without forcing you to record the movement twice.
+
+The screen is called **Account Book Mapping** and it only appears if your workspace uses [multi-book accounting](/finance/multi-book).
+
+## What it does
+
+You record the movement once, with the account from the main book. When someone queries the secondary book, Fail Fast shows the target account instead, with its own code and its own name.
+
+The movement does not change. How it reads in that book does.
+
+A mapping changes the account, not its name. If you also want it shown under a different name, configure that in [account names by book](/finance/book-account-names): the homologated name takes priority over the target account's name.
+
+## Create a mapping
+
+<Steps>
+  <Step title="Open the screen">
+    Go to **Account Book Mapping** in the accounting configuration and click **New**.
+  </Step>
+  <Step title="Pick the source account">
+    Under **Source account**, find the account from the main book you want to translate.
+  </Step>
+  <Step title="Pick the target book">
+    Under **Target book**, choose the secondary book where the account should read differently. You cannot pick the main book: a mapping always describes a secondary book.
+  </Step>
+  <Step title="Pick the target account">
+    Under **Target account**, find the account that book should show. It has to be an account of your company and different from the source account.
+  </Step>
+  <Step title="Leave it active and save">
+    **Is active** stays at **Yes**. Save.
+  </Step>
+</Steps>
+
+The list also shows the **Source account Code** and the **Target account Code**, so you can review the mapping at a glance without opening each record.
+
+## Rules you will run into
+
+- **The target book is never the main book.** A mapping describes how a secondary book reads the main one, not the other way round.
+- **Source and target account must be different.** Mapping an account to itself does nothing and the app rejects it.
+- **One mapping per source account and target book.** An account cannot have two targets in the same book.
+- **The target account cannot be deactivated while an active mapping uses it.** If you try from the account form, the app stops you. Deactivate the mapping first.
+
+## When a mapping does not apply
+
+If the account is [owned by a book](/finance/book-own-accounts), the mapping is not used. [Multi-book accounting](/finance/multi-book#how-fail-fast-decides-which-account-to-show) explains the order in which the rules apply.
+
+## Removing a mapping
+
+Set **Is active** to **No** rather than deleting it. The account goes back to reading the same in every book and you keep the record of the previous configuration.
+
+
+## Related guides
+
+- [Multi-book accounting](/finance/multi-book)
+- [Book-owned accounts](/finance/book-own-accounts)
+- [Account names by book](/finance/book-account-names)
+- [Accounting](/finance/accounting)
