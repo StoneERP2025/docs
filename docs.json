@@ -234,6 +234,7 @@
                 "group": "Finanzas",
                 "pages": [
                   "es/finance/treasury",
+                  "es/finance/bank-reconciliation",
                   "es/finance/accounting",
                   "es/finance/multi-book",
                   "es/finance/book-own-accounts",

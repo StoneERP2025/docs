@@ -21,7 +21,7 @@ Exactly one book is the main one. Everything you configure in this guide flows f
 
 ## One movement, several readings
 
-Each movement is stored once, in one book. When a movement does not name a book, it belongs to the main book.
+Each movement is stored once, in one book. On movements, multi-book adds a **Multibook** section with a **Book** field. When a movement does not name a book, it belongs to the main book.
 
 What changes is how you read it. When someone queries a secondary book, Fail Fast translates what that book needs: it swaps the account, swaps the name, or hides what does not belong to it. No movement is duplicated and nothing is recorded twice.
 
@@ -33,36 +33,32 @@ What changes is how you read it. When someone queries a secondary book, Fail Fas
 | An account to be replaced by another in a secondary book | [Account mapping by book](/finance/account-book-mapping) | The secondary book reads the transaction under a different account |
 | An account to be named differently in a secondary book | [Account names by book](/finance/book-account-names) | Only the displayed name changes; the account is the same |
 
-These are three different things and it pays not to mix them up. The first decides **where an account exists**. The second decides **which account** is read. The third decides **what it is called**.
+None of the three is configured from the account form: each has its own screen. These are three different things and it pays not to mix them up. The first decides **where an account exists**. The second decides **which account** is read. The third decides **what it is called**.
 
 ## How Fail Fast decides which account to show
 
-When you query a secondary book, Fail Fast resolves each account in this order and stops at the first rule that applies:
+When you query a secondary book, Fail Fast builds each account with these rules, in this order:
 
 <Steps>
   <Step title="Is the account owned by a book?">
     If it is, it exists in that book only. It does not appear in the others, and this decision wins over every other rule you may have configured.
   </Step>
-  <Step title="Does it have a homologated name for this book?">
-    If it does, it is shown under that name.
-  </Step>
   <Step title="Does it have a mapped account for this book?">
-    If it does, the target account is shown, with its own code and its own name.
+    If it does, this book shows the target account, with its code. The target account does not also appear on its own, so it is not listed twice.
+  </Step>
+  <Step title="Does it have a homologated name for this book?">
+    If it does, it is shown under that name, also when the account is mapped. If it does not, it shows the target account's name, or its own name when there is no mapping.
   </Step>
   <Step title="If no rule applies">
     The account is shown exactly as it is in the main book.
   </Step>
 </Steps>
 
-Book ownership winning over everything else matters: once you mark an account as exclusive to a book, no mapping or name rule takes it out of there.
+Book ownership winning over everything else matters: once you mark an account as exclusive to a book, no mapping or name rule takes it out of there. An account exclusive to one book does not travel to any other, so there is nothing to translate.
 
 ## Which operations reach each book
 
-Not every operation has to be reflected in every book. On the operation form, the **Multibook** section has an **Excluded books** field, where you pick the secondary books that operation must not reach.
-
-What you pick there is applied when the movement is recorded and stored with it. If you later change the operation's excluded books, movements that are already complete do not change: they keep the configuration they had when they were recorded. Only provisional movements and movements in error recalculate it.
-
-This is covered in full in [Operations](/finance/operations).
+Not every operation has to be reflected in every book: each operation names the secondary books it must not reach. See [Operations](/finance/operations#multibook).
 
 ## Period control
 

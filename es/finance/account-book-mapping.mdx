@@ -43,11 +43,11 @@ En la lista aparecen también el **Código de cuenta origen** y el **Código de 
 - **El libro destino nunca es el principal.** El mapeo describe cómo un libro secundario lee al principal, no al revés.
 - **La cuenta origen y la cuenta destino tienen que ser distintas.** Mapear una cuenta a sí misma no hace nada y la aplicación lo rechaza.
 - **Un mapeo por cuenta origen y libro destino.** Una cuenta no puede tener dos destinos en el mismo libro.
-- **La cuenta origen no se puede desactivar mientras tenga un mapeo activo.** Si intentas desactivarla desde el formulario de cuentas, la aplicación te lo impide. Primero desactiva el mapeo.
+- **La cuenta destino no se puede desactivar mientras un mapeo activo la use.** Si intentas desactivarla desde el formulario de cuentas, la aplicación te lo impide. Primero desactiva el mapeo.
 
 ## Cuándo el mapeo no aplica
 
-Si la cuenta está marcada como [propia de un libro](/es/finance/book-own-accounts), esa marca manda y el mapeo no se usa. Una cuenta exclusiva de un libro no viaja a ningún otro, así que no hay nada que traducir.
+Si la cuenta es [propia de un libro](/es/finance/book-own-accounts), el mapeo no se usa. [Multilibro](/es/finance/multi-book) explica en qué orden se aplican las reglas.
 
 ## Quitar un mapeo
 

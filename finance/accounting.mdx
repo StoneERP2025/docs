@@ -89,8 +89,8 @@ You do not need to be an accountant to create an account. The form works out the
 ## Edit, deactivate, or delete an account
 
 - **Edit.** Open the account from the list and change what you need. Code and level cannot be changed.
-- **Switch from ledger to auxiliary.** Only possible if no account adds up into it. An account a book owns cannot become a ledger account.
-- **Deactivate.** An account cannot be deactivated while it has active accounts below it, or while a book maps another account to it. It also cannot be activated if the account it adds up into is inactive.
+- **Switch from ledger to auxiliary.** Only possible if no account adds up into it. An account a book owns cannot become a ledger account; see [Book-owned accounts](/finance/book-own-accounts).
+- **Deactivate.** An account cannot be deactivated while it has active accounts below it, or while an active [mapping by book](/finance/account-book-mapping) uses it as the target account. It also cannot be activated if the account it adds up into is inactive.
 - **Delete.** Only an account that was never used can be deleted. If it has movements, accounts below it, or a book uses it, the system will not delete it: deactivate it instead.
 
 ## Load the chart of accounts from Excel
@@ -121,25 +121,13 @@ Errors come back row by row, with the row number from your sheet and the reason 
 
 ## Multi-book
 
-If your workspace keeps more than one accounting book, your chart of accounts behaves differently in each one. An account can exist in one book only, read as a different account in a secondary book, or be shown under a different name.
-
-That is not configured from the account form but on three separate screens:
-
-- [Book-owned accounts](/finance/book-own-accounts) — the account exists in one book only.
-- [Account mapping by book](/finance/account-book-mapping) — the account is replaced by another in a secondary book.
-- [Account names by book](/finance/book-account-names) — the account is shown under a different name.
-
-What you do notice on the account form are two restrictions: an account a book owns cannot become a ledger account, and an account cannot be deactivated while a book maps another one to it.
-
-On movements, multi-book adds a **Multibook** section with a **Book** field. A movement with no book belongs to the main book.
-
-Start with [Multi-book accounting](/finance/multi-book) if this is your first time configuring it.
+If your workspace keeps more than one accounting book, your chart of accounts can read differently in each one. [Multi-book accounting](/finance/multi-book) explains how, and which screens configure it.
 
 ## Period control
 
 - **Blocked periods** — a blocked period rejects any new posting into that month, protecting figures you have already reported.
 - **Month close** — you close accounting per year and month. Closing is the formal end of the period.
-- **One close per book** — if you keep several books, each one closes its months separately. The month can be closed in one book and open in another, and reopening a period in one does not reopen it in the others.
+- **One close per book** — if you keep several books, each one closes its months separately; see [Multi-book accounting](/finance/multi-book#period-control).
 - **Correcting a closed period** — postings into a blocked or closed period are rejected. Reopen or unblock the period before correcting.
 
 <Warning>

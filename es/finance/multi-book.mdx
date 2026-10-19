@@ -21,7 +21,7 @@ Un solo libro es el principal. Todo lo que configures en esta guía parte del li
 
 ## Un movimiento, varias lecturas
 
-Cada comprobante se guarda una sola vez, en un libro. Cuando un comprobante no dice en qué libro va, se entiende que va en el principal.
+Cada comprobante se guarda una sola vez, en un libro. En los comprobantes, multilibro agrega la sección **Multilibro** con el campo **Libro**. Cuando un comprobante no dice en qué libro va, se entiende que va en el principal.
 
 Lo que cambia es cómo lo lees. Al consultar un libro secundario, Fail Fast traduce lo que ese libro necesita: cambia la cuenta, cambia el nombre, o esconde lo que no le pertenece. No se duplican comprobantes y no hay que registrar nada dos veces.
 
@@ -33,36 +33,32 @@ Lo que cambia es cómo lo lees. Al consultar un libro secundario, Fail Fast trad
 | Que una cuenta se reemplace por otra en un libro secundario | [Mapeo de cuentas por libro](/es/finance/account-book-mapping) | El libro secundario lee la operación en otra cuenta |
 | Que una cuenta se llame distinto en un libro secundario | [Nombres de cuenta por libro](/es/finance/book-account-names) | Cambia solo el nombre que se muestra; la cuenta es la misma |
 
-Son tres cosas distintas y conviene no confundirlas. La primera decide **dónde existe** una cuenta. La segunda decide **qué cuenta** se lee. La tercera decide **cómo se llama**.
+Ninguna de las tres se configura desde el formulario de cuentas: cada una tiene su propia pantalla. Son tres cosas distintas y conviene no confundirlas. La primera decide **dónde existe** una cuenta. La segunda decide **qué cuenta** se lee. La tercera decide **cómo se llama**.
 
 ## Cómo decide Fail Fast qué cuenta mostrar
 
-Cuando consultas un libro secundario, Fail Fast resuelve cada cuenta en este orden y se queda con la primera regla que aplique:
+Cuando consultas un libro secundario, Fail Fast arma cada cuenta con estas reglas, en este orden:
 
 <Steps>
   <Step title="¿La cuenta es propia de algún libro?">
     Si lo es, solo existe en ese libro. En los demás libros no aparece, y esta decisión gana sobre cualquier otra regla que hayas configurado.
   </Step>
-  <Step title="¿Tiene un nombre homologado para este libro?">
-    Si lo tiene, se muestra con ese nombre.
-  </Step>
   <Step title="¿Tiene una cuenta mapeada para este libro?">
-    Si la tiene, se muestra la cuenta destino, con su propio código y su propio nombre.
+    Si la tiene, en este libro se muestra la cuenta destino, con su código. La cuenta destino no aparece además por sí sola, para no repetirla.
+  </Step>
+  <Step title="¿Tiene un nombre homologado para este libro?">
+    Si lo tiene, se muestra con ese nombre, también cuando la cuenta está mapeada. Si no lo tiene, se muestra el nombre de la cuenta destino, o el suyo propio si no hay mapeo.
   </Step>
   <Step title="Si no hay ninguna regla">
     La cuenta se muestra tal como está en el libro principal.
   </Step>
 </Steps>
 
-Que la cuenta propia gane sobre todo lo demás es importante: si marcaste una cuenta como exclusiva de un libro, no hay homologación ni mapeo que la saque de ahí.
+Que la cuenta propia gane sobre todo lo demás es importante: si marcaste una cuenta como exclusiva de un libro, no hay homologación ni mapeo que la saque de ahí. Una cuenta exclusiva de un libro no viaja a ningún otro, así que no hay nada que traducir.
 
 ## Qué operaciones llegan a cada libro
 
-No toda operación tiene que reflejarse en todos los libros. En el formulario de la operación, la sección **Multilibro** tiene el campo **Libros excluidos**, donde eliges los libros secundarios a los que esa operación no debe llegar.
-
-Lo que elijas ahí se aplica en el momento de registrar el comprobante y queda guardado con él. Si después cambias los libros excluidos de la operación, los comprobantes ya completados no cambian: siguen reflejando la configuración que tenían cuando se registraron. Solo los comprobantes provisionales o con error vuelven a calcularla.
-
-Esto está explicado completo en [Operaciones](/es/finance/operations).
+No toda operación tiene que reflejarse en todos los libros: cada operación indica a qué libros secundarios no debe llegar. Consulta [Operaciones](/es/finance/operations#multilibro).
 
 ## Cierre de periodo
 

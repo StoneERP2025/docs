@@ -43,11 +43,11 @@ The list also shows the **Source account Code** and the **Target account Code**,
 - **The target book is never the main book.** A mapping describes how a secondary book reads the main one, not the other way round.
 - **Source and target account must be different.** Mapping an account to itself does nothing and the app rejects it.
 - **One mapping per source account and target book.** An account cannot have two targets in the same book.
-- **The source account cannot be deactivated while an active mapping exists.** If you try from the account form, the app stops you. Deactivate the mapping first.
+- **The target account cannot be deactivated while an active mapping uses it.** If you try from the account form, the app stops you. Deactivate the mapping first.
 
 ## When a mapping does not apply
 
-If the account is marked as [owned by a book](/finance/book-own-accounts), that marking wins and the mapping is not used. An account exclusive to one book does not travel anywhere, so there is nothing to translate.
+If the account is [owned by a book](/finance/book-own-accounts), the mapping is not used. [Multi-book accounting](/finance/multi-book#how-fail-fast-decides-which-account-to-show) explains the order in which the rules apply.
 
 ## Removing a mapping
 

@@ -89,8 +89,8 @@ No necesitas ser contador para crear una cuenta. El formulario calcula lo técni
 ## Modificar, desactivar o eliminar una cuenta
 
 - **Modificar.** Abre la cuenta desde la lista y cambia lo que necesites. El código y el nivel no se cambian.
-- **Cambiar de mayor a auxiliar.** Solo es posible si ninguna cuenta acumula en ella. Una cuenta que un libro contable usa como propia no puede volverse mayor.
-- **Desactivar.** Una cuenta no se desactiva mientras tenga cuentas activas debajo o mientras un libro le asigne otra cuenta. Tampoco se activa si la cuenta donde acumula está inactiva.
+- **Cambiar de mayor a auxiliar.** Solo es posible si ninguna cuenta acumula en ella. Una cuenta que un libro contable usa como propia no puede volverse mayor; consulta [Cuentas propias de un libro](/es/finance/book-own-accounts).
+- **Desactivar.** Una cuenta no se desactiva mientras tenga cuentas activas debajo o mientras un [mapeo por libro](/es/finance/account-book-mapping) activo la use como cuenta destino. Tampoco se activa si la cuenta donde acumula está inactiva.
 - **Eliminar.** Solo se elimina una cuenta que nunca se usó. Si tiene movimientos, cuentas debajo o un libro la usa, el sistema no la borra: desactívala.
 
 ## Cargar el plan de cuentas desde Excel
@@ -121,25 +121,13 @@ Los errores vuelven fila por fila, con el número de la fila de tu hoja y el mot
 
 ## Multilibro
 
-Si tu espacio de trabajo lleva más de un libro contable, tu plan de cuentas se comporta distinto en cada uno. Una cuenta puede existir solo en un libro, leerse como otra cuenta en un libro secundario, o mostrarse con otro nombre.
-
-Eso no se configura desde el formulario de cuentas, sino en tres pantallas aparte:
-
-- [Cuentas propias de un libro](/es/finance/book-own-accounts) — la cuenta existe en un solo libro.
-- [Mapeo de cuentas por libro](/es/finance/account-book-mapping) — la cuenta se reemplaza por otra en un libro secundario.
-- [Nombres de cuenta por libro](/es/finance/book-account-names) — la cuenta se muestra con otro nombre.
-
-Lo que sí notas en el formulario de cuentas son dos restricciones: una cuenta que un libro tiene como propia no puede volverse mayor, y una cuenta no se desactiva mientras un libro le mapee otra.
-
-En los comprobantes, multilibro agrega la sección **Multilibro** con el campo **Libro**. Un comprobante sin libro se entiende registrado en el libro principal.
-
-Empieza por [Multilibro](/es/finance/multi-book) si es la primera vez que lo configuras.
+Si tu espacio de trabajo lleva más de un libro contable, tu plan de cuentas puede leerse distinto en cada uno. [Multilibro](/es/finance/multi-book) explica cómo y con qué pantallas se configura.
 
 ## Control de periodos
 
 - **Periodos bloqueados** — un periodo bloqueado rechaza cualquier registro nuevo en ese mes, protegiendo cifras que ya reportaste.
 - **Cierre de mes** — la contabilidad se cierra por año y mes. El cierre es el fin formal del periodo.
-- **Un cierre por libro** — si llevas varios libros, cada uno cierra sus meses por separado. Puedes tener el mes cerrado en un libro y abierto en otro, y reabrir un periodo en uno no lo reabre en los demás.
+- **Un cierre por libro** — si llevas varios libros, cada uno cierra sus meses por separado; consulta [Multilibro](/es/finance/multi-book#cierre-de-periodo).
 - **Corregir un periodo cerrado** — los registros en un periodo bloqueado o cerrado se rechazan. Reabre o desbloquea el periodo antes de corregir.
 
 <Warning>
