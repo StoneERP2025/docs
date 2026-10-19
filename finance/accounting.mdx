@@ -13,15 +13,134 @@ Accounting pages appear in the **Programs** section of the sidebar when the fina
 ## Key concepts
 
 - **Chart of accounts** — a hierarchical account tree organized by account classes, based on the Colombian PUC structure. Every entry line points to an account in this chart.
-- **Accounting books** — you can keep multiple books, with account mapping (homologation) between them, so a single transaction can be represented in each book under its own account structure.
+- **Accounting books** — you can keep multiple books, so a single transaction is represented in each book under its own account structure. See [Multi-book accounting](/finance/multi-book).
 - **Journal entries** — the movements themselves: each entry carries detail lines and their tax details.
 - **Balances** — account balances built from posted entries, per period.
 - **Deferrals and amortizations** — spread a value across periods instead of recognizing it all at once.
+
+## Your chart of accounts
+
+The chart of accounts is organized by code. Every digit you add goes one level down: class `2` (liabilities) contains group `21`, which contains account `2101`, and so on down to the account you post to.
+
+- **General chart and your own accounts.** The first levels come from your country's general chart and are the same for every company. Below them you create your company's own accounts.
+- **Ledger account.** Groups other accounts and adds up what happens in them. It receives no postings.
+- **Auxiliary account.** The account you post to. It cannot have accounts below it.
+- **The account it adds up into.** The ledger account — yours or from the general chart — directly above an account, which totals its values.
+
+You can chain several of your own ledger accounts before reaching the auxiliary one: a level 5 ledger account, a level 6 one, and the level 7 auxiliary.
+
+When you create your workspace, Fail Fast loads an initial chart of accounts into it. From there you add, adjust, or deactivate accounts.
+
+## Create an account
+
+You do not need to be an accountant to create an account. The form works out the technical parts from the code you type.
+
+<Steps>
+  <Step title="Open the account form">
+    On the **Account** page of the accounting configuration, click **New**.
+  </Step>
+  <Step title="Type the code">
+    Type the account's full code and leave the field. Fail Fast fills in:
+    - the account **level**;
+    - the **account it adds up into**, with its code and name;
+    - the **account class**;
+    - a suggested **nature** (debit or credit) based on the class, which you can change.
+
+    If the code already exists, the form opens that account for you to edit. To create a new account, close the form and use a different code.
+  </Step>
+  <Step title="Name it">
+    Write a name anyone in your company understands, such as **Caja General** or **Clientes Nacionales**.
+  </Step>
+  <Step title="Choose ledger or auxiliary">
+    Choose ledger if you are going to create accounts below it. Choose auxiliary if this is the account you will post to. A ledger account requires nothing on postings, so the section covering what the account requires on each movement is hidden.
+  </Step>
+  <Step title="Set what the account requires on each movement">
+    Auxiliary accounts only. Mark what every posting to this account must carry:
+
+    | Field | Use it when |
+    |---|---|
+    | **Require tax** and **Tax concept** | The account records a tax, such as deductible VAT or a withholding. When you set it to **Yes**, pick the concept. |
+    | **Require stakeholder** | You need to know which customer, supplier, or employee each amount belongs to — receivables and payables, for example. |
+    | **Require cost center** | You want to see expenses or income by area or project. Setting it to **Yes** also sets branch office to **Yes**, because every movement takes its branch from its cost center. |
+    | **Require branch office** | You need the amount by branch. It is only requested together with the cost center. |
+    | **Require fclass** | The account has to separate amounts by financial class. |
+    | **Require business unit**, **Require principal** and **Restrict linked** | These appear only if your company uses them. |
+  </Step>
+  <Step title="Pick the statement item">
+    Set which line of the financial statements the account is presented under, such as **Cash and cash equivalents**. Financial indicators and reports use it.
+  </Step>
+  <Step title="Save">
+    On save, Fail Fast confirms the code is free and the account is correctly placed in the chart. If something is missing, the message tells you what to fix.
+  </Step>
+</Steps>
+
+### Messages you may see when creating an account
+
+| Message (it starts like this) | What to do |
+|---|---|
+| "The code … already belongs to account …" | The form opens that account for editing. If you wanted a new one, close it and use another code. |
+| "The account level must be greater than …, the last level of the global chart" | That level belongs to the general chart. Add digits to the code to create your account below it. |
+| "Account … is auxiliary (it receives postings) and cannot have…" | An auxiliary account cannot have accounts below it. Pick a code under a ledger account. |
+| "No account in the chart starts the code …" | Create the account it should add up into first, then this one. |
+| "Levels are missing between account … and its parent …" | Use the level the message suggests, or create the intermediate account first. |
+| "Parent account … is inactive" | Activate the account it adds up into first. |
+| "An account requires a branch office only when it requires a cost center…" | Set **Require cost center** to **Yes**, or leave **Require branch office** at **No**. |
+
+## Edit, deactivate, or delete an account
+
+- **Edit.** Open the account from the list and change what you need. Code and level cannot be changed.
+- **Switch from ledger to auxiliary.** Only possible if no account adds up into it. An account a book owns cannot become a ledger account.
+- **Deactivate.** An account cannot be deactivated while it has active accounts below it, or while a book maps another account to it. It also cannot be activated if the account it adds up into is inactive.
+- **Delete.** Only an account that was never used can be deleted. If it has movements, accounts below it, or a book uses it, the system will not delete it: deactivate it instead.
+
+## Load the chart of accounts from Excel
+
+To load many accounts at once, use the data migration assistant and pick the chart of accounts template. See [Import and export data](/data/import-export).
+
+The load applies the same rules as the form: what the screen will not let you save, the file does not accept either.
+
+- Each row is one account, with its code, name, level, nature, and what it requires on each movement. The template describes the rule behind each column and ships an example that passes every validation.
+- **You can put a ledger account and its children in the same file.** Accounts are created level by level, so an account finds the account it adds up into even when that one comes in the same file.
+- The account class and the account it adds up into come from the code, exactly as on the form.
+- If the account requires tax, write the tax concept code in the **tax_concept_code** column, for example `IVA`.
+- An account that already exists is updated, and keeps whether it is a ledger or an auxiliary account.
+- A ledger account is stored requiring nothing on movements, even if the file says otherwise.
+
+### What the load rejects
+
+| Reason | What to do |
+|---|---|
+| The code has characters other than letters and digits | Fix the code |
+| The code already belongs to the general chart | Add digits to create your account below it |
+| The level is at or below the last level of the general chart | Move the account one level further down the tree |
+| The same code appears more than once in the file | Leave one row per account |
+| It requires a cost center without a branch office, or the reverse | They go together: set both to **Yes** or both to **No** |
+| The account it adds up into failed in the same file | Fix that row first; the child row tells you which one it is |
+
+Errors come back row by row, with the row number from your sheet and the reason written in your language. A badly written yes/no or level does not bring down the whole file: it is reported on its row and the rest carry on.
+
+## Multi-book
+
+If your workspace keeps more than one accounting book, your chart of accounts behaves differently in each one. An account can exist in one book only, read as a different account in a secondary book, or be shown under a different name.
+
+That is not configured from the account form but on three separate screens:
+
+- [Book-owned accounts](/finance/book-own-accounts) — the account exists in one book only.
+- [Account mapping by book](/finance/account-book-mapping) — the account is replaced by another in a secondary book.
+- [Account names by book](/finance/book-account-names) — the account is shown under a different name.
+
+What you do notice on the account form are two restrictions: an account a book owns cannot become a ledger account, and an account cannot be deactivated while a book maps another one to it.
+
+On movements, multi-book adds a **Multibook** section with a **Book** field. A movement with no book belongs to the main book.
+
+Start with [Multi-book accounting](/finance/multi-book) if this is your first time configuring it.
 
 ## Period control
 
 - **Blocked periods** — a blocked period rejects any new posting into that month, protecting figures you have already reported.
 - **Month close** — you close accounting per year and month. Closing is the formal end of the period.
+- **One close per book** — if you keep several books, each one closes its months separately. The month can be closed in one book and open in another, and reopening a period in one does not reopen it in the others.
+- **Correcting a closed period** — postings into a blocked or closed period are rejected. Reopen or unblock the period before correcting.
 
 <Warning>
 Closing the accounting month blocks further postings in that period. Make sure all operational modules have finished recording the month — invoices, payments, depreciation, inventory costing — before you close.
@@ -59,14 +178,16 @@ Operational modules generate their accounting automatically: sales, purchases, p
 - **Operations** — sales, purchasing, POS, and inventory costing feed the ledger continuously.
 - **Reporting** — ledger figures feed the dashboards and reports you build in [Dashboards and reports](/reporting/dashboards-and-reports).
 
-## Limitations
-
-- Postings into blocked or closed periods are rejected; reopen or unblock the period before correcting.
-- Representing a transaction across multiple books requires the account homologation between those books to be configured.
 
 ## Related guides
 
 <CardGroup cols={2}>
+  <Card title="Multi-book accounting" icon="books" href="/finance/multi-book">
+    How your chart of accounts reads when you keep more than one accounting book.
+  </Card>
+  <Card title="Operations" icon="sliders" href="/finance/operations">
+    Transaction types, their numbering, and which books they reach.
+  </Card>
   <Card title="Fixed assets" icon="industry" href="/finance/fixed-assets">
     Depreciation runs and the entries they post to the ledger.
   </Card>

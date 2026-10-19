@@ -1,0 +1,61 @@
+---
+title: "Account names by book"
+description: "Show an account under a different name when you query a secondary book."
+icon: "tag"
+---
+
+The same account can be called one thing under IFRS and another in the fiscal book. The account does not change and the movement does not change: what changes is the name you see when you read that book. That is what name homologation is for.
+
+The screen is called **Book Homologation Name Account** and it only appears if your workspace uses [multi-book accounting](/finance/multi-book).
+
+## What it does
+
+You record the alternative name for an account and a secondary book. When someone queries that book, the account appears under that name. In the other books it appears under its own.
+
+If an account has no rule for the book you are querying, it is shown under its original name. You do not have to configure every account: only the ones that change.
+
+Homologation changes the name, never the code. If the code also changes in the secondary book, you need a [mapping](/finance/account-book-mapping).
+
+## Create a homologated name
+
+<Steps>
+  <Step title="Open the screen">
+    Go to **Book Homologation Name Account** in the accounting configuration and click **New**.
+  </Step>
+  <Step title="Pick the account, or the global account">
+    You can rename an auxiliary account of your company under **Account**, or an account from the general chart under **Global account**. Fill in one of the two, never both: the app rejects the record if you set both or leave both empty.
+  </Step>
+  <Step title="Pick the target book">
+    Under **Target book**, choose the secondary book where that name applies. You cannot pick the main book.
+  </Step>
+  <Step title="Write the name">
+    Under **Homologated name**, write the name the account should appear under in that book.
+  </Step>
+  <Step title="Leave it active and save">
+    **Is active** stays at **Yes**. Save.
+  </Step>
+</Steps>
+
+The list also shows the **Account Code** and the **Global account Code**, depending on which of the two you used.
+
+## Rules you will run into
+
+- **An account or a global account, not both.** Each rule renames exactly one thing.
+- **The target book is never the main book.** Homologation describes how a secondary book names accounts.
+- **One rule per account and target book.** An account cannot have two names in the same book.
+
+## How it works alongside mapping
+
+If an account has both a mapping and a homologated name for the same book, the homologated name wins: the mapping's target account is shown, but under the name you wrote here. And if the account is [owned by a book](/finance/book-own-accounts), it does not appear in the other books and neither rule is used.
+
+## Removing a homologated name
+
+Set **Is active** to **No**. The account goes back to showing its original name in that book.
+
+
+## Related guides
+
+- [Multi-book accounting](/finance/multi-book)
+- [Book-owned accounts](/finance/book-own-accounts)
+- [Account mapping by book](/finance/account-book-mapping)
+- [Accounting](/finance/accounting)

@@ -1,0 +1,56 @@
+---
+title: "Cuentas propias de un libro"
+description: "Marca una cuenta auxiliar como exclusiva de un libro contable, para que no aparezca en los demás libros."
+icon: "lock"
+---
+
+Hay cuentas que solo tienen sentido en un libro. Una provisión que el libro fiscal no reconoce, o una cuenta que existe únicamente para la declaración y no debe ensuciar los estados financieros NIIF. Con esta pantalla marcas esa cuenta como propia de un libro: existe ahí y en ningún otro lado.
+
+Esta pantalla se llama **Relación Cuenta-Libro** y solo aparece si tu espacio de trabajo usa [Multilibro](/es/finance/multi-book).
+
+## Qué hace, y qué no hace
+
+Marcar una cuenta como propia de un libro **no** cambia su nombre ni la reemplaza por otra. Lo que hace es sacarla de todos los demás libros:
+
+- En los demás libros, la cuenta no aparece. No se muestra, no suma y no se puede escoger.
+- Si intentas usarla en un comprobante de otro libro, la aplicación te lo rechaza con un error. No la esconde en silencio.
+- Esta decisión manda sobre cualquier otra. Si la cuenta también tiene un nombre homologado o una cuenta mapeada, esas reglas no se aplican.
+
+Si lo que quieres es que la cuenta exista en los dos libros pero se lea distinto, lo tuyo es [Mapeo de cuentas por libro](/es/finance/account-book-mapping) o [Nombres de cuenta por libro](/es/finance/book-account-names).
+
+## Crear la relación
+
+<Steps>
+  <Step title="Abre la pantalla">
+    Ve a **Relación Cuenta-Libro** en la configuración de contabilidad y haz clic en **Nuevo**.
+  </Step>
+  <Step title="Elige la cuenta">
+    En **Cuenta**, busca la cuenta auxiliar que quieres dejar exclusiva de un libro. Solo puedes elegir cuentas auxiliares: las cuentas mayores nunca se asignan a un libro.
+  </Step>
+  <Step title="Elige el libro">
+    En **Libro**, escoge el libro al que pertenece la cuenta. Puede ser el libro principal o uno secundario; en cualquiera de los dos casos la cuenta queda exclusiva de ese libro.
+  </Step>
+  <Step title="Déjala activa y guarda">
+    **¿Está activo?** queda en **Sí**. Guarda.
+  </Step>
+</Steps>
+
+En la lista verás además el **Código de la Cuenta**, para que puedas buscar por código sin abrir cada registro.
+
+## Reglas que vas a encontrar
+
+- **Solo cuentas auxiliares.** Si eliges una cuenta mayor, la aplicación la rechaza.
+- **Una relación por cuenta y libro.** No puedes crear dos veces la misma pareja de cuenta y libro.
+- **La cuenta deja de poder ser mayor.** Mientras un libro tenga la cuenta como propia, el formulario de cuentas no te deja cambiarla de auxiliar a mayor. Primero desactiva la relación.
+
+## Quitar la relación
+
+No borres el registro: pon **¿Está activo?** en **No**. La cuenta vuelve a comportarse como cualquier otra —viaja a todos los libros y vuelve a seguir las reglas de mapeo y de nombre que tenga— y tú conservas el rastro de que alguna vez fue exclusiva de ese libro.
+
+
+## Guías relacionadas
+
+- [Multilibro](/es/finance/multi-book)
+- [Mapeo de cuentas por libro](/es/finance/account-book-mapping)
+- [Nombres de cuenta por libro](/es/finance/book-account-names)
+- [Contabilidad](/es/finance/accounting)

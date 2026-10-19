@@ -13,15 +13,134 @@ Las páginas de contabilidad aparecen en la sección **Programas** de la barra l
 ## Conceptos clave
 
 - **Plan de cuentas** — un árbol jerárquico de cuentas organizado por clases, basado en la estructura del PUC colombiano. Cada línea de un comprobante apunta a una cuenta de este plan.
-- **Libros contables** — puedes llevar varios libros, con homologación de cuentas entre ellos, de modo que una misma transacción se represente en cada libro bajo su propia estructura de cuentas.
+- **Libros contables** — puedes llevar varios libros, de modo que una misma transacción se represente en cada libro bajo su propia estructura de cuentas. Ver [Multilibro](/es/finance/multi-book).
 - **Comprobantes contables** — los movimientos en sí: cada comprobante lleva líneas de detalle y sus detalles de impuestos.
 - **Saldos** — saldos de cuenta construidos a partir de los comprobantes registrados, por periodo.
 - **Diferidos y amortizaciones** — distribuye un valor a lo largo de varios periodos en lugar de reconocerlo todo de una vez.
+
+## Tu plan de cuentas
+
+El plan de cuentas se organiza por códigos. Cada dígito que agregas baja un nivel: la clase `2` (pasivo) contiene el grupo `21`, que contiene la cuenta `2101`, y así hasta la cuenta donde registras.
+
+- **Plan general y cuentas de tu empresa.** Los primeros niveles vienen del plan general del país y son iguales para todas las empresas. Debajo de ellos creas las cuentas propias de tu empresa.
+- **Cuenta mayor.** Agrupa otras cuentas y suma lo que pasa en ellas. No recibe movimientos.
+- **Cuenta auxiliar.** Es la cuenta donde se registran los movimientos. No puede tener cuentas debajo.
+- **Cuenta donde acumula.** Es la cuenta mayor, de tu empresa o del plan general, que está justo encima de una cuenta y suma sus valores.
+
+Puedes encadenar varias cuentas mayores propias antes de llegar a la auxiliar, por ejemplo una mayor de nivel 5, otra de nivel 6 y la auxiliar de nivel 7.
+
+Cuando creas tu espacio de trabajo, Fail Fast le carga un plan de cuentas inicial. Desde ahí agregas, ajustas o desactivas cuentas.
+
+## Crear una cuenta
+
+No necesitas ser contador para crear una cuenta. El formulario calcula lo técnico a partir del código que escribes.
+
+<Steps>
+  <Step title="Abre el formulario de cuentas">
+    En la página **Cuenta** de la configuración de contabilidad, haz clic en **Nuevo**.
+  </Step>
+  <Step title="Escribe el código">
+    Escribe el código completo de la cuenta y sal del campo. Fail Fast llena solo:
+    - el **nivel** de la cuenta;
+    - la **cuenta donde acumula**, con su código y su nombre;
+    - la **clase de cuenta**;
+    - una **naturaleza** sugerida (débito o crédito) según la clase, que puedes cambiar.
+
+    Si el código ya existe, el formulario abre esa cuenta para que la modifiques. Para crear una cuenta nueva, cierra el formulario y usa otro código.
+  </Step>
+  <Step title="Ponle nombre">
+    Escribe un nombre que cualquier persona de tu empresa entienda, por ejemplo **Caja General** o **Clientes Nacionales**.
+  </Step>
+  <Step title="Elige si es mayor o auxiliar">
+    Elige **Mayor (agrupa otras cuentas)** si vas a crear cuentas debajo de ella. Elige **Auxiliar (recibe movimientos)** si es la cuenta donde vas a registrar. Una cuenta mayor no pide nada en los movimientos, así que la sección **Qué pide la cuenta en cada movimiento** se oculta.
+  </Step>
+  <Step title="Indica qué pide la cuenta en cada movimiento">
+    Solo para cuentas auxiliares. Marca lo que cada registro en esta cuenta debe traer:
+
+    | Campo | Úsalo cuando |
+    |---|---|
+    | **Requiere impuesto** y **Concepto de impuesto** | La cuenta registra un impuesto, como el IVA descontable o una retención. Al marcar **Sí**, elige el concepto. |
+    | **Requiere tercero** | Necesitas saber de qué cliente, proveedor o empleado es cada valor, por ejemplo en cuentas por cobrar o por pagar. |
+    | **Requiere centro de costos** | Quieres ver gastos o ingresos por área o proyecto. Al marcar **Sí**, la sucursal también queda en **Sí**, porque cada movimiento toma la sucursal de su centro de costo. |
+    | **Requiere sucursal** | Necesitas el valor por sucursal. Solo se pide junto con el centro de costo. |
+    | **Requiere clase financiera** | La cuenta debe separar los valores por clase financiera. |
+    | **Requiere unidad de negocio**, **Requiere principal** y **Restringir vinculado** | Aparecen solo si tu empresa los usa. |
+  </Step>
+  <Step title="Elige el agrupador de estados financieros">
+    Indica en qué renglón de los estados financieros se presenta la cuenta, por ejemplo **Efectivo y equivalentes al efectivo**. Los indicadores y reportes financieros lo usan.
+  </Step>
+  <Step title="Guarda">
+    Al guardar, Fail Fast confirma que el código esté libre y que la cuenta quede bien ubicada en el plan. Si algo falta, el mensaje te dice qué corregir.
+  </Step>
+</Steps>
+
+### Mensajes que puedes ver al crear una cuenta
+
+| Mensaje (empieza así) | Qué hacer |
+|---|---|
+| «El código … ya pertenece a la cuenta …» | El formulario abre esa cuenta para modificarla. Si querías una nueva, ciérralo y usa otro código. |
+| «El nivel de la cuenta debe ser mayor que …, el último nivel del plan global» | Ese nivel es del plan general. Agrega dígitos al código para crear tu cuenta debajo de él. |
+| «La cuenta … es auxiliar (recibe movimientos) y no puede tener…» | Una cuenta auxiliar no puede tener cuentas debajo. Elige un código bajo una cuenta mayor. |
+| «Ninguna cuenta del plan empieza el código …» | Crea primero la cuenta donde debe acumular y luego esta. |
+| «Entre la cuenta … y su padre … faltan niveles» | Usa el nivel que sugiere el mensaje o crea primero la cuenta intermedia. |
+| «La cuenta padre … está inactiva» | Activa primero la cuenta donde acumula. |
+| «Una cuenta pide sucursal solo cuando pide centro de costo…» | Pon **Requiere centro de costos** en **Sí**, o deja **Requiere sucursal** en **No**. |
+
+## Modificar, desactivar o eliminar una cuenta
+
+- **Modificar.** Abre la cuenta desde la lista y cambia lo que necesites. El código y el nivel no se cambian.
+- **Cambiar de mayor a auxiliar.** Solo es posible si ninguna cuenta acumula en ella. Una cuenta que un libro contable usa como propia no puede volverse mayor.
+- **Desactivar.** Una cuenta no se desactiva mientras tenga cuentas activas debajo o mientras un libro le asigne otra cuenta. Tampoco se activa si la cuenta donde acumula está inactiva.
+- **Eliminar.** Solo se elimina una cuenta que nunca se usó. Si tiene movimientos, cuentas debajo o un libro la usa, el sistema no la borra: desactívala.
+
+## Cargar el plan de cuentas desde Excel
+
+Para cargar muchas cuentas a la vez, usa el asistente de migración de datos y elige la plantilla de cuentas contables. Consulta [Importar y exportar datos](/es/data/import-export).
+
+El cargue aplica las mismas reglas que el formulario: lo que la pantalla no te deja guardar, el archivo tampoco lo acepta.
+
+- Cada fila es una cuenta, con su código, nombre, nivel, naturaleza y lo que pide en cada movimiento. La plantilla describe la regla de cada columna y trae un ejemplo que pasa todas las validaciones.
+- **Puedes poner una cuenta mayor y sus hijas en el mismo archivo.** Las cuentas se crean nivel por nivel, así que una cuenta encuentra como cuenta donde acumula a otra que venga en el mismo archivo.
+- La clase de la cuenta y la cuenta donde acumula salen del código, igual que en el formulario.
+- Si la cuenta requiere impuesto, escribe el código del concepto de impuesto en la columna **tax_concept_code**, por ejemplo `IVA`.
+- Una cuenta que ya existe se actualiza, y conserva si es mayor o auxiliar.
+- Una cuenta mayor se guarda sin pedir nada en los movimientos, aunque el archivo diga otra cosa.
+
+### Qué rechaza el cargue
+
+| Motivo | Qué hacer |
+|---|---|
+| El código tiene caracteres que no son letras ni números | Corrige el código |
+| El código ya es una cuenta del plan general | Agrega dígitos para crear tu cuenta debajo de ella |
+| El nivel es igual o menor que el último del plan general | Baja la cuenta un nivel más en el árbol |
+| El mismo código viene más de una vez en el archivo | Deja una sola fila por cuenta |
+| Pide centro de costo sin sucursal, o sucursal sin centro de costo | Van juntos: pon los dos en **Sí** o los dos en **No** |
+| La cuenta donde acumula falló en el mismo archivo | Corrige esa fila primero; la fila hija te dice cuál es |
+
+Los errores vuelven fila por fila, con el número de la fila de tu hoja y el motivo escrito en tu idioma. Un sí/no o un nivel mal escritos no tumban el archivo entero: se reportan en su fila y las demás siguen.
+
+## Multilibro
+
+Si tu espacio de trabajo lleva más de un libro contable, tu plan de cuentas se comporta distinto en cada uno. Una cuenta puede existir solo en un libro, leerse como otra cuenta en un libro secundario, o mostrarse con otro nombre.
+
+Eso no se configura desde el formulario de cuentas, sino en tres pantallas aparte:
+
+- [Cuentas propias de un libro](/es/finance/book-own-accounts) — la cuenta existe en un solo libro.
+- [Mapeo de cuentas por libro](/es/finance/account-book-mapping) — la cuenta se reemplaza por otra en un libro secundario.
+- [Nombres de cuenta por libro](/es/finance/book-account-names) — la cuenta se muestra con otro nombre.
+
+Lo que sí notas en el formulario de cuentas son dos restricciones: una cuenta que un libro tiene como propia no puede volverse mayor, y una cuenta no se desactiva mientras un libro le mapee otra.
+
+En los comprobantes, multilibro agrega la sección **Multilibro** con el campo **Libro**. Un comprobante sin libro se entiende registrado en el libro principal.
+
+Empieza por [Multilibro](/es/finance/multi-book) si es la primera vez que lo configuras.
 
 ## Control de periodos
 
 - **Periodos bloqueados** — un periodo bloqueado rechaza cualquier registro nuevo en ese mes, protegiendo cifras que ya reportaste.
 - **Cierre de mes** — la contabilidad se cierra por año y mes. El cierre es el fin formal del periodo.
+- **Un cierre por libro** — si llevas varios libros, cada uno cierra sus meses por separado. Puedes tener el mes cerrado en un libro y abierto en otro, y reabrir un periodo en uno no lo reabre en los demás.
+- **Corregir un periodo cerrado** — los registros en un periodo bloqueado o cerrado se rechazan. Reabre o desbloquea el periodo antes de corregir.
 
 <Warning>
 Cerrar el mes contable bloquea nuevos registros en ese periodo. Asegúrate de que todos los módulos operativos hayan terminado de registrar el mes — facturas, pagos, depreciación, costeo de inventario — antes de cerrar.
@@ -59,14 +178,16 @@ Los módulos operativos generan su contabilidad automáticamente: ventas, compra
 - **Operaciones** — ventas, compras, POS y costeo de inventario alimentan el libro mayor de forma continua.
 - **Reportes** — las cifras del libro mayor alimentan los tableros y reportes que construyes en [Tableros y reportes](/es/reporting/dashboards-and-reports).
 
-## Limitaciones
-
-- Los registros en periodos bloqueados o cerrados se rechazan; reabre o desbloquea el periodo antes de corregir.
-- Representar una transacción en varios libros requiere que esté configurada la homologación de cuentas entre esos libros.
 
 ## Guías relacionadas
 
 <CardGroup cols={2}>
+  <Card title="Multilibro" icon="books" href="/es/finance/multi-book">
+    Cómo se lee tu plan de cuentas cuando llevas más de un libro contable.
+  </Card>
+  <Card title="Operaciones" icon="sliders" href="/es/finance/operations">
+    Los tipos de transacción, su numeración y a qué libros llegan.
+  </Card>
   <Card title="Activos fijos" icon="industry" href="/es/finance/fixed-assets">
     Las corridas de depreciación y los asientos que registran en el libro mayor.
   </Card>

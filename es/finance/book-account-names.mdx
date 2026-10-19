@@ -1,0 +1,61 @@
+---
+title: "Nombres de cuenta por libro"
+description: "Haz que una cuenta se muestre con otro nombre cuando consultas un libro secundario."
+icon: "tag"
+---
+
+La misma cuenta puede llamarse de una forma en NIIF y de otra en el libro fiscal. No cambia la cuenta ni cambia el comprobante: cambia cómo se llama cuando lees ese libro. Para eso sirve la homologación de nombres.
+
+Esta pantalla se llama **Homologación de Nombre de Cuenta por Libro** y solo aparece si tu espacio de trabajo usa [Multilibro](/es/finance/multi-book).
+
+## Qué hace
+
+Registras el nombre alternativo para una cuenta y un libro secundario. Cuando alguien consulta ese libro, la cuenta aparece con ese nombre. En los demás libros aparece con el suyo.
+
+Si una cuenta no tiene regla para el libro que estás consultando, se muestra con su nombre original. No hace falta configurar todas las cuentas: solo las que cambian.
+
+La homologación cambia el nombre, nunca el código. Si en el libro secundario también cambia el código, necesitas un [mapeo](/es/finance/account-book-mapping).
+
+## Crear un nombre homologado
+
+<Steps>
+  <Step title="Abre la pantalla">
+    Ve a **Homologación de Nombre de Cuenta por Libro** en la configuración de contabilidad y haz clic en **Nuevo**.
+  </Step>
+  <Step title="Elige la cuenta, o la cuenta mayor">
+    Puedes renombrar una cuenta auxiliar de tu empresa en **Cuenta**, o una cuenta del plan general en **Cuenta Mayor**. Llena una de las dos, nunca las dos: la aplicación rechaza el registro si pones ambas o si dejas las dos vacías.
+  </Step>
+  <Step title="Elige el libro destino">
+    En **Libro destino**, escoge el libro secundario donde se va a usar ese nombre. No puedes elegir el libro principal.
+  </Step>
+  <Step title="Escribe el nombre">
+    En **Nombre homologado**, escribe el nombre con el que la cuenta debe aparecer en ese libro.
+  </Step>
+  <Step title="Déjalo activo y guarda">
+    **¿Está activo?** queda en **Sí**. Guarda.
+  </Step>
+</Steps>
+
+En la lista aparecen también el **Código de la Cuenta** y el **Código de cuenta global**, según cuál de las dos hayas usado.
+
+## Reglas que vas a encontrar
+
+- **Una cuenta o una cuenta mayor, no las dos.** Cada regla renombra exactamente una cosa.
+- **El libro destino nunca es el principal.** La homologación describe cómo un libro secundario nombra las cuentas.
+- **Una regla por cuenta y libro destino.** Una cuenta no puede tener dos nombres en el mismo libro.
+
+## Cómo convive con el mapeo
+
+Si una cuenta tiene mapeo y nombre homologado para el mismo libro, el nombre homologado gana: se muestra la cuenta destino del mapeo, pero con el nombre que escribiste aquí. Y si la cuenta es [propia de un libro](/es/finance/book-own-accounts), no aparece en los demás libros y ninguna de las dos reglas se usa.
+
+## Quitar un nombre homologado
+
+Pon **¿Está activo?** en **No**. La cuenta vuelve a mostrarse con su nombre original en ese libro.
+
+
+## Guías relacionadas
+
+- [Multilibro](/es/finance/multi-book)
+- [Cuentas propias de un libro](/es/finance/book-own-accounts)
+- [Mapeo de cuentas por libro](/es/finance/account-book-mapping)
+- [Contabilidad](/es/finance/accounting)
