@@ -52,6 +52,16 @@ Los conceptos de liquidación determinan los valores de flete y de deducción en
 
 Las facturas que se generan aquí se convierten en saldos abiertos: la factura de cliente se suma a tus cuentas por cobrar y la factura de proveedor a tus cuentas por pagar. Ambas se recaudan o se pagan luego desde [Tesorería](/es/finance/treasury): los registros de ingreso saldan el balance del cliente y los pagos saldan el del transportador.
 
+## En tránsito en los reportes de edades
+
+Entre el viaje y sus facturas, el flete ya está en la contabilidad: confirmar el manifiesto lo registra. Para que los reportes de edades cuadren con la contabilidad, lo muestran como filas de **Tránsito**:
+
+- **Edades de clientes** muestra una fila por cada remesa de un manifiesto confirmado que aún no se factura, por su flete, a nombre del cliente de la remesa. Sale del reporte en la fecha de la factura que la cobra; una remesa en una facturación en borrador sigue en tránsito.
+- **Edades de proveedores** muestra una fila por cada manifiesto confirmado que aún no se legaliza, por el flete del transportador, a nombre del propietario del vehículo. Sale del reporte en la fecha de la legalización confirmada que cubre su último cumplido. El anticipo del manifiesto conserva su propia fila.
+- Cada fila lleva la sucursal, el centro de costo y la unidad de negocio del manifiesto, los mismos con que el manifiesto contabilizó, y su descripción nombra la remesa, el manifiesto, la ruta y la placa.
+- Un reporte a una fecha pasada muestra lo que estaba en tránsito ese día. Una legalización reversada después sigue contando desde su fecha.
+- Encuentra las filas filtrando por la operación de la remesa o del manifiesto. Las empresas sin el módulo de transporte no ven ningún cambio.
+
 ## Limitaciones
 
 - Cada lado sigue su secuencia: las remesas deben existir antes de facturar, y los cumplidos deben registrarse y legalizarse antes de la factura de proveedor.

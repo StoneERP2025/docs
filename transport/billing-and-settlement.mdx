@@ -52,6 +52,16 @@ Settlement concepts determine the freight and deduction amounts on both sides. E
 
 The invoices generated here become open balances: the customer invoice joins your receivables and the supplier invoice joins your payables. Both are then collected or paid through [Treasury](/finance/treasury) — income records settle the customer's balance, payments settle the carrier's.
 
+## In transit in the aging reports
+
+Between the trip and its invoices, the freight already sits in the ledger: confirming a manifest posts it. So that the aging reports agree with the ledger, they show it as **In transit** rows:
+
+- **Customer aging** shows one row per remittance of a confirmed manifest that is not invoiced yet, for its freight, under the remittance customer. It leaves the report on the date of the invoice that bills it; a remittance in a draft billing stays in transit.
+- **Supplier aging** shows one row per confirmed manifest that is not legalized yet, for the carrier freight, under the vehicle owner. It leaves the report on the date of the confirmed legalization that covers its last compliment. The manifest advance keeps its own row.
+- Each row takes the branch office, cost center and business unit of the manifest, the ones the manifest posted with, and its description names the remittance, the manifest, the route and the plate.
+- A report run on a past date shows what was in transit that day. A legalization reversed later still counts from its date.
+- Find the rows by filtering on the remittance or manifest operation. Companies without the transport module see no change.
+
 ## Limitations
 
 - Each side follows its sequence: remittances must exist before billing, and compliments must be registered and legalized before the supplier invoice.
