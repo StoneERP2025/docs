@@ -1,0 +1,116 @@
+---
+title: "Configura el transporte"
+description: "Deja listo el transporte antes del primer viaje: la configuración de cada sucursal, los conceptos de liquidación, las rutas y las definiciones del RUNT y del RNDC."
+icon: "gear"
+---
+
+Antes de crear el primer viaje, define cómo contabiliza cada sucursal los manifiestos, qué operación usa cada documento y con qué conceptos se liquida al transportador. Esta guía recorre esa configuración en el orden en que conviene hacerla.
+
+## Dónde encontrarlo
+
+Ve a **TMS** > **Transporte Nacional**. El menú tiene tres grupos: **Configuración**, **Transacciones** y **Reportes**. Todo lo de esta guía está en **Configuración**.
+
+## Ten en cuenta
+
+- La configuración se hace una vez por sucursal, en la sucursal donde se originan los manifiestos.
+- Los datos de terceros (clientes, propietarios, tenedores y conductores) y los vehículos se crean después, en [Datos maestros](/es/transport/master-data).
+- Las cuentas contables y las operaciones que elijas aquí deben existir antes en tu plan de cuentas y en tu configuración de operaciones. Consulta [Contabilidad](/es/finance/accounting).
+
+## Configuración de sucursal
+
+La pantalla **Configuración de sucursal** tiene una fila por sucursal. Pulsa **Nuevo** para crear la de una sucursal que aún no la tiene. Los campos marcados como **Requerido** son obligatorios.
+
+| Campo | Qué elegir | Para qué sirve |
+|---|---|---|
+| **Sucursal** (requerido) | La sucursal que estás configurando. | Une esta configuración con los documentos de transporte que se originan en esa sucursal. |
+| **Margen Esperado** (requerido) | El porcentaje de utilidad que esperas del negocio de transporte. | Es la referencia de margen de tu operación. |
+| **Cuenta para debito del manifiesto** | La cuenta contable de remesas por facturar de esa sucursal. | Al confirmar un manifiesto, el sistema debita esta cuenta, una línea por remesa. La factura al cliente la cierra después. |
+| **Tipo de proveedor** | El tipo de proveedor de los transportadores de esa sucursal. Su cuenta aparece junto a él (en pantalla, **Supplier type Account**). | Al confirmar el manifiesto, el sistema acredita la cuenta de este tipo de proveedor por el flete total. La legalización la cierra después. |
+| **Operación de legalización para documento soporte** (requerido) | La operación contable para los gastos de proveedores que no facturan y se soportan con documento soporte. | La legalización usa esta operación cuando el propietario del vehículo está configurado con documento soporte. |
+| **Operación para legalización de cuentas por pagar** (requerido) | La operación contable para los gastos de proveedores que emiten factura electrónica. | La legalización usa esta operación cuando el propietario del vehículo factura electrónicamente. |
+| **Operación para facturación del cliente** (requerido) | La operación contable de la factura al cliente. | La facturación usa esta operación para generar la factura de venta. |
+| **Operación de Cruces** (requerido) | La operación para los cruces automáticos. | Es el código de operación para los cruces automáticos. |
+
+<Warning>
+La cuenta para débito del manifiesto y el tipo de proveedor determinan cómo contabiliza cada manifiesto el flete. Usa para ambos cuentas dedicadas a los manifiestos. Así los saldos de esas cuentas coinciden con lo que está en tránsito. Consulta [Remesas y manifiestos en tránsito](/es/transport/transit).
+</Warning>
+
+<Steps>
+  <Step title="Abre la configuración">
+    Ve a **TMS** > **Transporte Nacional** > **Configuración** > **Configuración de sucursal**.
+  </Step>
+  <Step title="Crea o abre la fila de la sucursal">
+    Pulsa **Nuevo**, o abre la fila existente con **Abrir**.
+  </Step>
+  <Step title="Completa los campos">
+    Elige la sucursal, el margen esperado, la cuenta para débito del manifiesto, el tipo de proveedor y las cuatro operaciones de la tabla anterior.
+  </Step>
+  <Step title="Guarda">
+    Guarda la configuración y repite el proceso con cada sucursal que vaya a operar transporte.
+  </Step>
+</Steps>
+
+## Las operaciones de cada documento
+
+Cada documento de transporte lleva una **Operación** y un **Número de Operación**: el número es el consecutivo del documento. En el ejemplo de [Ejemplo completo](/es/transport/example-trip), la remesa usa una operación de remesas de la sucursal y el manifiesto una operación de manifiestos de la misma sucursal.
+
+| Documento | Operación que lleva |
+|---|---|
+| **Orden de Servicio**, **Orden de Cargue**, **Remesa**, **Manifiesto de Carga** y **Cumplido** | Una operación propia de cada tipo de documento, elegida en el campo **Operación** del documento. |
+| Legalización | La operación de legalización de **Configuración de sucursal**, según el propietario use documento soporte o factura electrónica. |
+| **Facturación** | La operación para facturación del cliente de **Configuración de sucursal**. |
+
+## Concepto de Liquidación
+
+Los conceptos de liquidación son los valores que se suman o se restan al pago del transportador. Se definen una vez y se aplican en el cumplido y la legalización.
+
+Ve a **TMS** > **Transporte Nacional** > **Configuración** > **Concepto de Liquidación**. La lista tiene **Nuevo** e **Importar**. El formulario tiene cuatro pestañas: **Campos**, **Configuración**, **Viajes exentos** y **Propietarios exentos**.
+
+| Campo | Qué significa |
+|---|---|
+| **Nombre** (requerido) | Nombre único del concepto dentro de tu espacio de trabajo. |
+| **Se aplica automaticamente** (requerido) | **Sí**: el sistema lo aplica solo. **No**: lo escribes a mano en cada documento. |
+| **Es gasto** (requerido) | Define el efecto sobre el pago al transportador: si es gasto, se suma al pago; si no, se resta. |
+| **Metodo de cálculo** (requerido) | Cómo se calcula: porcentaje, valor fijo o rango de flete. |
+| **¿Está activo?** (requerido) | Si el concepto está disponible para nuevos usos. |
+| **Cuenta** | La cuenta contable donde se registra el concepto. |
+| **Producto** | El producto asociado al concepto. Debe ser un servicio. |
+| **Modalidad de operación de transporte** (requerido) | A qué modalidades aplica: internacional, nacional o municipal. Si la dejas vacía, aplica a todas. |
+| **Base de cálculo** | Sobre qué se calcula: saldo pendiente, anticipo, ambos o flete. Solo para los conceptos que se aplican automáticamente. |
+| **Es global** (requerido) | **Sí**: aplica a todos. **No**: se evalúa según las excepciones del concepto. Solo para los conceptos que se aplican automáticamente. |
+
+<Note>
+La pestaña **Configuración** y las pestañas de excepciones tienen más campos que esta guía no detalla. Revisa sus ayudas en pantalla al configurar un concepto.
+</Note>
+
+## Rutas, viajes y precios
+
+Estas pantallas definen la geografía y las tarifas de tus viajes. En el menú están en los grupos **Rutas** y **Precios**.
+
+- **Rutas.** Cada ruta tiene un **Nombre** descriptivo, el **Viaje** al que pertenece, si es la ruta estándar (**¿Es estándar?**) y si está activa (**¿Está activo?**). Los cuatro son obligatorios. Una ruta alterna se marca como no estándar.
+- La orden de cargue, la remesa, el manifiesto y cada ruta piden un **Viaje**.
+- Las tarifas de las rutas se definen en las pantallas de precios del grupo **Precios**.
+- Además hay catálogos de apoyo para secciones, puntos de peaje y puestos de control.
+
+Configura las rutas y sus precios antes de crear la primera orden de servicio.
+
+## Definiciones del RUNT y del RNDC
+
+Los formularios de transporte piden datos que el Ministerio de Transporte define en catálogos: el **RUNT** (Registro Único Nacional de Tránsito) para los vehículos y el **RNDC** (Registro Nacional de Despachos de Carga) para los despachos. En **Configuración** encuentras esos catálogos:
+
+- Del vehículo: marca, color, carrocería, combustible y configuración vehicular.
+- De la carga: naturaleza de la carga y empaque.
+- Del negocio: línea de negocio, modalidad de transporte, motivo de cancelación y veto.
+
+Revisa estos catálogos antes de crear vehículos y órdenes de servicio: los formularios piden elegir sus valores.
+
+## Siguiente paso
+
+<CardGroup cols={2}>
+  <Card title="Datos maestros" icon="address-book" href="/es/transport/master-data">
+    Crea al propietario, al tenedor, al conductor y al vehículo.
+  </Card>
+  <Card title="Operaciones de transporte" icon="route" href="/es/transport/operations">
+    Corre el viaje: orden de servicio, orden de cargue, remesa y manifiesto.
+  </Card>
+</CardGroup>

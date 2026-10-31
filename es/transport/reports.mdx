@@ -1,0 +1,76 @@
+---
+title: "Reportes de transporte"
+description: "Lee tu operación con los cuatro tableros de transporte y los reportes de edades de clientes y de proveedores."
+icon: "chart-line"
+---
+
+El transporte tiene cuatro reportes propios, con filtros por periodo, sucursal, línea de negocio, cliente y placa, y dos reportes de edades que muestran la cartera y las cuentas por pagar, incluido el flete en tránsito.
+
+## Dónde encontrarlo
+
+- Los cuatro tableros están en **TMS** > **Transporte Nacional** > **Reportes**.
+- **Edades de Clientes** y **Edades de Proveedores** están en **ERP**.
+
+## Ten en cuenta
+
+- Cuando no hay datos para el periodo y los filtros elegidos, cada gráfica muestra **No hay datos disponibles para esta gráfica.**
+- Todos los tableros se filtran por **Periodo** (**Desde** y **Hasta**), **Sucursal**, **Línea de negocio**, **Cliente** y **Placa del vehículo**.
+
+## Los cuatro tableros
+
+<Tabs>
+  <Tab title="Tablero gerencial de transporte">
+    La vista de la gerencia: cuánto ingresa, cuánto cuesta y quién debe.
+
+    - **Resumen del periodo.**
+    - **Evolución mensual**: ingreso, costo y utilidad por mes, y remesas por mes.
+    - **Clientes y rutas**: top 10 clientes por ingreso, ingreso por línea de negocio y top 10 rutas por remesas.
+    - **Participación**: por cliente, por sucursal y por línea de negocio.
+    - **Cartera y cuentas por pagar**: antigüedad de la cartera, antigüedad de lo por pagar a tenedores y cartera por cliente.
+    - **Detalle**: órdenes de servicio del periodo.
+  </Tab>
+  <Tab title="Tablero de operación de transporte">
+    La vista del día a día: en qué paso va cada viaje.
+
+    - **Resumen del periodo.**
+    - **Avance de la cadena**: del tenedor y del cliente, cadenas abiertas por paso pendiente y días promedio por tramo.
+    - **Reporte al RNDC**: estado del reporte al RNDC.
+    - **Flota**: viajes por vehículo y flete por tenedor.
+    - **Detalle**: remesas y su estado.
+  </Tab>
+  <Tab title="Rentabilidad y servicio de transporte">
+    La vista de la rentabilidad y del servicio al cliente.
+
+    - **Rentabilidad**: utilidad y margen por cliente, por línea de negocio y por ruta, e ingreso y costo por tonelada por ruta.
+    - **Concentración**: los 5 clientes principales y los 5 transportadores principales.
+    - **Servicio**: cumplimiento de citas por cliente y faltantes por tenedor.
+    - **Uso de la flota**: viajes por mes y vehículos sin viajes por mes.
+    - **Dinero**.
+  </Tab>
+  <Tab title="Sucursales de transporte">
+    La comparación entre sucursales.
+
+    - **Resultado**: resultado por sucursal, ranking por margen y tendencia mensual.
+    - **Volumen y cadena**: volumen por sucursal, ranking por ciclo en días y cadenas abiertas por sucursal y paso.
+    - **Dinero**: anticipos y por pagar, cartera, y cartera y cumplido sin facturar, todos por sucursal.
+    - **Reporte al RNDC**: reporte al RNDC por sucursal.
+  </Tab>
+</Tabs>
+
+## Reportes de edades
+
+**Edades de Clientes** y **Edades de Proveedores** muestran los saldos abiertos por antigüedad. Mientras un viaje no se factura ni se legaliza, su flete aparece como una fila de **Tránsito**: una por remesa en clientes y una por manifiesto en proveedores. Consulta [Remesas y manifiestos en tránsito](/es/transport/transit) para ver cómo se calcula cada fila y cuándo sale. [Ejemplo completo](/es/transport/example-trip) muestra el efecto fecha por fecha.
+
+## Guías relacionadas
+
+<CardGroup cols={2}>
+  <Card title="Remesas y manifiestos en tránsito" icon="truck-fast" href="/es/transport/transit">
+    Cómo se ve el flete en las edades antes de facturar y legalizar.
+  </Card>
+  <Card title="Ejemplo completo" icon="map-location-dot" href="/es/transport/example-trip">
+    Un viaje de principio a fin con sus asientos.
+  </Card>
+  <Card title="Tableros y reportes" icon="chart-column" href="/es/reporting/dashboards-and-reports">
+    Cómo usar y compartir tableros y reportes en la plataforma.
+  </Card>
+</CardGroup>

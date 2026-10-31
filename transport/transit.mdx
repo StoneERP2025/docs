@@ -1,0 +1,96 @@
+---
+title: "Remittances and manifests in transit"
+description: "How a trip is posted before billing and legalization, how it shows in the customer and supplier aging reports, and when it leaves them."
+icon: "truck-fast"
+---
+
+When you confirm a manifest, the trip's freight enters the ledger, even though you have not billed the customer or legalized the trip with the vehicle owner yet. That freight is **in transit**. The customer and supplier aging reports show it as **In transit** rows, next to invoices and advances, so the portfolio agrees with the ledger while the trip is under way.
+
+Workspaces without the transport module see no change in their reports.
+
+## What each document posts
+
+Transit starts with the manifest and is closed by two different documents: the sales invoice closes the customer side and the legalization closes the carrier side.
+
+| Document | Debit | Credit | What happens in the aging reports |
+|---|---|---|---|
+| Confirmed **manifest** | The manifest debit account, one line per remittance, for its freight | The supplier type account, one line for the total freight | One In transit row per remittance in customer aging, and one for the manifest in supplier aging |
+| **Sales invoice** that bills the remittance | The cost of the freight | The manifest debit account, for the same freight | The remittance row leaves customer aging and the invoice comes in |
+| Confirmed **legalization** | The supplier type account, for the freight | The withholdings and the payable to the vehicle owner | The manifest row leaves supplier aging and the supplier invoice comes in |
+
+Both accounts are set per branch office, in **Configuración de sucursal** (branch configuration): **Cuenta para debito del manifiesto** (manifest debit account) and **Tipo de proveedor** (supplier type) of the carriers. See [Set up transport](/transport/setup). The invoice closes the manifest debit account of the **manifest's** branch office, even when you bill from another branch office. If that branch office no longer has the account, the invoice is not created, and the message names the remittance and the manifest that need it. A remittance without freight posts none of those lines.
+
+## How it shows in the aging reports
+
+| | Customer aging | Supplier aging |
+|---|---|---|
+| One row per | Remittance of a confirmed manifest, not billed yet | Confirmed manifest, not legalized yet |
+| Value | The remittance freight | The manifest's carrier freight |
+| Third party | The remittance customer | The vehicle owner |
+| Description | In transit · Remittance · Manifest · Route · Plate | In transit · Manifest · Remittances · Route · Plate |
+| Days | Days since the manifest without billing | Days since the manifest without legalization |
+
+- Every row carries the **manifest's** branch office, cost center and business unit, the ones the manifest posted with. The row and the account agree on every dimension.
+- A row has no notes, crossings or payments: its balance is its value. It cannot be paid or crossed, because it is not yet a debt with anyone.
+- To see only the transit, filter by the operation of the remittance or the manifest.
+- The manifest advance keeps its own row in supplier aging. The In transit row does not include it or subtract it.
+
+## When it leaves the aging reports
+
+- **A remittance leaves customer aging** on the date of the sales invoice that bills it. While its billing is **Provisional**, the remittance stays in transit.
+- **A manifest leaves supplier aging** on the date of the confirmed legalization that covers its last compliment. If the manifest has two compliments and only one is legalized, its whole freight stays in transit.
+- **A report at a past date** shows what was in transit that day. It reads the documents' dates, not their status today.
+- A legalization reversed later still counts from its date.
+
+## Example
+
+A manifest carries two remittances from Bogotá to Cali, each with a freight of $4,265,000. The accounts come from a Colombian chart of accounts: the manifest debit account is *13102001 Remesas por facturar* and the supplier type uses *23354501 Costos y gastos por pagar - transportes, fletes y acarreos*.
+
+<Steps>
+  <Step title="August 11: you confirm the manifest">
+    The ledger records:
+
+    | Account | Debit | Credit |
+    |---|---|---|
+    | 13102001 Remesas por facturar (remittance 18) | 4,265,000 | |
+    | 13102001 Remesas por facturar (remittance 19) | 4,265,000 | |
+    | 23354501 Costos y gastos por pagar - transportes | | 8,530,000 |
+
+    At an August 15 cut, customer aging shows two In transit rows of $4,265,000 under the customer, 4 days old. Supplier aging shows one In transit row of $8,530,000 under the vehicle owner. If the manifest had an advance, its row appears separately.
+  </Step>
+  <Step title="August 18: you confirm the legalization">
+    The legalization generates the supplier invoice:
+
+    | Account | Debit | Credit |
+    |---|---|---|
+    | 23354501 Costos y gastos por pagar - transportes | 8,530,000 | |
+    | 23657001 ReteFte servicio de transporte de carga 1% | | 85,300 |
+    | 23689001 Retención de ICA por pagar | | 35,314 |
+    | 23657004 Retención FOPAT por pagar | | 8,530 |
+    | 23354501 Payable to the vehicle owner | | 8,400,856 |
+
+    At an August 18 cut, the manifest's In transit row is gone from supplier aging. The supplier invoice for $8,400,856 takes its place. Customer aging still shows the two remittances in transit.
+  </Step>
+  <Step title="August 19: you bill the remittances to the customer">
+    The sales invoice posts its income, taxes and receivable, and also closes the transit of each remittance:
+
+    | Account | Debit | Credit |
+    |---|---|---|
+    | 61450501 Costo servicio de transporte de carga por carretera (remittance 18) | 4,265,000 | |
+    | 13102001 Remesas por facturar (remittance 18) | | 4,265,000 |
+    | 61450501 Costo servicio de transporte de carga por carretera (remittance 19) | 4,265,000 | |
+    | 13102001 Remesas por facturar (remittance 19) | | 4,265,000 |
+
+    At an August 19 cut, the two In transit rows are gone from customer aging. The sales invoice takes their place, for the value billed to the customer. Account *13102001* of that manifest is back to zero, on the same branch office, cost center and business unit where it was opened.
+  </Step>
+</Steps>
+
+If you run supplier aging at an August 15 cut after all of this, the manifest shows in transit again, because it was not legalized yet on that day.
+
+## What to keep in mind
+
+- The In transit rows add up to the balance of the manifest debit account and the supplier type account only when those accounts are used for manifests alone. If you post other documents to them, the account holds more than what is in transit.
+- The manifest advance must use a supplier type other than the manifest's. If it uses the same one, paying the advance mixes with the transit in the same account.
+- The In transit row carries the freight, as the ledger does, not the rate you bill the customer.
+
+For the process of billing remittances and legalizing compliments, see [Transport billing and settlement](/transport/billing-and-settlement).

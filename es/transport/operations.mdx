@@ -1,64 +1,170 @@
 ---
 title: "Operaciones de transporte"
-description: "Opera la cadena diaria de transporte: crea órdenes de servicio, asigna órdenes de carga, genera remesas y arma manifiestos."
+description: "Corre un viaje paso a paso: orden de servicio, orden de cargue, remesa y manifiesto de carga, con sus campos, revisiones y envíos al RNDC."
 icon: "route"
 ---
 
-Las operaciones de transporte son el trabajo diario de mover carga: recibir la solicitud del cliente, asignar vehículos, generar los documentos de despacho y despachar el viaje. Cada paso de la cadena se construye sobre el anterior, y las validaciones impiden que avancen viajes incompletos o que no cumplen.
+Un viaje se arma con cuatro documentos que se construyen uno sobre otro: la orden de servicio recoge la solicitud del cliente, la orden de cargue le asigna el vehículo, la remesa documenta la carga y el manifiesto reúne las remesas del viaje y contabiliza el flete. Esta guía recorre cada uno.
 
 ## Dónde encontrarlo
 
-Las páginas operativas — órdenes de servicio, órdenes de carga, remesas y manifiestos — aparecen en la sección **Programas** de la barra lateral cuando el módulo de transporte está habilitado en tu espacio de trabajo.
+Ve a **TMS** > **Transporte Nacional** > **Transacciones**. Los cuatro documentos están ahí: **Orden de Servicio**, **Orden de Cargue**, **Remesa** y **Manifiesto de Carga**. Cada lista tiene **Nuevo**, **Eliminar todo**, una vista **Tabla** y **Buscar...**.
 
-## El flujo diario
+## Ten en cuenta
+
+- Antes del primer viaje, completa [Configura el transporte](/es/transport/setup) y [Datos maestros](/es/transport/master-data).
+- Los campos marcados como **Requerido** son obligatorios.
+- Todo documento nuevo nace con **Estado de Operación** en **Provisional**. Un documento provisional todavía no contabiliza. Cuando lo confirmas, pasa a **Completo**; el manifiesto, la legalización y la facturación generan sus asientos al confirmarse.
+- Las validaciones de cliente, vehículo, conductor y póliza pueden impedir que un documento avance hasta que se resuelvan.
+- Para ver todo el recorrido con números reales, consulta [Ejemplo completo](/es/transport/example-trip).
+
+## Los cuatro documentos
+
+| Paso | Documento | Qué consume | Qué produce |
+|---|---|---|---|
+| 1 | **Orden de Servicio** | El cliente y los datos de su solicitud. | La solicitud de transporte con su detalle de viajes. |
+| 2 | **Orden de Cargue** | La orden de servicio y el detalle que vas a atender. | La asignación del vehículo a ese viaje. |
+| 3 | **Remesa** | La orden de cargue. | El documento de la carga. Nace con estado **Generado** y **Esta facturada** en **No**. |
+| 4 | **Manifiesto de Carga** | Las remesas que viajan juntas, el vehículo y el conductor. | El documento del viaje y su asiento contable. |
+
+## Paso 1. Orden de Servicio
 
 <Steps>
-  <Step title="Crea la orden de servicio">
-    Registra la solicitud del cliente con sus detalles: productos y carga, origen y destino, y los precios acordados. Las validaciones revisan el cliente, los vehículos y las pólizas requeridas antes de que la orden pueda avanzar. Haz seguimiento al avance y al estado de la orden a medida que progresa la cadena.
+  <Step title="Abre el formulario">
+    Ve a **Transacciones** > **Orden de Servicio** y pulsa **Nuevo**. El formulario tiene las pestañas **Operación**, **Cliente**, **Configuración**, **Detalle** y **Poliza**.
   </Step>
-  <Step title="Crea las órdenes de carga">
-    Asigna vehículos o contenedores a la orden de servicio mediante órdenes de carga, decidiendo cómo se distribuye la carga.
+  <Step title="Completa la operación">
+    En **Campos de la operación**, elige la **Operación** y el **Número de Operación**, la **Fecha de Operación**, la **Sucursal** y el **Centro de Costos**. Todos son requeridos. **Moneda** trae **PESOS**. **Descripción** y **Tasa de Cambio de Mercado** son opcionales.
   </Step>
-  <Step title="Genera las remesas">
-    Genera las remesas de la carga: un documento de despacho por viaje o por carga. Se admiten correcciones y cargos adicionales cuando la realidad difiere del plan, y puedes registrar los precintos del despacho.
+  <Step title="Elige el cliente">
+    En **Campos de cliente**, completa **Cliente**, **Detalle del Cliente**, **Vendedor**, **Condición Comercial** y **Tipo de Lista de Precios**. Son requeridos. **Tipo de Descuento** y **Número interno de la operación** (la referencia que te da el cliente) son opcionales.
   </Step>
-  <Step title="Arma el manifiesto">
-    Crea el manifiesto que vincula las remesas con el vehículo y el conductor que hacen el viaje. Los totales del manifiesto se calculan a partir de los conceptos de liquidación. Desde el manifiesto puedes crear anticipos al transportador: se convierten en anticipos a proveedores dentro de cuentas por pagar y se cruzan después contra la liquidación del transportador.
+  <Step title="Define la configuración del transporte">
+    Completa los grupos de configuración de la tabla siguiente.
+  </Step>
+  <Step title="Revisa y confirma">
+    Revisa el cliente, el detalle y las pólizas antes de confirmar. La orden confirmada queda en **Completo**.
   </Step>
 </Steps>
 
-## Tarifas
+| Grupo | Campos |
+|---|---|
+| **Configuración de operación** | **Modalidad de operación de transporte** (requerido): internacional, nacional o municipal. **Tipo de operación de transporte** (requerido): importación, exportación, distribución o internacional. **Línea de negocio** (requerido). Opcionales: **Condicion aduanas** y **Modalidad de tránsito aduanero**. |
+| **Configuración de tránsito** | **Naturaleza de la Carga** (requerido). **Modo de transporte** (requerido): por ejemplo carga suelta, contenedorizada, granel líquido o granel sólido. **Tipo de tránsito** (requerido): nocturno, diurno o libre. Un segundo **Tipo de operación de transporte** (requerido) clasifica la operación según las características de la carga y trae **General**. **Base de Liquidación** (requerido): si la facturación se basa en el peso de origen o de destino; trae **Destino**. |
+| **Configuración de contenedores** | Todos opcionales: **Tipo de contenedor**, **Propiedad del contenedor**, **Retorno de contenedor**, **Categoría de operación del contenedor** y **Está compensado**. Úsalos solo si el viaje lleva contenedor. |
 
-Las tarifas de flete se resuelven automáticamente desde tus tablas configuradas de rutas y precios: dada la ruta y la carga, el sistema determina el flete acordado, así los operadores no tarifan cada viaje a mano.
+La lista de órdenes de servicio muestra, entre otras, las columnas **Estado de la orden de servicio**, **Cliente**, **Línea de negocio** y **Motivo de cancelación**.
 
-## Validaciones que bloquean el avance
+## Paso 2. Orden de Cargue
 
-<Warning>
-Las validaciones de pólizas, vehículo y conductor impiden que un documento avance hasta que se resuelvan. Una póliza de seguro vencida, por ejemplo, detiene la cadena en ese punto. Mantén al día los documentos y las pólizas de los vehículos en [Seguros y jurídico](/es/operations/insurance-and-legal) para evitar demoras en el despacho.
-</Warning>
+La orden de cargue asigna el vehículo a un detalle de la orden de servicio.
 
-## Cómo continúan las operaciones
+<Steps>
+  <Step title="Abre el formulario">
+    Ve a **Transacciones** > **Orden de Cargue** y pulsa **Nuevo**. Las pestañas son **Detalles de la asociación**, **Orden Vehículo** y **Contenedor**.
+  </Step>
+  <Step title="Completa la operación">
+    Elige la **Operación** y el **Número de Operación**, la **Fecha de Operación**, la **Sucursal** y el **Centro de Costos**. Todos son requeridos.
+  </Step>
+  <Step title="Enlaza la orden de servicio">
+    Elige la **Orden de Servicio**, el **Detalle de la Orden de Servicio** y el **Viaje**. Los tres son requeridos.
+  </Step>
+  <Step title="Revisa el estado">
+    **Estado de la orden** (requerido) empieza en **Creado**. **Observaciones** es opcional y sirve para las notas operativas.
+  </Step>
+  <Step title="Confirma">
+    Revisa que el vehículo asignado tenga su póliza y su documentación al día, y confirma el documento.
+  </Step>
+</Steps>
 
-- **Pólizas** — las órdenes de servicio verifican las pólizas de seguro requeridas; consulta [Seguros y jurídico](/es/operations/insurance-and-legal).
-- **Cuentas por pagar** — los anticipos creados desde el manifiesto se convierten en anticipos a proveedores, saldados contra la legalización del transportador.
-- **RNDC** — las remesas y los manifiestos se reportan al registro del Ministerio de Transporte; consulta [RNDC y monitoreo de flota](/es/transport/fleet-monitoring).
-- **Facturación y liquidación** — una vez ejecutado el viaje, los documentos alimentan ambas ramas de liquidación; consulta [Facturación y liquidación de transporte](/es/transport/billing-and-settlement).
+La lista de órdenes de cargue muestra también **Inspeccion del vehículo**, **Vehiculos del Detalle de la Orden de Servicio** y **Reportes**.
 
-## Limitaciones
+## Paso 3. Remesa
 
-- Un documento no puede avanzar mientras sus validaciones fallen: resuelve primero el problema señalado de cliente, vehículo, conductor o póliza.
-- Los valores de flete vienen de las tablas configuradas de rutas y precios; las rutas sin tarifas deben configurarse antes de que las órdenes sobre ellas puedan resolver precios.
+La remesa documenta la carga de un viaje. Necesita una orden de cargue: en la lista, la columna **Orden de carga** la relaciona.
 
-## Guías relacionadas
+<Steps>
+  <Step title="Abre el formulario">
+    Ve a **Transacciones** > **Remesa** y pulsa **Nuevo**. Las pestañas son **Operación**, **Cliente**, **Viaje**, **Producto**, **Poliza**, **Precinto** y **Adicional**.
+  </Step>
+  <Step title="Completa la operación">
+    Elige la **Operación** y el **Número de Operación**, la **Fecha de Operación**, la **Sucursal** y el **Centro de Costos**, todos requeridos. **Almacén**, **Descripción**, **Moneda**, **Categoría**, **Tasa de Cambio de Mercado** y **Observaciones** son opcionales.
+  </Step>
+  <Step title="Revisa los estados">
+    **Estado de la remesa** (requerido) empieza en **Generado**. **Esta facturada** (requerido) empieza en **No**: la remesa pasa a facturada cuando la cobras en **Facturación**.
+  </Step>
+  <Step title="Elige el cliente">
+    **Cliente**, **Detalle del Cliente** y **Vendedor** son requeridos.
+  </Step>
+  <Step title="Completa el cargue y el descargue">
+    Para cada uno, el tercero, la sede, la fecha y el tiempo son requeridos: **Tercero para cargue**, **Sede de cargue**, **Fecha de cargue** y **Tiempo de cargue**; y **Tercero para descargue**, **Sede de descargue**, **Fecha de descargue** y **Tiempo de descargue**. Las observaciones de cada uno son opcionales.
+  </Step>
+  <Step title="Describe la carga">
+    Completa **Viaje**, **Inventario enlazado con productos de transporte**, **Naturaleza de la Carga**, **Estado fisico** (sólido, líquido o gaseoso), **Unidad de medida de la carga**, **Empaque**, **Unidad de medida del empaque**, **Cantidad solicitada**, **Peso solicitado** y **Valor de la carga**. Todos son requeridos. **Código UN** es opcional.
+  </Step>
+  <Step title="Revisa las pólizas y los precintos">
+    Revisa las pestañas **Poliza** y **Precinto** antes de confirmar.
+  </Step>
+  <Step title="Confirma y reporta al RNDC">
+    Confirma la remesa y pulsa **Enviar RNDC**. La lista guarda el resultado en **RNDC enviado** y **Respuesta RNDC**.
+  </Step>
+</Steps>
+
+La pestaña **Adicional** lista los cobros adicionales de la remesa, con su producto, proveedor, precio, costo, si **Está facturado** y si fue **Aprobado por el Cliente**. Tiene los botones **Obtener adicionales de remesa** e **Importar**.
+
+## Paso 4. Manifiesto de Carga
+
+El manifiesto reúne las remesas que viajan juntas en un vehículo con su conductor. Al confirmarlo, el sistema contabiliza el flete.
+
+<Steps>
+  <Step title="Abre el formulario">
+    Ve a **Transacciones** > **Manifiesto de Carga** y pulsa **Nuevo**. El formulario tiene los grupos **Campos de operación**, **Campos del viajes**, **Remesas** e **Impuestos**, y las pestañas **Contabilización NIIF** y **Contabilización fiscal**.
+  </Step>
+  <Step title="Completa la operación">
+    Elige la **Operación** y el **Número de Operación**, la **Fecha de Operación**, la **Sucursal**, el **Centro de Costos** y la **Categoría**. Todos son requeridos. **Moneda**, **Tasa de Cambio de Mercado** y **Descripción** son opcionales.
+  </Step>
+  <Step title="Elige el viaje y el proveedor">
+    Completa **Viaje**, **Ruta**, **Proveedor**, **Detalle del proveedor** y **Tipo de proveedor**. Son requeridos. El proveedor es el transportador. [Configuración de sucursal](/es/transport/setup) define el tipo de proveedor predeterminado de los transportadores de la sucursal.
+  </Step>
+  <Step title="Define el pago">
+    En la información adicional del viaje, completa **Fecha de pago**, **Ubicación del pago**, **Pago del responsable del cargue** y **Pago del responsable del descargue**. Todos son requeridos.
+  </Step>
+  <Step title="Revisa los totales">
+    En **Totales manifiesto**, **Valor a pagar al transportista**, **Valor neto a pagar**, **Valor del anticipo** y **Saldo pendiente** son requeridos. **Destinatario del avance** indica quién recibe el anticipo y es opcional.
+  </Step>
+  <Step title="Revisa la contabilización">
+    Antes de confirmar, revisa las pestañas **Contabilización NIIF** y **Contabilización fiscal**.
+  </Step>
+  <Step title="Confirma y reporta">
+    Confirma el manifiesto. Luego pulsa **Enviar RNDC**; el resultado queda en **RNDC enviado** y **Respuesta RNDC**. La lista también muestra **Enviar integración** e **Integración enviada**.
+  </Step>
+</Steps>
+
+**Esta cumplido** (requerido) empieza en **No** e indica si el manifiesto ya fue cumplido. La lista del manifiesto también muestra **Consecutivo del manifiesto**, **Tipo de manifiesto** y **Saldo pendiente**.
+
+### Qué contabiliza el manifiesto
+
+Al confirmar, el sistema debita la **Cuenta para debito del manifiesto** de la sucursal, una línea por cada remesa, y acredita la cuenta del **Tipo de proveedor** por el flete total. Ese flete queda en tránsito hasta que facturas la remesa y legalizas el manifiesto. Consulta [Remesas y manifiestos en tránsito](/es/transport/transit).
+
+### Anticipos
+
+Los anticipos que se crean desde el manifiesto se convierten en anticipos a proveedores en cuentas por pagar y se cruzan luego contra la liquidación del transportador.
+
+## Qué sigue
+
+Cuando el viaje termina, sigue [Facturación y liquidación de transporte](/es/transport/billing-and-settlement): el cumplido, la legalización al propietario y la facturación al cliente.
 
 <CardGroup cols={2}>
   <Card title="Facturación y liquidación" icon="file-invoice-dollar" href="/es/transport/billing-and-settlement">
-    Lo que ocurre después del viaje: facturar al cliente y liquidar al transportador.
+    Cumplido, legalización y facturación después del viaje.
+  </Card>
+  <Card title="Ejemplo completo" icon="map-location-dot" href="/es/transport/example-trip">
+    Un viaje de Cali a Medellín con fechas y asientos.
   </Card>
   <Card title="RNDC y monitoreo de flota" icon="satellite-dish" href="/es/transport/fleet-monitoring">
-    Reporta los despachos y sigue el viaje en la vía.
+    Reporte al RNDC y seguimiento con proveedores GPS.
   </Card>
   <Card title="Seguros y jurídico" icon="shield-halved" href="/es/operations/insurance-and-legal">
-    Las pólizas que revisan tus validaciones antes de que un viaje pueda avanzar.
+    Las pólizas que revisan las validaciones del viaje.
   </Card>
 </CardGroup>

@@ -1,75 +1,136 @@
 ---
 title: "Facturación y liquidación de transporte"
-description: "Después del viaje: agrupa remesas para facturar al cliente y legaliza cumplidos para liquidar al transportador."
+description: "Cierra el viaje: registra el cumplido, legaliza con el propietario del vehículo y factura las remesas al cliente."
 icon: "file-invoice-dollar"
 ---
 
-Una vez ejecutado un viaje quedan dos liquidaciones: cobrarle a tu cliente por el servicio y pagarle al transportador o al propietario del vehículo que lo realizó. Ambos lados parten de los documentos del viaje y terminan en una factura: una factura de cliente en cuentas por cobrar y una factura de proveedor en cuentas por pagar.
+Cuando el viaje termina quedan tres cierres: el cumplido, que prueba que el viaje se realizó; la legalización, con la que liquidas al propietario del vehículo; y la facturación, con la que le cobras al cliente. Los dos últimos terminan en una factura: una factura de proveedor (o un documento soporte) en cuentas por pagar y una factura de cliente en cuentas por cobrar.
 
 ## Dónde encontrarlo
 
-Las páginas de facturación, cumplidos y legalización aparecen en la sección **Programas** de la barra lateral cuando el módulo de transporte está habilitado en tu espacio de trabajo.
+Ve a **TMS** > **Transporte Nacional** > **Transacciones**. Ahí están **Cumplido** y **Facturación**.
 
-## Los dos lados
+## Ten en cuenta
+
+- El cumplido parte de un manifiesto confirmado. Consulta [Operaciones de transporte](/es/transport/operations).
+- Cada lado sigue su secuencia: el cumplido se registra antes de legalizar, y las remesas existen antes de facturar.
+- Las operaciones de legalización y de facturación son las que elegiste en [Configura el transporte](/es/transport/setup).
+- Los campos marcados como **Requerido** son obligatorios.
+
+## El cierre del viaje
 
 <Tabs>
-  <Tab title="Facturar al cliente">
+  <Tab title="Liquidar al propietario">
     <Steps>
-      <Step title="Revisa las remesas pendientes por facturar">
-        Verifica las remesas que ya se ejecutaron pero aún no se le han facturado al cliente.
+      <Step title="Registra el cumplido">
+        Crea el cumplido del manifiesto y envía el cumplido al RNDC.
       </Step>
-      <Step title="Crea el documento de facturación">
-        Agrupa las remesas pendientes en un documento de facturación, normalmente todos los viajes de un cliente en el periodo.
-      </Step>
-      <Step title="Genera la factura de cliente">
-        Genera la factura de cliente a partir del documento de facturación. La factura se convierte en un saldo por cobrar. Si se necesita una corrección después de facturar, se admiten devoluciones de facturación.
+      <Step title="Legaliza">
+        Legaliza el cumplido para generar la factura de proveedor o el documento soporte del propietario.
       </Step>
     </Steps>
   </Tab>
-  <Tab title="Liquidar al transportador">
+  <Tab title="Facturar al cliente">
     <Steps>
-      <Step title="Registra el cumplido">
-        Registra el cumplido — la prueba de que el viaje se completó — con sus conceptos de liquidación.
+      <Step title="Crea la facturación">
+        Agrupa las remesas del cliente en una facturación.
       </Step>
-      <Step title="Revisa los cumplidos pendientes por legalizar">
-        Verifica los cumplidos que ya se registraron pero aún no se han legalizado.
-      </Step>
-      <Step title="Crea la legalización">
-        Crea la legalización que consolida los cumplidos para liquidar con el transportador o el propietario del vehículo.
-      </Step>
-      <Step title="Genera la factura de proveedor">
-        Genera la factura de proveedor a partir de la legalización. Se convierte en un saldo por pagar, y los anticipos creados desde el manifiesto se cruzan contra la liquidación, de modo que al transportador se le paga el valor neto.
+      <Step title="Confirma">
+        La confirmación genera la factura de cliente y cierra el tránsito de cada remesa.
       </Step>
     </Steps>
   </Tab>
 </Tabs>
 
-## Conceptos de liquidación
+## Cumplido
 
-Los conceptos de liquidación determinan los valores de flete y de deducción en ambos lados. Cada concepto puede llevar rangos y excepciones configurables, así los valores se adaptan a las condiciones del viaje sin cálculo manual. Los mismos conceptos que arman los totales del manifiesto durante la operación alimentan el cumplido y la legalización del lado del transportador.
+El cumplido es la prueba de que el viaje de un manifiesto se realizó. Se registra por manifiesto, con el detalle por remesa y los conceptos de liquidación.
+
+<Steps>
+  <Step title="Abre el formulario">
+    Ve a **Transacciones** > **Cumplido** y pulsa **Nuevo**. Las pestañas son **Operación**, **Detalle del cumplido** y **Concepto de liquidación**.
+  </Step>
+  <Step title="Completa la operación">
+    Elige la **Operación** y el **Número de Operación**, la **Fecha de Operación**, la **Sucursal** y el **Centro de Costos**. Todos son requeridos. **Moneda**, **Descripción** y **Tasa de Cambio de Mercado** son opcionales.
+  </Step>
+  <Step title="Indica cómo fue el servicio">
+    **Cumplido estandar** (requerido) indica si el servicio fue normal (**Sí**) o se suspendió por un incidente (**No**). Si lo marcas como no estándar, **Causa de la suspension** (por ejemplo, accidente, incidente o avería) y **Consecuencia** (la medida que se tomó, por ejemplo, cambio de conductor o fin de viaje) pasan a ser obligatorios.
+  </Step>
+  <Step title="Revisa el detalle y los conceptos">
+    En **Detalle del cumplido** revisa lo cumplido por cada remesa. En **Concepto de liquidación** revisa los conceptos que se suman o se restan al pago del transportador.
+  </Step>
+  <Step title="Confirma y reporta al RNDC">
+    Confirma el cumplido. Luego pulsa **Enviar remesa RNDC** y **Enviar manifiesto RNDC**. La lista guarda el resultado en **Remesa RNDC enviada** y **Manifiesto RNDC enviado**.
+  </Step>
+</Steps>
+
+**Esta legalizado** (requerido) empieza en **No**. Indica si el cumplido ya se legalizó. Más adelante, el **Estado de la remesa** pasa de **Generado** a **Cumplido**.
+
+## Legalización
+
+La legalización es la liquidación con el propietario del vehículo.
+
+La legalización:
+
+- Consolida los cumplidos pendientes de legalizar del propietario.
+- Genera la factura de proveedor, o el documento soporte si el propietario no factura. Usa la operación de legalización de [Configuración de sucursal](/es/transport/setup) que corresponde a cada caso.
+- Aplica las retenciones del propietario y deja la cuenta por pagar por el valor neto.
+- Cierra el tránsito del manifiesto en proveedores. Consulta [Remesas y manifiestos en tránsito](/es/transport/transit).
+
+Para ver los asientos de una legalización con números reales, consulta [Ejemplo completo](/es/transport/example-trip).
+
+## Facturación
+
+La facturación agrupa remesas para cobrárselas al cliente. Al confirmarla, genera la factura de cliente y cierra la cuenta de débito del manifiesto de cada remesa.
+
+<Steps>
+  <Step title="Abre el formulario">
+    Ve a **Transacciones** > **Facturación** y pulsa **Nuevo**. El formulario tiene la pestaña **Información general** y las pestañas **Contabilización NIIF** y **Contabilización fiscal**. Dentro, las pestañas **Operación**, **Resumen**, **Remesa**, **Adicional**, **Conceptos** e **Impuesto**.
+  </Step>
+  <Step title="Completa la operación">
+    Elige la **Operación** y el **Número de Operación**, la **Fecha de Operación** y la **Sucursal**. Todos son requeridos. **Moneda**, **Descripción** y **Tasa de Cambio de Mercado** son opcionales.
+  </Step>
+  <Step title="Elige el cliente y cómo agrupar">
+    **Cliente** y **Detalle del Cliente** son requeridos. **Modo de agrupación** define si se genera un registro por cliente (**CLIENTE**) o uno por cliente y por orden de carga (**ORDEN DE CARGA**).
+  </Step>
+  <Step title="Trae las remesas">
+    La pestaña **Remesa** muestra las remesas que se facturan. El formulario tiene el botón **Obtener el encabezado de la remesa de facturación** y el botón **Importar**. La pestaña **Adicional** muestra los cobros adicionales.
+  </Step>
+  <Step title="Revisa los totales">
+    En **Resumen** revisa **Total de Tarifa del Cliente** (lo que cobras), **Total del flete del transportador** (lo que pagas), **Ganancia total de remesas**, **Rentabilidad total de remesas**, los ingresos y gastos adicionales, los impuestos incrementales y decrementales, el **Beneficio total**, la **Rentabilidad total** y el **Número de remesas**.
+  </Step>
+  <Step title="Confirma">
+    Confirma la facturación. Al terminar, **Descripción del Estado** muestra **Facturación procesada.** y el campo **Factura** muestra la factura generada.
+  </Step>
+</Steps>
+
+El formulario tiene el botón **PDF**. **Notas** guarda los comentarios de la facturación.
+
+<Warning>
+Mientras la facturación esté **Provisional**, las remesas siguen en tránsito en las edades de clientes. Salen en la fecha de la factura que las cobra.
+</Warning>
 
 ## A dónde va el dinero después
 
-Las facturas que se generan aquí se convierten en saldos abiertos: la factura de cliente se suma a tus cuentas por cobrar y la factura de proveedor a tus cuentas por pagar. Ambas se recaudan o se pagan luego desde [Tesorería](/es/finance/treasury): los registros de ingreso saldan el balance del cliente y los pagos saldan el del transportador.
+Las facturas que se generan aquí se convierten en saldos abiertos: la factura de cliente se suma a tus cuentas por cobrar y la factura de proveedor a tus cuentas por pagar. Ambas se recaudan o se pagan luego desde [Tesorería](/es/finance/treasury): los registros de ingreso saldan el balance del cliente y los pagos saldan el del propietario.
 
-## Limitaciones
+## En tránsito en los reportes de edades
 
-- Cada lado sigue su secuencia: las remesas deben existir antes de facturar, y los cumplidos deben registrarse y legalizarse antes de la factura de proveedor.
-- Los anticipos del manifiesto se cruzan durante la liquidación: la factura de proveedor del transportador refleja el neto después de anticipos.
+Entre el viaje y sus facturas, el flete ya está en la contabilidad: confirmar el manifiesto lo registra. Los reportes de edades de clientes y de proveedores lo muestran como filas de **Tránsito** hasta que la factura de venta y la legalización lo cierran. Consulta [Remesas y manifiestos en tránsito](/es/transport/transit) para ver qué registra cada documento, cómo se ve en las edades y un ejemplo completo.
 
 ## Guías relacionadas
 
 <CardGroup cols={2}>
+  <Card title="Ejemplo completo" icon="map-location-dot" href="/es/transport/example-trip">
+    Un viaje de Cali a Medellín, del manifiesto a la factura.
+  </Card>
   <Card title="Tesorería" icon="building-columns" href="/es/finance/treasury">
-    Recauda las facturas de cliente y paga las liquidaciones de transportadores.
+    Recauda las facturas de cliente y paga las liquidaciones.
   </Card>
   <Card title="Operaciones de transporte" icon="route" href="/es/transport/operations">
-    Las remesas, los manifiestos y los anticipos de los que parten estas liquidaciones.
+    Las remesas y los manifiestos de los que parten estas liquidaciones.
   </Card>
   <Card title="Ventas" icon="cart-shopping" href="/es/operations/sales">
-    Cómo funcionan las facturas de cliente y las cuentas por cobrar en toda la plataforma.
-  </Card>
-  <Card title="Compras" icon="basket-shopping" href="/es/operations/purchasing">
-    Cómo funcionan las facturas de proveedor y las cuentas por pagar en toda la plataforma.
+    Cómo funcionan las facturas de cliente y las cuentas por cobrar.
   </Card>
 </CardGroup>

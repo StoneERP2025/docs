@@ -1,64 +1,172 @@
 ---
 title: "Transport operations"
-description: "Run the daily transport chain: create service orders, assign load orders, generate remittances, and build manifests."
+description: "Run a trip step by step: service order, load order, remittance, and cargo manifest, with their fields, checks, and RNDC submissions."
 icon: "route"
 ---
 
-Transport operations is the day-to-day work of moving cargo: taking the customer's request, assigning vehicles, generating the shipment documents, and dispatching the trip. Each step in the chain builds on the previous one, and validations keep incomplete or non-compliant trips from moving forward.
+A trip is built from four documents, each on top of the previous one: the service order captures the customer's request, the load order assigns the vehicle, the remittance documents the cargo, and the manifest gathers the trip's remittances and posts the freight. This guide walks through each.
+
+The transport screens are in Spanish, so labels appear here exactly as on screen.
 
 ## Where to find it
 
-The operational pages — service orders, load orders, remittances, and manifests — appear in the **Programs** section of the sidebar when the transport module is enabled for your workspace.
+Go to **TMS** > **Transporte Nacional** > **Transacciones**. The four documents are there: **Orden de Servicio** (service order), **Orden de Cargue** (load order), **Remesa** (remittance), and **Manifiesto de Carga** (cargo manifest). Each list has **Nuevo**, **Eliminar todo**, a **Tabla** view, and **Buscar...**.
 
-## The daily flow
+## Keep in mind
+
+- Before the first trip, complete [Set up transport](/transport/setup) and [Master data](/transport/master-data).
+- Fields marked **Requerido** are mandatory.
+- Every new document starts with **Estado de Operación** set to **Provisional**. A provisional document does not post yet. When you confirm it, it becomes **Completo**; the manifest, the legalization and the billing post their entries when confirmed.
+- Customer, vehicle, driver, and policy validations can stop a document from moving forward until they are resolved.
+- To see the whole run with real numbers, see the [full example](/transport/example-trip).
+
+## The four documents
+
+| Step | Document | What it consumes | What it produces |
+|---|---|---|---|
+| 1 | **Orden de Servicio** | The customer and the details of their request. | The transport request with its trip detail. |
+| 2 | **Orden de Cargue** | The service order and the detail you will serve. | The vehicle assigned to that trip. |
+| 3 | **Remesa** | The load order. | The cargo document. It starts with status **Generado** and **Esta facturada** set to **No**. |
+| 4 | **Manifiesto de Carga** | The remittances travelling together, the vehicle, and the driver. | The trip document and its ledger entry. |
+
+## Step 1. Service order
 
 <Steps>
-  <Step title="Create the service order">
-    Register the customer's request with its details: products and cargo, origin and destination, and the agreed prices. Validations check the customer, the vehicles, and the required policies before the order can proceed. Track the order's progress and status as the chain advances.
+  <Step title="Open the form">
+    Go to **Transacciones** > **Orden de Servicio** and select **Nuevo**. The form has the tabs **Operación**, **Cliente**, **Configuración**, **Detalle**, and **Poliza**.
   </Step>
-  <Step title="Create load orders">
-    Assign vehicles or containers to the service order through load orders, deciding how the cargo is distributed.
+  <Step title="Fill in the operation">
+    In **Campos de la operación**, pick the **Operación** and **Número de Operación**, the **Fecha de Operación**, the **Sucursal**, and the **Centro de Costos**. All are required. **Moneda** defaults to **PESOS**. **Descripción** and **Tasa de Cambio de Mercado** are optional.
   </Step>
-  <Step title="Generate remittances">
-    Generate the remittances (remesas) for the cargo — one shipment document per trip or cargo. Corrections and additional charges are supported when reality differs from the plan, and you can register seals on the shipment.
+  <Step title="Pick the customer">
+    In **Campos de cliente**, fill in **Cliente**, **Detalle del Cliente**, **Vendedor**, **Condición Comercial**, and **Tipo de Lista de Precios**. They are required. **Tipo de Descuento** and **Número interno de la operación** (the reference the customer gives you) are optional.
   </Step>
-  <Step title="Build the manifest">
-    Create the manifest (manifiesto) binding the remittances to the vehicle and driver making the trip. Manifest totals are computed from the settlement concepts. From the manifest, you can create advances to the carrier — these become supplier advances in payables, crossed later against the carrier's settlement.
+  <Step title="Set the transport configuration">
+    Fill in the configuration groups in the table below.
+  </Step>
+  <Step title="Check and confirm">
+    Check the customer, the detail, and the policies before you confirm. The confirmed order is **Completo**.
   </Step>
 </Steps>
 
-## Pricing
+| Group | Fields |
+|---|---|
+| **Configuración de operación** | **Modalidad de operación de transporte** (required): international, national, or municipal. **Tipo de operación de transporte** (required): import, export, distribution, or international. **Línea de negocio** (required). Optional: **Condicion aduanas** and **Modalidad de tránsito aduanero**. |
+| **Configuración de tránsito** | **Naturaleza de la Carga** (required). **Modo de transporte** (required): for example loose cargo, containerized, liquid bulk, or solid bulk. **Tipo de tránsito** (required): night, day, or free. A second **Tipo de operación de transporte** (required) classifies the operation by the cargo's characteristics and defaults to **General**. **Base de Liquidación** (required): whether billing is based on the weight at origin or at destination; it defaults to **Destino**. |
+| **Configuración de contenedores** | All optional: **Tipo de contenedor**, **Propiedad del contenedor**, **Retorno de contenedor**, **Categoría de operación del contenedor**, and **Está compensado**. Use them only if the trip carries a container. |
 
-Freight pricing resolves automatically from your configured route and price tables: given the route and the cargo, the system determines the agreed freight, so operators do not price each trip by hand.
+The service order list shows, among others, the columns **Estado de la orden de servicio**, **Cliente**, **Línea de negocio**, and **Motivo de cancelación**.
 
-## Validations that block progression
+## Step 2. Load order
 
-<Warning>
-Policy, vehicle, and driver validations block a document from progressing until they are resolved. An expired insurance policy, for example, stops the chain at that point. Keep vehicle documents and policies current in [Insurance and legal](/operations/insurance-and-legal) to avoid dispatch delays.
-</Warning>
+The load order assigns the vehicle to a service order detail.
 
-## How operations connect onward
+<Steps>
+  <Step title="Open the form">
+    Go to **Transacciones** > **Orden de Cargue** and select **Nuevo**. The tabs are **Detalles de la asociación**, **Orden Vehículo**, and **Contenedor**.
+  </Step>
+  <Step title="Fill in the operation">
+    Pick the **Operación** and **Número de Operación**, the **Fecha de Operación**, the **Sucursal**, and the **Centro de Costos**. All are required.
+  </Step>
+  <Step title="Link the service order">
+    Pick the **Orden de Servicio**, the **Detalle de la Orden de Servicio**, and the **Viaje**. All three are required.
+  </Step>
+  <Step title="Check the status">
+    **Estado de la orden** (required) starts at **Creado**. **Observaciones** is optional and holds operational notes.
+  </Step>
+  <Step title="Confirm">
+    Check that the assigned vehicle has its policy and documents up to date, and confirm the document.
+  </Step>
+</Steps>
 
-- **Policies** — service orders verify the required insurance policies; see [Insurance and legal](/operations/insurance-and-legal).
-- **Payables** — advances created from the manifest become supplier advances, settled against the carrier's legalization.
-- **RNDC** — remittances and manifests are reported to the Ministry of Transport's registry; see [RNDC and fleet monitoring](/transport/fleet-monitoring).
-- **Billing and settlement** — once the trip runs, the documents feed both settlement branches; see [Transport billing and settlement](/transport/billing-and-settlement).
+The load order list also shows **Inspeccion del vehículo**, **Vehiculos del Detalle de la Orden de Servicio**, and **Reportes**.
 
-## Limitations
+## Step 3. Remittance
 
-- A document cannot advance while its validations fail — resolve the flagged customer, vehicle, driver, or policy issue first.
-- Freight amounts come from the configured route and price tables; routes without pricing must be configured before orders on them can resolve prices.
+The remittance documents the cargo of one trip. It needs a load order: in the list, the **Orden de carga** column links it.
 
-## Related guides
+<Steps>
+  <Step title="Open the form">
+    Go to **Transacciones** > **Remesa** and select **Nuevo**. The tabs are **Operación**, **Cliente**, **Viaje**, **Producto**, **Poliza**, **Precinto**, and **Adicional**.
+  </Step>
+  <Step title="Fill in the operation">
+    Pick the **Operación** and **Número de Operación**, the **Fecha de Operación**, the **Sucursal**, and the **Centro de Costos**, all required. **Almacén**, **Descripción**, **Moneda**, **Categoría**, **Tasa de Cambio de Mercado**, and **Observaciones** are optional.
+  </Step>
+  <Step title="Check the statuses">
+    **Estado de la remesa** (required) starts at **Generado**. **Esta facturada** (required) starts at **No**: the remittance becomes billed when you bill it in **Facturación**.
+  </Step>
+  <Step title="Pick the customer">
+    **Cliente**, **Detalle del Cliente**, and **Vendedor** are required.
+  </Step>
+  <Step title="Fill in loading and unloading">
+    For each, the third party, the site, the date, and the time are required: **Tercero para cargue**, **Sede de cargue**, **Fecha de cargue**, and **Tiempo de cargue**; and **Tercero para descargue**, **Sede de descargue**, **Fecha de descargue**, and **Tiempo de descargue**. The observations for each are optional.
+  </Step>
+  <Step title="Describe the cargo">
+    Fill in **Viaje**, **Inventario enlazado con productos de transporte**, **Naturaleza de la Carga**, **Estado fisico** (solid, liquid, or gas), **Unidad de medida de la carga**, **Empaque**, **Unidad de medida del empaque**, **Cantidad solicitada**, **Peso solicitado**, and **Valor de la carga**. All are required. **Código UN** is optional.
+  </Step>
+  <Step title="Check policies and seals">
+    Review the **Poliza** and **Precinto** tabs before you confirm.
+  </Step>
+  <Step title="Confirm and report to RNDC">
+    Confirm the remittance and select **Enviar RNDC**. The list keeps the result in **RNDC enviado** and **Respuesta RNDC**.
+  </Step>
+</Steps>
+
+The **Adicional** tab lists the remittance's additional charges, with their product, supplier, price, cost, whether **Está facturado**, and whether it was **Aprobado por el Cliente**. It has the buttons **Obtener adicionales de remesa** and **Importar**.
+
+## Step 4. Cargo manifest
+
+The manifest gathers the remittances travelling together in one vehicle with its driver. When you confirm it, the system posts the freight.
+
+<Steps>
+  <Step title="Open the form">
+    Go to **Transacciones** > **Manifiesto de Carga** and select **Nuevo**. The form has the groups **Campos de operación**, **Campos del viajes**, **Remesas**, and **Impuestos**, and the tabs **Contabilización NIIF** and **Contabilización fiscal**.
+  </Step>
+  <Step title="Fill in the operation">
+    Pick the **Operación** and **Número de Operación**, the **Fecha de Operación**, the **Sucursal**, the **Centro de Costos**, and the **Categoría**. All are required. **Moneda**, **Tasa de Cambio de Mercado**, and **Descripción** are optional.
+  </Step>
+  <Step title="Pick the journey and the supplier">
+    Fill in **Viaje**, **Ruta**, **Proveedor**, **Detalle del proveedor**, and **Tipo de proveedor**. They are required. The supplier is the carrier. [Branch configuration](/transport/setup) sets the default supplier type of the branch's carriers.
+  </Step>
+  <Step title="Set the payment">
+    In the additional trip information, fill in **Fecha de pago**, **Ubicación del pago**, **Pago del responsable del cargue**, and **Pago del responsable del descargue**. All are required.
+  </Step>
+  <Step title="Check the totals">
+    In **Totales manifiesto**, **Valor a pagar al transportista**, **Valor neto a pagar**, **Valor del anticipo**, and **Saldo pendiente** are required. **Destinatario del avance** shows who receives the advance and is optional.
+  </Step>
+  <Step title="Check the accounting">
+    Before you confirm, review the **Contabilización NIIF** and **Contabilización fiscal** tabs.
+  </Step>
+  <Step title="Confirm and report">
+    Confirm the manifest. Then select **Enviar RNDC**; the result stays in **RNDC enviado** and **Respuesta RNDC**. The list also shows **Enviar integración** and **Integración enviada**.
+  </Step>
+</Steps>
+
+**Esta cumplido** (required) starts at **No** and shows whether the manifest was already fulfilled. The manifest list also shows **Consecutivo del manifiesto**, **Tipo de manifiesto**, and **Saldo pendiente**.
+
+### What the manifest posts
+
+When you confirm, the system debits the branch's **Cuenta para debito del manifiesto**, one line per remittance, and credits the account of the **Tipo de proveedor** for the total freight. That freight stays in transit until you bill the remittance and legalize the manifest. See [Remittances and manifests in transit](/transport/transit).
+
+### Advances
+
+Advances created from the manifest become supplier advances in payables and are later crossed against the carrier's settlement.
+
+## What comes next
+
+When the trip ends, continue with [Transport billing and settlement](/transport/billing-and-settlement): the cumplido, the legalization with the owner, and the customer billing.
 
 <CardGroup cols={2}>
   <Card title="Billing and settlement" icon="file-invoice-dollar" href="/transport/billing-and-settlement">
-    What happens after the trip: invoice the customer and settle the carrier.
+    Cumplido, legalization, and billing after the trip.
+  </Card>
+  <Card title="Full example" icon="map-location-dot" href="/transport/example-trip">
+    A Cali to Medellín trip with dates and entries.
   </Card>
   <Card title="RNDC and fleet monitoring" icon="satellite-dish" href="/transport/fleet-monitoring">
-    Report dispatches and follow the trip on the road.
+    RNDC reporting and tracking with GPS providers.
   </Card>
   <Card title="Insurance and legal" icon="shield-halved" href="/operations/insurance-and-legal">
-    The policies your validations check before a trip can proceed.
+    The policies your trip validations check.
   </Card>
 </CardGroup>

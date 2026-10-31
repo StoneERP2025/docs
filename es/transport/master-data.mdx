@@ -1,0 +1,130 @@
+---
+title: "Datos maestros"
+description: "Crea los terceros y los vehículos que necesita un viaje: propietario, tenedor, conductor y vehículo con sus pólizas."
+icon: "address-book"
+---
+
+Un viaje necesita saber quién es el dueño del vehículo, quién lo explota, quién lo conduce y qué vehículo es. Esas cuatro piezas se crean una vez y se reutilizan en cada manifiesto.
+
+## Dónde encontrarlo
+
+Ve a **TMS** > **Transporte Nacional** > **Transacciones**. Ahí están **Propietario**, **Tenedor**, **Conductor** y **Vehiculos**. Todas son listas con **Nuevo**, **Eliminar todo**, una vista **Tabla** y el buscador **Buscar...**.
+
+## Ten en cuenta
+
+- Los campos marcados como **Requerido** son obligatorios.
+- Propietario, tenedor y conductor son terceros. Los terceros se manejan como interesados; consulta [CRM e interesados](/es/operations/crm).
+- El cliente no se crea aquí: viene de ventas. Consulta [Cotizaciones y órdenes de venta](/es/operations/sales).
+- En las cuatro listas aparecen las columnas **Enviar RNDC**, **RNDC enviado** y **Respuesta RNDC**. Ahí ves si el registro ya se reportó al RNDC y la respuesta del registro, sea el éxito o el motivo del rechazo.
+
+## Propietario
+
+El propietario es el dueño del vehículo. Es el tercero al que luego se le liquida el flete: su factura o documento soporte nace en la legalización.
+
+El formulario empieza con **Datos de Identificación**. Elige el **Tipo de documento** y escribe el **Número de documento**; el **Digito de verificación** se pide cuando el documento lo tiene. El formulario tiene un grupo de campos para empresas y otro para personas.
+
+<Tabs>
+  <Tab title="Persona">
+    Campos requeridos:
+
+    - **Tipo de documento** y **Número de documento**.
+    - **Nombre completo**, que se arma con **Primer nombre**, **Segundo nombre**, **Primer apellido** y **Segundo apellido**.
+    - **Ciiu**: el código de actividad económica.
+    - **Responsabilidad Fiscal**.
+    - **Nacionalidad**.
+    - **¿Es facturador?**: indica si la persona emite facturas. La pantalla ofrece, por ejemplo, **Documento Soporte**.
+    - **¿Está económicamente vinculado?**.
+    - **Periodo**: el rango de vigencia del registro.
+
+    Opcionales: **Género**, **Fecha de nacimiento**, **Dirección**, **Correo Electrónico** y **Teléfono**.
+  </Tab>
+  <Tab title="Empresa">
+    Campos requeridos:
+
+    - **Tipo de documento** y **Número de documento**.
+    - **Nombre**: el nombre legal.
+    - **Ciiu**.
+    - **Responsabilidad Fiscal**.
+    - **Facturador**: indica si la empresa emite facturas. En Colombia define si es facturador electrónico o si le aplica el documento soporte.
+    - **¿Está económicamente vinculado?**.
+    - **Periodo**.
+
+    Opcionales: **Nombre comercial**, **Página web**, **Ubicación**, **Correo Electrónico** y **Teléfono**.
+  </Tab>
+</Tabs>
+
+Ambos formularios traen el **Perfil fiscal** del tercero, una tabla de hechos fiscales (por ejemplo, autorretenedor de renta o responsable de IVA) con su valor y su vigencia. Al final del formulario, **¿Está activo?** indica si el propietario está activo.
+
+<Note>
+Los campos **¿Es facturador?** y **Facturador** son los que indican si el tercero emite factura o se soporta con documento soporte. Las dos operaciones de legalización de [Configuración de sucursal](/es/transport/setup) corresponden a esos dos casos.
+</Note>
+
+## Tenedor
+
+El tenedor es quien explota el vehículo. Su formulario es igual al del propietario: los mismos datos de identificación, el mismo perfil fiscal y el mismo campo **¿Está activo?**.
+
+## Conductor
+
+El conductor es quien maneja el vehículo. Su formulario tiene los mismos datos de identificación y perfil fiscal del propietario, más dos grupos propios.
+
+**Datos Adicionales**
+
+- **Empresa de salud**: la EPS del conductor.
+- **Gestor de riesgos laborales**: la ARL del conductor.
+- **Estado** (requerido): el estado operativo del conductor, por ejemplo **Activo**.
+
+**Campos de licencia**
+
+- **Ambito geografico de la licencia**.
+- **Numero de licencia**.
+- **Categoria de las licencias**.
+- **Fecha de expedición**.
+- **Fecha de vencimiento**.
+
+<Warning>
+Mantén al día la **Fecha de vencimiento** de la licencia: las validaciones de conductor pueden detener un documento hasta que se resuelvan. Consulta [Operaciones de transporte](/es/transport/operations).
+</Warning>
+
+## Vehiculos
+
+El vehículo une la placa con su propietario, su tenedor y sus conductores. En el formulario, **Configuración del vehículo** reúne:
+
+| Campo | Qué elegir |
+|---|---|
+| **Vehículo** (requerido) | El vehículo, con su placa y su configuración. |
+| **Tipo de propiedad del vehículo** (requerido) | La relación de tu espacio de trabajo con el vehículo. Un vehículo de un propietario que no es tu espacio de trabajo aparece como **Tercero**. |
+| **Categoría** | Clasificación del vehículo dentro de tu espacio de trabajo. |
+| **Veto** | La restricción de veto del vehículo. |
+| **Tipo de operación** (requerido) | Si opera municipal, nacional, mixto o internacional. Para esta guía, nacional. |
+| **¿Está activo?** (requerido) | Si el vehículo está activo para tu espacio de trabajo. |
+
+Los demás grupos son:
+
+- **Datos de la empresa de GPS**: **Empresa de GPS**, **Usuario** y **Contraseña** de la cuenta de rastreo del vehículo.
+- **Interesados**: **Propietario** (requerido), **Tenedor** (requerido), **Conductor** (requerido) y **Conductor auxiliar**.
+- **Seguro del vehiculo**: **Número de seguro**, **Aseguradora**, **Fecha de expedición** y **Fecha de vencimiento**.
+
+### Pestaña Polizas
+
+La pestaña **Polizas** reúne las pólizas del vehículo. Consulta [Seguros y jurídico](/es/operations/insurance-and-legal).
+
+## Antes del primer viaje
+
+<Steps>
+  <Step title="Crea al propietario y al tenedor">
+    Abre **Propietario** y **Tenedor**, pulsa **Nuevo** y completa los campos requeridos.
+  </Step>
+  <Step title="Crea al conductor">
+    Abre **Conductor**, pulsa **Nuevo** y registra su licencia con las fechas de expedición y de vencimiento.
+  </Step>
+  <Step title="Crea el vehículo">
+    Abre **Vehiculos**, pulsa **Nuevo**, elige el propietario, el tenedor y el conductor, y registra las pólizas en la pestaña **Polizas**.
+  </Step>
+  <Step title="Reporta al RNDC">
+    En cada lista, usa **Enviar RNDC** y revisa **Respuesta RNDC**. Un rechazo muestra el motivo.
+  </Step>
+</Steps>
+
+## Siguiente paso
+
+Con los datos maestros listos, corre el viaje en [Operaciones de transporte](/es/transport/operations).

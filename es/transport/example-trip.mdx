@@ -1,0 +1,94 @@
+---
+title: "Ejemplo completo: un viaje de Cali a Medellín"
+description: "Un viaje real de principio a fin: los documentos, las fechas, el asiento contable de cada paso y lo que muestran las edades de clientes y de proveedores."
+icon: "map-location-dot"
+---
+
+Este ejemplo sigue un viaje de Cali a Medellín con un flete de $2.144.000, desde la orden de servicio hasta la factura al cliente. Es un viaje real de una sucursal de Cali: los números son los de sus documentos. Sirve para comprobar que tu configuración produce los mismos asientos.
+
+Para los campos de cada documento, consulta [Operaciones de transporte](/es/transport/operations) y [Facturación y liquidación](/es/transport/billing-and-settlement). Para entender las filas de **Tránsito**, consulta [Remesas y manifiestos en tránsito](/es/transport/transit).
+
+## Ten en cuenta
+
+- Los valores están en pesos colombianos.
+- Las cuentas son las del plan de cuentas de esta empresa. Las tuyas pueden tener otros códigos y nombres, pero cumplen el mismo papel: la cuenta para débito del manifiesto y la cuenta del tipo de proveedor de [Configuración de sucursal](/es/transport/setup).
+- Los asientos de este ejemplo son los que genera el sistema al confirmar el manifiesto, la legalización y la facturación.
+
+## Los documentos del viaje
+
+| Paso | Documento | Fecha |
+|---|---|---|
+| 1 | **Orden de Servicio**, número 9 | 15 de octubre de 2026 |
+| 2 | **Orden de Cargue**, número 5 | 15 de octubre de 2026 |
+| 3 | **Remesa**, operación REMESAS CALI, número 3. Ruta Cali - Medellín, flete $2.144.000 | 15 de octubre de 2026 |
+| 4 | **Manifiesto de Carga**, operación MANIFIESTOS CALI, número 6. Flete del transportador $2.144.000 | 15 de octubre de 2026 |
+| 5 | **Cumplido**, número 10 | Entre el manifiesto y la legalización |
+| 6 | Legalización con documento soporte, número 35995, que cubre el cumplido | 20 de octubre de 2026 |
+| 7 | **Facturación**, número 13, que cobra esta remesa y otra más | 21 de octubre de 2026 |
+
+## El recorrido
+
+<Steps>
+  <Step title="15 de octubre: orden de servicio y orden de cargue">
+    Creas la orden de servicio del cliente y la orden de cargue que le asigna el vehículo. Los dos documentos nacen en **Provisional** y quedan en **Completo** al confirmarlos.
+
+    Los asientos de este viaje empiezan con el manifiesto.
+  </Step>
+  <Step title="15 de octubre: remesa">
+    Creas la remesa de la ruta Cali - Medellín. Nace con **Estado de la remesa** en **Generado** y **Esta facturada** en **No**. La confirmas y la reportas con **Enviar RNDC**.
+  </Step>
+  <Step title="15 de octubre: manifiesto">
+    Creas el manifiesto con la remesa, el vehículo y el conductor, con un flete del transportador de $2.144.000, y lo confirmas. El sistema contabiliza:
+
+    | Cuenta | Débito | Crédito |
+    |---|---|---|
+    | 13102007 Remesas por facturar Cali | 2.144.000 | |
+    | 22050507 Manifiestos Cali | | 2.144.000 |
+
+    **Edades de Clientes** muestra una fila de **Tránsito** de $2.144.000 a nombre del cliente de la remesa. **Edades de Proveedores** muestra una fila de **Tránsito** de $2.144.000 a nombre del propietario del vehículo.
+  </Step>
+  <Step title="Cumplido">
+    Cuando el viaje se realiza, registras el cumplido del manifiesto. En el mismo documento están los botones **Enviar remesa RNDC** y **Enviar manifiesto RNDC**. Las edades siguen mostrando las dos filas de **Tránsito**: el tránsito solo sale con la facturación y la legalización.
+  </Step>
+  <Step title="20 de octubre: legalización">
+    Legalizas el cumplido. Como el propietario se soporta con documento soporte, el sistema usa la operación de legalización para documento soporte y contabiliza:
+
+    | Cuenta | Débito | Crédito |
+    |---|---|---|
+    | 22050507 Manifiestos Cali | 2.144.000 | |
+    | 2404050304 Retefuente servicios de transporte | | 21.440 |
+    | 2368050174 Rete ICA Cali | | 7.075 |
+    | 22050507 Cuenta por pagar al propietario | | 2.115.485 |
+
+    El propietario recibe $2.115.485: el flete menos las dos retenciones. **Edades de Proveedores**: la fila de **Tránsito** de $2.144.000 sale y entra el documento soporte por $2.115.485. **Edades de Clientes** sigue mostrando la remesa en tránsito.
+  </Step>
+  <Step title="21 de octubre: facturación">
+    Creas la facturación del cliente con esta remesa y otra más, y la confirmas. Por cada remesa, el sistema cierra la cuenta para débito del manifiesto:
+
+    | Cuenta | Débito | Crédito |
+    |---|---|---|
+    | 61450501 Servicio de transporte por carretera | 2.144.000 | |
+    | 13102007 Remesas por facturar Cali | | 2.144.000 |
+
+    Además, la factura registra los ingresos, el IVA, las retenciones y la cuenta por cobrar (13050501) por la tarifa que le cobras al cliente. La cuenta 13102007 de este manifiesto queda en cero.
+
+    **Edades de Clientes**: la fila de **Tránsito** de la remesa sale y entra la factura por el valor facturado.
+  </Step>
+</Steps>
+
+## Qué muestran las edades en cada fecha
+
+| Fecha | Edades de Clientes | Edades de Proveedores |
+|---|---|---|
+| 14 de octubre | Nada de este viaje. | Nada de este viaje. |
+| Del 15 al 19 de octubre | **Tránsito** de $2.144.000 (la remesa). | **Tránsito** de $2.144.000 (el manifiesto). |
+| 20 de octubre | **Tránsito** de $2.144.000. | La fila de **Tránsito** sale. Entra el documento soporte por $2.115.485. |
+| 21 de octubre | La fila de **Tránsito** sale. Entra la factura. | El documento soporte de $2.115.485. |
+
+Un reporte con corte a una fecha pasada muestra lo que estaba en tránsito ese día: con corte al 17 de octubre verás las dos filas de **Tránsito**, aunque hoy ya estén cerradas.
+
+## Para comprobar tu configuración
+
+- La cuenta 13102007 de ese manifiesto debe quedar en cero después de facturar.
+- La cuenta de manifiestos (22050507) se acredita al confirmar el manifiesto y se debita al legalizar.
+- Si algo no cuadra, compara tus asientos con las tablas anteriores y revisa [Configuración de sucursal](/es/transport/setup).
