@@ -1,0 +1,132 @@
+---
+title: "Master data"
+description: "Create the third parties and vehicles a trip needs: owner, holder, driver, and vehicle with its policies."
+icon: "address-book"
+---
+
+A trip needs to know who owns the vehicle, who operates it, who drives it, and which vehicle it is. You create those four pieces once and reuse them on every manifest.
+
+The transport screens are in Spanish, so labels appear here exactly as on screen.
+
+## Where to find it
+
+Go to **TMS** > **Transporte Nacional** > **Transacciones**. There you find **Propietario** (owner), **Tenedor** (holder), **Conductor** (driver), and **Vehiculos** (vehicles). Each is a list with **Nuevo**, **Eliminar todo**, a **Tabla** view, and the **Buscar...** search.
+
+## Keep in mind
+
+- Fields marked **Requerido** are mandatory.
+- Owner, holder, and driver are third parties. Third parties are managed as stakeholders; see [CRM and stakeholders](/operations/crm).
+- The customer is not created here: it comes from sales. See [Quotes and sales orders](/operations/sales).
+- All four lists show the columns **Enviar RNDC**, **RNDC enviado**, and **Respuesta RNDC**. There you see whether the record was already reported to RNDC and the registry's answer, whether a success or the reason for a rejection.
+
+## Owner
+
+The owner is the vehicle's owner. It is the third party you later settle the freight with: its supplier invoice or support document comes from the legalization.
+
+The form starts with **Datos de Identificación**. Pick the **Tipo de documento** and enter the **Número de documento**; the **Digito de verificación** is asked for when the document has one. The form has one group of fields for companies and another for people.
+
+<Tabs>
+  <Tab title="Person">
+    Required fields:
+
+    - **Tipo de documento** and **Número de documento**.
+    - **Nombre completo**, built from **Primer nombre**, **Segundo nombre**, **Primer apellido**, and **Segundo apellido**.
+    - **Ciiu**: the economic activity code.
+    - **Responsabilidad Fiscal**.
+    - **Nacionalidad**.
+    - **¿Es facturador?**: whether the person issues invoices. The screen offers, for example, **Documento Soporte**.
+    - **¿Está económicamente vinculado?**.
+    - **Periodo**: the record's validity range.
+
+    Optional: **Género**, **Fecha de nacimiento**, **Dirección**, **Correo Electrónico**, and **Teléfono**.
+  </Tab>
+  <Tab title="Company">
+    Required fields:
+
+    - **Tipo de documento** and **Número de documento**.
+    - **Nombre**: the legal name.
+    - **Ciiu**.
+    - **Responsabilidad Fiscal**.
+    - **Facturador**: whether the company issues invoices. In Colombia it defines whether it is an electronic invoicer or subject to the support document.
+    - **¿Está económicamente vinculado?**.
+    - **Periodo**.
+
+    Optional: **Nombre comercial**, **Página web**, **Ubicación**, **Correo Electrónico**, and **Teléfono**.
+  </Tab>
+</Tabs>
+
+Both forms include the third party's **Perfil fiscal**, a table of tax facts (for example, income-tax self-withholder or VAT responsible) with their value and validity. At the end of the form, **¿Está activo?** shows whether the owner is active.
+
+<Note>
+The **¿Es facturador?** and **Facturador** fields indicate whether the third party issues invoices or is supported with a support document. The two legalization operations in [branch configuration](/transport/setup) correspond to those two cases.
+</Note>
+
+## Holder
+
+The holder is who operates the vehicle. Its form is the same as the owner's: the same identification data, the same tax profile, and the same **¿Está activo?** field.
+
+## Driver
+
+The driver is who drives the vehicle. Its form has the same identification data and tax profile as the owner's, plus two groups of its own.
+
+**Datos Adicionales**
+
+- **Empresa de salud**: the driver's health provider (EPS).
+- **Gestor de riesgos laborales**: the driver's occupational risk insurer (ARL).
+- **Estado** (required): the driver's operating status, for example **Activo**.
+
+**Campos de licencia**
+
+- **Ambito geografico de la licencia**.
+- **Numero de licencia**.
+- **Categoria de las licencias**.
+- **Fecha de expedición**.
+- **Fecha de vencimiento**.
+
+<Warning>
+Keep the license **Fecha de vencimiento** up to date: driver validations can stop a document until they are resolved. See [Transport operations](/transport/operations).
+</Warning>
+
+## Vehicles
+
+The vehicle ties the plate to its owner, holder, and drivers. In the form, **Configuración del vehículo** gathers:
+
+| Field | What to pick |
+|---|---|
+| **Vehículo** (required) | The vehicle, with its plate and configuration. |
+| **Tipo de propiedad del vehículo** (required) | Your workspace's relationship with the vehicle. A vehicle whose owner is not your workspace appears as **Tercero**. |
+| **Categoría** | Classification of the vehicle within your workspace. |
+| **Veto** | The vehicle's veto restriction. |
+| **Tipo de operación** (required) | Whether it operates municipal, national, mixed, or international. For this guide, national. |
+| **¿Está activo?** (required) | Whether the vehicle is active for your workspace. |
+
+The other groups are:
+
+- **Datos de la empresa de GPS**: **Empresa de GPS**, **Usuario**, and **Contraseña** of the vehicle's tracking account.
+- **Interesados**: **Propietario** (required), **Tenedor** (required), **Conductor** (required), and **Conductor auxiliar**.
+- **Seguro del vehiculo**: **Número de seguro**, **Aseguradora**, **Fecha de expedición**, and **Fecha de vencimiento**.
+
+### The Polizas tab
+
+The **Polizas** tab gathers the vehicle's policies. See [Insurance and legal](/operations/insurance-and-legal).
+
+## Before the first trip
+
+<Steps>
+  <Step title="Create the owner and the holder">
+    Open **Propietario** and **Tenedor**, select **Nuevo**, and fill in the required fields.
+  </Step>
+  <Step title="Create the driver">
+    Open **Conductor**, select **Nuevo**, and register the license with its issue and expiry dates.
+  </Step>
+  <Step title="Create the vehicle">
+    Open **Vehiculos**, select **Nuevo**, pick the owner, the holder, and the driver, and register the policies in the **Polizas** tab.
+  </Step>
+  <Step title="Report to RNDC">
+    In each list, use **Enviar RNDC** and check **Respuesta RNDC**. A rejection shows the reason.
+  </Step>
+</Steps>
+
+## Next step
+
+With the master data ready, run the trip in [Transport operations](/transport/operations).

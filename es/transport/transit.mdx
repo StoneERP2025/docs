@@ -1,0 +1,96 @@
+---
+title: "Remesas y manifiestos en tránsito"
+description: "Cómo contabiliza el viaje antes de facturar y legalizar, cómo se ve en las edades de clientes y de proveedores, y cuándo sale de ellas."
+icon: "truck-fast"
+---
+
+Cuando confirmas un manifiesto, el flete del viaje entra a la contabilidad, aunque todavía no hayas facturado al cliente ni legalizado con el propietario del vehículo. A ese flete lo llamamos **en tránsito**. Los reportes de edades de clientes y de proveedores lo muestran como filas de **Tránsito**, junto a las facturas y los anticipos, para que la cartera cuadre con la contabilidad mientras el viaje está en curso.
+
+Las empresas sin el módulo de transporte no ven ningún cambio en sus reportes.
+
+## Qué registra cada documento
+
+El tránsito nace con el manifiesto y se cierra con dos documentos distintos: la factura de venta cierra el lado del cliente y la legalización cierra el lado del transportador.
+
+| Documento | Débito | Crédito | Qué pasa en las edades |
+|---|---|---|---|
+| **Manifiesto** confirmado | La cuenta de débito del manifiesto, una línea por remesa, por su flete | La cuenta del tipo de proveedor, una línea por el flete total | Aparece una fila de Tránsito por cada remesa en clientes y una por el manifiesto en proveedores |
+| **Factura de venta** que cobra la remesa | El costo del flete | La cuenta de débito del manifiesto, por el mismo flete | La fila de la remesa sale de clientes y entra la factura |
+| **Legalización** confirmada | La cuenta del tipo de proveedor, por el flete | Las retenciones y la cuenta por pagar al propietario del vehículo | La fila del manifiesto sale de proveedores y entra la factura de proveedor |
+
+Las dos cuentas se configuran por sucursal, en **Configuración de sucursal**: **Cuenta para debito del manifiesto** y **Tipo de proveedor** de los transportadores. Consulta [Configura el transporte](/es/transport/setup). La factura cierra la cuenta de débito del manifiesto de la sucursal **del manifiesto**, aunque factures desde otra sucursal. Si esa sucursal ya no tiene la cuenta configurada, la factura no se crea y el mensaje te dice qué remesa y qué manifiesto la necesitan. Una remesa sin flete no registra esas líneas.
+
+## Cómo se ve en las edades
+
+| | Edades de clientes | Edades de proveedores |
+|---|---|---|
+| Una fila por | Cada remesa de un manifiesto confirmado que aún no se factura | Cada manifiesto confirmado que aún no se legaliza |
+| Valor | El flete de la remesa | El flete del transportador del manifiesto |
+| Tercero | El cliente de la remesa | El propietario del vehículo |
+| Descripción | Tránsito · Remesa · Manifiesto · Ruta · Placa | Tránsito · Manifiesto · Remesas · Ruta · Placa |
+| Días | Días desde el manifiesto sin facturar | Días desde el manifiesto sin legalizar |
+
+- Cada fila lleva la sucursal, el centro de costo y la unidad de negocio **del manifiesto**, los mismos con que el manifiesto contabilizó. Así la fila y la cuenta cuadran en cada dimensión.
+- La fila no tiene notas, cruces ni pagos: su saldo es su valor. No se puede pagar ni cruzar, porque todavía no es una deuda con nadie.
+- Para ver solo el tránsito, filtra por la operación de la remesa o del manifiesto.
+- El anticipo del manifiesto conserva su propia fila en edades de proveedores. La fila de Tránsito no lo incluye ni lo descuenta.
+
+## Cuándo sale de las edades
+
+- **Una remesa sale de clientes** en la fecha de la factura de venta que la cobra. Mientras la facturación esté **Provisional**, la remesa sigue en tránsito.
+- **Un manifiesto sale de proveedores** en la fecha de la legalización confirmada que cubre su último cumplido. Si el manifiesto tiene dos cumplidos y solo uno está legalizado, todo su flete sigue en tránsito.
+- **Un reporte a una fecha pasada** muestra lo que estaba en tránsito ese día. Lee las fechas de los documentos, no su estado de hoy.
+- Una legalización reversada después sigue contando desde su fecha.
+
+## Ejemplo
+
+Un manifiesto lleva dos remesas de Bogotá a Cali, cada una con un flete de $4.265.000. Las cuentas son las de un plan de cuentas colombiano: la cuenta de débito del manifiesto es *13102001 Remesas por facturar* y el tipo de proveedor usa *23354501 Costos y gastos por pagar - transportes, fletes y acarreos*.
+
+<Steps>
+  <Step title="11 de agosto: confirmas el manifiesto">
+    La contabilidad registra:
+
+    | Cuenta | Débito | Crédito |
+    |---|---|---|
+    | 13102001 Remesas por facturar (remesa 18) | 4.265.000 | |
+    | 13102001 Remesas por facturar (remesa 19) | 4.265.000 | |
+    | 23354501 Costos y gastos por pagar - transportes | | 8.530.000 |
+
+    Con corte al 15 de agosto, edades de clientes muestra dos filas de Tránsito de $4.265.000 a nombre del cliente, con 4 días. Edades de proveedores muestra una fila de Tránsito de $8.530.000 a nombre del propietario del vehículo. Si el manifiesto tuvo anticipo, su fila aparece aparte.
+  </Step>
+  <Step title="18 de agosto: confirmas la legalización">
+    La legalización genera la factura de proveedor:
+
+    | Cuenta | Débito | Crédito |
+    |---|---|---|
+    | 23354501 Costos y gastos por pagar - transportes | 8.530.000 | |
+    | 23657001 ReteFte servicio de transporte de carga 1% | | 85.300 |
+    | 23689001 Retención de ICA por pagar | | 35.314 |
+    | 23657004 Retención FOPAT por pagar | | 8.530 |
+    | 23354501 Cuenta por pagar al propietario del vehículo | | 8.400.856 |
+
+    Con corte al 18 de agosto, la fila de Tránsito del manifiesto ya no está en edades de proveedores. En su lugar aparece la factura de proveedor por $8.400.856. Edades de clientes sigue mostrando las dos remesas en tránsito.
+  </Step>
+  <Step title="19 de agosto: facturas las remesas al cliente">
+    La factura de venta registra sus ingresos, impuestos y la cuenta por cobrar, y además cierra el tránsito de cada remesa:
+
+    | Cuenta | Débito | Crédito |
+    |---|---|---|
+    | 61450501 Costo servicio de transporte de carga por carretera (remesa 18) | 4.265.000 | |
+    | 13102001 Remesas por facturar (remesa 18) | | 4.265.000 |
+    | 61450501 Costo servicio de transporte de carga por carretera (remesa 19) | 4.265.000 | |
+    | 13102001 Remesas por facturar (remesa 19) | | 4.265.000 |
+
+    Con corte al 19 de agosto, las dos filas de Tránsito ya no están en edades de clientes. En su lugar aparece la factura de venta, por el valor facturado al cliente. La cuenta *13102001* de ese manifiesto queda en cero, en la misma sucursal, centro de costo y unidad de negocio en que se abrió.
+  </Step>
+</Steps>
+
+Si consultas edades de proveedores con corte al 15 de agosto después de todo esto, el manifiesto vuelve a aparecer en tránsito, porque ese día todavía no estaba legalizado.
+
+## Ten en cuenta
+
+- Las filas de Tránsito suman el saldo de la cuenta de débito del manifiesto y de la cuenta del tipo de proveedor solo si esas cuentas se usan únicamente para los manifiestos. Si registras otros documentos en ellas, la cuenta tendrá más de lo que está en tránsito.
+- El anticipo del manifiesto debe usar un tipo de proveedor distinto al del manifiesto. Si usa el mismo, el pago del anticipo se mezcla con el tránsito en la misma cuenta.
+- La fila de Tránsito lleva el flete, igual que la contabilidad, no la tarifa que le cobras al cliente.
+
+Para el proceso de facturar remesas y legalizar cumplidos, consulta [Facturación y liquidación de transporte](/es/transport/billing-and-settlement).

@@ -1,0 +1,118 @@
+---
+title: "Set up transport"
+description: "Get transport ready before the first trip: each branch's configuration, settlement concepts, routes, and the RUNT and RNDC definitions."
+icon: "gear"
+---
+
+Before you create the first trip, define how each branch posts manifests, which operation each document uses, and which concepts settle the carrier. This guide walks through that setup in the order that makes sense.
+
+The transport screens are in Spanish, so labels appear here exactly as on screen, with a translation where it helps.
+
+## Where to find it
+
+Go to **TMS** > **Transporte Nacional**. The menu has three groups: **Configuración** (setup), **Transacciones** (documents), and **Reportes** (reports). Everything in this guide is under **Configuración**.
+
+## Keep in mind
+
+- Set up each branch once, in the branch where manifests originate.
+- Third parties (customers, owners, holders, and drivers) and vehicles come later, in [Master data](/transport/master-data).
+- The ledger accounts and operations you pick here must already exist in your chart of accounts and your operations setup. See [Accounting](/finance/accounting).
+
+## Branch configuration
+
+The **Configuración de sucursal** screen has one row per branch. Select **Nuevo** to create the configuration of a branch that has none. Fields marked **Requerido** are mandatory.
+
+| Field | What to pick | What it does |
+|---|---|---|
+| **Sucursal** (required) | The branch you are configuring. | Ties this configuration to the transport documents that originate in that branch. |
+| **Margen Esperado** (required) | The profit percentage you expect from the transport business. | It is the margin reference for your operation. |
+| **Cuenta para debito del manifiesto** | The branch's ledger account for remittances to bill. | When you confirm a manifest, the system debits this account, one line per remittance. The customer invoice closes it later. |
+| **Tipo de proveedor** | The supplier type of this branch's carriers. Its account appears next to it (on screen, **Supplier type Account**). | When you confirm the manifest, the system credits the account of this supplier type for the total freight. The legalization closes it later. |
+| **Operación de legalización para documento soporte** (required) | The ledger operation for expenses of suppliers who do not invoice and are supported with a support document (documento soporte). | Legalization uses this operation when the vehicle owner is set up with a support document. |
+| **Operación para legalización de cuentas por pagar** (required) | The ledger operation for expenses of suppliers who issue electronic invoices. | Legalization uses this operation when the vehicle owner invoices electronically. |
+| **Operación para facturación del cliente** (required) | The ledger operation of the customer invoice. | Billing uses this operation to generate the sales invoice. |
+| **Operación de Cruces** (required) | The operation for automatic crossings. | It is the operation code for automatic crossings. |
+
+<Warning>
+The manifest debit account and the supplier type determine how each manifest posts its freight. Use accounts dedicated to manifests for both, so their balances match what is in transit. See [Remittances and manifests in transit](/transport/transit).
+</Warning>
+
+<Steps>
+  <Step title="Open the setup">
+    Go to **TMS** > **Transporte Nacional** > **Configuración** > **Configuración de sucursal**.
+  </Step>
+  <Step title="Create or open the branch row">
+    Select **Nuevo**, or open the existing row with **Abrir**.
+  </Step>
+  <Step title="Fill in the fields">
+    Pick the branch, the expected margin, the manifest debit account, the supplier type, and the four operations from the table above.
+  </Step>
+  <Step title="Save">
+    Save the configuration and repeat for every branch that will run transport.
+  </Step>
+</Steps>
+
+## The operations each document uses
+
+Every transport document carries an **Operación** and a **Número de Operación**: the number is the document's sequence. In the [full example](/transport/example-trip), the remittance uses a remittances operation of the branch and the manifest uses a manifests operation of the same branch.
+
+| Document | Operation it carries |
+|---|---|
+| **Orden de Servicio**, **Orden de Cargue**, **Remesa**, **Manifiesto de Carga**, and **Cumplido** | Its own operation for each document type, picked in the document's **Operación** field. |
+| Legalization | The legalization operation from **Configuración de sucursal**, depending on whether the owner uses a support document or an electronic invoice. |
+| **Facturación** | The customer billing operation from **Configuración de sucursal**. |
+
+## Settlement concepts
+
+Settlement concepts are the amounts added to or subtracted from the carrier's payment. You define them once, and they apply in the cumplido and the legalization.
+
+Go to **TMS** > **Transporte Nacional** > **Configuración** > **Concepto de Liquidación**. The list has **Nuevo** and **Importar**. The form has four tabs: **Campos**, **Configuración**, **Viajes exentos**, and **Propietarios exentos**.
+
+| Field | What it means |
+|---|---|
+| **Nombre** (required) | Unique name of the concept in your workspace. |
+| **Se aplica automaticamente** (required) | **Sí**: the system applies it by itself. **No**: you enter it by hand on each document. |
+| **Es gasto** (required) | Sets the effect on the carrier's payment: an expense is added to the payment; otherwise it is subtracted. |
+| **Metodo de cálculo** (required) | How it is calculated: percentage, fixed value, or freight range. |
+| **¿Está activo?** (required) | Whether the concept is available for new uses. |
+| **Cuenta** | The ledger account where the concept posts. |
+| **Producto** | The product tied to the concept. It must be a service. |
+| **Modalidad de operación de transporte** (required) | Which modalities it applies to: international, national, or municipal. If you leave it empty, it applies to all. |
+| **Base de cálculo** | What it is calculated on: outstanding balance, advance, both, or freight. Only for concepts that apply automatically. |
+| **Es global** (required) | **Sí**: applies to all. **No**: evaluated according to the concept's exceptions. Only for concepts that apply automatically. |
+
+<Note>
+The **Configuración** tab and the exception tabs have more fields than this guide covers. Read their on-screen help when you set up a concept.
+</Note>
+
+## Routes, journeys, and prices
+
+These screens define the geography and the rates of your trips. In the menu they are in the **Rutas** and **Precios** groups.
+
+- **Rutas.** Each route has a descriptive **Nombre**, the **Viaje** (journey) it belongs to, whether it is the standard route (**¿Es estándar?**), and whether it is active (**¿Está activo?**). All four are required. Mark an alternate route as non-standard.
+- The load order, the remittance, the manifest, and each route ask for a **Viaje**.
+- Route rates are defined in the price screens of the **Precios** group.
+- There are also supporting catalogs for sections, toll points, and checkpoints.
+
+Set up routes and their prices before you create the first service order.
+
+## RUNT and RNDC definitions
+
+Transport forms ask for data that the Ministry of Transport defines in catalogs: the **RUNT** (Registro Único Nacional de Tránsito) for vehicles and the **RNDC** (Registro Nacional de Despachos de Carga) for dispatches. Under **Configuración** you find those catalogs:
+
+- For the vehicle: brand, color, body type, fuel, and vehicle configuration.
+- For the cargo: cargo nature and packaging.
+- For the business: business line, transport mode, cancellation reason, and veto.
+
+Review these catalogs before you create vehicles and service orders: the forms ask you to pick from their values.
+
+## Next step
+
+<CardGroup cols={2}>
+  <Card title="Master data" icon="address-book" href="/transport/master-data">
+    Create the owner, the holder, the driver, and the vehicle.
+  </Card>
+  <Card title="Transport operations" icon="route" href="/transport/operations">
+    Run the trip: service order, load order, remittance, and manifest.
+  </Card>
+</CardGroup>

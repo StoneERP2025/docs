@@ -1,0 +1,78 @@
+---
+title: "Transport reports"
+description: "Read your operation with the four transport dashboards and the customer and supplier aging reports."
+icon: "chart-line"
+---
+
+Transport has four reports of its own, with filters by period, branch, business line, customer, and plate, and two aging reports that show receivables and payables, including freight in transit.
+
+The transport screens are in Spanish, so labels appear here exactly as on screen.
+
+## Where to find it
+
+- The four dashboards are in **TMS** > **Transporte Nacional** > **Reportes**.
+- **Edades de Clientes** (customer aging) and **Edades de Proveedores** (supplier aging) are in **ERP**.
+
+## Keep in mind
+
+- When there is no data for the period and filters you chose, each chart shows **No hay datos disponibles para esta gráfica.**
+- All dashboards filter by **Periodo** (**Desde** and **Hasta**), **Sucursal**, **Línea de negocio**, **Cliente**, and **Placa del vehículo**.
+
+## The four dashboards
+
+<Tabs>
+  <Tab title="Tablero gerencial de transporte">
+    The management view: how much comes in, how much it costs, and who owes.
+
+    - **Resumen del periodo.**
+    - **Evolución mensual**: income, cost, and profit per month, and remittances per month.
+    - **Clientes y rutas**: top 10 customers by income, income by business line, and top 10 routes by remittances.
+    - **Participación**: by customer, by branch, and by business line.
+    - **Cartera y cuentas por pagar**: receivables aging, aging of what is payable to holders, and receivables by customer.
+    - **Detalle**: service orders of the period.
+  </Tab>
+  <Tab title="Tablero de operación de transporte">
+    The day-to-day view: which step each trip is at.
+
+    - **Resumen del periodo.**
+    - **Avance de la cadena**: of the holder and of the customer, open chains by pending step, and average days per leg.
+    - **Reporte al RNDC**: status of the RNDC report.
+    - **Flota**: trips per vehicle and freight per holder.
+    - **Detalle**: remittances and their status.
+  </Tab>
+  <Tab title="Rentabilidad y servicio de transporte">
+    The profitability and customer service view.
+
+    - **Rentabilidad**: profit and margin by customer, by business line, and by route, and income and cost per ton by route.
+    - **Concentración**: the top 5 customers and the top 5 carriers.
+    - **Servicio**: appointment compliance by customer and shortfalls by holder.
+    - **Uso de la flota**: trips per month and vehicles without trips per month.
+    - **Dinero**.
+  </Tab>
+  <Tab title="Sucursales de transporte">
+    The comparison between branches.
+
+    - **Resultado**: result by branch, ranking by margin, and monthly trend.
+    - **Volumen y cadena**: volume by branch, ranking by cycle in days, and open chains by branch and step.
+    - **Dinero**: advances and payables, receivables, and receivables and cumplido not yet billed, all by branch.
+    - **Reporte al RNDC**: RNDC report by branch.
+  </Tab>
+</Tabs>
+
+## Aging reports
+
+**Edades de Clientes** and **Edades de Proveedores** show open balances by age. While a trip is not billed or legalized, its freight appears as a **Tránsito** (in transit) row: one per remittance in customers and one per manifest in suppliers. See [Remittances and manifests in transit](/transport/transit) for how each row is calculated and when it leaves. The [full example](/transport/example-trip) shows the effect date by date.
+
+## Related guides
+
+<CardGroup cols={2}>
+  <Card title="Remittances and manifests in transit" icon="truck-fast" href="/transport/transit">
+    How freight shows in aging before billing and legalization.
+  </Card>
+  <Card title="Full example" icon="map-location-dot" href="/transport/example-trip">
+    A trip from start to finish with its entries.
+  </Card>
+  <Card title="Dashboards and reports" icon="chart-column" href="/reporting/dashboards-and-reports">
+    How to use and share dashboards and reports across the platform.
+  </Card>
+</CardGroup>

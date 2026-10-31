@@ -1,0 +1,94 @@
+---
+title: "Full example: a trip from Cali to Medellín"
+description: "A real trip from start to finish: the documents, the dates, the ledger entry of each step, and what the customer and supplier aging reports show."
+icon: "map-location-dot"
+---
+
+This example follows a trip from Cali to Medellín with a freight of $2,144,000, from the service order to the customer invoice. It is a real trip from a Cali branch: the numbers are those of its documents. Use it to check that your setup produces the same entries.
+
+For each document's fields, see [Transport operations](/transport/operations) and [Billing and settlement](/transport/billing-and-settlement). To understand the **Tránsito** (in transit) rows, see [Remittances and manifests in transit](/transport/transit).
+
+## Keep in mind
+
+- Values are in Colombian pesos.
+- The accounts are those of this company's chart of accounts. Yours may have other codes and names, but they play the same role: the manifest debit account and the supplier type account from [branch configuration](/transport/setup).
+- The entries in this example are the ones the system generates when you confirm the manifest, the legalization, and the billing.
+
+## The trip's documents
+
+| Step | Document | Date |
+|---|---|---|
+| 1 | **Orden de Servicio**, number 9 | October 15, 2026 |
+| 2 | **Orden de Cargue**, number 5 | October 15, 2026 |
+| 3 | **Remesa**, operation REMESAS CALI, number 3. Route Cali - Medellín, freight $2,144,000 | October 15, 2026 |
+| 4 | **Manifiesto de Carga**, operation MANIFIESTOS CALI, number 6. Carrier freight $2,144,000 | October 15, 2026 |
+| 5 | **Cumplido**, number 10 | Between the manifest and the legalization |
+| 6 | Legalization with a support document, number 35995, covering the cumplido | October 20, 2026 |
+| 7 | **Facturación**, number 13, billing this remittance and one more | October 21, 2026 |
+
+## The run
+
+<Steps>
+  <Step title="October 15: service order and load order">
+    You create the customer's service order and the load order that assigns the vehicle. Both documents start as **Provisional** and become **Completo** when you confirm them.
+
+    The entries of this trip start with the manifest.
+  </Step>
+  <Step title="October 15: remittance">
+    You create the Cali - Medellín remittance. It starts with **Estado de la remesa** at **Generado** and **Esta facturada** at **No**. You confirm it and report it with **Enviar RNDC**.
+  </Step>
+  <Step title="October 15: manifest">
+    You create the manifest with the remittance, the vehicle, and the driver, with a carrier freight of $2,144,000, and confirm it. The system posts:
+
+    | Account | Debit | Credit |
+    |---|---|---|
+    | 13102007 Remesas por facturar Cali | 2,144,000 | |
+    | 22050507 Manifiestos Cali | | 2,144,000 |
+
+    **Edades de Clientes** shows one **Tránsito** row of $2,144,000 under the remittance's customer. **Edades de Proveedores** shows one **Tránsito** row of $2,144,000 under the vehicle owner.
+  </Step>
+  <Step title="Cumplido">
+    When the trip is done, you register the manifest's cumplido. The same document has the **Enviar remesa RNDC** and **Enviar manifiesto RNDC** buttons. Aging keeps showing the two **Tránsito** rows: transit only leaves with billing and legalization.
+  </Step>
+  <Step title="October 20: legalization">
+    You legalize the cumplido. Because the owner is supported with a support document, the system uses the support-document legalization operation and posts:
+
+    | Account | Debit | Credit |
+    |---|---|---|
+    | 22050507 Manifiestos Cali | 2,144,000 | |
+    | 2404050304 Retefuente servicios de transporte | | 21,440 |
+    | 2368050174 Rete ICA Cali | | 7,075 |
+    | 22050507 Payable to the owner | | 2,115,485 |
+
+    The owner receives $2,115,485: the freight minus the two withholdings. **Edades de Proveedores**: the **Tránsito** row of $2,144,000 leaves and the support document for $2,115,485 comes in. **Edades de Clientes** still shows the remittance in transit.
+  </Step>
+  <Step title="October 21: billing">
+    You create the customer's billing with this remittance and one more, and confirm it. For each remittance, the system closes the manifest debit account:
+
+    | Account | Debit | Credit |
+    |---|---|---|
+    | 61450501 Servicio de transporte por carretera | 2,144,000 | |
+    | 13102007 Remesas por facturar Cali | | 2,144,000 |
+
+    The invoice also posts the income, the VAT, the withholdings, and the receivable (13050501) for the rate you charge the customer. Account 13102007 of this manifest is back to zero.
+
+    **Edades de Clientes**: the remittance's **Tránsito** row leaves and the invoice comes in for the billed value.
+  </Step>
+</Steps>
+
+## What aging shows on each date
+
+| Date | Edades de Clientes | Edades de Proveedores |
+|---|---|---|
+| October 14 | Nothing from this trip. | Nothing from this trip. |
+| October 15 to 19 | **Tránsito** of $2,144,000 (the remittance). | **Tránsito** of $2,144,000 (the manifest). |
+| October 20 | **Tránsito** of $2,144,000. | The **Tránsito** row leaves. The support document for $2,115,485 comes in. |
+| October 21 | The **Tránsito** row leaves. The invoice comes in. | The support document of $2,115,485. |
+
+A report at a past date shows what was in transit that day: at an October 17 cut you see both **Tránsito** rows, even though they are closed today.
+
+## To check your setup
+
+- Account 13102007 of that manifest must be zero after billing.
+- The manifests account (22050507) is credited when you confirm the manifest and debited when you legalize.
+- If something does not add up, compare your entries with the tables above and review [branch configuration](/transport/setup).

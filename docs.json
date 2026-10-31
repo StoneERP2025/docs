@@ -99,8 +99,13 @@
                 "group": "Transport",
                 "pages": [
                   "transport/overview",
+                  "transport/setup",
+                  "transport/master-data",
                   "transport/operations",
                   "transport/billing-and-settlement",
+                  "transport/transit",
+                  "transport/example-trip",
+                  "transport/reports",
                   "transport/fleet-monitoring"
                 ]
               },
@@ -244,8 +249,13 @@
                 "group": "Transporte",
                 "pages": [
                   "es/transport/overview",
+                  "es/transport/setup",
+                  "es/transport/master-data",
                   "es/transport/operations",
                   "es/transport/billing-and-settlement",
+                  "es/transport/transit",
+                  "es/transport/example-trip",
+                  "es/transport/reports",
                   "es/transport/fleet-monitoring"
                 ]
               },
