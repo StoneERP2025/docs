@@ -23,13 +23,14 @@ Rows follow the rule on their own when it changes version. You do not have to lo
 
 | Tax | Role | What it records |
 |---|---|---|
-| VAT | **Deductible** | The VAT you pay and then deduct |
-| VAT | **Higher cost value** | The VAT you do not deduct |
+| VAT | **Creditable tax** (**Descontable**) | The VAT you pay and then deduct |
+| VAT | **Goes to the line cost** (**Va al costo de la línea**) | The VAT you do not deduct and add to the line's cost |
+| VAT | **Higher cost value** (**Mayor valor del costo**) | The VAT you do not deduct and add to the asset's or expense's cost |
 | VAT | **Generated** | The VAT you charge on your sales |
 | Income withholding | **Withheld** | What you withhold from the supplier and owe to the DIAN |
-| Income withholding | **Suffered** | What is withheld from you on your sales |
-| ICA withholding | **Withheld** / **Suffered** | The same, with the municipality |
-| VAT withholding | **Withheld** / **Suffered** | Only if you are a VAT withholding agent, or if you are withheld from |
+| Income withholding | **Withholding they make on me** | What is withheld from you on your sales |
+| ICA withholding | **Withheld** / **Withholding they make on me** | The same, with the municipality |
+| VAT withholding | **Withheld** / **Withholding they make on me** | Only if you are a VAT withholding agent, or if you are withheld from |
 | Special income self-withholding | **Generated** | See the warning below |
 
 Fill in the **zone** only when you need a different account per municipality, which is normal for ICA.
@@ -73,17 +74,17 @@ If what is missing is the counter account, the message says the counter account 
 **Where to fix it:** add or correct the row in the **Tax account map**, with the role and side the message gives, and post again.
 
 <Tip>
-Do not wait for a document to fail. The [Pending report](/finance/tax-verify#pending-report) lists the companies that are subject to a rule with an accounting role and have no row in the map, or have the row without a counter account.
+Do not wait for a document to fail: check that every tax your company causes has its row in the map, and a counter account when the tax is outside the total.
 </Tip>
 
 ## The minimum to start
 
 | You want to… | Row you need |
 |---|---|
-| Buy with deductible VAT | VAT · Deductible |
-| Buy with VAT that goes to cost | VAT · Higher cost value |
+| Buy with deductible VAT | VAT · Creditable tax |
+| Buy with VAT that goes to cost | VAT · Goes to the line cost or Higher cost value |
 | Withhold income tax from the supplier | Income withholding · Withheld |
 | Withhold ICA | ICA withholding · Withheld, with zone |
 | Sell with VAT | VAT · Generated |
-| Record what is withheld from you | Income withholding / ReteICA / ReteIVA · Suffered |
+| Record what is withheld from you | Income withholding / ReteICA / ReteIVA · Withholding they make on me |
 | Self-withhold income tax | Self-withholding · Generated, with counter account and return account |

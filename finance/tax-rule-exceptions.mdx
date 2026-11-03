@@ -1,10 +1,10 @@
 ---
-title: "Rule exceptions"
+title: "Tax rule override"
 description: "When to use an exception to not apply a country rule or to apply another rate, with the example of a ReteICA at 6.9 per thousand."
 icon: "ban"
 ---
 
-The country's rules are the same for every company and are not modified. When a rule does not apply to your company, or applies at another rate, you register a **rule exception**.
+The country's rules are the same for every company and are not modified. When a rule does not apply to your company, or applies at another rate, you register a **tax rule override**.
 
 ## The two kinds of exception
 
@@ -39,7 +39,7 @@ Having no exceptions is normal. If you have many, something in the Tax profile o
 
 - An **other rate** exception changes the rate of **that rule** and nothing else. The activity rules that follow the group rule inherit **do not apply** exceptions, but not other-rate ones.
 - An exception is valid in the date range you wrote. When the end date arrives it stops applying and the system goes back to the rule's rate.
-- You can load several at once with the rule exceptions bulk upload.
+- You can load several at once with the tax rule overrides bulk upload.
 
 ## Example: Bogotá ReteICA at 6.9 per thousand for two customers
 
@@ -65,4 +65,4 @@ Three things to keep in mind:
 
 ## Verify an exception
 
-After registering it, run a [Tax simulation](/finance/tax-verify#tax-simulation) with an operation that should change. The tax explanation says which rule applied and at what rate.
+After registering it, run a [Tax simulator](/finance/tax-verify#tax-simulator) with an operation that should change. The tax explanation says which rule applied and at what rate.

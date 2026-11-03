@@ -47,12 +47,12 @@ Hay más ejemplos, con las cifras de la contadora, en [Ejemplos resueltos](/es/f
 | Los impuestos del país y sus reglas: tarifa, base mínima, municipio, vigencia y condiciones | El **Perfil fiscal** de tu empresa (una vez) |
 | Los rangos de tarifa por tramos y el calendario tributario | El **CIIU principal** y la actividad ICA por municipio de tu empresa |
 | Los datos que una regla puede preguntar sobre la empresa, el tercero y el producto | El **Perfil fiscal** de cada tercero, solo lo que sus reglas necesitan |
-| Las categorías fiscales: gravado, excluido, exento, tarifa reducida | La categoría fiscal y la de retención de cada **tipo de producto**, y la ficha fiscal de los productos que son la excepción |
+| Las categorías fiscales: gravado, excluido, exento, tarifa reducida | La categoría fiscal y la de retención de cada **tipo de producto**, y el atributo fiscal de los productos que son la excepción |
 | La tabla de actividades ICA por municipio, con su tarifa | El **Mapa de cuentas de impuestos**: a qué cuenta va cada impuesto |
-| El cálculo, la explicación y el asiento contable | Las **excepciones de regla**, solo si tu empresa las necesita |
+| El cálculo, la explicación y el asiento contable | Las **excepciones por regla**, solo si tu empresa las necesita |
 
 <Warning>
-No modifiques tarifas ni reglas del país: son las mismas para todas las empresas y son de solo lectura. Lo que es distinto en tu empresa se registra como una **excepción de regla**. Consulta [Excepciones de regla](/es/finance/tax-rule-exceptions).
+No modifiques tarifas ni reglas del país: son las mismas para todas las empresas y son de solo lectura. Lo que es distinto en tu empresa se registra como una **excepción por regla**. Consulta [Excepción por regla](/es/finance/tax-rule-exceptions).
 </Warning>
 
 ## Configurar los impuestos paso a paso
@@ -78,10 +78,10 @@ Sigue este orden: no se puede contabilizar un impuesto que todavía no se calcul
     En el **Mapa de cuentas de impuestos** dices, para cada impuesto y cada papel que cumple, a qué cuenta contable va. Consulta [Mapa de cuentas de impuestos](/es/finance/tax-account-map).
   </Step>
   <Step title="Registra tus excepciones, si las necesitas">
-    Cuando una regla del país no aplica a tu empresa, o aplica con otra tarifa, registra una excepción con su vigencia, su alcance y su motivo. No tener excepciones es lo normal. Consulta [Excepciones de regla](/es/finance/tax-rule-exceptions).
+    Cuando una regla del país no aplica a tu empresa, o aplica con otra tarifa, registra una excepción con su vigencia, su alcance y su motivo. No tener excepciones es lo normal. Consulta [Excepción por regla](/es/finance/tax-rule-exceptions).
   </Step>
-  <Step title="Verifica con la simulación">
-    Antes de facturar, prueba una operación en la **Simulación de impuestos**. Consulta [Verificar los impuestos](/es/finance/tax-verify).
+  <Step title="Verifica con el simulador">
+    Antes de facturar, prueba una operación en el **Simulador fiscal**. Consulta [Verificar los impuestos](/es/finance/tax-verify).
   </Step>
 </Steps>
 
@@ -144,16 +144,16 @@ En lugar de digitar el perfil fiscal, puedes subir el RUT del tercero y dejar qu
     El CIIU principal y la actividad por municipio.
   </Card>
   <Card title="Productos" icon="boxes-stacked" href="/es/finance/tax-products">
-    Tipo de producto y ficha fiscal del producto.
+    Tipo de producto y atributo fiscal del producto.
   </Card>
   <Card title="Mapa de cuentas de impuestos" icon="book" href="/es/finance/tax-account-map">
     A qué cuenta va cada impuesto.
   </Card>
-  <Card title="Excepciones de regla" icon="ban" href="/es/finance/tax-rule-exceptions">
+  <Card title="Excepción por regla" icon="ban" href="/es/finance/tax-rule-exceptions">
     No aplicar una regla o aplicar otra tarifa.
   </Card>
   <Card title="Verificar los impuestos" icon="magnifying-glass" href="/es/finance/tax-verify">
-    Simulación, reporte de pendientes y por qué no salió un impuesto.
+    Simulador fiscal y por qué no salió un impuesto.
   </Card>
   <Card title="Casos según el tamaño" icon="building" href="/es/finance/tax-company-size-cases">
     Qué llena una panadería y qué llena una empresa grande.

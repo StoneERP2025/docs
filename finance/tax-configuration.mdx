@@ -47,12 +47,12 @@ There are more examples, with the accountant's figures, in [Worked examples](/fi
 | The country's taxes and their rules: rate, minimum base, municipality, validity, and conditions | Your company's **Tax profile** (once) |
 | Bracketed rate ranges and the tax calendar | Your company's **principal CIIU** and ICA activity per municipality |
 | The data a rule can ask about the company, the stakeholder, and the product | The **Tax profile** of each stakeholder, only what their rules need |
-| Tax categories: taxable, excluded, exempt, reduced rate | The tax category and withholding category of each **product type**, and the tax sheet of products that are the exception |
+| Tax categories: taxable, excluded, exempt, reduced rate | The tax category and withholding category of each **product type**, and the fiscal attribute of products that are the exception |
 | The table of ICA activities per municipality, with its rate | The **Tax account map**: which account each tax goes to |
-| The calculation, the explanation, and the accounting entry | **Rule exceptions**, only if your company needs them |
+| The calculation, the explanation, and the accounting entry | **Tax rule override**, only if your company needs them |
 
 <Warning>
-Do not modify the country's rates or rules: they are the same for every company and are read-only. What is different in your company is recorded as a **rule exception**. See [Rule exceptions](/finance/tax-rule-exceptions).
+Do not modify the country's rates or rules: they are the same for every company and are read-only. What is different in your company is recorded as a **tax rule override**. See [Tax rule override](/finance/tax-rule-exceptions).
 </Warning>
 
 ## Configure taxes step by step
@@ -78,10 +78,10 @@ Follow this order: you cannot post a tax that is not calculated yet, nor calcula
     In the **Tax account map** (**Mapa de cuentas de impuestos**) you say, for each tax and each role it plays, which accounting account it posts to. See [Tax account map](/finance/tax-account-map).
   </Step>
   <Step title="Register your exceptions, if you need them">
-    When a country rule does not apply to your company, or applies at another rate, register an exception with its validity, scope, and reason. Having no exceptions is normal. See [Rule exceptions](/finance/tax-rule-exceptions).
+    When a country rule does not apply to your company, or applies at another rate, register an exception with its validity, scope, and reason. Having no exceptions is normal. See [Tax rule override](/finance/tax-rule-exceptions).
   </Step>
-  <Step title="Verify with the simulation">
-    Before invoicing, try an operation in the **Tax simulation** (**Simulación de impuestos**). See [Verify taxes](/finance/tax-verify).
+  <Step title="Verify with the simulator">
+    Before invoicing, try an operation in the **Tax simulator** (**Simulador fiscal**). See [Verify taxes](/finance/tax-verify).
   </Step>
 </Steps>
 
@@ -144,16 +144,16 @@ Instead of typing the tax profile, you can upload the stakeholder's RUT and let 
     The principal CIIU and the activity per municipality.
   </Card>
   <Card title="Products" icon="boxes-stacked" href="/finance/tax-products">
-    Product type and product tax sheet.
+    Product type and product fiscal attribute.
   </Card>
   <Card title="Tax account map" icon="book" href="/finance/tax-account-map">
     Which account each tax goes to.
   </Card>
-  <Card title="Rule exceptions" icon="ban" href="/finance/tax-rule-exceptions">
+  <Card title="Tax rule override" icon="ban" href="/finance/tax-rule-exceptions">
     Do not apply a rule, or apply another rate.
   </Card>
   <Card title="Verify taxes" icon="magnifying-glass" href="/finance/tax-verify">
-    Simulation, pending report, and why a tax did not come out.
+    Tax simulator and why a tax did not come out.
   </Card>
   <Card title="Cases by company size" icon="building" href="/finance/tax-company-size-cases">
     What a bakery fills in and what a large company fills in.

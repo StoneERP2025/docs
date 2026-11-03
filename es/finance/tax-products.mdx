@@ -1,10 +1,10 @@
 ---
 title: "Productos"
-description: "Cómo clasificar el tipo de producto y la ficha fiscal de un producto para que el sistema sepa qué IVA, qué retención y qué actividad ICA aplicar."
+description: "Cómo clasificar el tipo de producto y el atributo fiscal de un producto para que el sistema sepa qué IVA, qué retención y qué actividad ICA aplicar."
 icon: "boxes-stacked"
 ---
 
-La categoría fiscal no va en cada producto: va en el **tipo de producto**. Es lo que conecta un renglón del documento con una regla de impuestos. Si un producto es la excepción de su tipo, se ajusta en su **ficha fiscal**, solo para ese producto.
+La categoría fiscal no va en cada producto: va en el **tipo de producto**. Es lo que conecta un renglón del documento con una regla de impuestos. Si un producto es la excepción de su tipo, se ajusta en su **atributo fiscal**, solo para ese producto.
 
 <Warning>
 Sin categoría fiscal, el documento se guarda, los totales cuadran y no aparece ningún impuesto.
@@ -64,9 +64,9 @@ Algunos ejemplos, con la UVT de 2026:
 
 Úsalo cuando tu empresa tiene varias actividades y cada producto se vende con una distinta. Por ejemplo, una empresa de tecnología con los CIIU 6201, 6202 y 6311 puede asignar la consultoría a 6202 y el software en la nube a 6311. El sistema revisa que el CIIU sea de tu empresa cuando lo escoges. Abrir un tipo y guardarlo sin tocar el CIIU de venta nunca se bloquea, aunque ese CIIU ya no esté en tu ficha.
 
-## La ficha fiscal del producto
+## El atributo fiscal del producto
 
-Un producto hereda lo del tipo. En su **ficha fiscal** puedes cambiar, solo para ese producto:
+Un producto hereda lo del tipo. En su **atributo fiscal** puedes cambiar, solo para ese producto:
 
 | Atributo | Para qué |
 |---|---|

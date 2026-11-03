@@ -1,21 +1,21 @@
 ---
 title: "Verificar los impuestos"
-description: "Cómo probar una operación con la Simulación de impuestos, qué lista el Reporte de pendientes y qué revisar cuando un impuesto no salió."
+description: "Cómo probar una operación con la Simulador fiscal, qué datos pueden faltar y qué revisar cuando un impuesto no salió."
 icon: "magnifying-glass"
 ---
 
 Verifica la configuración antes de facturar, y revisa el documento después de guardarlo.
 
-## Simulación de impuestos
+## Simulador fiscal
 
-La **Simulación de impuestos** liquida una operación sin guardar ningún documento. La usas para probar:
+El **Simulador fiscal** liquida una operación sin guardar ningún documento. Úsalo para probar:
 
 - Un tercero nuevo, antes de venderle o comprarle.
 - Un tipo de producto recién clasificado.
-- Una excepción de regla recién registrada.
+- Una excepción por regla recién registrada.
 - Un municipio nuevo en la ubicación del renglón.
 
-Escribe la operación como la escribirías en el documento: tercero, producto, valor, fecha de operación y ubicación del renglón. La simulación muestra los mismos resultados que mostrará el documento: cada impuesto con su base, tarifa y valor, y los que no aplicaron con su motivo.
+Escribe la operación como la escribirías en el documento: tercero, producto, valor, fecha de operación y ubicación del renglón. El simulador muestra los mismos resultados que mostrará el documento: cada impuesto con su base, tarifa y valor, y los que no aplicaron con su motivo.
 
 ## La ubicación del renglón decide el municipio
 
@@ -25,22 +25,14 @@ El municipio del ICA y del ReteICA sale de la **ubicación de cada renglón**, n
 - Un documento puede tener renglones en municipios distintos.
 - Si un impuesto cambia al mover la ubicación, es porque el nuevo municipio tiene otra regla o porque el comprador no es agente de retención de ICA allí.
 
-## Reporte de pendientes
+## Datos que faltan
 
-El **Reporte de pendientes** lista, por empresa, lo que falta para que los impuestos se liquiden. Cada fila te dice qué le falta y a qué:
+Cuando a una empresa, a un tercero o a un producto le falta un dato que las reglas leen, el **Perfil fiscal** lo muestra como **Falta, obligatorio para proveedores**. Revisa también:
 
-| Qué lista | Qué hacer |
-|---|---|
-| Tipos de producto sin categoría de IVA o sin categoría de retención | Clasifícalos. Consulta [Productos](/es/finance/tax-products) |
-| Terceros con varios CIIU y ninguno principal | Marca el principal. Consulta [CIIU, actividad ICA y ReteICA](/es/finance/tax-ica-activity) |
-| Proveedores sin CIIU | Registra su CIIU. Las personas naturales salen en un aviso aparte de las empresas. Los extranjeros no residentes no se listan |
-| Terceros con una actividad de Bogotá dividida en varias y sin declarar | Declara la actividad ICA en su Perfil fiscal |
-| Tipos de producto con un CIIU de venta que ya no es de la empresa | Escoge uno vigente |
-| Una empresa sin CIIU | Regístralo |
-| Una regla sin fila en el mapa de cuentas, o con la fila sin contrapartida | Agrega la fila. Consulta [Mapa de cuentas de impuestos](/es/finance/tax-account-map) |
-| Filas de Perfil fiscal **Falta, obligatorio para proveedores** | Llénalas. Consulta [Perfil fiscal](/es/finance/tax-fiscal-profile) |
-
-El reporte lista solo lo que las reglas de tu empresa leen: una empresa pequeña ve poco.
+- Que cada tipo de producto tenga categoría fiscal y categoría de retención. Consulta [Productos](/es/finance/tax-products).
+- Que cada empresa o persona con varios CIIU tenga uno marcado como principal. Consulta [CIIU, actividad ICA y ReteICA](/es/finance/tax-ica-activity).
+- Que cada proveedor tenga CIIU, salvo los extranjeros no residentes.
+- Que el **Mapa de cuentas de impuestos** tenga fila, y contrapartida cuando el impuesto queda fuera del total. Consulta [Mapa de cuentas de impuestos](/es/finance/tax-account-map).
 
 ## Leer los impuestos de un documento
 

@@ -1,10 +1,10 @@
 ---
 title: "Products"
-description: "How to classify the product type and a product's tax sheet so the system knows which VAT, which withholding, and which ICA activity to apply."
+description: "How to classify the product type and a product's fiscal attribute so the system knows which VAT, which withholding, and which ICA activity to apply."
 icon: "boxes-stacked"
 ---
 
-The tax category does not go on each product: it goes on the **product type**. It is what connects a document line to a tax rule. If a product is the exception to its type, you adjust it in its **tax sheet**, for that product only.
+The tax category does not go on each product: it goes on the **product type**. It is what connects a document line to a tax rule. If a product is the exception to its type, you adjust it in its **fiscal attribute**, for that product only.
 
 <Warning>
 Without a tax category, the document saves, the totals add up, and no tax appears.
@@ -64,9 +64,9 @@ Some examples, with the 2026 UVT:
 
 Use it when your company has several activities and each product is sold under a different one. For example, a technology company with CIIU 6201, 6202, and 6311 can assign consulting to 6202 and cloud software to 6311. The system checks that the CIIU is your company's when you choose it. Opening a type and saving it without touching the sales CIIU is never blocked, even if that CIIU is no longer in your record.
 
-## The product's tax sheet
+## The product's fiscal attribute
 
-A product inherits from its type. In its **tax sheet** you can change, for that product only:
+A product inherits from its type. In its **fiscal attribute** you can change, for that product only:
 
 | Attribute | What for |
 |---|---|

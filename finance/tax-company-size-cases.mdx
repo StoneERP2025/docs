@@ -6,7 +6,7 @@ icon: "building"
 
 Not every company configures the same. The system uses defaults, the RUT, and its own calculations so that a small company fills in almost nothing, and leaves full control to the one that needs it.
 
-The general rule: **fill in only what your company's rules read.** The [Pending report](/finance/tax-verify#pending-report) tells you when something is missing.
+The general rule: **fill in only what your company's rules read.** The **Tax profile** tells you when something is missing, with **Missing, required for suppliers**.
 
 | Company | What characterizes it | What it fills in |
 |---|---|---|
@@ -55,7 +55,7 @@ A company that is VAT responsible and is not a withholding agent.
 | The sales CIIU of each type, if it has several activities | Product types |
 | The VAT accounts, the withholding accounts that are applied to it, and the self-withholding account if it applies | Tax account map |
 
-Its large customers withhold from it: for that, the customer is the one who needs to be a withholding agent in their own profile. The small company only needs the account map with the **Suffered** rows so that the withholding is posted.
+Its large customers withhold from it: for that, the customer is the one who needs to be a withholding agent in their own profile. The small company only needs the account map with the **Withholding they make on me** rows so that the withholding is posted.
 
 A small company that files income tax, with a principal CIIU in a self-withholding group, causes the special self-withholding: it needs the map row with role **Generated**, counter account, and return account.
 
@@ -73,7 +73,7 @@ Everything the small one does, and also:
 | The data of each supplier that its rules read: files income tax, is a self-withholder, simple regime, ICA activity | The supplier's **Tax profile**, or the RUT |
 | The ICA activity and periodicity of suppliers in the municipalities where it withholds | The supplier's **Tax profile** |
 
-When a supplier changes activity or municipality, the Pending report warns you.
+When a supplier changes activity or municipality, update their Tax profile.
 
 ## Large
 
@@ -87,10 +87,10 @@ Everything the medium one does, and also:
 | Its ICA activity and periodicity in each municipality where it sells | **Tax profile**, one row per municipality |
 | An ICA withholding agent row for each municipality that named it an agent | **Tax profile**, with zone |
 | An account map with rows per municipality where it needs different accounts | Tax account map, with zone |
-| Rule exceptions per customer or supplier with agreed rates | Rule exceptions |
+| Tax rule override per customer or supplier with agreed rates | Tax rule override |
 | The sales CIIU and the purchase ICA activity of each product type | Product types |
 
-A large company reviews the Pending report regularly, before each close.
+A large company reviews the **Missing** rows of the Tax profiles before each close.
 
 ## How to know which one you are
 

@@ -6,7 +6,7 @@ icon: "building"
 
 No todas las empresas configuran lo mismo. El sistema usa valores por defecto, el RUT y sus propios cálculos para que una empresa pequeña llene casi nada, y deja el control completo a la que lo necesita.
 
-La regla general: **llena solo lo que las reglas de tu empresa leen.** El [Reporte de pendientes](/es/finance/tax-verify#reporte-de-pendientes) te dice cuándo algo falta.
+La regla general: **llena solo lo que las reglas de tu empresa leen.** El **Perfil fiscal** te dice cuándo algo falta, con **Falta, obligatorio para proveedores**.
 
 | Empresa | Qué la caracteriza | Qué llena |
 |---|---|---|
@@ -55,7 +55,7 @@ Una sociedad responsable de IVA que no es agente de retención.
 | El CIIU de venta de cada tipo, si tiene varias actividades | Tipos de producto |
 | Las cuentas de IVA, las de retención que le practican y la de autorretención si le aplica | Mapa de cuentas de impuestos |
 
-Sus clientes grandes le retienen: para eso el cliente es quien necesita ser agente de retención en su propio perfil. La pequeña solo necesita el mapa de cuentas con las filas de **Retención sufrida** para que la retención se contabilice.
+Sus clientes grandes le retienen: para eso el cliente es quien necesita ser agente de retención en su propio perfil. La pequeña solo necesita el mapa de cuentas con las filas de **Retención que me practican** para que la retención se contabilice.
 
 Una pequeña sociedad declarante de renta, con un CIIU principal en un grupo de autorretención, causa la autorretención especial: necesita la fila del mapa con papel **Generado**, contrapartida y cuenta de devolución.
 
@@ -73,7 +73,7 @@ Todo lo de la pequeña, y además:
 | Los datos de cada proveedor que leen sus reglas: declara renta, es autorretenedor, régimen simple, actividad ICA | **Perfil fiscal** del proveedor, o el RUT |
 | La actividad ICA y la periodicidad de los proveedores en los municipios donde retiene | **Perfil fiscal** del proveedor |
 
-Cuando un proveedor cambia de actividad o de municipio, el Reporte de pendientes lo avisa.
+Cuando un proveedor cambia de actividad o de municipio, actualiza su Perfil fiscal.
 
 ## Grande
 
@@ -87,10 +87,10 @@ Todo lo de la mediana, y además:
 | Su actividad ICA y su periodicidad en cada municipio donde vende | **Perfil fiscal**, una fila por municipio |
 | Una fila de agente de retención de ICA por cada municipio que la nombró agente | **Perfil fiscal**, con zona |
 | Un mapa de cuentas con filas por municipio donde necesita cuentas distintas | Mapa de cuentas de impuestos, con zona |
-| Excepciones de regla por cliente o proveedor con tarifas pactadas | Excepciones de regla |
+| Excepción por regla por cliente o proveedor con tarifas pactadas | Excepción por regla |
 | El CIIU de venta y la actividad ICA de compra de cada tipo de producto | Tipos de producto |
 
-Una empresa grande revisa el Reporte de pendientes con regularidad, antes de cada cierre.
+Una empresa grande revisa las filas **Falta** de los Perfiles fiscales antes de cada cierre.
 
 ## Cómo saber en cuál estás
 

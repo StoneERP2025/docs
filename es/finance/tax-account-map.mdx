@@ -24,12 +24,13 @@ Las filas siguen solas a la regla cuando esta cambia de versión. No tienes que 
 | Impuesto | Papel | Lo que registra |
 |---|---|---|
 | IVA | **Descontable** | El IVA que pagas y luego descuentas |
-| IVA | **Mayor valor del costo** | El IVA que no descuentas |
+| IVA | **Va al costo de la línea** | El IVA que no descuentas y se suma al costo de la línea |
+| IVA | **Mayor valor del costo** | El IVA que no descuentas y se suma al costo del activo o del gasto |
 | IVA | **Generado** | El IVA que cobras en tus ventas |
 | Retención en la fuente | **Retención practicada** | Lo que le retienes al proveedor y le debes a la DIAN |
-| Retención en la fuente | **Retención sufrida** | Lo que te retienen a ti en tus ventas |
-| Retención de ICA | **Retención practicada** / **Retención sufrida** | Lo mismo ante el municipio |
-| Retención de IVA | **Retención practicada** / **Retención sufrida** | Solo si eres agente de retención de IVA, o si te retienen |
+| Retención en la fuente | **Retención que me practican** | Lo que te retienen a ti en tus ventas |
+| Retención de ICA | **Retención practicada** / **Retención que me practican** | Lo mismo ante el municipio |
+| Retención de IVA | **Retención practicada** / **Retención que me practican** | Solo si eres agente de retención de IVA, o si te retienen |
 | Autorretención especial de renta | **Generado** | Ver el aviso de abajo |
 
 Llena la **zona** solo cuando necesites una cuenta distinta por municipio, que es lo normal en ICA.
@@ -73,7 +74,7 @@ Si lo que falta es la contrapartida, el mensaje dice que falta la contrapartida 
 **Dónde arreglarlo:** agrega o corrige la fila en el **Mapa de cuentas de impuestos**, con el papel y el lado que dice el mensaje, y vuelve a contabilizar.
 
 <Tip>
-No esperes a que un documento falle. El [Reporte de pendientes](/es/finance/tax-verify#reporte-de-pendientes) lista a las empresas que están sujetas a una regla con papel contable y no tienen fila en el mapa, o tienen la fila sin contrapartida.
+No esperes a que un documento falle: revisa que cada impuesto que tu empresa causa tenga su fila en el mapa, y la contrapartida cuando el impuesto queda fuera del total.
 </Tip>
 
 ## Lo mínimo para empezar
@@ -81,9 +82,9 @@ No esperes a que un documento falle. El [Reporte de pendientes](/es/finance/tax-
 | Quieres… | Fila que necesitas |
 |---|---|
 | Comprar con IVA descontable | IVA · Descontable |
-| Comprar con IVA que va al costo | IVA · Mayor valor del costo |
+| Comprar con IVA que va al costo | IVA · Va al costo de la línea o Mayor valor del costo |
 | Retener renta al proveedor | Retención en la fuente · Retención practicada |
 | Retener ICA | Retención de ICA · Retención practicada, con zona |
 | Vender con IVA | IVA · Generado |
-| Registrar lo que te retienen | Retención en la fuente / ReteICA / ReteIVA · Retención sufrida |
+| Registrar lo que te retienen | Retención en la fuente / ReteICA / ReteIVA · Retención que me practican |
 | Autorretenerte renta | Autorretención · Generado, con contrapartida y cuenta de devolución |

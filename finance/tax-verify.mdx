@@ -1,21 +1,21 @@
 ---
 title: "Verify taxes"
-description: "How to test an operation with the Tax simulation, what the Pending report lists, and what to check when a tax did not come out."
+description: "How to test an operation with the Tax simulator, what data can be missing, and what to check when a tax did not come out."
 icon: "magnifying-glass"
 ---
 
 Verify the configuration before invoicing, and review the document after saving it.
 
-## Tax simulation
+## Tax simulator
 
-The **Tax simulation** (**Simulación de impuestos**) settles an operation without saving any document. Use it to test:
+The **Tax simulator** (**Simulador fiscal**) settles an operation without saving any document. Use it to test:
 
 - A new stakeholder, before selling to them or buying from them.
 - A product type you just classified.
-- A rule exception you just registered.
+- A tax rule override you just registered.
 - A new municipality in the line location.
 
-Write the operation as you would write it in the document: stakeholder, product, amount, operation date, and line location. The simulation shows the same results the document will show: each tax with its base, rate, and amount, and the ones that did not apply with their reason.
+Write the operation as you would write it in the document: stakeholder, product, amount, operation date, and line location. The simulator shows the same results the document will show: each tax with its base, rate, and amount, and the ones that did not apply with their reason.
 
 ## The line location decides the municipality
 
@@ -25,22 +25,14 @@ The municipality of ICA and ReteICA comes from the **location of each line**, no
 - A document can have lines in different municipalities.
 - If a tax changes when you move the location, it is because the new municipality has another rule or because the buyer is not an ICA withholding agent there.
 
-## Pending report
+## Missing data
 
-The **Pending report** (**Reporte de pendientes**) lists, per company, what is missing for taxes to settle. Each row tells you what is missing and on what:
+When a company, a stakeholder, or a product lacks a piece of data the rules read, the **Tax profile** shows it as **Missing, required for suppliers**. Also check:
 
-| What it lists | What to do |
-|---|---|
-| Product types with no VAT category or no withholding category | Classify them. See [Products](/finance/tax-products) |
-| Stakeholders with several CIIU and no principal | Mark the principal. See [CIIU, ICA activity, and ReteICA](/finance/tax-ica-activity) |
-| Stakeholders with a Bogotá activity split across several and undeclared | Declare the ICA activity in their Tax profile |
-| Suppliers with no CIIU | Register their CIIU. Natural persons show in a separate notice from companies. Foreign non-residents are not listed |
-| Product types with a sales CIIU that is no longer the company's | Choose a current one |
-| A company with no CIIU | Register it |
-| A rule with no row in the account map, or with the row lacking a counter account | Add the row. See [Tax account map](/finance/tax-account-map) |
-| Tax profile rows **Missing, required for suppliers** | Fill them in. See [Tax profile](/finance/tax-fiscal-profile) |
-
-The report lists only what your company's rules read: a small company sees little.
+- That each product type has a tax category and a withholding category. See [Products](/finance/tax-products).
+- That each company or person with several CIIU has one marked as principal. See [CIIU, ICA activity, and ReteICA](/finance/tax-ica-activity).
+- That each supplier has a CIIU, except foreign non-residents.
+- That the **Tax account map** has a row, and a counter account when the tax is outside the total. See [Tax account map](/finance/tax-account-map).
 
 ## Read a document's taxes
 
