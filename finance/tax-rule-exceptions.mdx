@@ -1,0 +1,68 @@
+---
+title: "Rule exceptions"
+description: "When to use an exception to not apply a country rule or to apply another rate, with the example of a ReteICA at 6.9 per thousand."
+icon: "ban"
+---
+
+The country's rules are the same for every company and are not modified. When a rule does not apply to your company, or applies at another rate, you register a **rule exception**.
+
+## The two kinds of exception
+
+| Exception | Example |
+|---|---|
+| **Do not apply this rule** | "This withholding does not apply to me" |
+| **Apply another rate** | "I withhold the agreed rate from this customer" |
+
+Each exception has:
+
+| Field | What it is |
+|---|---|
+| **Rule** | The country rule it changes |
+| **Type** | Do not apply, or apply another rate |
+| **Rate** | Only if you apply another rate |
+| **Stakeholder** | The customer or supplier it is valid for. Empty is valid for all |
+| **Zone** | The municipality where it is valid. Empty is valid across the country |
+| **Validity** | From when to when it is valid. The end date is not included |
+| **Reason** | Required. The auditor reads it |
+
+The emptier the scope, the broader it is. An exception with a stakeholder is valid only for operations with that stakeholder.
+
+## When to use an exception
+
+- A stakeholder with an agreement for a different rate, such as an agreed ICA withholding.
+- A rule that does not apply to you because of a condition the system cannot read. For example, the special self-withholding requires not having staff that give the right to the payroll contribution exemption, and that condition is not in the Tax profile. If your company has no staff, switch the rule off with a **do not apply** exception.
+- A withholding you do not make from one particular supplier.
+
+Having no exceptions is normal. If you have many, something in the Tax profile or the categories is probably answered wrong: fix it instead of working around it.
+
+## What rule they change and what they do not
+
+- An **other rate** exception changes the rate of **that rule** and nothing else. The activity rules that follow the group rule inherit **do not apply** exceptions, but not other-rate ones.
+- An exception is valid in the date range you wrote. When the end date arrives it stops applying and the system goes back to the rule's rate.
+- You can load several at once with the rule exceptions bulk upload.
+
+## Example: Bogotá ReteICA at 6.9 per thousand for two customers
+
+The company sells consulting in Bogotá. Bogotá's services ReteICA rule withholds **9.66 per thousand**. Two of its customers, who are ICA withholding agents in Bogotá, withhold **6.9 per thousand**. The company registers an exception for each one:
+
+| Field | Value |
+|---|---|
+| Rule | Bogotá ReteICA, services |
+| Type | Apply another rate |
+| Rate | 6.9 per thousand |
+| Stakeholder | The customer |
+| Zone | Bogotá |
+| Validity | From January 1, 2026 to January 1, 2027 (January 1, 2027 is not included) |
+| Reason | Rate agreed with the customer |
+
+A sale of 20,000,000 of consulting to one of those customers has a ReteICA of 138,000 (`20,000,000 × 6.9 / 1,000`). Without the exception it would be 193,200 (`20,000,000 × 9.66 / 1,000`).
+
+Three things to keep in mind:
+
+- The exception is **per customer**, not per product. Everything you invoice that customer in Bogotá under that rule comes out at 6.9 per thousand.
+- It is valid only for the rule it names. Sales to those customers under another ReteICA rule do not change.
+- When the end date arrives, the exception stops applying and sales go back to the rule's rate. An other-rate exception does not pass to the ReteICA activity rules: if from 2027 Bogotá's rate comes from the activity, the exception does not change it.
+
+## Verify an exception
+
+After registering it, run a [Tax simulation](/finance/tax-verify#tax-simulation) with an operation that should change. The tax explanation says which rule applied and at what rate.

@@ -1,53 +1,58 @@
 ---
 title: "Taxes"
-description: "How Fail Fast calculates the taxes on your invoices, what you have to configure, and how a tax is settled on a supplier invoice."
+description: "How Fail Fast calculates the taxes on your documents, what Fail Fast loads, what you configure, and where to start depending on the size of your company."
 icon: "percent"
 ---
 
-In Fail Fast you do not type taxes. When you save an invoice, the system looks at the document, applies the country's tax rules, and writes the result. Nobody keys in 19 % VAT or a 4 % withholding.
+In Fail Fast you do not type taxes. When you save a document, the system looks at it, applies the country's tax rules, and writes the result. Nobody keys in 19 % VAT or a 4 % withholding.
 
-Your job is to tell the system who your company is, who your stakeholders are, what you buy and sell, and which accounts the taxes post to. With that, every invoice settles itself.
+Your job is to tell the system who your company is, who your stakeholders are, what you buy and sell, and which accounts the taxes post to. With that, every document settles itself. If your company is small, almost all of that resolves on its own: see [Cases by company size](/finance/tax-company-size-cases).
 
 ## How Fail Fast decides which taxes apply
 
-For each invoice line, the system looks at three things:
+For each line of a document, the system looks at three things:
 
 | What it looks at | The question it answers | Where you configure it |
 |---|---|---|
-| **Who the stakeholder is** | Do they file income tax? Are they a legal entity? Do they self-withhold? Are they on the simple regime? | The **tax profile** of the supplier or customer |
-| **What the product is** | Is it a service, professional fees, taxable goods, an excluded item? | The **tax categories** of the product type |
-| **Where it happens** | In which municipality? That decides ICA | The **branch office** on the invoice |
+| **Who the stakeholder is** | Do they file income tax? Are they a legal entity? Do they self-withhold? Are they in the simple regime? | The **Tax profile** (**Perfil fiscal**) of your company, supplier, or customer. See [Tax profile](/finance/tax-fiscal-profile) |
+| **What the product is** | Is it a service, fees, taxable goods, an excluded good? | The tax category and the withholding category of the **product type**. See [Products](/finance/tax-products) |
+| **Where it happens** | In which municipality? That decides ICA and ReteICA | The **location of each line** of the document. See [CIIU, ICA activity, and ReteICA](/finance/tax-ica-activity) |
 
-It also uses the document's **operation date**: the rate, the threshold, and the UVT value are the ones in force that day. A 2025 invoice you re-settle today uses 2025 values.
+It also uses the document's **operation date**: the rate, the minimum, and the value of the UVT are the ones in force that day. A 2025 invoice that you settle again today uses 2025 values.
+
+Each country rule reads this data through conditions. When a condition is not met, the tax does not apply and the system writes down the reason. When nobody answered a piece of data the rule needs, the system does not assume it: it tells you. See [Verify taxes](/finance/tax-verify).
 
 ### An example with numbers
 
-You buy cleaning services for **1,000,000** from a company that files income tax, on 15 October 2026, with a branch in Medellín. Your company is an income withholding agent and an ICA withholding agent in Medellín.
+You buy cleaning services for **1,000,000** from a company that files income tax, on October 15, 2026, with the line located in Medellín. Your company is an income withholding agent and an ICA withholding agent in Medellín.
 
 | Tax | Base | Rate | Amount |
 |---|---|---|---|
 | VAT | 1,000,000 | 19 % | **190,000** |
-| Income withholding on services | 1,000,000 | 4 % | **40,000** |
+| Income withholding for services | 1,000,000 | 4 % | **40,000** |
 | ICA withholding | 1,000,000 | 1.8 per thousand | **1,800** |
 
 You pay the supplier `1,000,000 + 190,000 − 40,000 − 1,800 = 1,148,200`.
 
 <Note>
-Withholding thresholds are expressed in UVT, not in pesos. The system does the arithmetic with the UVT of the document's date, so you do not have to update anything every January. The threshold is compared against the sum of the lines under the same rule in the document.
+Withholding minimums are in UVT, not in pesos. The system does the math with the UVT of the document's date, so you do not have to update anything each January. The minimum is compared with the sum of the lines of the same rule in the document.
 </Note>
+
+There are more examples, with the accountant's figures, in [Worked examples](/finance/tax-worked-examples).
 
 ## What Fail Fast does and what is up to you
 
-| Fail Fast does this for you | You configure this once |
+| Fail Fast loads and maintains it | You configure it |
 |---|---|
-| Keeps the country's rates, thresholds, and validity periods | Your company's tax profile |
-| Picks the rule that applies to each line | The tax profile of your suppliers and customers (or loads it from their RUT) |
-| Calculates base, rate, and amount | The tax categories of your product types |
-| Explains why a tax did not apply | Which account each tax posts to |
-| Posts the accounting entry | Exceptions, only if your company needs them |
+| The country's taxes and their rules: rate, minimum base, municipality, validity, and conditions | Your company's **Tax profile** (once) |
+| Bracketed rate ranges and the tax calendar | Your company's **principal CIIU** and ICA activity per municipality |
+| The data a rule can ask about the company, the stakeholder, and the product | The **Tax profile** of each stakeholder, only what their rules need |
+| Tax categories: taxable, excluded, exempt, reduced rate | The tax category and withholding category of each **product type**, and the tax sheet of products that are the exception |
+| The table of ICA activities per municipality, with its rate | The **Tax account map**: which account each tax goes to |
+| The calculation, the explanation, and the accounting entry | **Rule exceptions**, only if your company needs them |
 
 <Warning>
-Do not modify the country's rates or rules: they are the same for every company and are read-only. Whatever is different in your company is recorded as an **exception**.
+Do not modify the country's rates or rules: they are the same for every company and are read-only. What is different in your company is recorded as a **rule exception**. See [Rule exceptions](/finance/tax-rule-exceptions).
 </Warning>
 
 ## Configure taxes step by step
@@ -56,95 +61,27 @@ Follow this order: you cannot post a tax that is not calculated yet, nor calcula
 
 <Steps>
   <Step title="Complete your company's tax profile">
-    Open your own company's stakeholder record and go to the **Tax profile** grid. To the system your company is one more stakeholder: if nobody answered its responsibilities, it is nobody for tax purposes.
-
-    | Answer **Yes** if your company is… | If you leave it unanswered |
-    |---|---|
-    | **VAT responsible** | The VAT on your purchases is not deducted: it goes to cost |
-    | **Income withholding agent** | You withhold income tax from no supplier |
-    | **VAT withholding agent** | There is no VAT withholding on any invoice |
-    | **ICA withholding agent in the municipality** | You do not withhold ICA in that municipality. One row per municipality |
-    | **Income self-withholder** | Your customers withhold from you instead of you self-withholding |
-
-    The grid has more than one page: go through all of them before calling this step done.
+    Open your own company's stakeholder record and go to the **Tax profile** (**Perfil fiscal**) table. To the system your company is one more stakeholder. Its responsibilities are taken from the RUT first; answer the ones that are missing. The rows, their origin, and what happens if you leave them empty are in [Tax profile](/finance/tax-fiscal-profile).
+  </Step>
+  <Step title="Set your CIIU and your ICA activity">
+    Register your company's CIIU, mark the principal one, and, if you operate in a municipality that has an activity table, declare your ICA activity there. See [CIIU, ICA activity, and ReteICA](/finance/tax-ica-activity).
   </Step>
   <Step title="Complete the tax profile of your suppliers and customers">
-    Create the stakeholder with their document and name, and answer their **Tax profile**. The fastest way is to upload their RUT and let AI fill it in: see [Load the RUT of a stakeholder](#load-the-rut-of-a-stakeholder).
+    Create the stakeholder with their document and name. The fastest way is to upload their RUT and let AI fill it in: see [Load the RUT of a stakeholder](#load-the-rut-of-a-stakeholder). After that you only look at the rows the system marks as missing. A person with an ID card who buys at your shop needs nothing.
 
-    The data that changes a purchase invoice the most:
-
-    | Supplier data | What it changes |
-    |---|---|
-    | **VAT responsible** | If they are not, the line settles with no VAT and there is no VAT withholding |
-    | **Income tax filer** | Picks the rate: 2.5 % or 3.5 % on goods, 4 % or 6 % on services |
-    | **Is a legal entity** | Picks the professional fees rate: 11 % legal entity, 10 % individual |
-    | **Income self-withholder** | You do not withhold income tax: they self-withhold |
-    | **Simple tax regime** | You withhold neither income tax nor ICA |
-
-    The stakeholder's **location** is not just contact data: it is how the system knows whether they are abroad, and that decides whether the purchase carries VAT. The stakeholder is not saved without it.
+    The stakeholder's **location** is not just contact data: with it the system knows whether they are from abroad, and that decides whether the purchase carries VAT. The stakeholder cannot be saved without it.
   </Step>
   <Step title="Classify your product types">
-    This is the step most often forgotten. The tax category does not go on each product: it goes on the **product type**, and it is what connects an invoice line to a tax rule. Without it the invoice saves, the totals add up, and no tax appears.
-
-    | Field | What it decides |
-    |---|---|
-    | **VAT category** | Which VAT or consumption tax what you buy or sell triggers. It is required |
-    | **Withholding category** | Which income withholding applies. Without it there is no withholding |
-    | **Fixed asset** | On a purchase, the VAT goes to the asset's cost |
-    | **Own consumption** | On a purchase, the VAT goes to expense |
-
-    Some examples of **Withholding category** (with the 2026 UVT):
-
-    | If you buy… | Pick | Withholding |
-    |---|---|---|
-    | Services in general | General services | 4 % if they file income tax, 6 % if not · from 104,748 |
-    | Professional fees and commissions | Fees and commissions | 11 % legal entity, 10 % individual · no threshold |
-    | Goods | Purchases of goods | 2.5 % if they file income tax, 3.5 % if not · from 523,740 |
-    | Rent of premises or a warehouse | Rental of real estate | 3.5 % · from 523,740 |
-    | Freight transport | Freight transport | 1 % · from 104,748 |
-
-    And of **VAT category**:
-
-    | If you buy or sell… | Pick | What it triggers |
-    |---|---|---|
-    | Ordinary taxable goods | Taxed at the general rate | VAT 19 % |
-    | A reduced-rate good or service | Taxed at the 5 percent rate | VAT 5 % |
-    | An exempt good | VAT exempt | VAT 0 %, deductible |
-    | An excluded good | VAT excluded | No VAT |
-    | Restaurant, café, or bar | Restaurant, café, bar | Consumption tax 8 % |
-
-    Pick by **what the thing is**, not by the accounting account you post it to.
+    This is the step that is forgotten most. The tax category and the withholding category go in the **product type**: they are what connects a line to a tax rule. Without them the document saves, the totals add up, and no tax appears. See [Products](/finance/tax-products).
   </Step>
-  <Step title="Say which account each tax posts to">
-    In **Tax accounts** you say, for each tax and each role it plays, which accounting account it posts to. The minimum to start buying:
-
-    | Tax | Account role |
-    |---|---|
-    | VAT | **Deductible**, for the VAT you pay and later deduct |
-    | VAT | **Higher cost value**, for the VAT you do not deduct |
-    | Income withholding | **Withholding applied**, what you withhold from the supplier and owe the DIAN |
-    | ICA withholding | **Withholding applied**, the same before the municipality |
-    | VAT withholding | **Withholding applied**, only if you are a VAT withholding agent |
-
-    Leave the **zone** empty so the row applies country-wide. Fill it in only when you need a different account per municipality, which is the norm for ICA.
-
-    Accounts that carry taxes must have **Require tax** set to **Yes** along with their tax concept. See [Create an account](/finance/accounting#create-an-account).
-
-    <Tip>
-    A missing row does not cost you the invoice. The tax is calculated and stored; what is missing is the account to build the entry. Add the row and post it again.
-    </Tip>
+  <Step title="Say which account each tax goes to">
+    In the **Tax account map** (**Mapa de cuentas de impuestos**) you say, for each tax and each role it plays, which accounting account it posts to. See [Tax account map](/finance/tax-account-map).
   </Step>
-  <Step title="Record your exceptions, if you need any">
-    When a country rule does not apply to your company, or applies at a different rate, record an exception with its validity period, its scope, and its reason:
-
-    | Exception | Example |
-    |---|---|
-    | **Do not apply this rule** | "This withholding does not apply to me" |
-    | **Apply a different rate** | "I withhold the agreed rate from this supplier" |
-
-    The emptier the scope, the broader it is: with no stakeholder it applies to everyone, with no zone it applies country-wide. The reason is required because the auditor reads it.
-
-    Having no exceptions is normal. If you have many, something in the tax profile or the categories is probably answered wrong.
+  <Step title="Register your exceptions, if you need them">
+    When a country rule does not apply to your company, or applies at another rate, register an exception with its validity, scope, and reason. Having no exceptions is normal. See [Rule exceptions](/finance/tax-rule-exceptions).
+  </Step>
+  <Step title="Verify with the simulation">
+    Before invoicing, try an operation in the **Tax simulation** (**Simulación de impuestos**). See [Verify taxes](/finance/tax-verify).
   </Step>
 </Steps>
 
@@ -175,13 +112,13 @@ Instead of typing the tax profile, you can upload the stakeholder's RUT and let 
 
 <Steps>
   <Step title="Create the invoice">
-    In supplier invoices, create a new one and fill in the header. Three fields decide the taxes:
+    In supplier invoices, create a new one and fill in the header. These fields decide the taxes:
     1. **Operation date**: decides which rate and which UVT are used.
-    2. **Branch office**: decides the municipality and with it the ICA.
+    2. **Line location**: decides the municipality and with it ICA and ReteICA.
     3. **Supplier**: brings in their tax profile. They have to be active.
   </Step>
   <Step title="Add the lines">
-    Add the products or services with their quantity and amount. The line's tax category arrives on its own from the product type. If it comes up empty, classify the product type before saving.
+    Add the products or services with their quantity and amount. The line's tax category arrives on its own from the product type. If it comes up empty, classify the product type before saving. Choose the line location: it is the municipality where the purchase happens.
   </Step>
   <Step title="Save">
     On save, Fail Fast settles every tax on the document. It is all or nothing: either all of them are calculated or none is.
@@ -193,30 +130,44 @@ Instead of typing the tax profile, you can upload the stakeholder's RUT and let 
     - **Not applied**: the rules that were evaluated and did not apply, each with its reason written out. This is the grid that explains a withholding you expected and did not get.
   </Step>
   <Step title="Post it">
-    With the tax accounts configured, the invoice posts with its taxes in the accounts you defined.
+    With the tax account map configured, the invoice posts with its taxes in the accounts you defined.
   </Step>
 </Steps>
 
-## Why a tax did not come out
+## Pages in this guide
 
-Always start with the **not applied** grid: the reason is written there.
-
-| What you see | What happened | What to do |
-|---|---|---|
-| The invoice settles no tax at all | The product type has no tax category | Classify the product type |
-| It settles VAT but withholds nothing | Your company is not listed as a withholding agent, or the supplier self-withholds or is on the simple regime | Review both tax profiles |
-| VAT comes out as cost instead of deductible | Your company is not listed as VAT responsible | Complete your company's tax profile |
-| It withholds at the higher rate | Nobody answered whether the supplier files income tax | Answer **Income tax filer** on the supplier |
-| It withholds less on small invoices | The base did not reach the UVT threshold | Nothing: the reason carries both figures |
-| The tax is calculated but the invoice does not post | The account for that tax is missing | Add the row in **Tax accounts** |
-| A tax with no rule in the detail | Someone typed it in by hand | Review the line |
-
-<Note>
-When nobody answered a value a rule needs, the system does not assume it: it leaves the tax under **not applied** with the message "nobody answered…" and tells you which value to record. The exception is benefits the stakeholder has to evidence, such as the special regime or self-withholding: until they are recorded, the withholding is applied.
-</Note>
-
-The not-applied grid is long by design: it shows every rule that was evaluated, including the ones outside your line of business. That is not an error.
-
+<CardGroup cols={2}>
+  <Card title="Tax profile" icon="id-card" href="/finance/tax-fiscal-profile">
+    Each row, its origin, and which ones fill themselves.
+  </Card>
+  <Card title="CIIU, ICA activity, and ReteICA" icon="map-location-dot" href="/finance/tax-ica-activity">
+    The principal CIIU and the activity per municipality.
+  </Card>
+  <Card title="Products" icon="boxes-stacked" href="/finance/tax-products">
+    Product type and product tax sheet.
+  </Card>
+  <Card title="Tax account map" icon="book" href="/finance/tax-account-map">
+    Which account each tax goes to.
+  </Card>
+  <Card title="Rule exceptions" icon="ban" href="/finance/tax-rule-exceptions">
+    Do not apply a rule, or apply another rate.
+  </Card>
+  <Card title="Verify taxes" icon="magnifying-glass" href="/finance/tax-verify">
+    Simulation, pending report, and why a tax did not come out.
+  </Card>
+  <Card title="Cases by company size" icon="building" href="/finance/tax-company-size-cases">
+    What a bakery fills in and what a large company fills in.
+  </Card>
+  <Card title="Worked examples" icon="calculator" href="/finance/tax-worked-examples">
+    Sales, returns, and a purchase with figures.
+  </Card>
+  <Card title="Bulk uploads with CIIU" icon="file-import" href="/finance/tax-bulk-uploads">
+    Suppliers, customers, and patients.
+  </Card>
+  <Card title="What is not covered yet" icon="circle-info" href="/finance/tax-not-covered">
+    Purchases from abroad, INC on purchases, and tips.
+  </Card>
+</CardGroup>
 
 ## Related guides
 

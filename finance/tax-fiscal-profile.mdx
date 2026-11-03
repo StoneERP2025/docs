@@ -1,0 +1,123 @@
+---
+title: "Tax profile"
+description: "The rows of the Tax profile of your company and your stakeholders, where each value comes from, which ones fill themselves, and how to declare by municipality."
+icon: "id-card"
+---
+
+The **Tax profile** (**Perfil fiscal**) is the table inside a stakeholder's record. It is the same table for a company and for a person, and also for your own company. The tax rules read from it what they need to know: whether the stakeholder files income tax, is a legal entity, self-withholds, is in the Simple regime, and in which municipalities they withhold ICA.
+
+**You do not have to fill in the rows one by one.** Most of them resolve on their own, through the default for persons, the RUT, or the system's calculation. You only look at the ones that show **Missing, required for suppliers** (**Falta, obligatorio para proveedores**).
+
+## The columns
+
+| Column | What it is |
+|---|---|
+| **Code** (**Código**) | The short name of the data. Rules and bulk uploads use it |
+| **Tax fact** (**Hecho fiscal**) | The same data in words |
+| **Zone** (**Zona**) | The municipality where the data is valid. It only shows on ICA data |
+| **Value** (**Valor**) | The answer: Yes/No or an option from a list |
+| **Validity** (**Vigencia**) | From when to when it is valid |
+| **Origin** (**Origen**) | Where the value came from |
+| **Data source** (**Fuente del dato**) | How the value entered: **Read from the RUT**, **Proposed by AI and confirmed**, **Typed by a person**, or **Declared by the stakeholder** |
+| **Party** (**Parte**) | Whose data it is: **Of this stakeholder**, or **Answered as the company** on the rows your company answers about itself |
+
+**Zone** comes before **Value**: on ICA data you choose the municipality first and then answer.
+
+### Validity
+
+When you answer a row for the first time, it is valid from today with no end date. Editing a row that is already saved corrects that same record. To record a change over time, for example that from January 1 the stakeholder stops being a large taxpayer, use **Add row** with the new start date.
+
+## The origin of each value
+
+| Origin | What it means | What to do |
+|---|---|---|
+| **Own value** (**Valor propio**) | Someone typed or confirmed it for this stakeholder | Nothing, unless it is wrong |
+| **From the RUT** (**Del RUT**) | It came from the RUT loaded in the record | If it is wrong, fix the RUT or the record's tax responsibilities |
+| **From the principal CIIU** (**Del CIIU principal**) | It came from the principal CIIU. It only shows on the row of your own company that says which self-withholding group it belongs to | Fix the principal CIIU |
+| **Default for persons** (**Por defecto para personas**) | There is no data and the normal value for a person is used. For example, large taxpayer = No | Change it only if this stakeholder is the exception |
+| **Calculated by the system** (**Calculado por el sistema**) | The system deduces it from the record and the cell is read-only | If it is wrong, fix the record |
+| **No value** (**Sin valor**) | There is no data and no rule requires it for this stakeholder | It is optional |
+| **Missing, required for suppliers** | The stakeholder is registered as a supplier, your company's rules read this data, and it is empty | **Fill it in.** It does not block saving or buying, but without it the withholding on purchases from that supplier may come out incomplete |
+
+The **Missing, required for suppliers** notice feeds the [Pending report](/finance/tax-verify#pending-report). When you fill in the data, the notice disappears.
+
+## The rows of a stakeholder
+
+A stakeholder has 16 rows.
+
+### RUT data
+
+These are Yes/No and carry no zone. They normally come out on their own from the RUT, from the responsibilities box. If there is no RUT, you answer them here and the responsibility is also marked on the record.
+
+| Code | Answer Yes if… | Responsibility in the RUT | Default for persons |
+|---|---|---|---|
+| `responsable_iva` | They charge VAT | 48 | No default |
+| `declara_renta` | They file income tax | 05 | No default |
+| `gran_contribuyente` | The DIAN classified them that way | 13 | No |
+| `autorretenedor_renta` | They self-withhold income tax | 15 | No |
+| `agente_retenedor` | They are an income withholding agent | 07 | No default |
+| `agente_retenedor_iva` | They are a VAT withholding agent | 23 | No default |
+| `regimen_simple` | They are in the Simple regime | 47 | No |
+| `regimen_tributario_especial` | They are a nonprofit, foundation, or cooperative in the special regime | 04 | No |
+
+### General data
+
+These are also Yes/No and carry no zone.
+
+| Code | What to do |
+|---|---|
+| `entidad_publica` | Answer Yes if it is a state entity, such as a city hall, a public hospital, or a ministry. For persons it is No by default. Your company's rules often require it from suppliers, which is why it frequently shows as missing |
+| `persona_juridica` | **Do not touch.** The system calculates it: the stakeholder is a legal entity if they have a company record |
+| `extranjero` | **Do not touch.** The system calculates it from the domicile, the city of the record |
+
+Calculated rows are read-only and their origin is **Calculated by the system**. If one comes out wrong, fix the record: the city for `extranjero`, and for `persona_juridica` whether the stakeholder is a company or a person.
+
+<Note>
+The legal nature the engine uses is the one from the stakeholder's company record. For fees, the 11 % or 10 % rate follows whoever provides the service, not whoever pays: on a purchase it is your supplier; on a sale, your company.
+</Note>
+
+### ICA data by municipality
+
+These rows carry **Zone**, which you choose first. If the stakeholder operates in several municipalities, use one row per municipality with **Add row**.
+
+| Code | Value | How to fill it |
+|---|---|---|
+| `agente_retenedor_ica` | Yes / No | Municipality, then Yes if that municipality named them an ICA withholding agent |
+| `autorretenedor_ica` | Yes / No | Municipality, then Yes if they self-withhold ICA there. With Yes, no ReteICA is withheld from that stakeholder in that municipality |
+| `actividad_ica` | List of groups: Commerce, Construction, Consulting, Financial, Industrial, Liberal profession, Services, and others | Municipality, then the group of their main activity there |
+| `actividad_ica_codigo` | Selector of the activities of the row's municipality | Municipality, then the code. See [CIIU, ICA activity, and ReteICA](/finance/tax-ica-activity) |
+| `periodicidad_ica` | Bimonthly or Annual | Municipality, then how often they file ICA there |
+
+## Zone rules
+
+The zone tells the system in which municipality the answer is valid.
+
+- **A Yes names its municipality.** If you answer that the stakeholder is an ICA withholding agent or an ICA self-withholder, choose the department and the city. Without a municipality the save is rejected with the notice "The fact … is declared by municipality; enter department and city in row N".
+- **A No without a municipality is valid in every municipality.** If you answer No with no zone, the system understands that the stakeholder is not an ICA withholding agent in any municipality.
+- **The ICA activity code always names its municipality.** The code selector fills with the activities of the row's municipality; without a municipality it offers no list and asks you to choose it first.
+- **Country-wide data carries no zone.** RUT responsibilities, general data, and calculated rows have no zone cell.
+- **An activity group without a municipality is valid for the whole country.** The zone is recommended, not required, on `actividad_ica` and `periodicidad_ica`.
+
+## Your own company
+
+In your own company's record, four more rows show up, which your company answers about itself. In the **Party** column they say **Answered as the company**:
+
+| Row | What it is for |
+|---|---|
+| Self-withholding group | Comes from the principal CIIU. It decides whether your company is in a self-withholding group and at what rate |
+| Operates under a franchise | Your company answers it |
+| Producer or importer | Your company answers it |
+| INC responsible | Your company answers it if it is responsible for the national consumption tax |
+
+For your own company, the responsibilities that matter most are the RUT ones and the municipality ones. See [Cases by company size](/finance/tax-company-size-cases).
+
+## Common mistakes
+
+- **Leaving a Yes on `agente_retenedor_ica` or `autorretenedor_ica` without a municipality.** The save is rejected until you choose the municipality.
+- **Trying to fix a calculation by typing `extranjero` or `persona_juridica`.** They are system rows. Fix the record.
+- **Expecting "Save for all" to apply values to several stakeholders.** That button belongs to the table view: it saves filters, sort order, columns, and rows per page for all users.
+- **Leaving the zone of `actividad_ica_codigo` empty.** The selector offers no list until you choose the municipality.
+
+## Fill the profile from the RUT
+
+The fastest way to fill the responsibility rows is the RUT. See [Load the RUT of a stakeholder](/finance/tax-configuration#load-the-rut-of-a-stakeholder). To load several stakeholders at once, see [Bulk uploads with CIIU](/finance/tax-bulk-uploads).

@@ -1,0 +1,85 @@
+---
+title: "Products"
+description: "How to classify the product type and a product's tax sheet so the system knows which VAT, which withholding, and which ICA activity to apply."
+icon: "boxes-stacked"
+---
+
+The tax category does not go on each product: it goes on the **product type**. It is what connects a document line to a tax rule. If a product is the exception to its type, you adjust it in its **tax sheet**, for that product only.
+
+<Warning>
+Without a tax category, the document saves, the totals add up, and no tax appears.
+</Warning>
+
+## The product type
+
+Open **Inventory → Product types**.
+
+| Field | What it decides | Required |
+|---|---|---|
+| **Tax category** (VAT) | Which VAT or consumption tax what you buy or sell causes | Yes |
+| **Withholding category** | Which income withholding applies | Yes |
+| **Return accounts** | The sales return, cost, and inventory accounts of the type. If they are missing, the return tells you which one | To be able to return |
+| **Fixed asset** | On a purchase, the VAT goes to the asset's cost | No |
+| **Own consumption** | On a purchase, the VAT goes to expense | No |
+| **Sales CIIU** | The economic activity under which these products are sold. It offers only your company's live CIIU, or your own person's if you are a natural person | No |
+| **Purchase ICA activity** | The activity under which the product is bought, for ReteICA. It is a selector over the municipalities' activity table | No |
+
+Choose by **what** you buy or sell is, not by the accounting account you post it to.
+
+### Tax category
+
+| If you buy or sell… | Choose | What it causes |
+|---|---|---|
+| Ordinary taxable goods | Taxed at the general rate | VAT 19 % |
+| A reduced-rate good or service | Taxed at the 5 percent rate | VAT 5 % |
+| An exempt good | VAT exempt | VAT 0 %, with the right to deduct |
+| An excluded good | VAT excluded | No VAT |
+| Restaurant, cafeteria, or bar | Restaurant, cafeteria, bar | Consumption tax 8 % |
+
+### Withholding category
+
+The withholding category is required: the type does not save without it. If the product carries no withholding, choose **Does not apply**.
+
+Some examples, with the 2026 UVT:
+
+| If you buy… | Choose | Withholding |
+|---|---|---|
+| Services in general | General services | 4 % if they file income tax, 6 % if not · from 104,748 |
+| Fees and commissions | Fees and commissions | 11 % legal entity, 10 % natural person · no minimum |
+| Goods | Purchase of goods | 2.5 % if they file income tax, 3.5 % if not · from 523,740 |
+| Rent of a premises or warehouse | Real estate rental | 3.5 % · from 523,740 |
+| Freight transport | Freight transport | 1 % · from 104,748 |
+| Data processing services | Data processing | 3.5 % · no minimum |
+| Income you receive on behalf of a third party | **Income for third parties** | None |
+
+<Note>
+**Income for third parties** is for what you collect on behalf of someone else and is not your income. With this category, ICA and ReteICA are never settled.
+</Note>
+
+### Fixed asset and own consumption
+
+**Fixed asset** and **Own consumption** are mutually exclusive: a type cannot be both. Each one is answered Yes or No. On a purchase, the VAT that is not deducted goes to the asset's cost if it is a fixed asset, and to expense if it is own consumption.
+
+### Sales CIIU
+
+Use it when your company has several activities and each product is sold under a different one. For example, a technology company with CIIU 6201, 6202, and 6311 can assign consulting to 6202 and cloud software to 6311. The system checks that the CIIU is your company's when you choose it. Opening a type and saving it without touching the sales CIIU is never blocked, even if that CIIU is no longer in your record.
+
+## The product's tax sheet
+
+A product inherits from its type. In its **tax sheet** you can change, for that product only:
+
+| Attribute | What for |
+|---|---|
+| Fixed asset | The product is bought as a fixed asset even if its type is not |
+| Own consumption | The product is bought for own consumption even if its type is not |
+| ICA activity group | The activity under which this product's ICA and ReteICA are settled |
+
+What you put in the sheet prevails over the type **for that product**, and the other products of the type do not change. They are also mutually exclusive: you cannot mark fixed asset and own consumption at the same time.
+
+## Bulk upload
+
+The **Product tax setup** template loads the VAT category, the withholding category, the sales CIIU, and the purchase ICA activity of several types at once. A row with a sales CIIU that is not your company's is rejected with a message that starts with "Row N:".
+
+## Return accounts
+
+The product type's return account is **different** from the return account of the [Tax account map](/finance/tax-account-map). See that page for the difference.

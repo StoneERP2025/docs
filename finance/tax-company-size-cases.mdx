@@ -1,0 +1,97 @@
+---
+title: "Cases by company size"
+description: "What a micro, small, medium, and large company has to fill in for taxes to settle correctly."
+icon: "building"
+---
+
+Not every company configures the same. The system uses defaults, the RUT, and its own calculations so that a small company fills in almost nothing, and leaves full control to the one that needs it.
+
+The general rule: **fill in only what your company's rules read.** The [Pending report](/finance/tax-verify#pending-report) tells you when something is missing.
+
+| Company | What characterizes it | What it fills in |
+|---|---|---|
+| **Micro** | Natural person or Simple regime, sells to consumers | Almost nothing |
+| **Small** | A VAT-responsible company that does not withhold | Its profile, its CIIU, and its product types |
+| **Medium** | Income and ICA withholding agent | What the small one does, plus its suppliers' profile and withholding accounts |
+| **Large** | Large taxpayer or self-withholder, with several cities | Everything: profile, activity per municipality, account map, exceptions |
+
+## Micro: the bakery
+
+A bakery sells to people with an ID card and buys from small suppliers. It does not need to fill in a tax profile stakeholder by stakeholder.
+
+<Steps>
+  <Step title="Your company">
+    Load your RUT or answer your responsibilities in the **Tax profile** of your own company: for example, whether you are in the Simple regime. Register your CIIU and mark it as principal.
+  </Step>
+  <Step title="Your product types">
+    Choose the tax category and the withholding category of each type. A bread taxed at the general rate and an excluded good are different categories.
+  </Step>
+  <Step title="Your account map">
+    The VAT accounts and, if you buy with withholding, the withholding ones. See [Tax account map](/finance/tax-account-map).
+  </Step>
+</Steps>
+
+**What you do not fill in:**
+
+- The Tax profile of your customers who are persons: without a RUT, the system uses the defaults for persons, and the invoice comes out with VAT without you answering anything. A customer who is a person is not a withholding agent, so there are no withholdings.
+- The one of your small suppliers, except the rows the table marks as **Missing, required for suppliers**.
+- Exceptions, ICA activities, and periodicity.
+
+With that, a sale to a person with an ID card or to an end consumer settles VAT and nothing else.
+
+<Tip>
+If the bakery is in the Simple regime, the special income self-withholding does not arise.
+</Tip>
+
+## Small
+
+A company that is VAT responsible and is not a withholding agent.
+
+| Fills in | Where |
+|---|---|
+| Its responsibilities: VAT responsible, income tax filer | Its company **Tax profile**, or its RUT |
+| Its CIIU, with the principal marked | Company record |
+| The tax category and withholding category of its product types | Product types |
+| The sales CIIU of each type, if it has several activities | Product types |
+| The VAT accounts, the withholding accounts that are applied to it, and the self-withholding account if it applies | Tax account map |
+
+Its large customers withhold from it: for that, the customer is the one who needs to be a withholding agent in their own profile. The small company only needs the account map with the **Suffered** rows so that the withholding is posted.
+
+A small company that files income tax, with a principal CIIU in a self-withholding group, causes the special self-withholding: it needs the map row with role **Generated**, counter account, and return account.
+
+## Medium
+
+A company that withholds income tax and ICA.
+
+Everything the small one does, and also:
+
+| Fills in | Where |
+|---|---|
+| That it is an income withholding agent and, if it applies, VAT | Its company **Tax profile** |
+| That it is an ICA withholding agent in each municipality where it is | **Tax profile**, one row per municipality with zone |
+| The **Withheld** accounts of each tax | Tax account map |
+| The data of each supplier that its rules read: files income tax, is a self-withholder, simple regime, ICA activity | The supplier's **Tax profile**, or the RUT |
+| The ICA activity and periodicity of suppliers in the municipalities where it withholds | The supplier's **Tax profile** |
+
+When a supplier changes activity or municipality, the Pending report warns you.
+
+## Large
+
+A large taxpayer or self-withholding company, operating in several cities.
+
+Everything the medium one does, and also:
+
+| Fills in | Where |
+|---|---|
+| That it is a large taxpayer or an income self-withholder | Its company **Tax profile** |
+| Its ICA activity and periodicity in each municipality where it sells | **Tax profile**, one row per municipality |
+| An ICA withholding agent row for each municipality that named it an agent | **Tax profile**, with zone |
+| An account map with rows per municipality where it needs different accounts | Tax account map, with zone |
+| Rule exceptions per customer or supplier with agreed rates | Rule exceptions |
+| The sales CIIU and the purchase ICA activity of each product type | Product types |
+
+A large company reviews the Pending report regularly, before each close.
+
+## How to know which one you are
+
+There is no sales threshold. Look at whether your company **withholds**: if it does not, you are micro or small. If it withholds income tax and ICA, you are medium. If you are also a large taxpayer, a self-withholder, or sell in several cities, you are large. Moving from one case to the next only adds data; what you already filled in stays valid.

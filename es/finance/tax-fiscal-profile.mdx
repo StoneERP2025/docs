@@ -1,0 +1,123 @@
+---
+title: "Perfil fiscal"
+description: "Las filas del Perfil fiscal de tu empresa y de tus terceros, de dónde sale cada valor, cuáles se llenan solas y cómo se declara por municipio."
+icon: "id-card"
+---
+
+El **Perfil fiscal** es la tabla que sale dentro de la ficha de un tercero. Es la misma tabla para una empresa y para una persona, y también para tu propia empresa. Las reglas de impuestos leen de ahí lo que necesitan saber: si el tercero declara renta, si es persona jurídica, si se autorretiene, si es del Régimen Simple y en qué municipios retiene ICA.
+
+**No tienes que llenar las filas una por una.** La mayoría se resuelven solas, con el valor por defecto para personas, con el RUT o con el cálculo del sistema. Solo miras las que salen como **Falta, obligatorio para proveedores**.
+
+## Las columnas
+
+| Columna | Qué es |
+|---|---|
+| **Código** | El nombre corto del dato. Es el que usan las reglas y los cargues masivos |
+| **Hecho fiscal** | El mismo dato en palabras |
+| **Zona** | El municipio donde vale el dato. Solo se pinta en los datos de ICA |
+| **Valor** | La respuesta: Sí/No o una opción de una lista |
+| **Vigencia** | Desde cuándo y hasta cuándo vale |
+| **Origen** | De dónde salió el valor |
+| **Fuente del dato** | Cómo entró el valor: **Leído del RUT**, **Propuesto por IA y confirmado**, **Digitado por una persona** o **Declarado por el tercero** |
+| **Parte** | De quién es el dato: **De este tercero**, o **Que contesta como empresa** en las filas que tu empresa contesta sobre sí misma |
+
+**Zona** va antes que **Valor**: en los datos de ICA primero escoges el municipio y después contestas.
+
+### La vigencia
+
+Al contestar una fila por primera vez, queda vigente desde hoy y sin fecha final. Editar una fila ya guardada corrige ese mismo registro. Para dejar constancia de un cambio en el tiempo, por ejemplo que desde el 1 de enero el tercero deja de ser gran contribuyente, usa **Agregar fila** con la nueva fecha de inicio.
+
+## El origen de cada valor
+
+| Origen | Qué significa | Qué hacer |
+|---|---|---|
+| **Valor propio** | Alguien lo digitó o lo confirmó para este tercero | Nada, salvo que esté mal |
+| **Del RUT** | Salió del RUT cargado en la ficha | Si está mal, corrige el RUT o las responsabilidades fiscales de la ficha |
+| **Del CIIU principal** | Salió del CIIU principal. Solo aparece en la fila de tu propia empresa que dice a qué grupo de autorretención pertenece | Corrige el CIIU principal |
+| **Por defecto para personas** | No hay dato y se usa el valor normal para una persona. Por ejemplo, gran contribuyente = No | Cámbialo solo si ese tercero es la excepción |
+| **Calculado por el sistema** | El sistema lo deduce de la ficha y la celda es de solo lectura | Si sale mal, corrige la ficha |
+| **Sin valor** | No hay dato y ninguna regla lo exige para este tercero | Es opcional |
+| **Falta, obligatorio para proveedores** | El tercero está registrado como proveedor, las reglas de tu empresa leen este dato y está vacío | **Llénalo.** No bloquea guardar ni comprar, pero sin él la retención de las compras a ese proveedor puede salir incompleta |
+
+El aviso **Falta, obligatorio para proveedores** es lo que alimenta el [Reporte de pendientes](/es/finance/tax-verify#reporte-de-pendientes). Cuando llenas el dato, el aviso desaparece.
+
+## Las filas de un tercero
+
+Un tercero tiene 16 filas.
+
+### Datos del RUT
+
+Son Sí/No y no llevan zona. Lo normal es que salgan solos del RUT, de la casilla de responsabilidades. Si no hay RUT, los contestas aquí y la responsabilidad también queda marcada en la ficha.
+
+| Código | Contesta Sí si… | Responsabilidad en el RUT | Por defecto para personas |
+|---|---|---|---|
+| `responsable_iva` | Cobra IVA | 48 | Sin valor por defecto |
+| `declara_renta` | Declara renta | 05 | Sin valor por defecto |
+| `gran_contribuyente` | La DIAN lo calificó así | 13 | No |
+| `autorretenedor_renta` | Se autorretiene renta | 15 | No |
+| `agente_retenedor` | Es agente de retención en la fuente | 07 | Sin valor por defecto |
+| `agente_retenedor_iva` | Es agente de retención de IVA | 23 | Sin valor por defecto |
+| `regimen_simple` | Está en el Régimen Simple | 47 | No |
+| `regimen_tributario_especial` | Es ESAL, fundación o cooperativa en régimen especial | 04 | No |
+
+### Datos generales
+
+También son Sí/No y no llevan zona.
+
+| Código | Qué hacer |
+|---|---|
+| `entidad_publica` | Contesta Sí si es una entidad del Estado, como una alcaldía, un hospital público o un ministerio. Para personas es No por defecto. Las reglas de tu empresa suelen exigirlo a los proveedores, por eso aparece con frecuencia como faltante |
+| `persona_juridica` | **No se toca.** El sistema lo calcula: es persona jurídica si el tercero tiene ficha de empresa |
+| `extranjero` | **No se toca.** El sistema lo calcula a partir del domicilio, la ciudad de la ficha |
+
+Las filas calculadas son de solo lectura y su origen es **Calculado por el sistema**. Si una sale mal, corrige la ficha: la ciudad para `extranjero`, y para `persona_juridica` si el tercero es una empresa o una persona.
+
+<Note>
+La naturaleza jurídica que usa el motor es la de la ficha de empresa del tercero. Para los honorarios, la tarifa de 11 % o 10 % sigue a quien presta el servicio, no a quien lo paga: en una compra es tu proveedor; en una venta, tu empresa.
+</Note>
+
+### Datos de ICA por municipio
+
+Estas filas llevan **Zona**, que escoges primero. Si el tercero opera en varios municipios, usa una fila por municipio con **Agregar fila**.
+
+| Código | Valor | Cómo llenarlo |
+|---|---|---|
+| `agente_retenedor_ica` | Sí / No | Municipio, y luego Sí si ese municipio lo nombró agente de retención de ICA |
+| `autorretenedor_ica` | Sí / No | Municipio, y luego Sí si se autorretiene ICA allí. Con Sí, a ese tercero no se le practica ReteICA en ese municipio |
+| `actividad_ica` | Lista de grupos: Comercio, Construcción, Consultoría, Financiero, Industrial, Profesión liberal, Servicios y otros | Municipio, y luego el grupo de su actividad principal allí |
+| `actividad_ica_codigo` | Selector de actividades del municipio de la fila | Municipio, y luego el código. Consulta [CIIU, actividad ICA y ReteICA](/es/finance/tax-ica-activity) |
+| `periodicidad_ica` | Bimestral o Anual | Municipio, y luego cada cuánto declara ICA allí |
+
+## Reglas de zona
+
+La zona le dice al sistema en qué municipio vale la respuesta.
+
+- **Un Sí nombra su municipio.** Si contestas que el tercero es agente de retención de ICA o autorretenedor de ICA, escoge el departamento y la ciudad. Sin municipio, el guardado se rechaza con el aviso «El hecho … se declara por municipio; indique departamento y ciudad en la fila N».
+- **Un No sin municipio vale en todos los municipios.** Si contestas No sin zona, el sistema entiende que el tercero no es agente de retención de ICA en ningún municipio.
+- **El código de actividad ICA siempre nombra su municipio.** El selector de códigos se llena con las actividades del municipio de la fila; sin municipio no ofrece lista y te pide escogerlo primero.
+- **Los datos de todo el país no llevan zona.** Las responsabilidades del RUT, los datos generales y las filas calculadas no tienen celda de zona.
+- **Un grupo de actividad sin municipio vale para todo el país.** La zona es recomendada, no obligatoria, en `actividad_ica` y en `periodicidad_ica`.
+
+## Tu propia empresa
+
+En la ficha de tu propia empresa salen cuatro filas más, que tu empresa contesta sobre sí misma. En la columna **Parte** dicen **Que contesta como empresa**:
+
+| Fila | Para qué sirve |
+|---|---|
+| Grupo de autorretención | Sale solo del CIIU principal. Decide si tu empresa está en un grupo de autorretención y a qué tarifa |
+| Opera bajo franquicia | Lo contesta tu empresa |
+| Productor o importador | Lo contesta tu empresa |
+| Responsable de INC | Lo contesta tu empresa si es responsable del impuesto nacional al consumo |
+
+Para tu propia empresa, las responsabilidades que importan más son las del RUT y las del municipio. Consulta [Casos según el tamaño de la empresa](/es/finance/tax-company-size-cases).
+
+## Errores comunes
+
+- **Dejar sin municipio un Sí de `agente_retenedor_ica` o `autorretenedor_ica`.** El guardado se rechaza hasta que escojas el municipio.
+- **Intentar arreglar un cálculo digitando `extranjero` o `persona_juridica`.** Son filas del sistema. Corrige la ficha.
+- **Esperar que «Guardar para todos» aplique valores a varios terceros.** Ese botón es de la vista de la tabla: guarda filtros, orden, columnas y filas por página para todos los usuarios.
+- **Dejar la zona de `actividad_ica_codigo` vacía.** El selector no ofrece lista hasta que escojas el municipio.
+
+## Cargar el perfil desde el RUT
+
+La forma más rápida de llenar las filas de responsabilidades es el RUT. Consulta [Cargar el RUT de un tercero](/es/finance/tax-configuration#cargar-el-rut-de-un-tercero). Para cargar varios terceros a la vez, consulta [Cargues masivos con CIIU](/es/finance/tax-bulk-uploads).

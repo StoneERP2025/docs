@@ -1,28 +1,30 @@
 ---
 title: "Impuestos"
-description: "Cómo calcula Fail Fast los impuestos de tus facturas, qué tienes que configurar tú y cómo se liquida un impuesto en una factura de proveedor."
+description: "Cómo calcula Fail Fast los impuestos de tus documentos, qué carga Fail Fast, qué configuras tú y por dónde empezar según el tamaño de tu empresa."
 icon: "percent"
 ---
 
-En Fail Fast no digitas impuestos. Cuando guardas una factura, el sistema mira el documento, aplica las reglas tributarias del país y escribe el resultado. Nadie teclea el 19 % del IVA ni el 4 % de una retención.
+En Fail Fast no digitas impuestos. Cuando guardas un documento, el sistema lo mira, aplica las reglas tributarias del país y escribe el resultado. Nadie teclea el 19 % del IVA ni el 4 % de una retención.
 
-Tu trabajo es decirle al sistema quién es tu empresa, quiénes son tus terceros, qué vendes y compras, y a qué cuentas van los impuestos. Con eso, cada factura se liquida sola.
+Tu trabajo es decirle al sistema quién es tu empresa, quiénes son tus terceros, qué vendes y compras, y a qué cuentas van los impuestos. Con eso, cada documento se liquida solo. Y si tu empresa es pequeña, casi todo eso se resuelve solo: consulta [Casos según el tamaño de la empresa](/es/finance/tax-company-size-cases).
 
 ## Cómo decide Fail Fast qué impuestos aplican
 
-Para cada renglón de una factura, el sistema mira tres cosas:
+Para cada renglón de un documento, el sistema mira tres cosas:
 
 | Qué mira | La pregunta que responde | Dónde lo configuras |
 |---|---|---|
-| **Quién es el tercero** | ¿Declara renta? ¿Es persona jurídica? ¿Se autorretiene? ¿Es de régimen simple? | El **perfil fiscal** del proveedor o del cliente |
-| **Qué producto es** | ¿Es un servicio, honorarios, mercancía gravada, un bien excluido? | Las **categorías fiscales** del tipo de producto |
-| **Dónde ocurre** | ¿En qué municipio? Eso decide el ICA | La **sucursal** de la factura |
+| **Quién es el tercero** | ¿Declara renta? ¿Es persona jurídica? ¿Se autorretiene? ¿Es de régimen simple? | El **Perfil fiscal** de la empresa, del proveedor o del cliente. Consulta [Perfil fiscal](/es/finance/tax-fiscal-profile) |
+| **Qué producto es** | ¿Es un servicio, honorarios, mercancía gravada, un bien excluido? | La categoría fiscal y la categoría de retención del **tipo de producto**. Consulta [Productos](/es/finance/tax-products) |
+| **Dónde ocurre** | ¿En qué municipio? Eso decide el ICA y el ReteICA | La **ubicación de cada renglón** del documento. Consulta [CIIU, actividad ICA y ReteICA](/es/finance/tax-ica-activity) |
 
 Además usa la **fecha de operación** del documento: la tarifa, el mínimo y el valor de la UVT son los vigentes ese día. Una factura de 2025 que vuelvas a liquidar hoy usa los valores de 2025.
 
+Cada regla del país lee estos datos con condiciones. Cuando una condición no se cumple, el impuesto no aplica y el sistema deja escrito el motivo. Cuando nadie contestó un dato que la regla necesita, el sistema no lo supone: lo avisa. Consulta [Verificar los impuestos](/es/finance/tax-verify).
+
 ### Un ejemplo con números
 
-Compras servicios de aseo por **1.000.000** a una empresa que declara renta, el 15 de octubre de 2026, con sucursal en Medellín. Tu empresa es agente de retención en la fuente y agente de retención de ICA en Medellín.
+Compras servicios de aseo por **1.000.000** a una empresa que declara renta, el 15 de octubre de 2026, con el renglón ubicado en Medellín. Tu empresa es agente de retención en la fuente y agente de retención de ICA en Medellín.
 
 | Impuesto | Base | Tarifa | Valor |
 |---|---|---|---|
@@ -36,18 +38,21 @@ Le pagas al proveedor `1.000.000 + 190.000 − 40.000 − 1.800 = 1.148.200`.
 Los mínimos de las retenciones están en UVT, no en pesos. El sistema hace la cuenta con la UVT del día del documento, así que no tienes que actualizar nada cada enero. El mínimo se compara con la suma de los renglones de la misma regla en el documento.
 </Note>
 
+Hay más ejemplos, con las cifras de la contadora, en [Ejemplos resueltos](/es/finance/tax-worked-examples).
+
 ## Qué hace Fail Fast y qué te toca a ti
 
-| Fail Fast lo hace por ti | Tú lo configuras una vez |
+| Fail Fast lo carga y lo mantiene | Tú lo configuras |
 |---|---|
-| Mantiene las tarifas, mínimos y vigencias del país | El perfil fiscal de tu empresa |
-| Elige la regla que aplica a cada renglón | El perfil fiscal de tus proveedores y clientes (o lo cargas desde su RUT) |
-| Calcula base, tarifa y valor | Las categorías fiscales de tus tipos de producto |
-| Explica por qué un impuesto no aplicó | A qué cuenta contable va cada impuesto |
-| Contabiliza el asiento | Las excepciones, solo si tu empresa las necesita |
+| Los impuestos del país y sus reglas: tarifa, base mínima, municipio, vigencia y condiciones | El **Perfil fiscal** de tu empresa (una vez) |
+| Los rangos de tarifa por tramos y el calendario tributario | El **CIIU principal** y la actividad ICA por municipio de tu empresa |
+| Los datos que una regla puede preguntar sobre la empresa, el tercero y el producto | El **Perfil fiscal** de cada tercero, solo lo que sus reglas necesitan |
+| Las categorías fiscales: gravado, excluido, exento, tarifa reducida | La categoría fiscal y la de retención de cada **tipo de producto**, y la ficha fiscal de los productos que son la excepción |
+| La tabla de actividades ICA por municipio, con su tarifa | El **Mapa de cuentas de impuestos**: a qué cuenta va cada impuesto |
+| El cálculo, la explicación y el asiento contable | Las **excepciones de regla**, solo si tu empresa las necesita |
 
 <Warning>
-No modifiques tarifas ni reglas del país: son las mismas para todas las empresas y son de solo lectura. Lo que es distinto en tu empresa se registra como una **excepción**.
+No modifiques tarifas ni reglas del país: son las mismas para todas las empresas y son de solo lectura. Lo que es distinto en tu empresa se registra como una **excepción de regla**. Consulta [Excepciones de regla](/es/finance/tax-rule-exceptions).
 </Warning>
 
 ## Configurar los impuestos paso a paso
@@ -56,95 +61,27 @@ Sigue este orden: no se puede contabilizar un impuesto que todavía no se calcul
 
 <Steps>
   <Step title="Completa el perfil fiscal de tu empresa">
-    Abre la ficha de tu propia empresa como tercero y ve a la grilla **Perfil fiscal**. Para el sistema, tu empresa es un tercero más: si nadie contestó sus responsabilidades, fiscalmente no es nadie.
-
-    | Contesta **Sí** si tu empresa es… | Si lo dejas sin contestar |
-    |---|---|
-    | **Responsable de IVA** | El IVA de tus compras no se descuenta: se va al costo |
-    | **Agente de retención en la fuente** | No le retienes renta a ningún proveedor |
-    | **Agente de retención de IVA** | No hay retención de IVA en ninguna factura |
-    | **Agente de retención de ICA en el municipio** | No retienes ICA en ese municipio. Va una fila por municipio |
-    | **Autorretenedor de renta** | Tus clientes te retienen en vez de que tú te autorretengas |
-
-    La grilla tiene más de una página: pásalas todas antes de dar el paso por terminado.
+    Abre la ficha de tu propia empresa como tercero y ve a la tabla **Perfil fiscal**. Para el sistema, tu empresa es un tercero más. Sus responsabilidades se toman primero del RUT; contesta las que falten. Las filas, su origen y lo que pasa si las dejas vacías están en [Perfil fiscal](/es/finance/tax-fiscal-profile).
+  </Step>
+  <Step title="Marca tus CIIU y tu actividad ICA">
+    Registra los CIIU de tu empresa, marca el principal y, si operas en un municipio que tiene tabla de actividades, declara tu actividad ICA allí. Consulta [CIIU, actividad ICA y ReteICA](/es/finance/tax-ica-activity).
   </Step>
   <Step title="Completa el perfil fiscal de tus proveedores y clientes">
-    Crea el tercero con su documento y su nombre, y contesta su **Perfil fiscal**. La forma más rápida es cargar su RUT y dejar que la IA lo llene: consulta [Cargar el RUT de un tercero](#cargar-el-rut-de-un-tercero).
-
-    Los datos que más cambian una factura de compra:
-
-    | Dato del proveedor | Qué cambia |
-    |---|---|
-    | **Responsable de IVA** | Si no lo es, el renglón se liquida sin IVA y no hay retención de IVA |
-    | **Declarante de renta** | Elige la tarifa: 2,5 % o 3,5 % en compras, 4 % o 6 % en servicios |
-    | **Es persona jurídica** | Elige la tarifa de honorarios: 11 % jurídica, 10 % natural |
-    | **Autorretenedor de renta** | No le retienes renta: él se autorretiene |
-    | **Régimen simple de tributación** | No le retienes renta ni ICA |
+    Crea el tercero con su documento y su nombre. La forma más rápida es cargar su RUT y dejar que la IA lo llene: consulta [Cargar el RUT de un tercero](#cargar-el-rut-de-un-tercero). Después solo miras las filas que el sistema marca como faltantes. Una persona con cédula que compra en tu tienda no necesita nada.
 
     La **ubicación** del tercero no es solo un dato de contacto: con ella el sistema sabe si es del exterior, y eso decide si la compra lleva IVA. El tercero no se guarda sin ella.
   </Step>
   <Step title="Clasifica tus tipos de producto">
-    Este es el paso que más se olvida. La categoría fiscal no va en cada producto: va en el **tipo de producto**, y es lo que conecta un renglón de la factura con una regla de impuestos. Sin ella, la factura se guarda, los totales cuadran y no aparece ningún impuesto.
-
-    | Campo | Qué decide |
-    |---|---|
-    | **Categoría de IVA** | Qué IVA o impuesto al consumo causa lo que compras o vendes. Es obligatoria |
-    | **Categoría de retención** | Qué retención en la fuente aplica. Sin ella no hay retención |
-    | **Activo fijo** | En una compra, el IVA va al costo del activo |
-    | **Consumo propio** | En una compra, el IVA va al gasto |
-
-    Algunos ejemplos de **Categoría de retención** (con la UVT de 2026):
-
-    | Si compras… | Elige | Retención |
-    |---|---|---|
-    | Servicios en general | Servicios generales | 4 % si declara renta, 6 % si no · desde 104.748 |
-    | Honorarios y comisiones | Honorarios y comisiones | 11 % persona jurídica, 10 % natural · sin mínimo |
-    | Bienes | Compras de bienes | 2,5 % si declara renta, 3,5 % si no · desde 523.740 |
-    | Arriendo de local o bodega | Arrendamiento de inmuebles | 3,5 % · desde 523.740 |
-    | Transporte de carga | Transporte de carga | 1 % · desde 104.748 |
-
-    Y de **Categoría de IVA**:
-
-    | Si compras o vendes… | Elige | Lo que causa |
-    |---|---|---|
-    | Mercancía gravada corriente | Gravado a la tarifa general | IVA 19 % |
-    | Bien o servicio de tarifa reducida | Gravado a la tarifa del 5 por ciento | IVA 5 % |
-    | Bien exento | Exento de IVA | IVA 0 %, con derecho a descuento |
-    | Bien excluido | Excluido de IVA | Sin IVA |
-    | Restaurante, cafetería o bar | Restaurante, cafetería, bar | Impuesto al consumo 8 % |
-
-    Elige por **lo que es** lo que compras o vendes, no por la cuenta contable a la que lo llevas.
+    Este es el paso que más se olvida. La categoría fiscal y la categoría de retención van en el **tipo de producto**: son lo que conecta un renglón con una regla de impuestos. Sin ellas, el documento se guarda, los totales cuadran y no aparece ningún impuesto. Consulta [Productos](/es/finance/tax-products).
   </Step>
   <Step title="Indica a qué cuenta va cada impuesto">
-    En **Cuentas de Impuestos** dices, para cada impuesto y cada papel que cumple, a qué cuenta contable va. Lo mínimo para comprar:
-
-    | Impuesto | Papel de la cuenta |
-    |---|---|
-    | IVA | **Descontable**, para el IVA que pagas y luego descuentas |
-    | IVA | **Mayor valor del costo**, para el IVA que no descuentas |
-    | Retención en la fuente | **Retención practicada**, lo que le retienes al proveedor y le debes a la DIAN |
-    | Retención de ICA | **Retención practicada**, lo mismo ante el municipio |
-    | Retención de IVA | **Retención practicada**, solo si eres agente de retención de IVA |
-
-    Deja la **zona** vacía para que la fila valga en todo el país. Llénala solo si necesitas una cuenta distinta por municipio, que es lo normal en ICA.
-
-    Las cuentas que llevan impuestos deben tener **Requiere impuesto** en **Sí** y su concepto de impuesto. Consulta [Crear una cuenta](/es/finance/accounting#crear-una-cuenta).
-
-    <Tip>
-    Si te falta una fila, no pierdes la factura. El impuesto se calcula y queda guardado; solo falta la cuenta para armar el asiento. Agrega la fila y vuelve a contabilizar.
-    </Tip>
+    En el **Mapa de cuentas de impuestos** dices, para cada impuesto y cada papel que cumple, a qué cuenta contable va. Consulta [Mapa de cuentas de impuestos](/es/finance/tax-account-map).
   </Step>
   <Step title="Registra tus excepciones, si las necesitas">
-    Cuando una regla del país no aplica a tu empresa, o aplica con otra tarifa, registra una excepción con su vigencia, su alcance y su motivo:
-
-    | Excepción | Ejemplo |
-    |---|---|
-    | **No aplicar esta regla** | «Esta retención no me aplica» |
-    | **Aplicar otra tarifa** | «A este proveedor le retengo la tarifa pactada» |
-
-    Cuanto más vacío el alcance, más amplio: sin tercero vale para todos, sin zona vale en todo el país. El motivo es obligatorio porque lo lee el auditor.
-
-    No tener excepciones es lo normal. Si tienes muchas, probablemente algo del perfil fiscal o de las categorías está mal contestado.
+    Cuando una regla del país no aplica a tu empresa, o aplica con otra tarifa, registra una excepción con su vigencia, su alcance y su motivo. No tener excepciones es lo normal. Consulta [Excepciones de regla](/es/finance/tax-rule-exceptions).
+  </Step>
+  <Step title="Verifica con la simulación">
+    Antes de facturar, prueba una operación en la **Simulación de impuestos**. Consulta [Verificar los impuestos](/es/finance/tax-verify).
   </Step>
 </Steps>
 
@@ -175,13 +112,13 @@ En lugar de digitar el perfil fiscal, puedes subir el RUT del tercero y dejar qu
 
 <Steps>
   <Step title="Crea la factura">
-    En las facturas de proveedor, crea una nueva y llena el encabezado. Tres campos deciden los impuestos:
+    En las facturas de proveedor, crea una nueva y llena el encabezado. Estos campos deciden los impuestos:
     1. **Fecha de operación**: decide qué tarifa y qué UVT se usan.
-    2. **Sucursal**: decide el municipio y con él el ICA.
+    2. **Ubicación de cada renglón**: decide el municipio y con él el ICA y el ReteICA.
     3. **Proveedor**: trae su perfil fiscal. Tiene que estar activo.
   </Step>
   <Step title="Agrega los renglones">
-    Agrega los productos o servicios con su cantidad y valor. La categoría fiscal del renglón llega sola desde el tipo de producto. Si aparece vacía, clasifica el tipo de producto antes de guardar.
+    Agrega los productos o servicios con su cantidad y valor. La categoría fiscal del renglón llega sola desde el tipo de producto. Si aparece vacía, clasifica el tipo de producto antes de guardar. Elige la ubicación del renglón: es el municipio donde ocurre la compra.
   </Step>
   <Step title="Guarda">
     Al guardar, Fail Fast liquida todos los impuestos del documento. Es todo o nada: se calculan todos o ninguno.
@@ -193,30 +130,44 @@ En lugar de digitar el perfil fiscal, puedes subir el RUT del tercero y dejar qu
     - **No aplicados**: las reglas que se evaluaron y no aplicaron, con el motivo escrito. Es la grilla que explica una retención que esperabas y no salió.
   </Step>
   <Step title="Contabiliza">
-    Con las cuentas de impuestos configuradas, la factura se contabiliza con sus impuestos en las cuentas que definiste.
+    Con el mapa de cuentas configurado, la factura se contabiliza con sus impuestos en las cuentas que definiste.
   </Step>
 </Steps>
 
-## Por qué no salió un impuesto
+## Páginas de esta guía
 
-Empieza siempre por la grilla de **no aplicados**: ahí está escrito el motivo.
-
-| Lo que ves | Qué pasó | Qué hacer |
-|---|---|---|
-| La factura no liquida ningún impuesto | El tipo de producto no tiene categoría fiscal | Clasifica el tipo de producto |
-| Liquida IVA pero no retiene nada | Tu empresa no figura como agente de retención, o el proveedor es autorretenedor o de régimen simple | Revisa los dos perfiles fiscales |
-| El IVA sale como costo y no como descontable | Tu empresa no figura como responsable de IVA | Completa el perfil fiscal de tu empresa |
-| Retiene a la tarifa más alta | Nadie contestó si el proveedor declara renta | Contesta **Declarante de renta** del proveedor |
-| Retiene de menos en facturas pequeñas | La base no alcanzó el mínimo en UVT | Nada: el motivo trae las dos cifras |
-| El impuesto se calcula pero la factura no contabiliza | Falta la cuenta de ese impuesto | Agrega la fila en **Cuentas de Impuestos** |
-| Un impuesto sin regla en el detalle | Alguien lo escribió a mano | Revisa el renglón |
-
-<Note>
-Cuando nadie contestó un dato que la regla necesita, el sistema no lo supone: deja el impuesto en **no aplicados** con el mensaje «nadie contestó…» y te dice qué dato registrar. La excepción son los beneficios que el tercero debe acreditar, como el régimen especial o la autorretención: mientras no estén registrados, la retención se practica.
-</Note>
-
-La grilla de no aplicados es larga por diseño: muestra todas las reglas que se evaluaron, incluidas las que no son de tu actividad. No es un error.
-
+<CardGroup cols={2}>
+  <Card title="Perfil fiscal" icon="id-card" href="/es/finance/tax-fiscal-profile">
+    Cada fila, su origen y cuáles se llenan solas.
+  </Card>
+  <Card title="CIIU, actividad ICA y ReteICA" icon="map-location-dot" href="/es/finance/tax-ica-activity">
+    El CIIU principal y la actividad por municipio.
+  </Card>
+  <Card title="Productos" icon="boxes-stacked" href="/es/finance/tax-products">
+    Tipo de producto y ficha fiscal del producto.
+  </Card>
+  <Card title="Mapa de cuentas de impuestos" icon="book" href="/es/finance/tax-account-map">
+    A qué cuenta va cada impuesto.
+  </Card>
+  <Card title="Excepciones de regla" icon="ban" href="/es/finance/tax-rule-exceptions">
+    No aplicar una regla o aplicar otra tarifa.
+  </Card>
+  <Card title="Verificar los impuestos" icon="magnifying-glass" href="/es/finance/tax-verify">
+    Simulación, reporte de pendientes y por qué no salió un impuesto.
+  </Card>
+  <Card title="Casos según el tamaño" icon="building" href="/es/finance/tax-company-size-cases">
+    Qué llena una panadería y qué llena una empresa grande.
+  </Card>
+  <Card title="Ejemplos resueltos" icon="calculator" href="/es/finance/tax-worked-examples">
+    Ventas, devoluciones y una compra con cifras.
+  </Card>
+  <Card title="Cargues masivos con CIIU" icon="file-import" href="/es/finance/tax-bulk-uploads">
+    Proveedores, clientes y pacientes.
+  </Card>
+  <Card title="Lo que todavía no cubre" icon="circle-info" href="/es/finance/tax-not-covered">
+    Compras del exterior, INC en compras y propinas.
+  </Card>
+</CardGroup>
 
 ## Guías relacionadas
 
