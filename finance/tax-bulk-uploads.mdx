@@ -1,0 +1,52 @@
+---
+title: "Bulk uploads with CIIU"
+description: "How to upload suppliers, customers, and patients with their CIIU, how the CIIU list is written, and how the principal CIIU is decided."
+icon: "file-import"
+---
+
+The bulk uploads for **suppliers**, **customers**, and **patients** carry the `ciiu` column. With it you load each stakeholder's CIIU without opening their record. To load the rest of the tax profile, use the tax data upload.
+
+## The CIIU column
+
+The `ciiu` cell is a **list**: it goes between brackets and quotes, with the codes separated by commas.
+
+| What you load | How the cell is written |
+|---|---|
+| One CIIU | `["6201"]` |
+| Several CIIU | `["6201","6202"]` |
+| Person with no CIIU | An empty cell. For natural persons the CIIU is optional |
+
+The tax responsibilities column, `fiscal_responsibility`, is also a list: for example `["O-13"]` or `["R-99-PN"]`.
+
+## The principal CIIU
+
+| What you load | What happens to the principal |
+|---|---|
+| A single CIIU | It is marked principal on its own |
+| Several CIIU and the stakeholder already had a principal that is still in the list | The principal it already had is kept |
+| Several CIIU and the stakeholder had no principal | Mark the principal in their record after the upload: the screen asks for it on their next edit |
+
+The upload does not delete the principal CIIU the stakeholder already had. Stakeholders with several CIIU and no principal are corrected in their record.
+
+## Rules by type of stakeholder
+
+- **Companies (suppliers and customers with a NIT):** the CIIU is required, except for foreign non-residents, who are identified by their document type (NITE, TDE, DIE, passport) or by belonging to another country.
+- **Natural persons (ID card, and patients):** the CIIU is optional.
+- **Foreign non-residents:** the CIIU is not required.
+
+## What the upload rejects
+
+When a row cannot be loaded, the message starts with "Row N:" and says why.
+
+## Tax data upload
+
+The tax data upload fills in the Tax profile of several stakeholders at once. It rejects:
+
+- A row for a data point the system calculates (`persona_juridica` or `extranjero`).
+- A zone on a country-wide data point.
+
+See [Tax profile](/finance/tax-fiscal-profile).
+
+## Product tax setup upload
+
+See [Products](/finance/tax-products#bulk-upload).

@@ -1,0 +1,52 @@
+---
+title: "Cargues masivos con CIIU"
+description: "Cómo cargar proveedores, clientes y pacientes con sus CIIU, cómo se escribe la lista de CIIU y cómo se decide el CIIU principal."
+icon: "file-import"
+---
+
+Los cargues masivos de **proveedores**, **clientes** y **pacientes** traen la columna `ciiu`. Con ella cargas los CIIU de cada tercero sin abrir su ficha. Para cargar el resto del perfil fiscal, usa el cargue de datos fiscales.
+
+## La columna de CIIU
+
+La celda `ciiu` es una **lista**: va entre corchetes y comillas, con los códigos separados por comas.
+
+| Qué cargas | Cómo se escribe la celda |
+|---|---|
+| Un CIIU | `["6201"]` |
+| Varios CIIU | `["6201","6202"]` |
+| Persona sin CIIU | La celda vacía. Para personas naturales el CIIU es opcional |
+
+La columna de responsabilidades fiscales, `fiscal_responsibility`, también es una lista: por ejemplo `["O-13"]` o `["R-99-PN"]`.
+
+## El CIIU principal
+
+| Lo que cargas | Qué pasa con el principal |
+|---|---|
+| Un solo CIIU | Queda marcado como principal solo |
+| Varios CIIU y el tercero ya tenía un principal que sigue en la lista | Se conserva el principal que ya tenía |
+| Varios CIIU y el tercero no tenía principal | Márcale el principal en su ficha después del cargue: la pantalla lo pide en su próxima edición |
+
+El cargue no borra el CIIU principal que el tercero ya tenía. Los terceros con varios CIIU y sin principal se corrigen en su ficha.
+
+## Reglas por tipo de tercero
+
+- **Empresas (proveedores y clientes con NIT):** el CIIU es obligatorio, salvo para extranjeros no residentes, que se identifican por su tipo de documento (NITE, TDE, DIE, pasaporte) o por pertenecer a otro país.
+- **Personas naturales (cédula, y pacientes):** el CIIU es opcional.
+- **Extranjeros no residentes:** el CIIU no se exige.
+
+## Qué rechaza el cargue
+
+Cuando una fila no se puede cargar, el mensaje empieza por «Fila N:» y dice por qué.
+
+## Cargue de datos fiscales
+
+El cargue de datos fiscales llena el Perfil fiscal de varios terceros a la vez. Rechaza:
+
+- Una fila para un dato que el sistema calcula (`persona_juridica` o `extranjero`).
+- Una zona en un dato de todo el país.
+
+Consulta [Perfil fiscal](/es/finance/tax-fiscal-profile).
+
+## Cargue de configuración fiscal de producto
+
+Consulta [Productos](/es/finance/tax-products#cargue-masivo).

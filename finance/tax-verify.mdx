@@ -1,0 +1,71 @@
+---
+title: "Verify taxes"
+description: "How to test an operation with the Tax simulator, what data can be missing, and what to check when a tax did not come out."
+icon: "magnifying-glass"
+---
+
+Verify the configuration before invoicing, and review the document after saving it.
+
+## Tax simulator
+
+The **Tax simulator** (**Simulador fiscal**) settles an operation without saving any document. Use it to test:
+
+- A new stakeholder, before selling to them or buying from them.
+- A product type you just classified.
+- A tax rule override you just registered.
+- A new municipality in the line location.
+
+Write the operation as you would write it in the document: stakeholder, product, amount, operation date, and line location. The simulator shows the same results the document will show: each tax with its base, rate, and amount, and the ones that did not apply with their reason.
+
+## The line location decides the municipality
+
+The municipality of ICA and ReteICA comes from the **location of each line**, not from the branch. When you change the line location, taxes are recalculated.
+
+- The selector offers departments and cities.
+- A document can have lines in different municipalities.
+- If a tax changes when you move the location, it is because the new municipality has another rule or because the buyer is not an ICA withholding agent there.
+
+## Missing data
+
+When a company, a stakeholder, or a product lacks a piece of data the rules read, the **Tax profile** shows it as **Missing, required for suppliers**. Also check:
+
+- That each product type has a tax category and a withholding category. See [Products](/finance/tax-products).
+- That each company or person with several CIIU has one marked as principal. See [CIIU, ICA activity, and ReteICA](/finance/tax-ica-activity).
+- That each supplier has a CIIU, except foreign non-residents.
+- That the **Tax account map** has a row, and a counter account when the tax is outside the total. See [Tax account map](/finance/tax-account-map).
+
+## Read a document's taxes
+
+In the document's taxes tab there are three grids, in this order:
+
+- **Summary**: one line per tax, with its operation (tax, withholding, higher value), base, rate, and amount. This is what goes to accounting.
+- **Detail**: the same, line by line, with the **rule** that applied and the activity used and where it came from. A tax with no rule was not calculated by the system: someone typed it in.
+- **Not applied**: the rules that were evaluated and did not apply, each with its reason written out. This is the grid that explains a withholding you expected and did not get.
+
+The not-applied grid is long by design: it shows every rule that was evaluated, including ones that are not for your activity. It is not an error.
+
+## Why a tax did not come out
+
+Always start with the **not applied** grid: the reason is written there.
+
+| What you see | What happened | What to do |
+|---|---|---|
+| The document settles no tax | The product type has no tax category | Classify the product type |
+| It settles VAT but withholds nothing | Your company is not listed as a withholding agent, or the supplier is a self-withholder or in the Simple regime | Check both tax profiles |
+| VAT comes out as cost and not as deductible | Your company is not listed as VAT responsible, or the product is marked as fixed asset or own consumption | Complete your company's profile or check the product |
+| It withholds at the highest rate | Nobody answered whether the supplier files income tax | Answer the supplier's **Files income tax** |
+| It withholds too little on small documents, or does not withhold | The base did not reach the minimum in UVT | Nothing: the reason carries both figures |
+| On a sale, income withholding or ReteICA does not come out | The customer is not a withholding agent, or is not a ReteICA agent in the line's municipality | Check the customer's Tax profile |
+| ReteICA does not come out on a purchase | Your company is not a ReteICA agent in the municipality, the supplier self-withholds ICA there, the base does not reach the minimum, or the product is **Income for third parties** | Check the line's municipality and the profiles |
+| ReteICA comes out at the group rate and not the activity rate | The seller's activity, their bimonthly periodicity, or the code in the municipality's table is missing | Declare the activity and the periodicity |
+| A warning says a ReteICA rule is missing | The line's municipality has no ReteICA rule | Check the line location |
+| The self-withholding does not come out | Your company is not a legal entity that files income tax, is in the Simple regime or the special regime, or has no principal CIIU in a group with self-withholding. An exception can also switch it off | Check the Tax profile, the principal CIIU, and the exceptions |
+| The tax is calculated but the document does not post | The account for that tax is missing | Add the row in the **Tax account map** |
+| A tax with no rule in the detail | Someone typed it in | Review the line |
+| A return is rejected | The original invoice is not processed, the return is dated before the invoice, or the returned quantity exceeds the sold one | Process the invoice, fix the date or the quantity |
+
+<Note>
+When nobody answered a piece of data the rule needs, the system does not assume it: it leaves the tax in **not applied** with the message "nobody answered…" and tells you which data to register. The exception is benefits the stakeholder must prove, such as the special regime or self-withholding: while they are not registered, the withholding is made.
+</Note>
+
+An empty data point is read according to the rule's condition. If the rule asks that the stakeholder "be" a withholding agent, empty means they are not and the withholding does not apply. If the rule asks that they "not be" a self-withholder, empty means they are not and the withholding applies.

@@ -1,0 +1,96 @@
+---
+title: "Multilibro"
+description: "Lleva la misma operación en más de un libro contable: libros NIIF y Fiscal, cuentas propias de un libro, mapeos y nombres por libro."
+icon: "books"
+---
+
+Algunas empresas tienen que presentar la misma operación en más de un libro contable. Lo que es un gasto deducible en el libro fiscal puede clasificarse distinto bajo NIIF, y la misma cuenta puede llamarse de otra forma en cada uno. Multilibro te deja registrar la operación una sola vez y leerla en cada libro con las cuentas y los nombres que ese libro espera.
+
+## Cuándo lo ves
+
+Multilibro se activa por espacio de trabajo. Si el tuyo no lo usa, no ves ninguna de las pantallas de esta guía, ni el campo **Libro** en los comprobantes, ni la sección **Multilibro** en las operaciones. Si tu empresa lo necesita, pídeselo a Fail Fast.
+
+## Los libros los define Fail Fast
+
+Los libros no se crean ni se editan desde la aplicación: Fail Fast los define para cada país. En Colombia son dos:
+
+- **NIIF** — el libro principal.
+- **Fiscal** — un libro secundario.
+
+Un solo libro es el principal. Todo lo que configures en esta guía parte del libro principal hacia los secundarios, nunca al revés.
+
+## Un movimiento, varias lecturas
+
+Cada comprobante se guarda una sola vez, en un libro. En los comprobantes, multilibro agrega la sección **Multilibro** con el campo **Libro**. Cuando un comprobante no dice en qué libro va, se entiende que va en el principal.
+
+Lo que cambia es cómo lo lees. Al consultar un libro secundario, Fail Fast traduce lo que ese libro necesita: cambia la cuenta, cambia el nombre, o esconde lo que no le pertenece. No se duplican comprobantes y no hay que registrar nada dos veces.
+
+## Las tres formas de configurarlo
+
+| Si necesitas | Usa | Qué hace |
+| --- | --- | --- |
+| Que una cuenta exista en un solo libro | [Cuentas propias de un libro](/es/finance/book-own-accounts) | La cuenta pertenece en exclusiva a ese libro y no aparece en ningún otro |
+| Que una cuenta se reemplace por otra en un libro secundario | [Mapeo de cuentas por libro](/es/finance/account-book-mapping) | El libro secundario lee la operación en otra cuenta |
+| Que una cuenta se llame distinto en un libro secundario | [Nombres de cuenta por libro](/es/finance/book-account-names) | Cambia solo el nombre que se muestra; la cuenta es la misma |
+
+Ninguna de las tres se configura desde el formulario de cuentas: cada una tiene su propia pantalla. Son tres cosas distintas y conviene no confundirlas. La primera decide **dónde existe** una cuenta. La segunda decide **qué cuenta** se lee. La tercera decide **cómo se llama**.
+
+## Cómo decide Fail Fast qué cuenta mostrar
+
+Cuando consultas un libro secundario, Fail Fast arma cada cuenta con estas reglas, en este orden:
+
+<Steps>
+  <Step title="¿La cuenta es propia de algún libro?">
+    Si lo es, solo existe en ese libro. En los demás libros no aparece, y esta decisión gana sobre cualquier otra regla que hayas configurado.
+  </Step>
+  <Step title="¿Tiene una cuenta mapeada para este libro?">
+    Si la tiene, en este libro se muestra la cuenta destino, con su código. La cuenta destino no aparece además por sí sola, para no repetirla.
+  </Step>
+  <Step title="¿Tiene un nombre homologado para este libro?">
+    Si lo tiene, se muestra con ese nombre, también cuando la cuenta está mapeada. Si no lo tiene, se muestra el nombre de la cuenta destino, o el suyo propio si no hay mapeo.
+  </Step>
+  <Step title="Si no hay ninguna regla">
+    La cuenta se muestra tal como está en el libro principal.
+  </Step>
+</Steps>
+
+Que la cuenta propia gane sobre todo lo demás es importante: si marcaste una cuenta como exclusiva de un libro, no hay homologación ni mapeo que la saque de ahí. Una cuenta exclusiva de un libro no viaja a ningún otro, así que no hay nada que traducir.
+
+## Cómo ves la contabilización de una transacción
+
+No tienes que ir a buscar el comprobante en contabilidad para saber cómo quedó registrada una transacción. Cada documento lo muestra en sus propias pestañas:
+
+- **Contabilización NIIF** — el asiento como lo lee el libro principal.
+- **Contabilización fiscal** — el mismo documento como lo lee el libro fiscal, si tu empresa lleva ese libro, con las cuentas y los nombres que espera.
+
+Las dos pestañas son de solo lectura y muestran, renglón por renglón, la secuencia, el código y el nombre de la cuenta, el documento y el nombre del tercero, y el código y el nombre del centro de costos. Ahí se ve el resultado de lo que configuraste: si una cuenta tiene un nombre homologado o está mapeada a otra, la pestaña fiscal la muestra ya traducida.
+
+Están en las facturas y notas de clientes y de proveedores, los anticipos, los neteos, las devoluciones, los movimientos de inventario y los documentos de transporte.
+
+## Qué operaciones llegan a cada libro
+
+No toda operación tiene que reflejarse en todos los libros: cada operación indica a qué libros secundarios no debe llegar. Consulta [Operaciones](/es/finance/operations#multilibro).
+
+## Cierre de periodo
+
+Cada libro cierra sus meses por separado. Puedes tener el mes cerrado en NIIF y todavía abierto en Fiscal, o al revés. El cierre avanza mes a mes de forma independiente en cada libro, y reabrir un periodo en un libro no lo reabre en los demás.
+
+## Un ejemplo de cómo se usa
+
+Una empresa que lleva NIIF y Fiscal suele terminar con una configuración así:
+
+- Un grupo de cuentas auxiliares marcadas como **propias del libro Fiscal**: existen solo para la declaración y nunca aparecen en NIIF.
+- Otro grupo marcado como **propias de NIIF**: provisiones y ajustes que el libro fiscal no reconoce.
+- Un conjunto de **mapeos hacia Fiscal** para las cuentas que sí existen en los dos libros pero con códigos distintos.
+- Un conjunto de **nombres homologados hacia Fiscal** para las cuentas que son la misma pero se denominan distinto en cada libro.
+
+No tienes que configurar las tres cosas. La mayoría de las cuentas no necesita ninguna regla y se lee igual en todos los libros.
+
+
+## Guías relacionadas
+
+- [Contabilidad](/es/finance/accounting)
+- [Cuentas propias de un libro](/es/finance/book-own-accounts)
+- [Mapeo de cuentas por libro](/es/finance/account-book-mapping)
+- [Nombres de cuenta por libro](/es/finance/book-account-names)
+- [Operaciones](/es/finance/operations)

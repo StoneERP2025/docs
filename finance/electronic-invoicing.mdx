@@ -33,6 +33,12 @@ Issuing requires an active DIAN setup: your resolutions must be synchronized bef
 
 Once setup is complete, the invoices you generate — for example from [Sales](/operations/sales) — are issued as electronic documents under your synced resolutions. The electronic representation of each document, including its PDF, is retrievable from the document's record whenever you need to send or archive it.
 
+## Support document
+
+When you buy from a supplier who is not required to issue an invoice, the document that backs the purchase before the DIAN is the **support document** (documento soporte), and Fail Fast issues it too. If it has to be corrected or voided, its **adjustment note** is issued.
+
+The support document is issued under its own operation, and that operation needs its DIAN resolution just like the invoicing ones. If a supplier has a support-document operation with no resolution, issuing stops and the message names the supplier.
+
 ## Receiving electronic documents
 
 Electronic documents issued to you by suppliers can be processed automatically into staged supplier invoices. Your team then reviews and completes each staged invoice — the accrual step (causación) — before it becomes part of your payables. See [Purchasing](/operations/purchasing) for how staged supplier invoices fit into the purchasing flow.
@@ -41,7 +47,7 @@ Electronic documents issued to you by suppliers can be processed automatically i
 
 Both directions depend on correct homologation mappings: external codes on incoming and outgoing documents must map to your own products, third parties, and other master data. If documents arrive with codes you have not mapped, resolve the mappings in [Data homologation](/data/data-homologation).
 
-## Limitations
+## What to keep in mind
 
 - No electronic document can be issued until the DIAN setup is active and resolutions are synchronized.
 - Automatic processing of received documents produces staged invoices for review — a person still confirms each one during causación.

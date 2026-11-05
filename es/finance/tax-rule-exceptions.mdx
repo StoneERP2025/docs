@@ -1,0 +1,68 @@
+---
+title: "Excepción por regla"
+description: "Cuándo usar una excepción para no aplicar una regla del país o aplicar otra tarifa, con el ejemplo de un ReteICA al 6,9 por mil."
+icon: "ban"
+---
+
+Las reglas del país son las mismas para todas las empresas y no se modifican. Cuando una regla no aplica a tu empresa, o aplica con otra tarifa, registras una **excepción por regla**.
+
+## Los dos tipos de excepción
+
+| Excepción | Ejemplo |
+|---|---|
+| **No aplicar esta regla** | «Esta retención no me aplica» |
+| **Aplicar otra tarifa** | «A este cliente le retengo la tarifa pactada» |
+
+Cada excepción tiene:
+
+| Campo | Qué es |
+|---|---|
+| **Regla** | La regla del país que cambia |
+| **Tipo** | No aplicar, o aplicar otra tarifa |
+| **Tarifa** | Solo si aplicas otra tarifa |
+| **Tercero** | El cliente o proveedor al que vale. Vacío vale para todos |
+| **Zona** | El municipio donde vale. Vacío vale en todo el país |
+| **Vigencia** | Desde cuándo y hasta cuándo vale. La fecha final no se incluye |
+| **Motivo** | Obligatorio. Lo lee el auditor |
+
+Cuanto más vacío el alcance, más amplio. Una excepción con tercero vale solo para las operaciones con ese tercero.
+
+## Cuándo usar una excepción
+
+- Un tercero con un acuerdo de tarifa distinta, como una retención de ICA pactada.
+- Una regla que no te aplica por una condición que el sistema no puede leer. Por ejemplo, la autorretención especial exige no tener personal que dé derecho a la exoneración de aportes, y esa condición no está en el Perfil fiscal. Si tu empresa no tiene personal, apaga la regla con una excepción de **no aplicar**.
+- Una retención que no practicas a un proveedor en particular.
+
+No tener excepciones es lo normal. Si tienes muchas, probablemente algo del Perfil fiscal o de las categorías está mal contestado: corrígelo en vez de excepcionarlo.
+
+## Qué regla cambian y qué no
+
+- Una excepción de **otra tarifa** cambia la tarifa de **esa regla** y nada más. Las reglas por actividad que siguen a la del grupo heredan las excepciones de **no aplicar**, pero no las de otra tarifa.
+- Una excepción vale en el rango de fechas que escribiste. Al llegar la fecha final deja de aplicar y el sistema vuelve a la tarifa de la regla.
+- Puedes cargar varias a la vez con el cargue masivo de excepciones por regla.
+
+## Ejemplo: ReteICA de Bogotá al 6,9 por mil para dos clientes
+
+La empresa vende consultoría en Bogotá. La regla de ReteICA de servicios de Bogotá retiene **9,66 por mil**. Dos de sus clientes, que son agentes de retención de ICA en Bogotá, practican **6,9 por mil**. La empresa registra, para cada uno, una excepción:
+
+| Campo | Valor |
+|---|---|
+| Regla | ReteICA de Bogotá, servicios |
+| Tipo | Aplicar otra tarifa |
+| Tarifa | 6,9 por mil |
+| Tercero | El cliente |
+| Zona | Bogotá |
+| Vigencia | Del 1 de enero de 2026 al 1 de enero de 2027 (el 1 de enero de 2027 no se incluye) |
+| Motivo | Tarifa pactada con el cliente |
+
+Una venta de 20.000.000 de consultoría a uno de esos clientes tiene un ReteICA de 138.000 (`20.000.000 × 6,9 / 1.000`). Sin la excepción sería de 193.200 (`20.000.000 × 9,66 / 1.000`).
+
+Tres cosas para tener en cuenta:
+
+- La excepción es **por cliente**, no por producto. Todo lo que le factures a ese cliente en Bogotá con esa regla sale al 6,9 por mil.
+- Vale solo para la regla que nombra. Las ventas a esos clientes por otra regla de ReteICA no cambian.
+- Al llegar la fecha final, la excepción deja de aplicar y las ventas vuelven a la tarifa de la regla. Una excepción de otra tarifa no pasa a las reglas de ReteICA por actividad: si desde 2027 la tarifa de Bogotá sale de la actividad, la excepción no la cambia.
+
+## Verificar una excepción
+
+Después de registrarla, corre una [Simulador fiscal](/es/finance/tax-verify) con una operación que debería cambiar. La explicación del impuesto dice qué regla aplicó y con qué tarifa.

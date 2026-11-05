@@ -33,6 +33,12 @@ Emitir requiere una configuración DIAN activa: tus resoluciones deben estar sin
 
 Una vez completada la configuración, las facturas que generas — por ejemplo desde [Ventas](/es/operations/sales) — se emiten como documentos electrónicos bajo tus resoluciones sincronizadas. La representación electrónica de cada documento, incluido su PDF, se puede recuperar desde el registro del documento cuando necesites enviarlo o archivarlo.
 
+## Documento soporte
+
+Cuando le compras a un proveedor que no está obligado a expedir factura, el documento que respalda la compra ante la DIAN es el **documento soporte**, y Fail Fast también lo emite. Si hay que corregirlo o anularlo, se emite su **nota de ajuste**.
+
+El documento soporte se emite bajo su propia operación, y esa operación necesita su resolución DIAN igual que las de facturación. Si el proveedor tiene configurada una operación de documento soporte sin resolución, la emisión se detiene y el mensaje te dice de qué proveedor se trata.
+
 ## Recibir documentos electrónicos
 
 Los documentos electrónicos que te emiten tus proveedores se pueden procesar automáticamente como facturas de proveedor preparadas. Tu equipo revisa y completa cada factura preparada — el paso de causación — antes de que pase a formar parte de tus cuentas por pagar. Consulta [Compras](/es/operations/purchasing) para ver cómo encajan las facturas de proveedor preparadas en el flujo de compras.
@@ -41,7 +47,7 @@ Los documentos electrónicos que te emiten tus proveedores se pueden procesar au
 
 Ambos sentidos dependen de mapeos de homologación correctos: los códigos externos de los documentos que entran y salen deben corresponder a tus propios productos, terceros y demás datos maestros. Si llegan documentos con códigos que no has mapeado, resuelve los mapeos en [Homologación de datos](/es/data/data-homologation).
 
-## Limitaciones
+## Qué tener en cuenta
 
 - No se puede emitir ningún documento electrónico hasta que la configuración DIAN esté activa y las resoluciones sincronizadas.
 - El procesamiento automático de los documentos recibidos produce facturas preparadas para revisión: una persona sigue confirmando cada una durante la causación.

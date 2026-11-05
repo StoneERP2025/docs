@@ -1,0 +1,62 @@
+---
+title: "Mapeo de cuentas por libro"
+description: "Haz que una cuenta del libro principal se lea como otra cuenta distinta en un libro secundario."
+icon: "arrow-right-arrow-left"
+---
+
+A veces la misma operación va a una cuenta en NIIF y a otra cuenta en el libro fiscal. No es que la cuenta se llame distinto: es que es otra cuenta, con otro código. El mapeo resuelve eso sin obligarte a registrar el comprobante dos veces.
+
+Esta pantalla se llama **Mapeo de Cuentas por Libro** y solo aparece si tu espacio de trabajo usa [Multilibro](/es/finance/multi-book).
+
+## Qué hace
+
+Registras el comprobante una sola vez con la cuenta del libro principal. Cuando alguien consulta el libro secundario, Fail Fast muestra la cuenta destino en su lugar, con su propio código y su propio nombre.
+
+El comprobante no cambia. Lo que cambia es cómo se lee en ese libro.
+
+Un mapeo cambia la cuenta, no su nombre. Si además quieres que se muestre con otro nombre, configúralo en [Nombres de cuenta por libro](/es/finance/book-account-names): el nombre homologado tiene prioridad sobre el nombre de la cuenta destino.
+
+## Crear un mapeo
+
+<Steps>
+  <Step title="Abre la pantalla">
+    Ve a **Mapeo de Cuentas por Libro** en la configuración de contabilidad y haz clic en **Nuevo**.
+  </Step>
+  <Step title="Elige la cuenta origen">
+    En **Cuenta origen**, busca la cuenta del libro principal que quieres traducir.
+  </Step>
+  <Step title="Elige el libro destino">
+    En **Libro destino**, escoge el libro secundario donde la cuenta se va a leer distinto. No puedes elegir el libro principal: un mapeo siempre describe un libro secundario.
+  </Step>
+  <Step title="Elige la cuenta destino">
+    En **Cuenta destino**, busca la cuenta que ese libro debe mostrar. Tiene que ser una cuenta de tu empresa y distinta de la cuenta origen.
+  </Step>
+  <Step title="Déjalo activo y guarda">
+    **¿Está activo?** queda en **Sí**. Guarda.
+  </Step>
+</Steps>
+
+En la lista aparecen también el **Código de cuenta origen** y el **Código de cuenta destino**, para revisar el mapeo de un vistazo sin abrir cada registro.
+
+## Reglas que vas a encontrar
+
+- **El libro destino nunca es el principal.** El mapeo describe cómo un libro secundario lee al principal, no al revés.
+- **La cuenta origen y la cuenta destino tienen que ser distintas.** Mapear una cuenta a sí misma no hace nada y la aplicación lo rechaza.
+- **Un mapeo por cuenta origen y libro destino.** Una cuenta no puede tener dos destinos en el mismo libro.
+- **La cuenta destino no se puede desactivar mientras un mapeo activo la use.** Si intentas desactivarla desde el formulario de cuentas, la aplicación te lo impide. Primero desactiva el mapeo.
+
+## Cuándo el mapeo no aplica
+
+Si la cuenta es [propia de un libro](/es/finance/book-own-accounts), el mapeo no se usa. [Multilibro](/es/finance/multi-book) explica en qué orden se aplican las reglas.
+
+## Quitar un mapeo
+
+Pon **¿Está activo?** en **No** en lugar de borrarlo. La cuenta vuelve a leerse igual en todos los libros y conservas el registro de la configuración anterior.
+
+
+## Guías relacionadas
+
+- [Multilibro](/es/finance/multi-book)
+- [Cuentas propias de un libro](/es/finance/book-own-accounts)
+- [Nombres de cuenta por libro](/es/finance/book-account-names)
+- [Contabilidad](/es/finance/accounting)

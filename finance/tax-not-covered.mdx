@@ -1,0 +1,25 @@
+---
+title: "What is not covered yet"
+description: "The tax cases Fail Fast does not settle yet: purchases from abroad, payments abroad, consumption tax on purchases, and tips."
+icon: "circle-info"
+---
+
+Fail Fast settles the taxes of the country's domestic operations. These cases are **not supported yet**: the system does not calculate them and you have to handle them outside it.
+
+| Case | What it means |
+|---|---|
+| **VAT on services provided from abroad** | The VAT that the local buyer assumes for a service from a supplier abroad (reverse-charge VAT) is not calculated |
+| **Withholding on payments abroad** | Income withholding on payments or credits to a supplier abroad is not calculated |
+| **National consumption tax (INC) on purchases** | The INC the supplier charges is not separated on the purchase as a supplier fact, to carry it as cost |
+| **Tips** | There is no "Tips" product type with its tax treatment |
+
+A supplier abroad can be registered and their purchases can be saved: what the system does not do yet is calculate the taxes specific to those operations.
+
+## Other limits
+
+- **VAT withholding:** the system covers the cases of large taxpayers, public entities, VAT-responsible companies buying from Simple-regime suppliers, and withholdings between agents. It does not cover other special cases of the regulation, such as the 100 % withholding categories.
+- **Bogotá ReteICA from 2027:** the residual rates for commerce, services, and industrial are loaded. Those for transport, construction, consulting, liberal professions, and financial are not yet.
+- **Payroll contribution exemption:** the special self-withholding requires not having staff that give the right to the payroll contribution exemption, and that data is not in the Tax profile. A company without staff switches the rule off with a [tax rule override](/finance/tax-rule-exceptions).
+- **Special regime on sales:** the income withholding on sales reads the nature of the seller for fees and for the special tax regime. Other conditions on sales, such as the seller's income tax filing, still read the customer.
+
+This list changes as Fail Fast adds coverage.

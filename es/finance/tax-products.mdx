@@ -1,0 +1,85 @@
+---
+title: "Productos"
+description: "Cómo clasificar el tipo de producto y la ficha fiscal de un producto para que el sistema sepa qué IVA, qué retención y qué actividad ICA aplicar."
+icon: "boxes-stacked"
+---
+
+La categoría fiscal no va en cada producto: va en el **tipo de producto**. Es lo que conecta un renglón del documento con una regla de impuestos. Si un producto es la excepción de su tipo, se ajusta en su **Ficha fiscal**, solo para ese producto.
+
+<Warning>
+Sin categoría fiscal, el documento se guarda, los totales cuadran y no aparece ningún impuesto.
+</Warning>
+
+## El tipo de producto
+
+Abre **Inventario → Tipos de producto**.
+
+| Campo | Qué decide | Obligatorio |
+|---|---|---|
+| **Categoría fiscal** (de IVA) | Qué IVA o impuesto al consumo causa lo que compras o vendes | Sí |
+| **Categoría de retención** | Qué retención en la fuente aplica | Sí |
+| **Cuentas de devolución** | Las cuentas de devolución en ventas, de costo y de inventario del tipo. Si faltan, la devolución te avisa cuál falta | Para poder devolver |
+| **Activo fijo** | En una compra, el IVA va al costo del activo | No |
+| **Consumo propio** | En una compra, el IVA va al gasto | No |
+| **CIIU de venta** | La actividad económica con la que se venden estos productos. Ofrece solo los CIIU vivos de tu empresa, o de tu persona si eres persona natural | No |
+| **Actividad ICA de compra** | La actividad con la que se compra el producto, para el ReteICA. Es un selector sobre la tabla de actividades de los municipios | No |
+
+Elige por **lo que es** lo que compras o vendes, no por la cuenta contable a la que lo llevas.
+
+### Categoría fiscal
+
+| Si compras o vendes… | Elige | Lo que causa |
+|---|---|---|
+| Mercancía gravada corriente | Gravado a la tarifa general | IVA 19 % |
+| Bien o servicio de tarifa reducida | Gravado a la tarifa del 5 por ciento | IVA 5 % |
+| Bien exento | Exento de IVA | IVA 0 %, con derecho a descuento |
+| Bien excluido | Excluido de IVA | Sin IVA |
+| Restaurante, cafetería o bar | Restaurante, cafetería, bar | Impuesto al consumo 8 % |
+
+### Categoría de retención
+
+La categoría de retención es obligatoria: el tipo no se guarda sin ella. Si el producto no lleva retención, elige **No aplica**.
+
+Algunos ejemplos, con la UVT de 2026:
+
+| Si compras… | Elige | Retención |
+|---|---|---|
+| Servicios en general | Servicios generales | 4 % si declara renta, 6 % si no · desde 104.748 |
+| Honorarios y comisiones | Honorarios y comisiones | 11 % persona jurídica, 10 % natural · sin mínimo |
+| Bienes | Compras de bienes | 2,5 % si declara renta, 3,5 % si no · desde 523.740 |
+| Arriendo de local o bodega | Arrendamiento de inmuebles | 3,5 % · desde 523.740 |
+| Transporte de carga | Transporte de carga | 1 % · desde 104.748 |
+| Servicios de procesamiento de datos | Procesamiento de datos | 3,5 % · sin mínimo |
+| Ingresos que recibes para un tercero | **Ingresos para terceros** | Ninguna |
+
+<Note>
+**Ingresos para terceros** es para lo que cobras en nombre de otro y no es ingreso tuyo. Con esta categoría no se liquida nunca ICA ni ReteICA.
+</Note>
+
+### Activo fijo y consumo propio
+
+**Activo fijo** y **Consumo propio** son excluyentes: un tipo no puede ser los dos. Cada uno se contesta con Sí o No. En una compra, el IVA que no se descuenta va al costo del activo si es activo fijo, y al gasto si es consumo propio.
+
+### CIIU de venta
+
+Úsalo cuando tu empresa tiene varias actividades y cada producto se vende con una distinta. Por ejemplo, una empresa de tecnología con los CIIU 6201, 6202 y 6311 puede asignar la consultoría a 6202 y el software en la nube a 6311. El sistema revisa que el CIIU sea de tu empresa cuando lo escoges. Abrir un tipo y guardarlo sin tocar el CIIU de venta nunca se bloquea, aunque ese CIIU ya no esté en tu ficha.
+
+## La ficha fiscal del producto
+
+Un producto hereda lo del tipo. En el bloque **Ficha fiscal** del producto, tabla **Atributos fiscales**, puedes cambiar, solo para ese producto:
+
+| Atributo | Para qué |
+|---|---|
+| Activo fijo | El producto se compra como activo fijo aunque su tipo no lo sea |
+| Consumo propio | El producto se compra para consumo propio aunque su tipo no lo sea |
+| Grupo de actividad ICA | La actividad con la que se liquida el ICA y el ReteICA de este producto |
+
+Lo que pongas en la ficha prevalece sobre el tipo **para ese producto**, y los demás productos del tipo no cambian. También son excluyentes: no puedes marcar activo fijo y consumo propio a la vez.
+
+## Cargue masivo
+
+La plantilla **Configuración fiscal de producto** carga la categoría de IVA, la categoría de retención, el CIIU de venta y la actividad ICA de compra de varios tipos a la vez. Una fila con un CIIU de venta que no es de tu empresa se rechaza con un mensaje que empieza por «Fila N:».
+
+## Cuentas de devolución
+
+La cuenta de devolución del tipo de producto es **distinta** de la cuenta de devolución del [Mapa de cuentas de impuestos](/es/finance/tax-account-map). Consulta esa página para la diferencia.

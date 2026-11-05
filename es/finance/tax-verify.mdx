@@ -1,0 +1,71 @@
+---
+title: "Verificar los impuestos"
+description: "Cómo probar una operación con la Simulador fiscal, qué datos pueden faltar y qué revisar cuando un impuesto no salió."
+icon: "magnifying-glass"
+---
+
+Verifica la configuración antes de facturar, y revisa el documento después de guardarlo.
+
+## Simulador fiscal
+
+El **Simulador fiscal** liquida una operación sin guardar ningún documento. Úsalo para probar:
+
+- Un tercero nuevo, antes de venderle o comprarle.
+- Un tipo de producto recién clasificado.
+- Una excepción por regla recién registrada.
+- Un municipio nuevo en la ubicación del renglón.
+
+Escribe la operación como la escribirías en el documento: tercero, producto, valor, fecha de operación y ubicación del renglón. El simulador muestra los mismos resultados que mostrará el documento: cada impuesto con su base, tarifa y valor, y los que no aplicaron con su motivo.
+
+## La ubicación del renglón decide el municipio
+
+El municipio del ICA y del ReteICA sale de la **ubicación de cada renglón**, no de la sucursal. Al cambiar la ubicación del renglón, los impuestos se recalculan.
+
+- El selector ofrece departamentos y ciudades.
+- Un documento puede tener renglones en municipios distintos.
+- Si un impuesto cambia al mover la ubicación, es porque el nuevo municipio tiene otra regla o porque el comprador no es agente de retención de ICA allí.
+
+## Datos que faltan
+
+Cuando a una empresa, a un tercero o a un producto le falta un dato que las reglas leen, el **Perfil fiscal** lo muestra como **Falta, obligatorio para proveedores**. Revisa también:
+
+- Que cada tipo de producto tenga categoría fiscal y categoría de retención. Consulta [Productos](/es/finance/tax-products).
+- Que cada empresa o persona con varios CIIU tenga uno marcado como principal. Consulta [CIIU, actividad ICA y ReteICA](/es/finance/tax-ica-activity).
+- Que cada proveedor tenga CIIU, salvo los extranjeros no residentes.
+- Que el **Mapa de cuentas de impuestos** tenga fila, y contrapartida cuando el impuesto queda fuera del total. Consulta [Mapa de cuentas de impuestos](/es/finance/tax-account-map).
+
+## Leer los impuestos de un documento
+
+En la pestaña de impuestos del documento hay tres grillas, en este orden:
+
+- **Resumen**: un renglón por impuesto, con su operación (impuesto, retención, mayor valor), base, tarifa y valor. Es lo que va a la contabilidad.
+- **Detalle**: lo mismo, renglón por renglón, con la **regla** que aplicó y la actividad usada y su origen. Un impuesto sin regla no lo calculó el sistema: alguien lo escribió a mano.
+- **No aplicados**: las reglas que se evaluaron y no aplicaron, con el motivo escrito. Es la grilla que explica una retención que esperabas y no salió.
+
+La grilla de no aplicados es larga por diseño: muestra todas las reglas que se evaluaron, incluidas las que no son de tu actividad. No es un error.
+
+## Por qué no salió un impuesto
+
+Empieza siempre por la grilla de **no aplicados**: ahí está escrito el motivo.
+
+| Lo que ves | Qué pasó | Qué hacer |
+|---|---|---|
+| El documento no liquida ningún impuesto | El tipo de producto no tiene categoría fiscal | Clasifica el tipo de producto |
+| Liquida IVA pero no retiene nada | Tu empresa no figura como agente de retención, o el proveedor es autorretenedor o del Régimen Simple | Revisa los dos perfiles fiscales |
+| El IVA sale como costo y no como descontable | Tu empresa no figura como responsable de IVA, o el producto está marcado como activo fijo o consumo propio | Completa el perfil de tu empresa o revisa el producto |
+| Retiene a la tarifa más alta | Nadie contestó si el proveedor declara renta | Contesta **Declarante de renta** del proveedor |
+| Retiene de menos en documentos pequeños, o no retiene | La base no alcanzó el mínimo en UVT | Nada: el motivo trae las dos cifras |
+| En una venta no sale la retención en la fuente ni el ReteICA | El cliente no es agente de retención, o no es agente de ReteICA en el municipio del renglón | Revisa el Perfil fiscal del cliente |
+| No sale ReteICA en una compra | Tu empresa no es agente de ReteICA en el municipio, el proveedor se autorretiene ICA allí, la base no alcanza el mínimo, o el producto es **Ingresos para terceros** | Revisa el municipio del renglón y los perfiles |
+| El ReteICA sale a la tarifa del grupo y no a la de la actividad | Falta la actividad del vendedor, su periodicidad bimestral, o el código no está en la tabla del municipio | Declara la actividad y la periodicidad |
+| Sale un aviso de que falta una regla de ReteICA | El municipio del renglón no tiene ninguna regla de ReteICA | Revisa la ubicación del renglón |
+| La autorretención no sale | Tu empresa no es persona jurídica declarante de renta, está en el Régimen Simple o en régimen especial, o no tiene CIIU principal en un grupo con autorretención. También se apaga con una excepción | Revisa el Perfil fiscal, el CIIU principal y las excepciones |
+| El impuesto se calcula pero el documento no contabiliza | Falta la cuenta de ese impuesto | Agrega la fila en el **Mapa de cuentas de impuestos** |
+| Un impuesto sin regla en el detalle | Alguien lo escribió a mano | Revisa el renglón |
+| Una devolución se rechaza | La factura original no está procesada, la devolución es anterior a la factura o la cantidad devuelta supera la vendida | Procesa la factura, corrige la fecha o la cantidad |
+
+<Note>
+Cuando nadie contestó un dato que la regla necesita, el sistema no lo supone: deja el impuesto en **no aplicados** con el mensaje «nadie contestó…» y te dice qué dato registrar. La excepción son los beneficios que el tercero debe acreditar, como el régimen especial o la autorretención: mientras no estén registrados, la retención se practica.
+</Note>
+
+Un dato vacío se lee según la condición de la regla. Si la regla pide que el tercero «sea» agente de retención, vacío significa que no lo es y la retención no aplica. Si la regla pide que «no sea» autorretenedor, vacío significa que no lo es y la retención aplica.

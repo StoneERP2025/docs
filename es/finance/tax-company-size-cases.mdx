@@ -1,0 +1,97 @@
+---
+title: "Casos según el tamaño de la empresa"
+description: "Qué tiene que llenar una microempresa, una pequeña, una mediana y una grande para que los impuestos se liquiden bien."
+icon: "building"
+---
+
+No todas las empresas configuran lo mismo. El sistema usa valores por defecto, el RUT y sus propios cálculos para que una empresa pequeña llene casi nada, y deja el control completo a la que lo necesita.
+
+La regla general: **llena solo lo que las reglas de tu empresa leen.** El **Perfil fiscal** te dice cuándo algo falta, con **Falta, obligatorio para proveedores**.
+
+| Empresa | Qué la caracteriza | Qué llena |
+|---|---|---|
+| **Micro** | Persona natural o Régimen Simple, vende a consumidores | Casi nada |
+| **Pequeña** | Sociedad responsable de IVA que no retiene | Su perfil, sus CIIU y los tipos de producto |
+| **Mediana** | Agente de retención de renta y de ICA | Lo de la pequeña, más el perfil de sus proveedores y las cuentas de retención |
+| **Grande** | Gran contribuyente o autorretenedora, con varias ciudades | Todo: perfil, actividad por municipio, mapa de cuentas, excepciones |
+
+## Micro: la panadería
+
+Una panadería vende a personas con cédula y compra a proveedores pequeños. No necesita llenar un perfil fiscal tercero por tercero.
+
+<Steps>
+  <Step title="Tu empresa">
+    Carga tu RUT o contesta tus responsabilidades en el **Perfil fiscal** de tu propia empresa: por ejemplo, si estás en el Régimen Simple. Registra tu CIIU y márcalo como principal.
+  </Step>
+  <Step title="Tus tipos de producto">
+    Escoge la categoría fiscal y la de retención de cada tipo. Un pan gravado a la tarifa general y un bien excluido son categorías distintas.
+  </Step>
+  <Step title="Tu mapa de cuentas">
+    Las cuentas de IVA y, si compras con retención, las de retención. Consulta [Mapa de cuentas de impuestos](/es/finance/tax-account-map).
+  </Step>
+</Steps>
+
+**Lo que no llenas:**
+
+- El Perfil fiscal de tus clientes personas: sin RUT, el sistema usa los valores por defecto para personas, y la factura sale con el IVA sin que contestes nada. Un cliente persona no es agente de retención, así que no hay retenciones.
+- El de tus proveedores pequeños, salvo los que la tabla marque como **Falta, obligatorio para proveedores**.
+- Las excepciones, las actividades ICA y la periodicidad.
+
+Con eso, una venta a una persona con cédula o a un consumidor final liquida el IVA y nada más.
+
+<Tip>
+Si la panadería es del Régimen Simple, la autorretención especial de renta no se causa.
+</Tip>
+
+## Pequeña
+
+Una sociedad responsable de IVA que no es agente de retención.
+
+| Llena | Dónde |
+|---|---|
+| Sus responsabilidades: responsable de IVA, declarante de renta | **Perfil fiscal** de su empresa, o su RUT |
+| Sus CIIU, con el principal marcado | Ficha de la empresa |
+| La categoría fiscal y la de retención de sus tipos de producto | Tipos de producto |
+| El CIIU de venta de cada tipo, si tiene varias actividades | Tipos de producto |
+| Las cuentas de IVA, las de retención que le practican y la de autorretención si le aplica | Mapa de cuentas de impuestos |
+
+Sus clientes grandes le retienen: para eso el cliente es quien necesita ser agente de retención en su propio perfil. La pequeña solo necesita el mapa de cuentas con las filas de **Retención que me practican** para que la retención se contabilice.
+
+Una pequeña sociedad declarante de renta, con un CIIU principal en un grupo de autorretención, causa la autorretención especial: necesita la fila del mapa con papel **Generado**, contrapartida y cuenta de devolución.
+
+## Mediana
+
+Una empresa que retiene en la fuente y ICA.
+
+Todo lo de la pequeña, y además:
+
+| Llena | Dónde |
+|---|---|
+| Que es agente de retención en la fuente y, si aplica, de IVA | **Perfil fiscal** de su empresa |
+| Que es agente de retención de ICA en cada municipio donde lo es | **Perfil fiscal**, una fila por municipio con zona |
+| Las cuentas de **Retención practicada** de cada impuesto | Mapa de cuentas de impuestos |
+| Los datos de cada proveedor que leen sus reglas: declara renta, es autorretenedor, régimen simple, actividad ICA | **Perfil fiscal** del proveedor, o el RUT |
+| La actividad ICA y la periodicidad de los proveedores en los municipios donde retiene | **Perfil fiscal** del proveedor |
+
+Cuando un proveedor cambia de actividad o de municipio, actualiza su Perfil fiscal.
+
+## Grande
+
+Una empresa gran contribuyente o autorretenedora, con operación en varias ciudades.
+
+Todo lo de la mediana, y además:
+
+| Llena | Dónde |
+|---|---|
+| Que es gran contribuyente o autorretenedora de renta | **Perfil fiscal** de su empresa |
+| Su actividad ICA y su periodicidad en cada municipio donde vende | **Perfil fiscal**, una fila por municipio |
+| Una fila de agente de retención de ICA por cada municipio que la nombró agente | **Perfil fiscal**, con zona |
+| Un mapa de cuentas con filas por municipio donde necesita cuentas distintas | Mapa de cuentas de impuestos, con zona |
+| Excepción por regla por cliente o proveedor con tarifas pactadas | Excepción por regla |
+| El CIIU de venta y la actividad ICA de compra de cada tipo de producto | Tipos de producto |
+
+Una empresa grande revisa las filas **Falta** de los Perfiles fiscales antes de cada cierre.
+
+## Cómo saber en cuál estás
+
+No hay un umbral de ventas. Mira si tu empresa **retiene**: si no retiene, estás en micro o en pequeña. Si retiene en la fuente y ICA, estás en mediana. Si además eres gran contribuyente, autorretenedor o vendes en varias ciudades, estás en grande. Pasar de un caso al siguiente solo agrega datos; lo que ya llenaste sigue valiendo.

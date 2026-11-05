@@ -1,0 +1,95 @@
+---
+title: "CIIU, actividad ICA y ReteICA"
+description: "Cómo marcar el CIIU principal, declarar la actividad ICA por municipio y qué municipio y qué tarifa usa Fail Fast en el ReteICA."
+icon: "map-location-dot"
+---
+
+El ICA y el ReteICA dependen del municipio y de la actividad económica. Esta página explica qué datos le das al sistema para que escoja bien la tarifa.
+
+## El CIIU principal
+
+Una empresa o una persona puede tener varios CIIU. Uno de ellos es el **principal**, y el sistema lo usa cuando no encuentra una actividad más específica.
+
+| Situación | Qué pasa |
+|---|---|
+| Tiene un solo CIIU | Queda marcado como principal solo |
+| Tiene varios y ninguno principal | Se guarda, pero la pantalla te pide marcar el principal. Sin principal, el sistema no puede deducir el grupo de autorretención ni la tarifa por CIIU |
+| Marcas como principal un CIIU que no está en la lista | Se rechaza |
+| Cambias el principal | Se guarda y, al reabrir, el principal es el nuevo |
+
+- El selector de CIIU muestra solo los CIIU activos del país.
+- El **CIIU es obligatorio** para las empresas, salvo las extranjeras no residentes. Para las personas naturales, como pacientes y clientes minoristas, es opcional.
+- Un tercero es extranjero no residente cuando su tipo de documento lo marca (NITE, TDE, DIE y pasaporte) o pertenece a otro país distinto al de tu empresa.
+- Al **leer un RUT**, el sistema llena los CIIU y marca como principal la actividad principal del RUT. Consulta [Cargar el RUT de un tercero](/es/finance/tax-configuration#cargar-el-rut-de-un-tercero).
+
+## La actividad ICA por municipio
+
+En el [Perfil fiscal](/es/finance/tax-fiscal-profile) declaras, por municipio, la actividad con la que un tercero tributa ICA:
+
+1. Agrega la fila **Actividad ICA** (el código) y escoge primero la **Zona**: el departamento y el municipio.
+2. El selector del código ofrece solo las actividades vigentes de ese municipio. Puedes buscar por código o por nombre, y al escogerla ves el código, el nombre y la tarifa.
+3. Agrega la fila **Periodicidad ICA** del mismo municipio y escoge **Bimestral** o **Anual**.
+
+Si cambias la zona a un municipio sin tabla de actividades, el selector no ofrece actividades de otro municipio. Si el selector no logra cargar, la pantalla te avisa; no deja un campo vacío en silencio.
+
+<Note>
+Un código que ya estaba guardado sigue visible aunque salga de la lista vigente. Al guardar, revisa que siga mostrándose: un valor que quedó fuera del filtro del selector puede verse vacío.
+</Note>
+
+## Qué actividad usa el sistema
+
+Para el ReteICA y el ICA de un renglón, el sistema busca la actividad en este orden y se queda con la primera que encuentra:
+
+1. **La actividad del producto**: el **CIIU de venta** del tipo de producto en ventas, o la **Actividad ICA de compra** en compras. Consulta [Productos](/es/finance/tax-products).
+2. **La actividad que declaró el vendedor** para ese municipio en su Perfil fiscal.
+3. **El CIIU principal** del vendedor.
+
+Con la actividad, el sistema toma la tarifa de la tabla de actividades del municipio. Si la tabla tiene una fila propia de tu empresa para esa actividad, esa fila gana sobre la del catálogo.
+
+Cuando no hay actividad conocida, o el código no existe en la tabla del municipio, el sistema usa la **tarifa del grupo de actividad** (comercio, servicios, industrial y los demás). La explicación del impuesto dice qué actividad usó y de dónde salió.
+
+### Cuándo gana la tarifa por actividad en Bogotá
+
+En Bogotá, las tarifas por actividad rigen así:
+
+- Del 1 de noviembre de 2026 al 31 de diciembre de 2026 aplican a los vendedores con periodicidad **Bimestral** en Bogotá.
+- Desde el 1 de enero de 2027 aplican a todos.
+- Hasta el 31 de diciembre de 2026, un vendedor sin periodicidad bimestral usa la tarifa del grupo.
+- Desde 2027, cuando la actividad no se conoce, la tarifa residual es de 10 por mil en servicios, 11 en comercio y 11 en industrial.
+
+Las bases mínimas del ReteICA en Bogotá son 27 UVT para comercio e industrial y 4 UVT para servicios, consultoría, construcción, financiero, transporte y profesión liberal. Si la base del documento no alcanza el mínimo, el ReteICA no se practica.
+
+<Tip>
+El código de la actividad tiene que existir en la tabla del municipio. Por ejemplo, una farmacia al detal en Bogotá usa el código de cinco dígitos que trae la tabla, no el CIIU de cuatro dígitos.
+</Tip>
+
+## Qué municipio usa el ICA
+
+El municipio no sale de la sucursal ni del domicilio del tercero: sale de la **ubicación de cada renglón** del documento.
+
+- En el renglón, el selector **Ubicación** ofrece departamentos y ciudades. Al cambiarlo, los impuestos se recalculan.
+- Un documento puede tener renglones en municipios distintos y cada uno se liquida con el suyo.
+- El ReteICA se practica solo si el comprador es agente de retención de ICA **en ese municipio**. Consulta [Perfil fiscal](/es/finance/tax-fiscal-profile#datos-de-ica-por-municipio).
+- Si el municipio del renglón no tiene ninguna regla de ReteICA, el sistema lo avisa **una vez** en el documento, no en cada renglón.
+
+## El ICA propio no sale en la factura de venta
+
+El ICA lo declara y lo paga el vendedor sobre sus ingresos, cada bimestre o cada año. No se le cobra al cliente ni se liquida factura por factura. Por eso, en una factura de venta no aparece una línea de ICA propio.
+
+Lo único de ICA que aparece en una venta es el **ReteICA que le practican a tu empresa**, cuando el cliente es agente de retención de ICA en el municipio del renglón.
+
+## Un transportador con ReteICA en varias ciudades
+
+Un transportador presta el servicio en varias ciudades. En el renglón del documento, el municipio es el **municipio de origen del servicio**: ese municipio decide la regla y la tarifa del ReteICA. El comprador retiene en cada ciudad solo si es agente de retención de ICA allí. Si el transportador declara su actividad por ciudad, usa una fila de Perfil fiscal por municipio.
+
+## Qué hace falta para que funcione
+
+| Dato | Dónde |
+|---|---|
+| CIIU de tu empresa con el principal marcado | Ficha de tu empresa |
+| Actividad ICA y periodicidad de tu empresa en cada municipio donde vendes | Perfil fiscal de tu empresa |
+| CIIU de venta de cada tipo de producto, si tu empresa tiene varias actividades | Tipo de producto |
+| Que el cliente sea agente de retención de ICA en el municipio | Perfil fiscal del cliente |
+| Actividad ICA y periodicidad del proveedor, si el comprador retiene ICA | Perfil fiscal del proveedor |
+
+Si un dato falta, el Perfil fiscal lo muestra como **Falta**. Una empresa pequeña que no retiene ICA puede dejar todo lo de ICA vacío.

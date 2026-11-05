@@ -1,0 +1,73 @@
+---
+title: "Operaciones"
+description: "Define los tipos de transacción de tu empresa: numeración, impacto contable, autorización y a qué libros llegan."
+icon: "sliders"
+---
+
+Una operación es el tipo de transacción que estás registrando: una factura de venta, un comprobante de egreso, una entrada de almacén, un traslado. Cada documento que registras en Fail Fast nace de una operación, y la operación es la que decide cómo se numera, si mueve contabilidad y si necesita autorización.
+
+## Dónde encontrarlo
+
+La pantalla **Operación** está en la configuración de la aplicación a la que pertenece la operación. Cada módulo —compras, ventas, tesorería, inventarios, transporte— tiene sus propias operaciones.
+
+## El formulario de la operación
+
+La primera pestaña, **Formulario de la operación**, define la operación en sí.
+
+| Campo | Qué define |
+| --- | --- |
+| **Código** | El identificador de la operación. No se repite dentro de tu empresa |
+| **Nombre** | Cómo la vas a reconocer en las listas y en los documentos |
+| **Iniciales** | La abreviatura, máximo cinco caracteres. Tampoco se repite dentro de tu empresa |
+| **Aplicación** | El módulo al que pertenece la operación |
+| **Tipo** | Entrada, salida, débito, crédito o N/A. Define hacia dónde mueve la operación |
+| **Tipo de consecutivo** | Manual, perpetuo o anual. Ver abajo |
+| **Afecta contabilidad** | Si los documentos de esta operación generan comprobante contable |
+| **Resumen contable** | Si el comprobante se genera resumido o renglón por renglón |
+| **Requiere autorización** | Si el documento tiene que pasar por aprobación antes de procesarse |
+| **Fecha editable** | Si quien registra el documento puede cambiarle la fecha |
+| **¿Está activo?** | Desactiva la operación sin borrarla. Deja de ofrecerse en documentos nuevos |
+| **Configuración** | Opciones adicionales según el módulo |
+
+### Tipo de consecutivo
+
+- **Manual** — tú escribes el número en cada documento.
+- **Perpetuo** — la numeración corre sin reiniciarse nunca.
+- **Anual** — la numeración vuelve a empezar cada año.
+
+Con consecutivo anual, la pestaña **Consecutivo de Operación** te deja ver y ajustar el **Consecutivo** de cada **Año**.
+
+### Resumen contable
+
+**Afecta contabilidad** decide *si* hay comprobante; **Resumen contable** decide *cómo se ve*. Resumido agrupa el documento en pocos renglones; detallado conserva un renglón por línea. En documentos de mucho volumen el resumen es la diferencia entre un comprobante legible y uno de cientos de renglones.
+
+## Cuentas de la operación
+
+La pestaña **Cuenta de Operación** define a qué cuentas va el comprobante que genera la operación. Cada fila combina:
+
+- **Formulario** y **Operación** — a qué documento aplica la regla.
+- **Cuenta** y **Naturaleza de la Cuenta** — la cuenta que se afecta y si entra como débito o como crédito.
+- **Tercero**, **Centro de Costos** y **Unidad de negocio** — las dimensiones con que se registra, cuando la cuenta las exige.
+- **Modo de afectación** y **Porcentaje o valor fijo** — si el renglón toma un porcentaje del documento o un valor fijo.
+- **Ajuste de peso** — para las operaciones que se liquidan por peso.
+- **Permitir edición** — si quien registra el documento puede cambiar la cuenta propuesta.
+
+## Multilibro
+
+Si tu espacio de trabajo usa [Multilibro](/es/finance/multi-book), la operación muestra una sección **Multilibro** con un solo campo: **Libros excluidos**.
+
+Ahí eliges los libros secundarios a los que esta operación **no** debe llegar. El campo solo te ofrece libros activos que no sean el principal, porque una operación siempre llega al libro principal.
+
+<Note>
+Lo que configures aquí se aplica en el momento de registrar el documento y queda guardado con el comprobante. Si después cambias los libros excluidos de la operación, los comprobantes que ya están completos no cambian: conservan la configuración que tenían cuando se registraron. Solo los comprobantes provisionales o con error vuelven a calcularla mientras sigan en ese estado.
+</Note>
+
+Esto es deliberado: la historia contable no se reescribe porque alguien ajuste una configuración meses después.
+
+Si tu espacio de trabajo no usa multilibro, la sección no aparece y todas las operaciones llegan al único libro que hay.
+
+
+## Guías relacionadas
+
+- [Multilibro](/es/finance/multi-book)
+- [Contabilidad](/es/finance/accounting)

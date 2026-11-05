@@ -1,0 +1,95 @@
+---
+title: "CIIU, ICA activity, and ReteICA"
+description: "How to mark the principal CIIU, declare the ICA activity per municipality, and which municipality and rate Fail Fast uses for ReteICA."
+icon: "map-location-dot"
+---
+
+ICA and ReteICA depend on the municipality and on the economic activity. This page explains what data you give the system so that it picks the right rate.
+
+## The principal CIIU
+
+A company or a person can have several CIIU. One of them is the **principal**, and the system uses it when it does not find a more specific activity.
+
+| Situation | What happens |
+|---|---|
+| It has a single CIIU | It is marked principal on its own |
+| It has several and none is principal | It saves, but the screen asks you to mark the principal. Without a principal, the system cannot deduce the self-withholding group or the rate by CIIU |
+| You mark as principal a CIIU that is not in the list | It is rejected |
+| You change the principal | It saves and, when you reopen, the principal is the new one |
+
+- The CIIU selector shows only the active CIIU of the country.
+- The **CIIU is required** for companies, except foreign non-residents. For natural persons, such as patients and retail customers, it is optional.
+- A stakeholder is a foreign non-resident when their document type marks it (NITE, TDE, DIE, and passport) or belongs to a country other than your company's.
+- When you **read a RUT**, the system fills the CIIU and marks the RUT's main activity as principal. See [Load the RUT of a stakeholder](/finance/tax-configuration#load-the-rut-of-a-stakeholder).
+
+## The ICA activity per municipality
+
+In the [Tax profile](/finance/tax-fiscal-profile) you declare, per municipality, the activity under which a stakeholder pays ICA:
+
+1. Add the **ICA activity** row (the code) and choose the **Zone** first: the department and the municipality.
+2. The code selector offers only the activities in force in that municipality. You can search by code or by name, and when you pick one you see the code, the name, and the rate.
+3. Add the **ICA periodicity** row for the same municipality and choose **Bimonthly** or **Annual**.
+
+If you change the zone to a municipality with no activity table, the selector does not offer activities from another municipality. If the selector fails to load, the screen tells you; it does not leave an empty field silently.
+
+<Note>
+A code that was already saved stays visible even if it leaves the current list. When saving, check that it is still displayed: a value that fell outside the selector's filter can look empty.
+</Note>
+
+## Which activity the system uses
+
+For the ReteICA and the ICA of a line, the system looks for the activity in this order and keeps the first one it finds:
+
+1. **The product's activity**: the product type's **sales CIIU** on sales, or the **purchase ICA activity** on purchases. See [Products](/finance/tax-products).
+2. **The activity the seller declared** for that municipality in their Tax profile.
+3. **The seller's principal CIIU**.
+
+With the activity, the system takes the rate from the municipality's activity table. If the table has a row of your own company for that activity, that row wins over the catalog's.
+
+When no activity is known, or the code does not exist in the municipality's table, the system uses the **rate of the activity group** (commerce, services, industrial, and the others). The tax explanation says which activity it used and where it came from.
+
+### When the activity rate wins in Bogotá
+
+In Bogotá, the activity rates apply like this:
+
+- From November 1, 2026 to December 31, 2026 they apply to sellers with **Bimonthly** periodicity in Bogotá.
+- From January 1, 2027 they apply to everyone.
+- Until December 31, 2026, a seller without bimonthly periodicity uses the group rate.
+- From 2027, when the activity is not known, the residual rate is 10 per thousand for services, 11 for commerce, and 11 for industrial.
+
+The ReteICA minimum bases in Bogotá are 27 UVT for commerce and industrial and 4 UVT for services, consulting, construction, financial, transport, and liberal professions. If the document's base does not reach the minimum, ReteICA is not withheld.
+
+<Tip>
+The activity code has to exist in the municipality's table. For example, a retail pharmacy in Bogotá uses the five-digit code in the table, not the four-digit CIIU.
+</Tip>
+
+## Which municipality ICA uses
+
+The municipality does not come from the branch or from the stakeholder's domicile: it comes from the **location of each line** of the document.
+
+- On the line, the **Location** selector offers departments and cities. When you change it, taxes are recalculated.
+- A document can have lines in different municipalities and each one is settled with its own.
+- ReteICA is withheld only if the buyer is an ICA withholding agent **in that municipality**. See [Tax profile](/finance/tax-fiscal-profile#ica-data-by-municipality).
+- If the line's municipality has no ReteICA rule at all, the system warns you **once** in the document, not on every line.
+
+## Your own ICA does not appear on the sales invoice
+
+The seller files and pays ICA on their income, every two months or every year. It is not charged to the customer and it is not settled invoice by invoice. That is why a sales invoice shows no line of own ICA.
+
+The only ICA that appears on a sale is the **ReteICA withheld from your company**, when the customer is an ICA withholding agent in the line's municipality.
+
+## A carrier with ReteICA in several cities
+
+A carrier provides the service in several cities. On the document line, the municipality is the **municipality of origin of the service**: that municipality decides the ReteICA rule and rate. The buyer withholds in each city only if they are an ICA withholding agent there. If the carrier declares its activity per city, use one Tax profile row per municipality.
+
+## What you need for this to work
+
+| Data | Where |
+|---|---|
+| Your company's CIIU with the principal marked | Your company's record |
+| Your company's ICA activity and periodicity in each municipality where you sell | Your company's Tax profile |
+| The sales CIIU of each product type, if your company has several activities | Product type |
+| That the customer is an ICA withholding agent in the municipality | The customer's Tax profile |
+| The supplier's ICA activity and periodicity, if the buyer withholds ICA | The supplier's Tax profile |
+
+If a piece of data is missing, the Tax profile shows it as **Missing**. A small company that does not withhold ICA can leave everything about ICA empty.

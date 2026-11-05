@@ -1,0 +1,140 @@
+---
+title: "Ejemplos resueltos"
+description: "Cuatro ventas con las cifras de la contadora, una devolución parcial en cuentas por cobrar y en punto de venta, y una compra con sus retenciones."
+icon: "calculator"
+---
+
+Estos ejemplos muestran lo que liquida Fail Fast con la configuración completa. Las cifras de las cuatro ventas coinciden con el cálculo de una contadora, al peso. Las ventas son de una empresa de tecnología en Bogotá, noviembre de 2026, con la ubicación del renglón en Bogotá.
+
+**La empresa vendedora:**
+
+- Sociedad responsable de IVA, persona jurídica y declarante de renta.
+- CIIU principal 6201, con 6202 y 6311.
+- Su CIIU principal está en un grupo de autorretención del 1,1 %.
+- Tiene mapa de cuentas con IVA, retención en la fuente, ReteICA, ReteIVA y autorretención, esta última con contrapartida.
+
+**Los clientes** son sociedades agentes de retención en la fuente y de ICA en Bogotá. El cuarto cliente es además agente de retención de IVA.
+
+## Venta 1: consultoría por 20.000.000
+
+Un cliente sociedad. Producto: consultoría, con IVA a la tarifa general y retención de honorarios. El cliente tiene registrada una excepción de ReteICA a 6,9 por mil. Consulta [Excepción por regla](/es/finance/tax-rule-exceptions).
+
+| Concepto | Tarifa | Valor |
+|---|---|---|
+| IVA | 19 % | **3.800.000** (suma al total) |
+| Retención en la fuente (honorarios, persona jurídica) | 11 % | **2.200.000** (resta del total) |
+| ReteICA de Bogotá | 6,9 por mil | **138.000** (resta del total) |
+| Autorretención especial de renta | 1,1 % | **220.000** (no entra en el total) |
+
+Total a cobrar: `20.000.000 + 3.800.000 − 2.200.000 − 138.000 = 21.462.000`.
+
+## Venta 2: consultoría por 5.000.000
+
+Otro cliente sociedad, con la misma excepción de 6,9 por mil.
+
+| Concepto | Tarifa | Valor |
+|---|---|---|
+| IVA | 19 % | **950.000** |
+| Retención en la fuente | 11 % | **550.000** |
+| ReteICA de Bogotá | 6,9 por mil | **34.500** |
+| Autorretención especial de renta | 1,1 % | **55.000** |
+
+Total a cobrar: `5.000.000 + 950.000 − 550.000 − 34.500 = 5.365.500`.
+
+## Venta 3: software en la nube por 1.750.000
+
+Producto: software en la nube. La categoría fiscal es **excluido de IVA** y la de retención es procesamiento de datos.
+
+| Concepto | Tarifa | Valor |
+|---|---|---|
+| IVA | 0 % (excluido) | **0** |
+| Retención en la fuente (procesamiento de datos) | 3,5 % | **61.250** |
+| ReteICA de Bogotá (servicios, sin excepción) | 9,66 por mil | **16.905** |
+| Autorretención especial de renta | 1,1 % | **19.250** |
+
+Total a cobrar: `1.750.000 − 61.250 − 16.905 = 1.671.845`.
+
+## Venta 4: desarrollo por 2.538.000
+
+El cliente es sociedad, agente de retención en la fuente, de IVA y de ICA en Bogotá.
+
+| Concepto | Tarifa | Valor |
+|---|---|---|
+| IVA | 19 % | **482.220** |
+| ReteIVA (sobre el IVA) | 15 % | **72.333** |
+| Retención en la fuente (honorarios) | 11 % | **279.180** |
+| ReteICA de Bogotá (servicios) | 9,66 por mil | **24.517** (24.517,08 sin redondear) |
+| Autorretención especial de renta | 1,1 % | **27.918** |
+
+Total a cobrar: `2.538.000 + 482.220 − 72.333 − 279.180 − 24.517 = 2.644.190`.
+
+<Note>
+La autorretención es un costo propio: va a las cuentas del mapa, fuera del total que cobras. Y el sistema redondea cada impuesto al peso.
+</Note>
+
+### Por qué cambian las cifras si cambias un dato
+
+| Si… | Qué cambia |
+|---|---|
+| El cliente no figura como agente de retención en la fuente | No hay retención en la fuente |
+| El cliente no figura como agente de ReteICA en Bogotá | No hay ReteICA |
+| No hay excepción de 6,9 por mil | El ReteICA de las ventas 1 y 2 es 193.200 y 48.300 (9,66 por mil) |
+| Tu empresa no tiene CIIU principal | No hay autorretención |
+
+## Devolución parcial en cuentas por cobrar
+
+Una devolución **no recalcula** los impuestos: toma la proporción devuelta de cada renglón (cantidad devuelta dividida entre cantidad vendida) y la aplica a lo que liquidó la factura original. Todos los valores son positivos; lo que cambia es el lado contable.
+
+Para devolver, la factura tiene que estar **procesada**, la fecha de la devolución no puede ser anterior a la de la factura y la cantidad no puede superar la vendida.
+
+Se devuelve el 40 % de la cantidad de la venta 1 con una nota crédito:
+
+| Concepto | Factura | 40 % devuelto |
+|---|---|---|
+| Subtotal | 20.000.000 | **8.000.000** |
+| IVA | 3.800.000 | **1.520.000** |
+| Retención en la fuente | 2.200.000 | **880.000** |
+| ReteICA | 138.000 | **55.200** |
+| Autorretención | 220.000 | **88.000** |
+| Total de la nota | 21.462.000 | **8.584.800** |
+
+El asiento reversa el ingreso, la cartera y cada impuesto. La autorretención se reversa con la cuenta de devolución de su fila del mapa. Si falta una cuenta de devolución del tipo de producto o del mapa, la devolución te lo dice. Consulta [Mapa de cuentas de impuestos](/es/finance/tax-account-map).
+
+## Devolución parcial en el punto de venta
+
+La devolución del punto de venta también prorratea la venta original.
+
+Ilustración: una venta de 3 unidades de 100.000 con IVA del 19 % liquidó `300.000 + 57.000 = 357.000`. Se devuelve 1 unidad: un tercio de cada valor.
+
+| Concepto | Venta | 1 de 3 devuelta |
+|---|---|---|
+| Subtotal | 300.000 | **100.000** |
+| IVA | 57.000 | **19.000** |
+| Total | 357.000 | **119.000** |
+
+La devolución se rechaza si el tipo de producto no tiene las cuentas de devolución en ventas, de costo y de inventario, o si la fila del mapa de un impuesto no tiene cuenta de devolución. El reembolso sale de caja o banco.
+
+## Una compra: producto de comercio a un proveedor de Bogotá
+
+Tu empresa es agente de retención en la fuente y de ICA en Bogotá. El proveedor declara renta, es responsable de IVA y no es autorretenedor. Producto: mercancía gravada a la tarifa general, con retención de compras de bienes. Valor 2.000.000, con la ubicación del renglón en Bogotá.
+
+| Concepto | Tarifa | Valor |
+|---|---|---|
+| IVA | 19 % | **380.000** (descontable o al costo, según el mapa) |
+| Retención en la fuente (compras, declarante) | 2,5 % | **50.000** (el mínimo es 10 UVT = 523.740) |
+| ReteIVA | — | **0** (tu empresa no es agente de retención de IVA) |
+| ReteICA de Bogotá (comercio, grupo) | 6,9 por mil | **13.800** (el mínimo es 27 UVT = 1.414.098) |
+
+Le pagas al proveedor `2.000.000 + 380.000 − 50.000 − 13.800 = 2.316.200`.
+
+Variantes con la misma compra:
+
+| Variante | Resultado |
+|---|---|
+| El proveedor es autorretenedor de renta | Retención en la fuente 0. Pagas 2.366.200 |
+| La compra es de 1.000.000 | ReteICA 0, porque no alcanza 27 UVT. La retención en la fuente es de 25.000 |
+| El proveedor declaró su actividad ICA y es bimestral, y la tarifa de su actividad es 4 por mil | ReteICA de 8.000 en vez de 13.800, desde que rige la tarifa por actividad. Consulta [CIIU, actividad ICA y ReteICA](/es/finance/tax-ica-activity) |
+| El proveedor se autorretiene ICA en Bogotá | ReteICA 0 |
+| El proveedor no tiene el dato de si declara renta | Se trata como no declarante: la retención en la fuente es 3,5 %, 70.000 |
+
+UVT de 2026: 52.374.

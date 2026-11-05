@@ -1,0 +1,25 @@
+---
+title: "Lo que todavía no cubre"
+description: "Los casos de impuestos que Fail Fast todavía no liquida: compras del exterior, pagos al exterior, impuesto al consumo en compras y propinas."
+icon: "circle-info"
+---
+
+Fail Fast liquida los impuestos de las operaciones nacionales del país. Estos casos todavía **no están soportados**: el sistema no los calcula y tienes que tratarlos fuera de él.
+
+| Caso | Qué significa |
+|---|---|
+| **IVA en servicios prestados desde el exterior** | El IVA que el comprador local asume por un servicio de un proveedor del exterior (el IVA que se liquida al revés) no se calcula |
+| **Retención en pagos al exterior** | La retención en la fuente a pagos o abonos a un proveedor del exterior no se calcula |
+| **Impuesto nacional al consumo (INC) en compras** | El INC que cobra el proveedor no se separa en la compra como dato del proveedor, para llevarlo como costo |
+| **Propinas** | No hay un tipo de producto «Propinas» con su tratamiento fiscal |
+
+Un proveedor del exterior sí se puede registrar y sus compras sí se pueden guardar: lo que el sistema todavía no hace es calcular los impuestos propios de esas operaciones.
+
+## Otros límites
+
+- **Retención de IVA:** el sistema cubre los casos de grandes contribuyentes, entidades públicas, responsables de IVA que compran a proveedores del Régimen Simple y retenciones entre agentes. No cubre otros casos especiales de la norma, como las categorías de retención del 100 %.
+- **ReteICA de Bogotá desde 2027:** las tarifas residuales de comercio, servicios e industrial están cargadas. Las de transporte, construcción, consultoría, profesiones liberales y financiero todavía no.
+- **Exoneración de aportes:** la autorretención especial exige no tener personal que dé derecho a la exoneración de aportes, y ese dato no está en el Perfil fiscal. Una empresa sin personal apaga la regla con una [excepción por regla](/es/finance/tax-rule-exceptions).
+- **Régimen especial en ventas:** la retención en la fuente de las ventas lee la naturaleza de quien vende en los honorarios y en el régimen tributario especial. Otras condiciones de ventas, como la declaración de renta del vendedor, todavía leen al cliente.
+
+Esta lista cambia cuando Fail Fast suma cobertura.

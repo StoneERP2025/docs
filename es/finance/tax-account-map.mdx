@@ -1,0 +1,90 @@
+---
+title: "Mapa de cuentas de impuestos"
+description: "A qué cuenta contable va cada impuesto, qué es la cuenta de devolución y la contrapartida, y qué hacer cuando el sistema avisa que falta una cuenta."
+icon: "book"
+---
+
+El **Mapa de cuentas de impuestos** dice, para cada impuesto y para cada papel que cumple, a qué cuenta contable va. Con él, Fail Fast arma el asiento de un documento con sus impuestos.
+
+Cada fila del mapa tiene:
+
+| Campo | Qué es |
+|---|---|
+| **Impuesto** | El impuesto o la retención: IVA, retención en la fuente, ReteICA, ReteIVA, autorretención |
+| **Papel** | Qué hace la cuenta en esa operación (consulta la tabla de abajo) |
+| **Cuenta** | La cuenta contable donde se registra el impuesto |
+| **Cuenta de devolución** | La cuenta que usa una devolución para reversar este impuesto |
+| **Contrapartida** | La cuenta del otro lado, solo para impuestos que no entran en el total del documento |
+| **Zona** | El municipio donde vale la fila. Déjala vacía para que valga en todo el país |
+
+Las filas siguen solas a la regla cuando esta cambia de versión. No tienes que volver a cargarlas.
+
+## Los papeles de la cuenta
+
+| Impuesto | Papel | Lo que registra |
+|---|---|---|
+| IVA | **Descontable** | El IVA que pagas y luego descuentas |
+| IVA | **Va al costo de la línea** | El IVA que no descuentas y se suma al costo de la línea |
+| IVA | **Mayor valor del costo** | El IVA que no descuentas y se suma al costo del activo o del gasto |
+| IVA | **Generado** | El IVA que cobras en tus ventas |
+| Retención en la fuente | **Retención practicada** | Lo que le retienes al proveedor y le debes a la DIAN |
+| Retención en la fuente | **Retención que me practican** | Lo que te retienen a ti en tus ventas |
+| Retención de ICA | **Retención practicada** / **Retención que me practican** | Lo mismo ante el municipio |
+| Retención de IVA | **Retención practicada** / **Retención que me practican** | Solo si eres agente de retención de IVA, o si te retienen |
+| Autorretención especial de renta | **Generado** | Ver el aviso de abajo |
+
+Llena la **zona** solo cuando necesites una cuenta distinta por municipio, que es lo normal en ICA.
+
+Las cuentas que llevan impuestos deben tener **Requiere impuesto** en **Sí** y su concepto de impuesto. Consulta [Crear una cuenta](/es/finance/accounting#crear-una-cuenta).
+
+<Warning>
+**Autorretención especial de renta.** Su papel es **Generado**, no **Retención practicada**. La **cuenta** (crédito) es el pasivo a favor de la DIAN, por ejemplo `23657501`. La **contrapartida** (débito) es el anticipo o impuesto pagado por anticipado, por ejemplo `13551501`. La **cuenta de devolución** es la misma del pasivo. Si cambias el papel o inviertes las cuentas, la venta, incluida la del punto de venta, se rechaza con el aviso de que falta la cuenta con papel **Generado**.
+</Warning>
+
+## La contrapartida
+
+Un impuesto que no entra en el total del documento, como la autorretención, necesita una cuenta y una **contrapartida**: el asiento lleva el valor del impuesto en la cuenta, contra la contrapartida, fuera del total que cobras. Sin contrapartida, el documento se rechaza.
+
+La contrapartida va en el lado contrario al de la cuenta. Si la cuenta es de crédito, la contrapartida es de débito.
+
+## La cuenta de devolución del mapa y la del tipo de producto
+
+Son dos cuentas distintas y las dos se necesitan para devolver:
+
+| | Dónde se configura | Para qué sirve |
+|---|---|---|
+| **Cuenta de devolución del mapa** | Mapa de cuentas de impuestos, en la fila de cada impuesto | Reversa el **impuesto** (el IVA, la retención) de lo devuelto |
+| **Cuentas de devolución del tipo de producto** | Tipo de producto | Reversa el **ingreso**, el costo y el inventario de lo devuelto. Consulta [Productos](/es/finance/tax-products) |
+
+Una devolución no recalcula los impuestos: toma la proporción devuelta de cada renglón y la aplica a lo que liquidó la factura original. Todos los valores son positivos y lo que cambia es el lado contable. Si falta la cuenta de devolución de una fila, la devolución, incluida la del punto de venta, se rechaza.
+
+## Cuando falta una cuenta
+
+Si a un impuesto que se calculó le falta su cuenta, no pierdes el documento: el impuesto se calcula y queda guardado, pero el documento no se contabiliza. El mensaje dice:
+
+- la **regla** a la que le falta la cuenta,
+- el **concepto** del impuesto,
+- el **papel** de la cuenta,
+- el **lado** que falta, crédito o débito,
+- la **zona**,
+- y cómo arreglarlo.
+
+Si lo que falta es la contrapartida, el mensaje dice que falta la contrapartida y el lado en que va, el contrario al de la cuenta.
+
+**Dónde arreglarlo:** agrega o corrige la fila en el **Mapa de cuentas de impuestos**, con el papel y el lado que dice el mensaje, y vuelve a contabilizar.
+
+<Tip>
+No esperes a que un documento falle: revisa que cada impuesto que tu empresa causa tenga su fila en el mapa, y la contrapartida cuando el impuesto queda fuera del total.
+</Tip>
+
+## Lo mínimo para empezar
+
+| Quieres… | Fila que necesitas |
+|---|---|
+| Comprar con IVA descontable | IVA · Descontable |
+| Comprar con IVA que va al costo | IVA · Va al costo de la línea o Mayor valor del costo |
+| Retener renta al proveedor | Retención en la fuente · Retención practicada |
+| Retener ICA | Retención de ICA · Retención practicada, con zona |
+| Vender con IVA | IVA · Generado |
+| Registrar lo que te retienen | Retención en la fuente / ReteICA / ReteIVA · Retención que me practican |
+| Autorretenerte renta | Autorretención · Generado, con contrapartida y cuenta de devolución |

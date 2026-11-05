@@ -1,0 +1,56 @@
+---
+title: "Book-owned accounts"
+description: "Mark an auxiliary account as exclusive to one accounting book so it never appears in the others."
+icon: "lock"
+---
+
+Some accounts only make sense in one book. A provision the fiscal book does not recognize, or an account that exists purely for the tax return and should not clutter your IFRS statements. This screen marks that account as owned by a book: it exists there and nowhere else.
+
+The screen is called **Book Account** and it only appears if your workspace uses [multi-book accounting](/finance/multi-book).
+
+## What it does, and what it does not
+
+Marking an account as owned by a book does **not** rename it and does not replace it with another one. What it does is take it out of every other book:
+
+- In the other books the account does not appear. It is not shown, it does not add up, and it cannot be picked.
+- If you try to use it in a movement of another book, the app rejects it with an error. It does not hide it silently.
+- This decision overrides everything else: a homologated name or a mapped account is not applied. See [Multi-book accounting](/finance/multi-book#how-fail-fast-decides-which-account-to-show).
+
+If what you want is for the account to exist in both books but read differently, you want [account mapping by book](/finance/account-book-mapping) or [account names by book](/finance/book-account-names) instead.
+
+## Create the assignment
+
+<Steps>
+  <Step title="Open the screen">
+    Go to **Book Account** in the accounting configuration and click **New**.
+  </Step>
+  <Step title="Pick the account">
+    Under **Account**, find the auxiliary account you want to make exclusive to a book. You can only pick auxiliary accounts: ledger accounts are never assigned to a book.
+  </Step>
+  <Step title="Pick the book">
+    Under **Book**, choose the book the account belongs to. It can be the main book or a secondary one; either way the account becomes exclusive to it.
+  </Step>
+  <Step title="Leave it active and save">
+    **Is active** stays at **Yes**. Save.
+  </Step>
+</Steps>
+
+The list also shows the **Account Code**, so you can search by code without opening each record.
+
+## Rules you will run into
+
+- **Auxiliary accounts only.** If you pick a ledger account, the app rejects it.
+- **One assignment per account and book.** You cannot create the same account-and-book pair twice.
+- **The account can no longer become a ledger account.** While a book owns the account, the account form will not let you switch it from auxiliary to ledger. Deactivate the assignment first.
+
+## Removing the assignment
+
+Do not delete the record: set **Is active** to **No**. The account goes back to behaving like any other — it travels to every book and follows whatever mapping and name rules it has — and you keep the trail showing it was once exclusive to that book.
+
+
+## Related guides
+
+- [Multi-book accounting](/finance/multi-book)
+- [Account mapping by book](/finance/account-book-mapping)
+- [Account names by book](/finance/book-account-names)
+- [Accounting](/finance/accounting)

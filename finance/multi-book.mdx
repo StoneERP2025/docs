@@ -1,0 +1,96 @@
+---
+title: "Multi-book accounting"
+description: "Keep the same transaction in more than one accounting book: NIIF and Fiscal books, book-owned accounts, mappings and per-book names."
+icon: "books"
+---
+
+Some companies have to present the same transaction in more than one accounting book. What counts as a deductible expense in the fiscal book may be classified differently under IFRS, and the same account may be named differently in each one. Multi-book lets you record the transaction once and read it in each book with the accounts and names that book expects.
+
+## When you see it
+
+Multi-book is enabled per workspace. If yours does not use it, you never see the screens in this guide, the **Book** field on movements, or the **Multibook** section on operations. If your company needs it, ask Fail Fast to turn it on.
+
+## Fail Fast defines the books
+
+Books are not created or edited from the app: Fail Fast defines them per country. In Colombia there are two:
+
+- **NIIF** — the main book.
+- **Fiscal** — a secondary book.
+
+Exactly one book is the main one. Everything you configure in this guide flows from the main book out to the secondary ones, never the other way round.
+
+## One movement, several readings
+
+Each movement is stored once, in one book. On movements, multi-book adds a **Multibook** section with a **Book** field. When a movement does not name a book, it belongs to the main book.
+
+What changes is how you read it. When someone queries a secondary book, Fail Fast translates what that book needs: it swaps the account, swaps the name, or hides what does not belong to it. No movement is duplicated and nothing is recorded twice.
+
+## The three ways to configure it
+
+| If you need | Use | What it does |
+| --- | --- | --- |
+| An account to exist in one book only | [Book-owned accounts](/finance/book-own-accounts) | The account belongs exclusively to that book and appears in no other |
+| An account to be replaced by another in a secondary book | [Account mapping by book](/finance/account-book-mapping) | The secondary book reads the transaction under a different account |
+| An account to be named differently in a secondary book | [Account names by book](/finance/book-account-names) | Only the displayed name changes; the account is the same |
+
+None of the three is configured from the account form: each has its own screen. These are three different things and it pays not to mix them up. The first decides **where an account exists**. The second decides **which account** is read. The third decides **what it is called**.
+
+## How Fail Fast decides which account to show
+
+When you query a secondary book, Fail Fast builds each account with these rules, in this order:
+
+<Steps>
+  <Step title="Is the account owned by a book?">
+    If it is, it exists in that book only. It does not appear in the others, and this decision wins over every other rule you may have configured.
+  </Step>
+  <Step title="Does it have a mapped account for this book?">
+    If it does, this book shows the target account, with its code. The target account does not also appear on its own, so it is not listed twice.
+  </Step>
+  <Step title="Does it have a homologated name for this book?">
+    If it does, it is shown under that name, also when the account is mapped. If it does not, it shows the target account's name, or its own name when there is no mapping.
+  </Step>
+  <Step title="If no rule applies">
+    The account is shown exactly as it is in the main book.
+  </Step>
+</Steps>
+
+Book ownership winning over everything else matters: once you mark an account as exclusive to a book, no mapping or name rule takes it out of there. An account exclusive to one book does not travel to any other, so there is nothing to translate.
+
+## How you see a transaction's accounting
+
+You do not have to go looking for the entry in accounting to see how a transaction was recorded. Each document shows it in its own tabs:
+
+- **IFRS accounting** — the entry as the main book reads it.
+- **Tax accounting** — the same document as the fiscal book reads it, if your company keeps that book, with the accounts and names it expects.
+
+Both tabs are read-only and show, line by line, the sequence, the account code and name, the stakeholder's document and name, and the cost center code and name. This is where you see the result of what you configured: an account with a homologated name or a mapping shows up already translated in the tax tab.
+
+They are on customer and supplier invoices and notes, advances, nettings, returns, inventory movements, and transport documents.
+
+## Which operations reach each book
+
+Not every operation has to be reflected in every book: each operation names the secondary books it must not reach. See [Operations](/finance/operations#multibook).
+
+## Period control
+
+Each book closes its months separately. You can have the month closed in NIIF and still open in Fiscal, or the other way round. The closing sequence advances month by month independently in each book, and reopening a period in one book does not reopen it in the others.
+
+## What this looks like in practice
+
+A company running NIIF and Fiscal usually ends up with a configuration like this:
+
+- A set of auxiliary accounts marked as **owned by the Fiscal book**: they exist only for the tax return and never show up in NIIF.
+- Another set marked as **owned by NIIF**: provisions and adjustments the fiscal book does not recognize.
+- A set of **mappings to Fiscal** for accounts that exist in both books under different codes.
+- A set of **homologated names to Fiscal** for accounts that are the same but are called differently in each book.
+
+You do not have to configure all three. Most accounts need no rule at all and read the same in every book.
+
+
+## Related guides
+
+- [Accounting](/finance/accounting)
+- [Book-owned accounts](/finance/book-own-accounts)
+- [Account mapping by book](/finance/account-book-mapping)
+- [Account names by book](/finance/book-account-names)
+- [Operations](/finance/operations)

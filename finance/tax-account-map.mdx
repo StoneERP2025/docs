@@ -1,0 +1,90 @@
+---
+title: "Tax account map"
+description: "Which accounting account each tax goes to, what the return account and the counter account are, and what to do when the system says an account is missing."
+icon: "book"
+---
+
+The **Tax account map** (**Mapa de cuentas de impuestos**) says, for each tax and each role it plays, which accounting account it goes to. With it, Fail Fast builds the entry of a document with its taxes.
+
+Each row of the map has:
+
+| Field | What it is |
+|---|---|
+| **Tax** | The tax or withholding: VAT, income withholding, ReteICA, ReteIVA, self-withholding |
+| **Role** | What the account does in that operation (see the table below) |
+| **Account** | The accounting account where the tax is recorded |
+| **Return account** | The account a return uses to reverse this tax |
+| **Counter account** | The account on the other side, only for taxes outside the document's total |
+| **Zone** | The municipality where the row is valid. Leave it empty for the row to be valid across the country |
+
+Rows follow the rule on their own when it changes version. You do not have to load them again.
+
+## The account roles
+
+| Tax | Role | What it records |
+|---|---|---|
+| VAT | **Creditable tax** (**Descontable**) | The VAT you pay and then deduct |
+| VAT | **Goes to the line cost** (**Va al costo de la línea**) | The VAT you do not deduct and add to the line's cost |
+| VAT | **Higher cost value** (**Mayor valor del costo**) | The VAT you do not deduct and add to the asset's or expense's cost |
+| VAT | **Generated** | The VAT you charge on your sales |
+| Income withholding | **Withheld** | What you withhold from the supplier and owe to the DIAN |
+| Income withholding | **Withholding they make on me** | What is withheld from you on your sales |
+| ICA withholding | **Withheld** / **Withholding they make on me** | The same, with the municipality |
+| VAT withholding | **Withheld** / **Withholding they make on me** | Only if you are a VAT withholding agent, or if you are withheld from |
+| Special income self-withholding | **Generated** | See the warning below |
+
+Fill in the **zone** only when you need a different account per municipality, which is normal for ICA.
+
+Accounts that carry taxes must have **Requires tax** set to **Yes** and their tax concept. See [Create an account](/finance/accounting#create-an-account).
+
+<Warning>
+**Special income self-withholding.** Its role is **Generated**, not **Withheld**. The **account** (credit) is the liability payable to the DIAN, for example `23657501`. The **counter account** (debit) is the advance or prepaid tax, for example `13551501`. The **return account** is the same liability account. If you swap the role or invert the accounts, the sale, point of sale included, is rejected with the notice that the account with role **Generated** is missing.
+</Warning>
+
+## The counter account
+
+A tax that is outside the document's total, such as the self-withholding, needs an account and a **counter account**: the entry carries the tax amount in the account, against the counter account, outside the total you collect. Without a counter account, the document is rejected.
+
+The counter account goes on the opposite side from the account. If the account is a credit, the counter account is a debit.
+
+## The map's return account and the product type's
+
+They are two different accounts, and both are needed to return:
+
+| | Where it is configured | What it is for |
+|---|---|---|
+| **The map's return account** | Tax account map, in each tax's row | Reverses the **tax** (VAT, withholding) of what is returned |
+| **The product type's return accounts** | Product type | Reverses the **revenue**, the cost, and the inventory of what is returned. See [Products](/finance/tax-products) |
+
+A return does not recalculate taxes: it takes the returned proportion of each line and applies it to what the original invoice settled. All values are positive and what changes is the accounting side. If a row's return account is missing, the return, point-of-sale returns included, is rejected.
+
+## When an account is missing
+
+If a tax that was calculated is missing its account, you do not lose the document: the tax is calculated and stored, but the document does not post. The message says:
+
+- the **rule** whose account is missing,
+- the tax **concept**,
+- the account **role**,
+- the **side** that is missing, credit or debit,
+- the **zone**,
+- and how to fix it.
+
+If what is missing is the counter account, the message says the counter account is missing and the side it goes on, the opposite of the account's.
+
+**Where to fix it:** add or correct the row in the **Tax account map**, with the role and side the message gives, and post again.
+
+<Tip>
+Do not wait for a document to fail: check that every tax your company causes has its row in the map, and a counter account when the tax is outside the total.
+</Tip>
+
+## The minimum to start
+
+| You want to… | Row you need |
+|---|---|
+| Buy with deductible VAT | VAT · Creditable tax |
+| Buy with VAT that goes to cost | VAT · Goes to the line cost or Higher cost value |
+| Withhold income tax from the supplier | Income withholding · Withheld |
+| Withhold ICA | ICA withholding · Withheld, with zone |
+| Sell with VAT | VAT · Generated |
+| Record what is withheld from you | Income withholding / ReteICA / ReteIVA · Withholding they make on me |
+| Self-withhold income tax | Self-withholding · Generated, with counter account and return account |
